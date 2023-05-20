@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    image: apihub-server
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/usr/src/apihub
+      - /usr/src/apihub/node_modules
+    env_file:
+      - ./.env
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - data:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  data:
