@@ -32,13 +32,13 @@ const errorHandler = (err, req, res, next) => {
 
   // Now we are sure that the `error` variable will be an instance of ApiError class
   const response = {
-    ...err,
-    message: err.message,
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }), // Error stack traces should be visible in development for debugging
+    ...error,
+    message: error.message,
+    ...(process.env.NODE_ENV === "development" && { stack: error.stack }), // Error stack traces should be visible in development for debugging
   };
 
   // Send error response
-  return res.status(err.statusCode).json(response);
+  return res.status(error.statusCode).json(response);
 };
 
 export { errorHandler };

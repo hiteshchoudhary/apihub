@@ -4,7 +4,7 @@ RUN mkdir -p /usr/src/apihub && chown -R node:node /usr/src/apihub
 
 WORKDIR /usr/src/apihub
 
-# Copy packahe json and yarn lock only to optimise the image building
+# Copy package json and yarn lock only to optimise the image building
 COPY package.json yarn.lock ./
 
 USER node
