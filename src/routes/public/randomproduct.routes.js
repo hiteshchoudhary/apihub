@@ -9,6 +9,6 @@ const router = Router();
 
 router.route("/").get(getRandomProducts);
 router.route("/:productId").get(getProductById);
-router.route("/product").get(getARandomProduct);
+router.route("/product/random").get(getARandomProduct);
 
 export default router;

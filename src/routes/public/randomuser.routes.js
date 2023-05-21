@@ -9,6 +9,6 @@ const router = Router();
 
 router.route("/").get(getRandomUsers);
 router.route("/:userId").get(getUserById);
-router.route("/user").get(getARandomUser);
+router.route("/user/random").get(getARandomUser);
 
 export default router;
