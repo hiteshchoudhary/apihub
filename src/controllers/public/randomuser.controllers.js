@@ -1,4 +1,5 @@
 import randomUsersJson from "../../json/randomuser.json" assert { type: "json" };
+import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
@@ -6,11 +7,11 @@ const getRandomUsers = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
 
-  const allUsers = randomUsersJson.results;
+  const allUsers = randomUsersJson;
 
   const startPosition = +(page - 1) * limit;
 
-  const randomUsersArray = [...randomUsersJson.results].slice(
+  const randomUsersArray = [...randomUsersJson].slice(
     startPosition,
     startPosition + limit
   );
@@ -37,8 +38,19 @@ const getRandomUsers = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, payload, "Random users fetched successfully"));
 });
 
+const getUserById = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const user = randomUsersJson.find((user) => +user.id === +userId);
+  if (!user) {
+    throw new ApiError(404, "User does not exist.");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User fetched successfully"));
+});
+
 const getARandomUser = asyncHandler(async (req, res) => {
-  const randomUsersArray = randomUsersJson.results;
+  const randomUsersArray = randomUsersJson;
   const randomIndex = Math.floor(Math.random() * randomUsersArray.length);
 
   return res
@@ -52,4 +64,4 @@ const getARandomUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { getRandomUsers, getARandomUser };
+export { getRandomUsers, getARandomUser, getUserById };
