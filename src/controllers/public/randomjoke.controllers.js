@@ -1,4 +1,5 @@
 import randomJokesJson from "../../json/randomjoke.json" assert { type: "json" };
+import { filterObjectKeys } from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -6,25 +7,35 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 const getRandomJokes = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
+  const query = req.query.query?.toLowerCase(); // search query
+  const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   const allJokes = randomJokesJson;
 
   const startPosition = +(page - 1) * limit;
 
-  const randomJokesArray = [...randomJokesJson].slice(
-    startPosition,
-    startPosition + limit
-  );
+  let randomJokesArray = (
+    query
+      ? [...randomJokesJson].filter((joke) => {
+          return joke.content.toLowerCase().includes(query);
+        })
+      : [...randomJokesJson]
+  ).slice(startPosition, startPosition + limit);
+
+  if (inc && inc[0]?.trim()) {
+    randomJokesArray = filterObjectKeys(inc, randomJokesArray);
+  }
 
   const payload = {
     previousPage:
       page > 1
         ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
             page - 1
-          }&limit=${limit}`
+          }&limit=${limit}&query=${query}`
         : null,
     currentPage: `${req.protocol + "://" + req.get("host") + req.originalUrl}`,
     nextPage:
+      randomJokesArray.length === limit &&
       [...randomJokesArray].pop()?.id < allJokes.length
         ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
             page + 1

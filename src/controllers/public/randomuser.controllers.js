@@ -1,4 +1,5 @@
 import randomUsersJson from "../../json/randomuser.json" assert { type: "json" };
+import { filterObjectKeys } from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -6,15 +7,29 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 const getRandomUsers = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
+  const query = req.query.query?.toLowerCase(); // search query
+  const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   const allUsers = randomUsersJson;
 
   const startPosition = +(page - 1) * limit;
 
-  const randomUsersArray = [...randomUsersJson].slice(
-    startPosition,
-    startPosition + limit
-  );
+  let randomUsersArray = (
+    query
+      ? [...randomUsersJson].filter((user) => {
+          return (
+            user.name.first.toLowerCase().includes(query) ||
+            user.name.last.toLowerCase().includes(query) ||
+            user.name.title.toLowerCase().includes(query) ||
+            user.email.toLowerCase().includes(query)
+          );
+        })
+      : [...randomUsersJson]
+  ).slice(startPosition, startPosition + limit);
+
+  if (inc && inc[0]?.trim()) {
+    randomUsersArray = filterObjectKeys(inc, randomUsersArray);
+  }
 
   const payload = {
     previousPage:
@@ -25,6 +40,7 @@ const getRandomUsers = asyncHandler(async (req, res) => {
         : null,
     currentPage: `${req.protocol + "://" + req.get("host") + req.originalUrl}`,
     nextPage:
+      randomUsersArray.length === limit &&
       [...randomUsersArray].pop()?.id < allUsers.length
         ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
             page + 1
