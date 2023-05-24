@@ -11,3 +11,38 @@ export const filterObjectKeys = (fieldsArray, objectArray) => {
   });
   return filteredArray;
 };
+
+/**
+ *
+ * @param {any[]} dataArray
+ * @param {number} totalDataCount
+ * @param {import("express").Request} req
+ * @param {number} page
+ * @param {number} limit
+ * @returns {{previousPage: string | null, currentPage: string, nextPage: string | null, data: any[]}}
+ */
+export const getPaginatedPayload = (
+  dataArray,
+  totalDataCount,
+  req,
+  page,
+  limit
+) => {
+  const payload = {
+    previousPage:
+      page > 1
+        ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
+            page - 1
+          }&limit=${limit}`
+        : null,
+    currentPage: `${req.protocol + "://" + req.get("host") + req.originalUrl}`,
+    nextPage:
+      dataArray.length === limit && [...dataArray].pop()?.id < totalDataCount
+        ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
+            page + 1
+          }&limit=${limit}`
+        : null,
+    data: dataArray,
+  };
+  return payload;
+};

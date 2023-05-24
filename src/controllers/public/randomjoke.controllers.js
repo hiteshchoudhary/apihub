@@ -1,5 +1,5 @@
 import randomJokesJson from "../../json/randomjoke.json" assert { type: "json" };
-import { filterObjectKeys } from "../../utils/index.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -26,27 +26,21 @@ const getRandomJokes = asyncHandler(async (req, res) => {
     randomJokesArray = filterObjectKeys(inc, randomJokesArray);
   }
 
-  const payload = {
-    previousPage:
-      page > 1
-        ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
-            page - 1
-          }&limit=${limit}&query=${query}`
-        : null,
-    currentPage: `${req.protocol + "://" + req.get("host") + req.originalUrl}`,
-    nextPage:
-      randomJokesArray.length === limit &&
-      [...randomJokesArray].pop()?.id < allJokes.length
-        ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
-            page + 1
-          }&limit=${limit}`
-        : null,
-    jokes: randomJokesArray,
-  };
-
   return res
     .status(200)
-    .json(new ApiResponse(200, payload, "Random jokes fetched successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        getPaginatedPayload(
+          randomJokesArray,
+          allJokes.length,
+          req,
+          page,
+          limit
+        ),
+        "Random jokes fetched successfully"
+      )
+    );
 });
 
 const getJokeById = asyncHandler(async (req, res) => {

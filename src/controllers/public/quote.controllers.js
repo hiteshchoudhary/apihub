@@ -1,5 +1,5 @@
 import quotesJson from "../../json/quotes.json" assert { type: "json" };
-import { filterObjectKeys } from "../../utils/index.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -29,27 +29,15 @@ const getQuotes = asyncHandler(async (req, res) => {
     quotesArray = filterObjectKeys(inc, quotesArray);
   }
 
-  const payload = {
-    previousPage:
-      page > 1
-        ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
-            page - 1
-          }&limit=${limit}&query=${query}`
-        : null,
-    currentPage: `${req.protocol + "://" + req.get("host") + req.originalUrl}`,
-    nextPage:
-      quotesArray.length === limit &&
-      [...quotesArray].pop()?.id < allQuotes.length
-        ? `${req.protocol + "://" + req.get("host") + req.baseUrl}?page=${
-            page + 1
-          }&limit=${limit}`
-        : null,
-    quotes: quotesArray,
-  };
-
   return res
     .status(200)
-    .json(new ApiResponse(200, payload, "Quotes fetched successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        getPaginatedPayload(quotesArray, allQuotes.length, req, page, limit),
+        "Quotes fetched successfully"
+      )
+    );
 });
 
 const getQuoteById = asyncHandler(async (req, res) => {
