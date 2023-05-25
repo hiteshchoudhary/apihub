@@ -29,6 +29,9 @@ import quoteRouter from "./routes/public/quote.routes.js";
 import mealRouter from "./routes/public/meal.routes.js";
 
 app.use("/api/v1/healthcheck", healthcheckRouter);
+
+// * Public apis
+// TODO: More functionality specific to the type of api, can be added in the future
 app.use("/api/v1/public/randomusers", randomuserRouter);
 app.use("/api/v1/public/randomproducts", randomproductRouter);
 app.use("/api/v1/public/randomjokes", randomjokeRouter);
