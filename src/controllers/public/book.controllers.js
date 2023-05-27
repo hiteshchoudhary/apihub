@@ -1,5 +1,9 @@
 import booksJson from "../../json/books.json" assert { type: "json" };
-import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
+import {
+  deepClone,
+  filterObjectKeys,
+  getPaginatedPayload,
+} from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -10,21 +14,15 @@ const getBooks = asyncHandler(async (req, res) => {
   const query = req.query.query?.toLowerCase(); // search query
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
-  const allBooks = booksJson;
-
-  const startPosition = +(page - 1) * limit;
-
-  let booksArray = (
-    query
-      ? [...booksJson].filter((book) => {
-          return (
-            book.searchInfo?.textSnippet.toLowerCase().includes(query) ||
-            book.volumeInfo.title?.includes(query) ||
-            book.volumeInfo.subtitle?.includes(query)
-          );
-        })
-      : [...booksJson]
-  ).slice(startPosition, startPosition + limit);
+  let booksArray = query
+    ? deepClone(booksJson).filter((book) => {
+        return (
+          book.searchInfo?.textSnippet.toLowerCase().includes(query) ||
+          book.volumeInfo.title?.includes(query) ||
+          book.volumeInfo.subtitle?.includes(query)
+        );
+      })
+    : deepClone(booksJson);
 
   if (inc && inc[0]?.trim()) {
     booksArray = filterObjectKeys(inc, booksArray);
@@ -35,7 +33,7 @@ const getBooks = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(booksArray, allBooks.length, req, page, limit),
+        getPaginatedPayload(booksArray, req, page, limit),
         "Books fetched successfully"
       )
     );

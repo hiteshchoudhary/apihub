@@ -1,5 +1,9 @@
 import randomJokesJson from "../../json/randomjoke.json" assert { type: "json" };
-import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
+import {
+  deepClone,
+  filterObjectKeys,
+  getPaginatedPayload,
+} from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -10,17 +14,11 @@ const getRandomJokes = asyncHandler(async (req, res) => {
   const query = req.query.query?.toLowerCase(); // search query
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
-  const allJokes = randomJokesJson;
-
-  const startPosition = +(page - 1) * limit;
-
-  let randomJokesArray = (
-    query
-      ? [...randomJokesJson].filter((joke) => {
-          return joke.content.toLowerCase().includes(query);
-        })
-      : [...randomJokesJson]
-  ).slice(startPosition, startPosition + limit);
+  let randomJokesArray = query
+    ? deepClone(randomJokesJson).filter((joke) => {
+        return joke.content.toLowerCase().includes(query);
+      })
+    : deepClone(randomJokesJson);
 
   if (inc && inc[0]?.trim()) {
     randomJokesArray = filterObjectKeys(inc, randomJokesArray);
@@ -31,13 +29,7 @@ const getRandomJokes = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(
-          randomJokesArray,
-          allJokes.length,
-          req,
-          page,
-          limit
-        ),
+        getPaginatedPayload(randomJokesArray, req, page, limit),
         "Random jokes fetched successfully"
       )
     );

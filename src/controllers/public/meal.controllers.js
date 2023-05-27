@@ -1,5 +1,9 @@
 import mealsJson from "../../json/meals.json" assert { type: "json" };
-import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
+import {
+  deepClone,
+  filterObjectKeys,
+  getPaginatedPayload,
+} from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -10,20 +14,14 @@ const getMeals = asyncHandler(async (req, res) => {
   const query = req.query.query?.toLowerCase(); // search query
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
-  const allMeals = mealsJson;
-
-  const startPosition = +(page - 1) * limit;
-
-  let mealsArray = (
-    query
-      ? [...mealsJson].filter((meal) => {
-          return (
-            meal.strMeal?.toLowerCase().includes(query) ||
-            meal.strCategory?.includes(query)
-          );
-        })
-      : [...mealsJson]
-  ).slice(startPosition, startPosition + limit);
+  let mealsArray = query
+    ? deepClone(mealsJson).filter((meal) => {
+        return (
+          meal.strMeal?.toLowerCase().includes(query) ||
+          meal.strCategory?.includes(query)
+        );
+      })
+    : deepClone(mealsJson);
 
   if (inc && inc[0]?.trim()) {
     mealsArray = filterObjectKeys(inc, mealsArray);
@@ -34,7 +32,7 @@ const getMeals = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(mealsArray, allMeals.length, req, page, limit),
+        getPaginatedPayload(mealsArray, req, page, limit),
         "Meals fetched successfully"
       )
     );

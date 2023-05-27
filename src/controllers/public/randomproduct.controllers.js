@@ -1,5 +1,9 @@
 import randomProductsJson from "../../json/randomproduct.json" assert { type: "json" };
-import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
+import {
+  deepClone,
+  filterObjectKeys,
+  getPaginatedPayload,
+} from "../../utils/index.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -10,21 +14,15 @@ const getRandomProducts = asyncHandler(async (req, res) => {
   const query = req.query.query?.toLowerCase(); // search query
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
-  const allProducts = randomProductsJson;
-
-  const startPosition = +(page - 1) * limit;
-
-  let randomProductsArray = (
-    query
-      ? [...randomProductsJson].filter((product) => {
-          return (
-            product.title.toLowerCase().includes(query) ||
-            product.description.toLowerCase().includes(query) ||
-            product.category.toLowerCase().includes(query)
-          );
-        })
-      : [...randomProductsJson]
-  ).slice(startPosition, startPosition + limit);
+  let randomProductsArray = query
+    ? deepClone(randomProductsJson).filter((product) => {
+        return (
+          product.title.toLowerCase().includes(query) ||
+          product.description.toLowerCase().includes(query) ||
+          product.category.toLowerCase().includes(query)
+        );
+      })
+    : deepClone(randomProductsJson);
 
   if (inc && inc[0]?.trim()) {
     randomProductsArray = filterObjectKeys(inc, randomProductsArray);
@@ -35,13 +33,7 @@ const getRandomProducts = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(
-          randomProductsArray,
-          allProducts.length,
-          req,
-          page,
-          limit
-        ),
+        getPaginatedPayload(randomProductsArray, req, page, limit),
         "Random products fetched successfully"
       )
     );

@@ -1,5 +1,24 @@
 /**
  *
+ * @param {object | any[]} obj
+ * @returns {object | any[]}
+ * @description function responsible for deep cloning the object/array to avoid mutation of the original entity
+ */
+export const deepClone = (obj) => {
+  if (!obj) return obj;
+  const result = Array.isArray(obj) ? [] : {};
+  Object.entries(obj).map(([key, value]) => {
+    if (typeof value !== "object") {
+      result[key] = value;
+    } else {
+      result[key] = deepClone(obj[key]);
+    }
+  });
+  return result;
+};
+
+/**
+ *
  * @param {string[]} fieldsArray
  * @param {any[]} objectArray
  * @returns {any[]}
@@ -40,9 +59,9 @@
  * ```
  */
 export const filterObjectKeys = (fieldsArray, objectArray) => {
-  const filteredArray = [...objectArray].map((originalObj) => {
+  const filteredArray = deepClone(objectArray).map((originalObj) => {
     let obj = {};
-    fieldsArray?.forEach((field) => {
+    deepClone(fieldsArray)?.forEach((field) => {
       if (field?.trim() in originalObj) {
         obj[field] = originalObj[field];
       }
@@ -62,25 +81,29 @@ export const filterObjectKeys = (fieldsArray, objectArray) => {
  * @param {number} limit
  * @returns {{previousPage: string | null, currentPage: string, nextPage: string | null, data: any[]}}
  */
-export const getPaginatedPayload = (
-  dataArray,
-  totalDataCount,
-  req,
-  page,
-  limit
-) => {
+export const getPaginatedPayload = (dataArray, req, page, limit) => {
+  const startPosition = +(page - 1) * limit;
+
+  const totalDataCount = dataArray.length; // total documents present after applying search query
+
+  dataArray = deepClone(dataArray).slice(startPosition, startPosition + limit);
+
   const prevPageUrl = `${
     req.protocol + "://" + req.get("host") + req.baseUrl
   }?page=${page - 1}&limit=${limit}`;
+  const currentPageUrl = `${
+    req.protocol + "://" + req.get("host") + req.originalUrl
+  }`;
   const nextPageUrl = `${
     req.protocol + "://" + req.get("host") + req.baseUrl
   }?page=${page + 1}&limit=${limit}`;
 
   const payload = {
     previousPage: page > 1 ? prevPageUrl : null,
-    currentPage: `${req.protocol + "://" + req.get("host") + req.originalUrl}`,
+    currentPage: currentPageUrl,
     nextPage:
-      dataArray.length === limit && [...dataArray].pop()?.id < totalDataCount
+      dataArray.length === limit &&
+      deepClone(dataArray).pop()?.id < totalDataCount
         ? nextPageUrl
         : null,
     totalCount: totalDataCount,
