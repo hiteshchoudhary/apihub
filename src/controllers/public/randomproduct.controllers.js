@@ -33,7 +33,7 @@ const getRandomProducts = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(randomProductsArray, req, page, limit),
+        getPaginatedPayload(randomProductsArray, page, limit),
         "Random products fetched successfully"
       )
     );

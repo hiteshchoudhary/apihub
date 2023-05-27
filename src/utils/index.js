@@ -76,39 +76,28 @@ export const filterObjectKeys = (fieldsArray, objectArray) => {
 /**
  *
  * @param {any[]} dataArray
- * @param {number} totalDataCount
- * @param {import("express").Request} req
  * @param {number} page
  * @param {number} limit
  * @returns {{previousPage: string | null, currentPage: string, nextPage: string | null, data: any[]}}
  */
-export const getPaginatedPayload = (dataArray, req, page, limit) => {
+export const getPaginatedPayload = (dataArray, page, limit) => {
   const startPosition = +(page - 1) * limit;
 
-  const totalDataCount = dataArray.length; // total documents present after applying search query
+  const totalItems = dataArray.length; // total documents present after applying search query
 
   dataArray = deepClone(dataArray).slice(startPosition, startPosition + limit);
 
-  const prevPageUrl = `${
-    req.protocol + "://" + req.get("host") + req.baseUrl
-  }?page=${page - 1}&limit=${limit}`;
-  const currentPageUrl = `${
-    req.protocol + "://" + req.get("host") + req.originalUrl
-  }`;
-  const nextPageUrl = `${
-    req.protocol + "://" + req.get("host") + req.baseUrl
-  }?page=${page + 1}&limit=${limit}`;
-
   const payload = {
-    previousPage: page > 1 ? prevPageUrl : null,
-    currentPage: currentPageUrl,
+    page,
+    limit,
+    totalPages: Math.ceil(totalItems / limit),
+    previousPage: page > 1 ? true : false,
     nextPage:
-      dataArray.length === limit &&
-      deepClone(dataArray).pop()?.id < totalDataCount
-        ? nextPageUrl
-        : null,
-    totalCount: totalDataCount,
-    currentPageCount: dataArray?.length,
+      dataArray.length === limit && deepClone(dataArray).pop()?.id < totalItems
+        ? true
+        : false,
+    totalItems,
+    currentPageItems: dataArray?.length,
     data: dataArray,
   };
   return payload;

@@ -33,7 +33,7 @@ const getBooks = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(booksArray, req, page, limit),
+        getPaginatedPayload(booksArray, page, limit),
         "Books fetched successfully"
       )
     );

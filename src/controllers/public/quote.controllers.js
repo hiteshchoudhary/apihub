@@ -32,7 +32,7 @@ const getQuotes = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(quotesArray, req, page, limit),
+        getPaginatedPayload(quotesArray, page, limit),
         "Quotes fetched successfully"
       )
     );

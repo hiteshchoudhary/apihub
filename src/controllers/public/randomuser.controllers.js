@@ -34,7 +34,7 @@ const getRandomUsers = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(randomUsersArray, req, page, limit),
+        getPaginatedPayload(randomUsersArray, page, limit),
         "Random users fetched successfully"
       )
     );

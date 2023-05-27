@@ -32,7 +32,7 @@ const getDogs = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(dogsArray, req, page, limit),
+        getPaginatedPayload(dogsArray, page, limit),
         "Dogs fetched successfully"
       )
     );

@@ -29,7 +29,7 @@ const getRandomJokes = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(randomJokesArray, req, page, limit),
+        getPaginatedPayload(randomJokesArray, page, limit),
         "Random jokes fetched successfully"
       )
     );

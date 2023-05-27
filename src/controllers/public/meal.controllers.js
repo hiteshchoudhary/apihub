@@ -32,7 +32,7 @@ const getMeals = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(mealsArray, req, page, limit),
+        getPaginatedPayload(mealsArray, page, limit),
         "Meals fetched successfully"
       )
     );
