@@ -2,6 +2,7 @@
  *
  * @param {object | any[]} obj
  * @returns {object | any[]}
+ * @return {typeof obj}
  * @description function responsible for deep cloning the object/array to avoid mutation of the original entity
  */
 export const deepClone = (obj) => {
