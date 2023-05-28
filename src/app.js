@@ -21,6 +21,8 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 // api routes
 import { errorHandler } from "./middlewares/error.middlewares.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
+
+// * Public routes
 import randomuserRouter from "./routes/public/randomuser.routes.js";
 import randomproductRouter from "./routes/public/randomproduct.routes.js";
 import randomjokeRouter from "./routes/public/randomjoke.routes.js";
@@ -29,6 +31,9 @@ import quoteRouter from "./routes/public/quote.routes.js";
 import mealRouter from "./routes/public/meal.routes.js";
 import dogRouter from "./routes/public/dog.routes.js";
 import catRouter from "./routes/public/cat.routes.js";
+
+// * App routes
+import userRouter from "./routes/apps/auth/user.routes.js";
 
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
@@ -42,6 +47,9 @@ app.use("/api/v1/public/quotes", quoteRouter);
 app.use("/api/v1/public/meals", mealRouter);
 app.use("/api/v1/public/dogs", dogRouter);
 app.use("/api/v1/public/cats", catRouter);
+
+// * App apis
+app.use("/api/v1/users", userRouter);
 
 // common error handling middleware
 app.use(errorHandler);
