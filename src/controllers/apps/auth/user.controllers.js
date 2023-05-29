@@ -83,12 +83,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Unauthorized request");
   }
 
-  const decodedToken = jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN_SECRET
-  );
-
   try {
+    const decodedToken = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
     const user = await User.findById(decodedToken?._id);
     // TODO: Once refresh token save in user model done add check to see if incoming refresh token is associated with the user
     if (!user) {
