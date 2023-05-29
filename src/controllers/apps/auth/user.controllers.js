@@ -25,18 +25,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
   user.password = undefined;
 
-  const accessToken = user.generateAccessToken();
-  const refreshToken = user.generateRefreshToken();
-
   return res
     .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { user, accessToken, refreshToken },
-        "Users registered successfully"
-      )
-    );
+    .json(new ApiResponse(200, { user }, "Users registered successfully."));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -76,4 +67,10 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser };
+const getCurrentUser = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
+});
+
+export { registerUser, loginUser, getCurrentUser };

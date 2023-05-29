@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
@@ -17,20 +18,21 @@ app.use(
 );
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(cookieParser());
 
 // api routes
 import { errorHandler } from "./middlewares/error.middlewares.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 
 // * Public routes
-import randomuserRouter from "./routes/public/randomuser.routes.js";
-import randomproductRouter from "./routes/public/randomproduct.routes.js";
-import randomjokeRouter from "./routes/public/randomjoke.routes.js";
 import bookRouter from "./routes/public/book.routes.js";
-import quoteRouter from "./routes/public/quote.routes.js";
-import mealRouter from "./routes/public/meal.routes.js";
-import dogRouter from "./routes/public/dog.routes.js";
 import catRouter from "./routes/public/cat.routes.js";
+import dogRouter from "./routes/public/dog.routes.js";
+import mealRouter from "./routes/public/meal.routes.js";
+import quoteRouter from "./routes/public/quote.routes.js";
+import randomjokeRouter from "./routes/public/randomjoke.routes.js";
+import randomproductRouter from "./routes/public/randomproduct.routes.js";
+import randomuserRouter from "./routes/public/randomuser.routes.js";
 
 // * App routes
 import userRouter from "./routes/apps/auth/user.routes.js";
