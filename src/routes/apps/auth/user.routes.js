@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getCurrentUser,
   loginUser,
+  refreshAccessToken,
   registerUser,
 } from "../../../controllers/apps/auth/user.controllers.js";
 import {
@@ -16,5 +17,6 @@ const router = Router();
 router.route("/register").post(userRegisterValidator(), validate, registerUser);
 router.route("/login").post(userLoginValidator(), validate, loginUser);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
+router.route("/refresh-token").post(refreshAccessToken);
 
 export default router;

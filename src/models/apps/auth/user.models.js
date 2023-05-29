@@ -33,6 +33,9 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    refreshToken: {
+      type: String,
+    },
     forgotPasswordToken: {
       type: String,
       select: false,
