@@ -29,7 +29,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters"],
-      select: false,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
     },
     forgotPasswordToken: {
       type: String,
@@ -53,7 +56,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.generateJWT = function () {
+userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -61,8 +64,18 @@ userSchema.methods.generateJWT = function () {
       username: this.username,
       role: this.role,
     },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRY }
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+  );
+};
+
+userSchema.methods.generateRefreshToken = function () {
+  return jwt.sign(
+    {
+      _id: this._id,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
   );
 };
 
