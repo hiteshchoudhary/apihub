@@ -18,9 +18,9 @@
     tar "^6.1.11"
 
 "@types/node@*":
-  version "20.2.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.2.1.tgz#de559d4b33be9a808fd43372ccee822c70f39704"
-  integrity sha512-DqJociPbZP1lbZ5SQPk4oag6W7AyaGMO6gSfRwq3PWl4PXTwJpRQJhDq4W0kzrg3w6tJ1SwlvGZ5uKFHY13LIg==
+  version "20.2.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.2.5.tgz#26d295f3570323b2837d322180dfbf1ba156fefb"
+  integrity sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==
 
 "@types/webidl-conversions@*":
   version "7.0.0"
@@ -302,6 +302,14 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
+
+express-validator@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-7.0.1.tgz#435fac6b5fa838763f78eca05d2206317b92106e"
+  integrity sha512-oB+z9QOzQIE8FnlINqyIFA8eIckahC6qc8KtqLdLJcU3/phVyuhXH3bA4qzcrhme+1RYaCSwrq+TlZ/kAKIARA==
+  dependencies:
+    lodash "^4.17.21"
+    validator "^13.9.0"
 
 express@^4.18.2:
   version "4.18.2"
@@ -686,9 +694,9 @@ mongodb@5.5.0:
     saslprep "^1.0.3"
 
 mongoose@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-7.2.0.tgz#87913b226c29fd8af92fa0354914d7b629c73743"
-  integrity sha512-sNNsPinfwBiqEZx24kBWZamebORFJ89wr0szw8SFzdy8OZLMxSDKwGUpfa8cLPsCV57z/beGUnaa0ZUGktNmcQ==
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-7.2.1.tgz#654ffebbcecceed6c4dd085e562e66e584fcc2f2"
+  integrity sha512-c2OOl+ch9NlmPeJw7UjSb2jHNjoOw1XXHyzwygIf4z1GmaBx1OYb8OYqHkYPivvEmfY/vUWZFCgePsDqZgFn2w==
   dependencies:
     bson "^5.3.0"
     kareem "2.5.1"
@@ -1123,6 +1131,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
+
+validator@^13.9.0:
+  version "13.9.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.9.0.tgz#33e7b85b604f3bbce9bb1a05d5c3e22e1c2ff855"
+  integrity sha512-B+dGG8U3fdtM0/aNK4/X8CXq/EcxU2WPrPEkJGslb47qyHsxmbggTWK0yEA4qnYVNF+nxNlN88o14hIcPmSIEA==
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"
