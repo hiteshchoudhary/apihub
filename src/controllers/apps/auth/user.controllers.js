@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { User } from "../../../models/apps/auth/user.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
@@ -7,7 +8,6 @@ import {
   emailVerificationMailgenContent,
   sendEmail,
 } from "../../../utils/mail.js";
-import crypto from "crypto";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { email, username, password, role } = req.body;
@@ -50,7 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
       user.username,
       `${req.protocol}://${req.get(
         "host"
-      )}/api/v1/users/verify-email/${unHashedToken}` // NOTE: This is a dummy url
+      )}/api/v1/users/verify-email/${unHashedToken}`
     ),
   });
 
@@ -164,6 +164,40 @@ const verifyEmail = asyncHandler(async (req, res) => {
     );
 });
 
+const resendEmailVerification = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user?._id);
+
+  if (!user) {
+    throw new ApiError(404, "User does not exists", []);
+  }
+
+  // if email is already verified throw an error
+  if (user.isEmailVerified) {
+    throw new ApiError(409, "Email is already verified!");
+  }
+
+  const { unHashedToken, hashedToken, tokenExpiry } =
+    user.generateEmailVerificationToken(); // generate email verification creds
+
+  user.emailVerificationToken = hashedToken;
+  user.emailVerificationExpiry = tokenExpiry;
+  await user.save({ validateBeforeSave: false });
+
+  await sendEmail({
+    email: user?.email,
+    subject: "Please verify your email",
+    mailgenContent: emailVerificationMailgenContent(
+      user.username,
+      `${req.protocol}://${req.get(
+        "host"
+      )}/api/v1/users/verify-email/${unHashedToken}`
+    ),
+  });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Mail has been sent to your mail ID"));
+});
+
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
@@ -224,9 +258,10 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 export {
-  registerUser,
-  loginUser,
   getCurrentUser,
+  loginUser,
   refreshAccessToken,
+  registerUser,
+  resendEmailVerification,
   verifyEmail,
 };
