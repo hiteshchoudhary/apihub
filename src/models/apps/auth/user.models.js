@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import mongoose, { Schema } from "mongoose";
 
@@ -38,11 +39,15 @@ const userSchema = new Schema(
     },
     forgotPasswordToken: {
       type: String,
-      select: false,
     },
     forgotPasswordExpiry: {
       type: Date,
-      select: false,
+    },
+    emailVerificationToken: {
+      type: String,
+    },
+    emailVerificationExpiry: {
+      type: Date,
     },
   },
   { timestamps: true }
@@ -79,6 +84,21 @@ userSchema.methods.generateRefreshToken = function () {
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
   );
+};
+
+userSchema.methods.generateEmailVerificationToken = function () {
+  // This should go to the email
+  const unHashedToken = crypto.randomBytes(20).toString("hex");
+
+  // This should stay in the DB to compare at the time of verification
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(unHashedToken)
+    .digest("hex");
+  // This is the expiry time for the token
+  const tokenExpiry = Date.now() + 20 * 60 * 1000;
+
+  return { unHashedToken, hashedToken, tokenExpiry };
 };
 
 export const User = mongoose.model("User", userSchema);
