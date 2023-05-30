@@ -3,7 +3,7 @@ import {
   deepClone,
   filterObjectKeys,
   getPaginatedPayload,
-} from "../../utils/index.js";
+} from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";

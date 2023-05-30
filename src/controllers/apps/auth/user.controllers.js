@@ -3,6 +3,10 @@ import { User } from "../../../models/apps/auth/user.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import {
+  emailVerificationMailgenContent,
+  sendEmail,
+} from "../../../utils/mail.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { email, username, password, role } = req.body;
@@ -22,13 +26,26 @@ const registerUser = asyncHandler(async (req, res) => {
     role: role || "USER",
   });
 
-  // TODO: Add functionality to send email verification mail to user's email
-
+  // TODO: Add method in userSchema to generate email verification token and verify the email based on that token with expiry
+  await sendEmail({
+    email: user?.email,
+    subject: "Please verify your email",
+    mailgenContent: emailVerificationMailgenContent(
+      user.username,
+      `https://localhost:8080/api/v1/users/verify-email/email__verification__token` // NOTE: This is a dummy url
+    ),
+  });
   user.password = undefined;
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { user }, "Users registered successfully."));
+    .json(
+      new ApiResponse(
+        200,
+        { user },
+        "Users registered successfully and verification email has been sent on your email."
+      )
+    );
 });
 
 const loginUser = asyncHandler(async (req, res) => {
