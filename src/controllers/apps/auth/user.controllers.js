@@ -46,6 +46,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User does not exist");
   }
 
+  // Compare the incoming password with hashed password
   const isPasswordValid = await user.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
@@ -54,14 +55,18 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
+
+  // attach refresh token to the user document to avoid refreshing the access token with multiple refresh tokens
   user.refreshToken = refreshToken;
 
   user.save();
 
+  // get the user document ignoring the password and refreshToken field
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
 
+  // TODO: Add more options to make cookie more secure and reliable
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -69,12 +74,12 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, options) // set the access token in the cookie
+    .cookie("refreshToken", refreshToken, options) // set the refresh token in the cookie
     .json(
       new ApiResponse(
         200,
-        { user: createdUser, accessToken, refreshToken },
+        { user: createdUser, accessToken, refreshToken }, // send access and refresh token in response if client decides to save them by themselves
         "Users registered successfully"
       )
     );
@@ -98,6 +103,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       // 498: expired or otherwise invalid token.
       throw new ApiError(498, "Invalid refresh token");
     }
+
+    // check if incoming refresh token is same as the refresh token attached in the user document
+    // This shows that the refresh token is used or not
+    // Once it is used, we are replacing it with new refresh token below
     if (incomingRefreshToken !== user?.refreshToken) {
       // If token is valid but is used already
       // 498: expired or otherwise invalid token.
@@ -108,8 +117,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     };
     const accessToken = user.generateAccessToken();
-    const newRefreshToken = user.generateRefreshToken();
-    user.refreshToken = newRefreshToken;
+    const newRefreshToken = user.generateRefreshToken(); // generate new refresh token as well
+    user.refreshToken = newRefreshToken; // assign new refresh token to the user document
     user.save();
 
     return res
