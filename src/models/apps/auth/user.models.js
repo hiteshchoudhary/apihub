@@ -86,8 +86,12 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-userSchema.methods.generateEmailVerificationToken = function () {
-  // This should go to the email
+/**
+ * @description Method responsible for generating tokens for email verification, password reset etc.
+ */
+userSchema.methods.generateTemporaryToken = function () {
+  // This token should be client facing
+  // for example: for email verification unHashedToken should go into the user's mail
   const unHashedToken = crypto.randomBytes(20).toString("hex");
 
   // This should stay in the DB to compare at the time of verification
