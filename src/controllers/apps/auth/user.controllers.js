@@ -119,7 +119,7 @@ const loginUser = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         { user: loggedInUser, accessToken, refreshToken }, // send access and refresh token in response if client decides to save them by themselves
-        "Users registered successfully"
+        "Users logged in successfully"
       )
     );
 });
@@ -160,9 +160,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(
-      new ApiResponse(200, { isEmailVerified: true }, "your email is verified")
-    );
+    .json(new ApiResponse(200, { isEmailVerified: true }, "Email is verified"));
 });
 
 const resendEmailVerification = asyncHandler(async (req, res) => {
@@ -214,8 +212,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     );
     const user = await User.findById(decodedToken?._id);
     if (!user) {
-      // 498: expired or otherwise invalid token.
-      throw new ApiError(498, "Invalid refresh token");
+      throw new ApiError(401, "Invalid refresh token");
     }
 
     // check if incoming refresh token is same as the refresh token attached in the user document
@@ -223,8 +220,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     // Once it is used, we are replacing it with new refresh token below
     if (incomingRefreshToken !== user?.refreshToken) {
       // If token is valid but is used already
-      // 498: expired or otherwise invalid token.
-      throw new ApiError(498, "Refresh token is expired or used");
+      throw new ApiError(401, "Refresh token is expired or used");
     }
     const options = {
       httpOnly: true,
@@ -247,8 +243,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    // 498: expired or otherwise invalid token.
-    throw new ApiError(498, error?.message || "Invalid refresh token");
+    throw new ApiError(401, error?.message || "Invalid refresh token");
   }
 });
 
