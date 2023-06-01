@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  assignRole,
   changeCurrentPassword,
   forgotPasswordRequest,
   getCurrentUser,
@@ -11,6 +12,7 @@ import {
   verifyEmail,
 } from "../../../controllers/apps/auth/user.controllers.js";
 import {
+  userAssignRoleValidator,
   userChangeCurrentPasswordValidator,
   userForgotPasswordValidator,
   userLoginValidator,
@@ -18,7 +20,7 @@ import {
   userResetForgottenPasswordValidator,
 } from "../../../validators/auth/user.validators.js";
 import { validate } from "../../../validators/validate.js";
-import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
+import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
 
 const router = Router();
 
@@ -52,5 +54,8 @@ router
 router
   .route("/resend-email-verification")
   .post(verifyJWT, resendEmailVerification);
+router
+  .route("/assign-role/:userId")
+  .post(verifyJWT, userAssignRoleValidator(), validate, assignRole);
 
 export default router;

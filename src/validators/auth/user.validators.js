@@ -51,10 +51,20 @@ const userResetForgottenPasswordValidator = () => {
   return [body("newPassword").notEmpty().withMessage("Password is required")];
 };
 
+const userAssignRoleValidator = () => {
+  return [
+    body("role")
+      .optional()
+      .isIn(["ADMIN", "USER"])
+      .withMessage("There are only 2 roles 'USER' and 'ADMIN'"),
+  ];
+};
+
 export {
   userChangeCurrentPasswordValidator,
   userForgotPasswordValidator,
   userLoginValidator,
   userRegisterValidator,
   userResetForgottenPasswordValidator,
+  userAssignRoleValidator,
 };
