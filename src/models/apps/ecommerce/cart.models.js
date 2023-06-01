@@ -1,15 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../auth/user.models.js";
-import { Address } from "./address.models.js";
 import { Product } from "./product.models.js";
 
-const orderSchema = new Schema(
+const cartSchema = new Schema(
   {
-    orderPrice: {
-      type: Number,
+    name: {
+      type: String,
       required: true,
     },
-    customer: {
+    owner: {
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
@@ -30,21 +29,12 @@ const orderSchema = new Schema(
       ],
       default: [],
     },
-    address: {
-      type: mongoose.Types.ObjectId,
-      ref: "Address",
-    },
-    status: {
-      type: String,
-      enum: ["PENDING", "CANCELLED", "COMPLETED"],
-      default: "PENDING",
-    },
-    // This field shows if the payment is done or not
-    paymentId: {
-      type: String,
+    totalPrice: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
 );
 
-export const EcomOrder = mongoose.model("EcomOrder", orderSchema);
+export const Cart = mongoose.model("Cart", cartSchema);
