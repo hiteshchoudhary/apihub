@@ -7,9 +7,8 @@ import {
   updateCategory,
 } from "../../../controllers/apps/ecommerce/category.controllers.js";
 import {
-  createCategoryValidator,
+  categoryRequestBodyValidator,
   categoryPathVariableValidator,
-  updateCategoryValidator,
 } from "../../../validators/ecommerce/category.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
@@ -18,7 +17,13 @@ const router = Router();
 
 router
   .route("/")
-  .post(verifyJWT, isAdmin, createCategoryValidator(), validate, createCategory)
+  .post(
+    verifyJWT,
+    isAdmin,
+    categoryRequestBodyValidator(),
+    validate,
+    createCategory
+  )
   .get(getAllCategories);
 
 router
@@ -34,7 +39,8 @@ router
   .patch(
     verifyJWT,
     isAdmin,
-    updateCategoryValidator(),
+    categoryRequestBodyValidator(),
+    categoryPathVariableValidator(),
     validate,
     updateCategory
   );
