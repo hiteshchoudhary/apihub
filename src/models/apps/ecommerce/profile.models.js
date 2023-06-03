@@ -5,11 +5,19 @@ const profileSchema = new Schema(
   {
     firstName: {
       type: String,
-      required: true,
+      default: "John",
     },
     lastName: {
       type: String,
-      required: true,
+      default: "Doe",
+    },
+    countryCode: {
+      type: String,
+      default: "",
+    },
+    phoneNumber: {
+      type: String,
+      default: "",
     },
     owner: {
       type: mongoose.Types.ObjectId,
