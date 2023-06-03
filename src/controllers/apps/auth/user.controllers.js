@@ -359,7 +359,7 @@ const assignRole = asyncHandler(async (req, res) => {
   const user = await User.findById(userId);
 
   if (!user) {
-    throw new Error(404, "User does not exist");
+    throw new ApiError(404, "User does not exist");
   }
   user.role = role;
   await user.save({ validateBeforeSave: false });

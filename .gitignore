@@ -134,3 +134,6 @@ logs
 
 /tmp
 /.vscode
+
+# ignore the image files uploaded in the public/images folder
+/public/images/* 

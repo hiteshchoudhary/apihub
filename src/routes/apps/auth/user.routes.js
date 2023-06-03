@@ -16,6 +16,7 @@ import {
   userChangeCurrentPasswordValidator,
   userForgotPasswordValidator,
   userLoginValidator,
+  userPathVariableValidator,
   userRegisterValidator,
   userResetForgottenPasswordValidator,
 } from "../../../validators/auth/user.validators.js";
@@ -55,7 +56,13 @@ router
   .route("/resend-email-verification")
   .post(verifyJWT, resendEmailVerification);
 router
-  .route("/assign-role/:userId")
-  .post(verifyJWT, userAssignRoleValidator(), validate, assignRole);
+  .route("/assign-role/:userId") // TODO: Add restriction on assigning role to avoid permission to nornal users
+  .post(
+    verifyJWT,
+    userPathVariableValidator(),
+    userAssignRoleValidator(),
+    validate,
+    assignRole
+  );
 
 export default router;

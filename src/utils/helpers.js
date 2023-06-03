@@ -1,3 +1,5 @@
+import fs from "fs";
+
 /**
  *
  * @param {object | any[]} obj
@@ -101,4 +103,26 @@ export const getPaginatedPayload = (dataArray, page, limit) => {
     data: dataArray,
   };
   return payload;
+};
+
+/**
+ *
+ * @param {import("express").Request} req
+ * @param {string} fileName
+ */
+export const getStaticFilePath = (req, fileName) => {
+  return `${req.protocol}://${req.get("host")}/images/${fileName}`;
+};
+
+/**
+ *
+ * @param {string} filename
+ */
+export const removeImageFile = (filename) => {
+  fs.unlink(filename, (err) => {
+    if (err) console.log("Error while removing image files: ", err);
+    else {
+      console.log("Removed image:", filename);
+    }
+  });
 };

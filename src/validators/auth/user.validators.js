@@ -61,6 +61,11 @@ const userAssignRoleValidator = () => {
       .withMessage("There are only 2 roles 'USER' and 'ADMIN'"),
   ];
 };
+const userPathVariableValidator = () => {
+  return [
+    param("userId").notEmpty().isMongoId().withMessage("Invalid user id"),
+  ];
+};
 
 export {
   userChangeCurrentPasswordValidator,
@@ -69,4 +74,5 @@ export {
   userRegisterValidator,
   userResetForgottenPasswordValidator,
   userAssignRoleValidator,
+  userPathVariableValidator,
 };
