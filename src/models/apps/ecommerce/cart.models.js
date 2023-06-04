@@ -4,10 +4,6 @@ import { Product } from "./product.models.js";
 
 const cartSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
     owner: {
       type: mongoose.Types.ObjectId,
       ref: "User",
@@ -28,10 +24,6 @@ const cartSchema = new Schema(
         },
       ],
       default: [],
-    },
-    totalPrice: {
-      type: Number,
-      default: 0,
     },
   },
   { timestamps: true }
