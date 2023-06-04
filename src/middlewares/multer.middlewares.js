@@ -14,7 +14,14 @@ const storage = multer.diskStorage({
         file.originalname.lastIndexOf(".")
       );
     }
-    cb(null, file.fieldname + "-" + Date.now() + fileExtension);
+    cb(
+      null,
+      file.originalname.toLowerCase().split(" ").join("-") +
+        "-" +
+        Date.now() +
+        Math.ceil(Math.random() * 1e8) + // avoid rare name conflict
+        fileExtension
+    );
   },
 });
 

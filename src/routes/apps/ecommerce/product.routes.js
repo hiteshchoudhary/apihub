@@ -5,15 +5,19 @@ import {
   getAllProducts,
   getProductById,
   getProductsByCategory,
+  removeProductSubImage,
+  updateProduct,
 } from "../../../controllers/apps/ecommerce/product.controllers.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
+import { upload } from "../../../middlewares/multer.middlewares.js";
+import { categoryPathVariableValidator } from "../../../validators/ecommerce/category.validators.js";
 import {
   createProductValidator,
   productPathVariableValidator,
+  subImagePathVariableValidator,
+  updateProductValidator,
 } from "../../../validators/ecommerce/product.validators.js";
 import { validate } from "../../../validators/validate.js";
-import { upload } from "../../../middlewares/multer.middlewares.js";
-import { categoryPathVariableValidator } from "../../../validators/ecommerce/category.validators.js";
 
 const router = Router();
 
@@ -44,6 +48,24 @@ router
 router
   .route("/:productId")
   .get(productPathVariableValidator(), validate, getProductById)
+  .patch(
+    verifyJWT,
+    isAdmin,
+    upload.fields([
+      {
+        name: "mainImage",
+        maxCount: 1,
+      },
+      {
+        name: "subImages",
+        maxCount: 4, // maximum number of subImages is 4
+      },
+    ]),
+    productPathVariableValidator(),
+    updateProductValidator(),
+    validate,
+    updateProduct
+  )
   .delete(
     verifyJWT,
     isAdmin,
@@ -55,5 +77,16 @@ router
 router
   .route("/category/:categoryId")
   .get(categoryPathVariableValidator(), validate, getProductsByCategory);
+
+router
+  .route("/remove/subimage/:productId/:subImageId")
+  .patch(
+    verifyJWT,
+    isAdmin,
+    productPathVariableValidator(),
+    subImagePathVariableValidator(),
+    validate,
+    removeProductSubImage
+  );
 
 export default router;

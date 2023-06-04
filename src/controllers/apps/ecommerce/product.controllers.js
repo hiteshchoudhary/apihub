@@ -3,7 +3,11 @@ import { Product } from "../../../models/apps/ecommerce/product.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
-import { getStaticFilePath, removeImageFile } from "../../../utils/helpers.js";
+import {
+  getLocalPath,
+  getStaticFilePath,
+  removeImageFile,
+} from "../../../utils/helpers.js";
 
 const getAllProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
@@ -21,15 +25,23 @@ const createProduct = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Main image is required");
   }
 
-  const mainImage = getStaticFilePath(req, req.files?.mainImage[0]?.filename);
+  const mainImageUrl = getStaticFilePath(
+    req,
+    req.files?.mainImage[0]?.filename
+  );
+  const mainImageLocalPath = getLocalPath(req.files?.mainImage[0]?.filename);
 
   // Check if user has uploaded any subImages if yes then extract the file path
   // else assign an empty array
+  /**
+   * @type {{ url: string; localPath: string; }[]}
+   */
   const subImages =
     req.files.subImages && req.files.subImages?.length
       ? req.files.subImages.map((image) => {
-          const imagePath = getStaticFilePath(req, image.filename);
-          return imagePath;
+          const imageUrl = getStaticFilePath(req, image.filename);
+          const imageLocalPath = getLocalPath(image.filename);
+          return { url: imageUrl, localPath: imageLocalPath };
         })
       : [];
 
@@ -41,13 +53,105 @@ const createProduct = asyncHandler(async (req, res) => {
     stock,
     price,
     owner,
-    mainImage,
+    mainImage: {
+      url: mainImageUrl,
+      localPath: mainImageLocalPath,
+    },
     subImages,
     category,
   });
   return res
     .status(201)
     .json(new ApiResponse(201, product, "Product created successfully"));
+});
+
+const updateProduct = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const { name, description, category, price, stock } = req.body;
+
+  const product = await Product.findById(productId);
+
+  // Check the product existence
+  if (!product) {
+    throw new ApiError(404, "Product does not exist");
+  }
+
+  const mainImage = req.files?.mainImage?.length
+    ? {
+        // If user has uploaded new main image then we have to create an object with new url and local path in the project
+        url: getStaticFilePath(req, req.files?.mainImage[0]?.filename),
+        localPath: getLocalPath(req.files?.mainImage[0]?.filename),
+      }
+    : product.mainImage; // if there is no new main image uploaded we will stay with the old main image of the product
+
+  /**
+   * @type {{ url: string; localPath: string; }[]}
+   */
+  let subImages =
+    // If user has uploaded new sub images then we have to create an object with new url and local path in the array format
+    req.files?.subImages && req.files.subImages?.length
+      ? req.files.subImages.map((image) => {
+          const imageUrl = getStaticFilePath(req, image.filename);
+          const imageLocalPath = getLocalPath(image.filename);
+          return { url: imageUrl, localPath: imageLocalPath };
+        })
+      : []; // if there are no new sub images uploaded we want to keep an empty array
+
+  const existedSubImages = product.subImages.length; // total sub images already present in the project
+  const newSubImages = subImages.length; // Newly uploaded sub images
+  const totalSubImages = existedSubImages + newSubImages;
+
+  if (totalSubImages > 4) {
+    // We want user to only add at max 4 sub images
+    // If the existing sub images + new sub images count exceeds 4
+    // We want to throw an error
+
+    // Before throwing an error we need to do some cleanup
+
+    // remove the  newly uploaded sub images by multer as there is not updation happening
+    subImages?.map((img) => removeImageFile(img.localPath));
+    if (product.mainImage.url !== mainImage.url) {
+      // If use has uploaded new main image remove the newly uploaded main image as there is no updation happening
+      removeImageFile(mainImage.localPath);
+    }
+    throw new ApiError(
+      400,
+      "Maximum 4 sub images are allowed for a product. There are already " +
+        existedSubImages +
+        " sub images attached to the product."
+    );
+  }
+
+  // If above checks are passed. We need to merge the existing sub images and newly uploaded sub images
+  subImages = [...product.subImages, ...subImages];
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    productId,
+    {
+      $set: {
+        name,
+        description,
+        stock,
+        price,
+        category,
+        mainImage,
+        subImages,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  // Once the product is updated. Do some cleanup
+  if (product.mainImage.url !== mainImage.url) {
+    // If user is uploading new main image remove the previous one because we don't need that anymore
+    removeImageFile(product.mainImage.localPath);
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedProduct, "Product updated successfully"));
 });
 
 const getProductById = asyncHandler(async (req, res) => {
@@ -116,6 +220,46 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
     );
 });
 
+const removeProductSubImage = asyncHandler(async (req, res) => {
+  const { productId, subImageId } = req.params;
+
+  const product = await Product.findById(productId);
+
+  // check for product existence
+  if (!product) {
+    throw new ApiError(404, "Product does not exist");
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    productId,
+    {
+      $pull: {
+        // pull an item from subImages with _id equals to subImageId
+        subImages: {
+          _id: new mongoose.Types.ObjectId(subImageId),
+        },
+      },
+    },
+    { new: true }
+  );
+
+  // retrieve the file object which is being removed
+  const removedSubImage = product.subImages?.find((image) => {
+    return image._id.toString() === subImageId;
+  });
+
+  if (removedSubImage) {
+    // remove the file from file system as well
+    removeImageFile(removedSubImage.localPath);
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedProduct, "Sub image removed successfully")
+    );
+});
+
 const deleteProduct = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
@@ -130,10 +274,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const productImages = [product.mainImage, ...product.subImages];
 
   productImages.map((image) => {
-    const fileArray = image.split("/");
-    const filename = fileArray[fileArray.length - 1];
     // remove images associated with the product that is being deleted
-    removeImageFile(`public/images/${filename}`);
+    removeImageFile(image.localPath);
   });
 
   return res
@@ -148,9 +290,11 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 export {
-  getAllProducts,
-  getProductById,
   createProduct,
   deleteProduct,
+  getAllProducts,
+  getProductById,
   getProductsByCategory,
+  updateProduct,
+  removeProductSubImage,
 };

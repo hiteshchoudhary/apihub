@@ -15,7 +15,10 @@ const productSchema = new Schema(
     },
     mainImage: {
       required: true,
-      type: String,
+      type: {
+        url: String,
+        localPath: String,
+      },
     },
     name: {
       required: true,
@@ -35,7 +38,10 @@ const productSchema = new Schema(
     },
     subImages: [
       {
-        type: String,
+        type: {
+          url: String,
+          localPath: String,
+        },
       },
     ],
   },

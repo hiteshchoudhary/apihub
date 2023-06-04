@@ -109,6 +109,7 @@ export const getPaginatedPayload = (dataArray, page, limit) => {
  *
  * @param {import("express").Request} req
  * @param {string} fileName
+ * @description returns the file's static path from where the server is serving the static image
  */
 export const getStaticFilePath = (req, fileName) => {
   return `${req.protocol}://${req.get("host")}/images/${fileName}`;
@@ -116,13 +117,23 @@ export const getStaticFilePath = (req, fileName) => {
 
 /**
  *
- * @param {string} filename
+ * @param {string} fileName
+ * @description returns the file's local path in the file system to assist future removal
  */
-export const removeImageFile = (filename) => {
-  fs.unlink(filename, (err) => {
+export const getLocalPath = (fileName) => {
+  return `public/images/${fileName}`;
+};
+
+/**
+ *
+ * @param {string} localPath
+ * @description Removed the image file from the local file system based on the file name
+ */
+export const removeImageFile = (localPath) => {
+  fs.unlink(localPath, (err) => {
     if (err) console.log("Error while removing image files: ", err);
     else {
-      console.log("Removed image:", filename);
+      console.log("Removed image:", localPath);
     }
   });
 };
