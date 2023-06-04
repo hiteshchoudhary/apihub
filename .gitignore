@@ -136,4 +136,6 @@ logs
 /.vscode
 
 # ignore the image files uploaded in the public/images folder
-/public/images/* 
+/public/images/*
+# except .gitkeep to push empty folder to the git repo
+!/public/images/.gitkeep
