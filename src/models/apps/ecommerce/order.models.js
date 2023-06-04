@@ -43,6 +43,10 @@ const orderSchema = new Schema(
     paymentId: {
       type: String,
     },
+    isPaymentDone: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
