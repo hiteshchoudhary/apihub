@@ -3,6 +3,8 @@ import {
   createProduct,
   deleteProduct,
   getAllProducts,
+  getProductById,
+  getProductsByCategory,
 } from "../../../controllers/apps/ecommerce/product.controllers.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
@@ -11,6 +13,7 @@ import {
 } from "../../../validators/ecommerce/product.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
+import { categoryPathVariableValidator } from "../../../validators/ecommerce/category.validators.js";
 
 const router = Router();
 
@@ -28,6 +31,7 @@ router
         maxCount: 1,
       },
       {
+        // frontend will send at max 4 `subImages` keys with file object which we will save in the backend
         name: "subImages",
         maxCount: 4, // maximum number of subImages is 4
       },
@@ -39,6 +43,7 @@ router
 
 router
   .route("/:productId")
+  .get(productPathVariableValidator(), validate, getProductById)
   .delete(
     verifyJWT,
     isAdmin,
@@ -46,5 +51,9 @@ router
     validate,
     deleteProduct
   );
+
+router
+  .route("/category/:categoryId")
+  .get(categoryPathVariableValidator(), validate, getProductsByCategory);
 
 export default router;

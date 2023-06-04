@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Product } from "../../../models/apps/ecommerce/product.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
@@ -49,12 +50,77 @@ const createProduct = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, product, "Product created successfully"));
 });
 
+const getProductById = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    throw new ApiError(404, "Product does not exist");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, product, "Product fetched successfully"));
+});
+
+const getProductsByCategory = asyncHandler(async (req, res) => {
+  const { categoryId } = req.params;
+
+  const products = await Product.aggregate([
+    {
+      // match the products with provided category
+      $match: {
+        category: new mongoose.Types.ObjectId(categoryId),
+      },
+    },
+    // group the products array based on category so that we get products key with array of products
+    // and we can do a lookup for category to send category name as well in the response
+    {
+      $group: {
+        _id: "$category",
+        products: {
+          $push: "$$ROOT", // push the whole ROOT which is an individual project object into the `products` array
+        },
+      },
+    },
+    {
+      // Do a lookup for category to get the name
+      $lookup: {
+        from: "categories",
+        localField: "_id",
+        foreignField: "_id",
+        as: "lookedUpCategory",
+        pipeline: [
+          {
+            // Only project what is needed
+            $project: {
+              name: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        category: { $first: "$lookedUpCategory" },
+        products: 1,
+      },
+    },
+  ]);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, products, "Category products fetched successfully")
+    );
+});
+
 const deleteProduct = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
   const product = await Product.findOneAndDelete({
     _id: productId,
-    owner: req.user._id,
   });
 
   if (!product) {
@@ -80,4 +146,11 @@ const deleteProduct = asyncHandler(async (req, res) => {
       )
     );
 });
-export { getAllProducts, createProduct, deleteProduct };
+
+export {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  deleteProduct,
+  getProductsByCategory,
+};
