@@ -1,9 +1,5 @@
 import quotesJson from "../../json/quotes.json" assert { type: "json" };
-import {
-  deepClone,
-  filterObjectKeys,
-  getPaginatedPayload,
-} from "../../utils/helpers.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -15,13 +11,13 @@ const getQuotes = asyncHandler(async (req, res) => {
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   let quotesArray = query
-    ? deepClone(quotesJson).filter((quote) => {
+    ? structuredClone(quotesJson).filter((quote) => {
         return (
           quote.content.toLowerCase().includes(query) ||
           quote.author?.includes(query)
         );
       })
-    : deepClone(quotesJson);
+    : structuredClone(quotesJson);
 
   if (inc && inc[0]?.trim()) {
     quotesArray = filterObjectKeys(inc, quotesArray);

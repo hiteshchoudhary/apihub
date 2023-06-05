@@ -18,6 +18,7 @@ import {
   updateProductValidator,
 } from "../../../validators/ecommerce/product.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { MAXIMUM_SUB_IMAGE_COUNT } from "../../../constants.js";
 
 const router = Router();
 
@@ -37,7 +38,7 @@ router
       {
         // frontend will send at max 4 `subImages` keys with file object which we will save in the backend
         name: "subImages",
-        maxCount: 4, // maximum number of subImages is 4
+        maxCount: MAXIMUM_SUB_IMAGE_COUNT, // maximum number of subImages is 4
       },
     ]),
     createProductValidator(),
@@ -58,7 +59,7 @@ router
       },
       {
         name: "subImages",
-        maxCount: 4, // maximum number of subImages is 4
+        maxCount: MAXIMUM_SUB_IMAGE_COUNT, // maximum number of subImages is 4
       },
     ]),
     productPathVariableValidator(),

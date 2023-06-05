@@ -9,6 +9,7 @@ import {
   forgotPasswordMailgenContent,
   sendEmail,
 } from "../../../utils/mail.js";
+import { UserRolesEnum } from "../../../constants.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { email, username, password, role } = req.body;
@@ -25,7 +26,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
     username,
     isEmailVerified: false,
-    role: role || "USER",
+    role: role || UserRolesEnum.USER,
   });
 
   /**

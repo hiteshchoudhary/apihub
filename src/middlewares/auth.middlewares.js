@@ -1,3 +1,4 @@
+import { UserRolesEnum } from "../constants.js";
 import { User } from "../models/apps/auth/user.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -36,7 +37,7 @@ export const isAdmin = asyncHandler(async (req, res, next) => {
     throw new ApiError(401, "Unauthorized request");
   }
 
-  if (req.user?.role === "ADMIN") {
+  if (req.user?.role === UserRolesEnum.ADMIN) {
     next();
   } else {
     throw new ApiError(403, "You are not allowed to perform this action");

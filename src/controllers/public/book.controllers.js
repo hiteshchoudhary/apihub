@@ -1,9 +1,5 @@
 import booksJson from "../../json/books.json" assert { type: "json" };
-import {
-  deepClone,
-  filterObjectKeys,
-  getPaginatedPayload,
-} from "../../utils/helpers.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -15,14 +11,14 @@ const getBooks = asyncHandler(async (req, res) => {
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   let booksArray = query
-    ? deepClone(booksJson).filter((book) => {
+    ? structuredClone(booksJson).filter((book) => {
         return (
           book.searchInfo?.textSnippet.toLowerCase().includes(query) ||
           book.volumeInfo.title?.includes(query) ||
           book.volumeInfo.subtitle?.includes(query)
         );
       })
-    : deepClone(booksJson);
+    : structuredClone(booksJson);
 
   if (inc && inc[0]?.trim()) {
     booksArray = filterObjectKeys(inc, booksArray);

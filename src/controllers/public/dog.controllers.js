@@ -1,9 +1,5 @@
 import dogsJson from "../../json/dogs.json" assert { type: "json" };
-import {
-  deepClone,
-  filterObjectKeys,
-  getPaginatedPayload,
-} from "../../utils/helpers.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -15,13 +11,13 @@ const getDogs = asyncHandler(async (req, res) => {
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   let dogsArray = query
-    ? deepClone(dogsJson).filter((dog) => {
+    ? structuredClone(dogsJson).filter((dog) => {
         return (
           dog.name?.toLowerCase().includes(query) ||
           dog.breed_group?.toLowerCase().includes(query)
         );
       })
-    : deepClone(dogsJson);
+    : structuredClone(dogsJson);
 
   if (inc && inc[0]?.trim()) {
     dogsArray = filterObjectKeys(inc, dogsArray);

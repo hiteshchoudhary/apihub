@@ -1,9 +1,5 @@
 import randomJokesJson from "../../json/randomjoke.json" assert { type: "json" };
-import {
-  deepClone,
-  filterObjectKeys,
-  getPaginatedPayload,
-} from "../../utils/helpers.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -15,10 +11,10 @@ const getRandomJokes = asyncHandler(async (req, res) => {
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   let randomJokesArray = query
-    ? deepClone(randomJokesJson).filter((joke) => {
+    ? structuredClone(randomJokesJson).filter((joke) => {
         return joke.content.toLowerCase().includes(query);
       })
-    : deepClone(randomJokesJson);
+    : structuredClone(randomJokesJson);
 
   if (inc && inc[0]?.trim()) {
     randomJokesArray = filterObjectKeys(inc, randomJokesArray);

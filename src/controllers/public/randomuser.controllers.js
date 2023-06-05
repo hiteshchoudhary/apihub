@@ -1,9 +1,5 @@
 import randomUsersJson from "../../json/randomuser.json" assert { type: "json" };
-import {
-  deepClone,
-  filterObjectKeys,
-  getPaginatedPayload,
-} from "../../utils/helpers.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -15,7 +11,7 @@ const getRandomUsers = asyncHandler(async (req, res) => {
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   let randomUsersArray = query
-    ? deepClone(randomUsersJson).filter((user) => {
+    ? structuredClone(randomUsersJson).filter((user) => {
         return (
           user.name.first.toLowerCase().includes(query) ||
           user.name.last.toLowerCase().includes(query) ||
@@ -23,7 +19,7 @@ const getRandomUsers = asyncHandler(async (req, res) => {
           user.email.toLowerCase().includes(query)
         );
       })
-    : deepClone(randomUsersJson);
+    : structuredClone(randomUsersJson);
 
   if (inc && inc[0]?.trim()) {
     randomUsersArray = filterObjectKeys(inc, randomUsersArray);

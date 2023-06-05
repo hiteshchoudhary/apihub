@@ -1,9 +1,5 @@
 import randomProductsJson from "../../json/randomproduct.json" assert { type: "json" };
-import {
-  deepClone,
-  filterObjectKeys,
-  getPaginatedPayload,
-} from "../../utils/helpers.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -15,14 +11,14 @@ const getRandomProducts = asyncHandler(async (req, res) => {
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
   let randomProductsArray = query
-    ? deepClone(randomProductsJson).filter((product) => {
+    ? structuredClone(randomProductsJson).filter((product) => {
         return (
           product.title.toLowerCase().includes(query) ||
           product.description.toLowerCase().includes(query) ||
           product.category.toLowerCase().includes(query)
         );
       })
-    : deepClone(randomProductsJson);
+    : structuredClone(randomProductsJson);
 
   if (inc && inc[0]?.trim()) {
     randomProductsArray = filterObjectKeys(inc, randomProductsArray);
