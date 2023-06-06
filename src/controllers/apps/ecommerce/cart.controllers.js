@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
 import { Product } from "../../../models/apps/ecommerce/product.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
@@ -8,8 +7,10 @@ import { asyncHandler } from "../../../utils/asyncHandler.js";
 /**
  *
  * @param {string} userId
+ * @description A utility function, which querys the {@link Cart} model and returns the cart in `{product: {}, quantity: 3}[]` format
+ *
  */
-const getCart = async (userId) => {
+export const getCart = async (userId) => {
   return await Cart.aggregate([
     {
       $match: {

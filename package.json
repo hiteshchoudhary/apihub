@@ -31,7 +31,9 @@
     "mailgen": "^2.0.27",
     "mongoose": "^7.2.0",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.3"
+    "nanoid": "^4.0.2",
+    "nodemailer": "^6.9.3",
+    "razorpay": "^2.8.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

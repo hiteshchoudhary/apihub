@@ -15,4 +15,13 @@ export const OrderStatusEnum = {
   COMPLETED: "COMPLETED",
 };
 
+/**
+ * @type {{ UNKNOWN:"UNKNOWN"; RAZORPAY: "RAZORPAY"; STRIPE: "STRIPE"; } as const}
+ */
+export const PaymentProviderEnum = {
+  UNKNOWN: "UNKNOWN",
+  RAZORPAY: "RAZORPAY",
+  STRIPE: "STRIPE",
+};
+
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;
