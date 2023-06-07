@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { nanoid } from "nanoid";
 import Razorpay from "razorpay";
-import { PaymentProviderEnum } from "../../../constants.js";
+import { OrderStatusEnum, PaymentProviderEnum } from "../../../constants.js";
 import { Address } from "../../../models/apps/ecommerce/address.models.js";
 import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
 import { EcomOrder } from "../../../models/apps/ecommerce/order.models.js";
@@ -238,6 +238,40 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
   }
 });
 
+const updateOrderStatus = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  let order = await EcomOrder.findById(orderId);
+
+  if (!order) {
+    throw new ApiError(404, "Order does not exist");
+  }
+
+  if (order.status === OrderStatusEnum.FULFILLED) {
+    throw new ApiError(400, "Order is already fulfilled");
+  }
+
+  order = await EcomOrder.findByIdAndUpdate(
+    orderId,
+    {
+      $set: {
+        status,
+      },
+    },
+    { new: true }
+  );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        status,
+      },
+      "Order status changed successfully"
+    )
+  );
+});
+
 const getOrderById = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
   const order = await EcomOrder.aggregate([
@@ -310,4 +344,5 @@ export {
   verifyRazorpayPayment,
   getOrderById,
   getOrderListAdmin,
+  updateOrderStatus,
 };

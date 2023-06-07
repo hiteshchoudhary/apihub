@@ -1,4 +1,5 @@
 import { body, param } from "express-validator";
+import { OrderStatusEnum } from "../../constants.js";
 
 const generateRazorpayOrderValidator = () => {
   return [
@@ -39,8 +40,19 @@ const orderPathVariableValidator = () => {
   ];
 };
 
+const orderUpdateStatusValidator = () => {
+  return [
+    body("status")
+      .trim()
+      .notEmpty()
+      .isIn(Object.values(OrderStatusEnum))
+      .withMessage("Invalid order status"),
+  ];
+};
+
 export {
   generateRazorpayOrderValidator,
   verifyRazorpayPaymentValidator,
   orderPathVariableValidator,
+  orderUpdateStatusValidator,
 };

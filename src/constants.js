@@ -7,12 +7,12 @@ export const UserRolesEnum = {
 };
 
 /**
- * @type {{ PENDING: "PENDING"; CANCELLED: "CANCELLED"; COMPLETED: "COMPLETED" } as const}
+ * @type {{ PENDING: "PENDING"; CANCELLED: "CANCELLED"; FULFILLED: "FULFILLED" } as const}
  */
 export const OrderStatusEnum = {
   PENDING: "PENDING",
   CANCELLED: "CANCELLED",
-  COMPLETED: "COMPLETED",
+  FULFILLED: "FULFILLED",
 };
 
 /**
