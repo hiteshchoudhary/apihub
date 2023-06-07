@@ -248,8 +248,8 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Order does not exist");
   }
 
-  if (order.status === OrderStatusEnum.FULFILLED) {
-    throw new ApiError(400, "Order is already fulfilled");
+  if (order.status === OrderStatusEnum.DELIVERED) {
+    throw new ApiError(400, "Order is already delivered");
   }
 
   order = await EcomOrder.findByIdAndUpdate(
