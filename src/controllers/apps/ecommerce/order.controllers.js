@@ -293,7 +293,16 @@ const getOrderById = asyncHandler(async (req, res) => {
 });
 
 const getOrderListAdmin = asyncHandler(async (req, res) => {
+  const { status } = req.query;
   const orders = await EcomOrder.aggregate([
+    {
+      $match:
+        status && Object.values(OrderStatusEnum).includes(status)
+          ? {
+              status: status,
+            }
+          : {},
+    },
     {
       $lookup: {
         from: "addresses",
