@@ -33,4 +33,14 @@ const verifyRazorpayPaymentValidator = () => {
   ];
 };
 
-export { generateRazorpayOrderValidator, verifyRazorpayPaymentValidator };
+const orderPathVariableValidator = () => {
+  return [
+    param("orderId").notEmpty().isMongoId().withMessage("Invalid order id"),
+  ];
+};
+
+export {
+  generateRazorpayOrderValidator,
+  verifyRazorpayPaymentValidator,
+  orderPathVariableValidator,
+};

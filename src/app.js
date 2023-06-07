@@ -66,7 +66,7 @@ app.use("/api/v1/ecommerce/addresses", addressRouter);
 app.use("/api/v1/ecommerce/products", productRouter);
 app.use("/api/v1/ecommerce/profile", profileRouter);
 app.use("/api/v1/ecommerce/cart", cartRouter);
-app.use("/api/v1/ecommerce/order", orderRouter);
+app.use("/api/v1/ecommerce/orders", orderRouter);
 
 // common error handling middleware
 app.use(errorHandler);

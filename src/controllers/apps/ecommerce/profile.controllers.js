@@ -43,14 +43,11 @@ const updateEcomProfile = asyncHandler(async (req, res) => {
 const getMyOrders = asyncHandler(async (req, res) => {
   const orders = await EcomOrder.aggregate([
     {
+      // Get orders associated with the user
       $match: {
         customer: req.user._id,
-        items: {
-          $gt: [{ $size: "$items" }, 0],
-        },
       },
     },
-    // TODO: Lookup for products in items is pending
     {
       $lookup: {
         from: "addresses",
@@ -59,18 +56,40 @@ const getMyOrders = asyncHandler(async (req, res) => {
         as: "address",
       },
     },
+    // lookup for a customer associated with the order
     {
       $lookup: {
         from: "users",
         localField: "customer",
         foreignField: "_id",
         as: "customer",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              email: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        customer: { $first: "$customer" },
+        address: { $first: "$address" },
+        totalOrderItems: { $size: "$items" },
+      },
+    },
+    {
+      $project: {
+        items: 0,
       },
     },
   ]);
   return res
     .status(200)
-    .json(new ApiResponse(200, orders, "Orders fetched successfully"));
+    .json(new ApiResponse(200, { orders }, "Orders fetched successfully"));
 });
 
 export { getMyEcomProfile, updateEcomProfile, getMyOrders };

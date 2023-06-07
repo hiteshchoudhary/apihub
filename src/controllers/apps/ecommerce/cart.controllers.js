@@ -49,31 +49,54 @@ const getUserCart = asyncHandler(async (req, res) => {
 const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { quantity = 1 } = req.body;
+
+  // fetch user cart
   const cart = await Cart.findOne({
     owner: req.user._id,
   });
 
+  // See if product that user is adding exist in the db
   const product = await Product.findById(productId);
 
   if (!product) {
     throw new ApiError(404, "Product does not exist");
   }
 
+  // If product is there check if the quantity that user is adding is less than or equal to the product's stock
+  if (quantity > product.stock) {
+    // if quantity is greater throw an error
+    throw new ApiError(
+      400,
+      product.stock > 0
+        ? "Only " +
+          product.stock +
+          " products are remaining. But you are adding " +
+          quantity
+        : "Product is out of stock"
+    );
+  }
+
+  // See if the product that user is adding already exists in the cart
   const addedProduct = cart.items?.find(
     (item) => item.productId.toString() === productId
   );
 
   if (addedProduct) {
+    // If product already exist assign a new quantity to it
+    // ! We are not adding or subtracting quantity to keep it dynamic. Frontend will send us updated quantity here
     addedProduct.quantity = quantity;
   } else {
+    // if its a new product being added in the cart push it to the cart items
     cart.items.push({
       productId,
       quantity,
     });
   }
+
+  // Finally save the cart
   await cart.save({ validateBeforeSave: true });
 
-  const newCart = await getCart(req.user._id);
+  const newCart = await getCart(req.user._id); // structure the user cart
 
   return res
     .status(200)
@@ -95,6 +118,9 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
       owner: req.user._id,
     },
     {
+      // Pull the product inside the cart items
+      // ! We are not handling decrement logic here that's we are doing in addItemOrUpdateItemQuantity method
+      // ! this controller is responsible to remove the cart item entirely
       $pull: {
         items: {
           productId: productId,
