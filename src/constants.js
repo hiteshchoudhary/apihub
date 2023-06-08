@@ -25,3 +25,4 @@ export const PaymentProviderEnum = {
 };
 
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;
+export const DB_NAME = "apihub";

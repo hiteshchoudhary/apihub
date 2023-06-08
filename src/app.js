@@ -2,6 +2,10 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import { DB_NAME } from "./constants.js";
+import { dbInstance } from "./db/index.js";
+import { ApiError } from "./utils/ApiError.js";
+import { ApiResponse } from "./utils/ApiResponse.js";
 
 dotenv.config({
   path: "./.env",
@@ -39,12 +43,12 @@ import randomuserRouter from "./routes/public/randomuser.routes.js";
 
 // * App routes
 import userRouter from "./routes/apps/auth/user.routes.js";
-import categoryRouter from "./routes/apps/ecommerce/category.routes.js";
 import addressRouter from "./routes/apps/ecommerce/address.routes.js";
-import profileRouter from "./routes/apps/ecommerce/profile.routes.js";
-import productRouter from "./routes/apps/ecommerce/product.routes.js";
 import cartRouter from "./routes/apps/ecommerce/cart.routes.js";
+import categoryRouter from "./routes/apps/ecommerce/category.routes.js";
 import orderRouter from "./routes/apps/ecommerce/order.routes.js";
+import productRouter from "./routes/apps/ecommerce/product.routes.js";
+import profileRouter from "./routes/apps/ecommerce/profile.routes.js";
 
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
@@ -67,6 +71,18 @@ app.use("/api/v1/ecommerce/products", productRouter);
 app.use("/api/v1/ecommerce/profile", profileRouter);
 app.use("/api/v1/ecommerce/cart", cartRouter);
 app.use("/api/v1/ecommerce/orders", orderRouter);
+
+app.delete("/api/v1/reset-db", async (req, res) => {
+  if (dbInstance) {
+    dbInstance.connection.db.dropDatabase({
+      dbName: DB_NAME,
+    });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Database dropped successfully"));
+  }
+  throw new ApiError(500, "Something went wrong while dropping the database");
+});
 
 // common error handling middleware
 app.use(errorHandler);
