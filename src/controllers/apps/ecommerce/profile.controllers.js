@@ -8,12 +8,6 @@ const getMyEcomProfile = asyncHandler(async (req, res) => {
     owner: req.user._id,
   });
 
-  if (!profile) {
-    profile = await EcomProfile.create({
-      owner: req.user._id,
-    });
-  }
-
   return res
     .status(200)
     .json(new ApiResponse(200, profile, "User profile fetched successfully"));
