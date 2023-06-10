@@ -20,6 +20,10 @@ import {
 } from "../../../utils/mail.js";
 import { getCart } from "./cart.controllers.js";
 
+// TODO: move order fulfillment login to a common function which will handle order confirmation, product stock management and confirmation mail
+// TODO: refactor the fetch calls from paypal controllers
+// TODO: Include total order cost in the order confirmation mail
+
 const generatePaypalAccessToken = async () => {
   try {
     const auth = Buffer.from(
