@@ -1,6 +1,16 @@
 import { body, param } from "express-validator";
 import { OrderStatusEnum } from "../../constants.js";
 
+const generateRazorpayPaymentValidator = () => {
+  return [
+    body("addressId")
+      .trim()
+      .notEmpty()
+      .isMongoId()
+      .withMessage("Invalid address id"),
+  ];
+};
+
 const verifyRazorpayPaymentValidator = () => {
   return [
     body("razorpay_order_id")
@@ -15,13 +25,9 @@ const verifyRazorpayPaymentValidator = () => {
       .trim()
       .notEmpty()
       .withMessage("Razorpay signature is missing"),
-    body("addressId")
-      .trim()
-      .notEmpty()
-      .isMongoId()
-      .withMessage("Invalid address id"),
   ];
 };
+
 const verifyPaypalPaymentValidator = () => {
   return [
     body("orderId").trim().notEmpty().withMessage("Paypal order id is missing"),
@@ -45,6 +51,7 @@ const orderUpdateStatusValidator = () => {
 };
 
 export {
+  generateRazorpayPaymentValidator,
   verifyRazorpayPaymentValidator,
   verifyPaypalPaymentValidator,
   orderPathVariableValidator,

@@ -45,10 +45,10 @@ const orderSchema = new Schema(
       enum: Object.values(PaymentProviderEnum),
       default: PaymentProviderEnum.UNKNOWN,
     },
-    // This field shows if the payment is done or not
     paymentId: {
       type: String,
     },
+    // This field shows if the payment is done or not
     isPaymentDone: {
       type: Boolean,
       default: false,

@@ -43,6 +43,18 @@ const razorpayInstance = new Razorpay({
 });
 
 const generateRazorpayOrder = asyncHandler(async (req, res) => {
+  const { addressId } = req.body;
+
+  // Check if address is valid and is of logged in user's
+  const address = await Address.findOne({
+    _id: addressId,
+    owner: req.user._id,
+  });
+
+  if (!address) {
+    throw new ApiError(404, "Address does not exists");
+  }
+
   const cart = await Cart.findOne({
     owner: req.user._id,
   });
@@ -50,7 +62,7 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   if (!cart || !cart.items?.length) {
     throw new ApiError(400, "User cart is empty");
   }
-
+  const orderItems = cart.items;
   const userCart = await getCart(req.user._id);
 
   // calculate the total price of the order
@@ -59,13 +71,13 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   }, 0);
 
   const orderOptions = {
-    amount: parseInt(totalPrice) * 100, // in cents
-    currency: "USD", // Might accept from client
+    amount: parseInt(totalPrice) * 100, // in paisa
+    currency: "INR", // Might accept from client
     receipt: nanoid(10),
   };
 
   razorpayInstance.orders.create(orderOptions, async function (err, order) {
-    if (err && err.error) {
+    if (!order || (err && err.error)) {
       // Throwing ApiError here will not trigger the error handler middleware
       return res
         .status(err.statusCode)
@@ -78,29 +90,40 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
           )
         );
     }
-    return res
-      .status(200)
-      .json(new ApiResponse(200, order, "Razorpay order generated"));
+
+    // Create an order while we generate razorpay session
+    // In case payment is done and there is some network issue in the payment verification api
+    // We will at least have a record of the order
+    const unpaidOrder = await EcomOrder.create({
+      address: addressId,
+      customer: req.user._id,
+      items: orderItems,
+      orderPrice: totalPrice ?? 0,
+      paymentProvider: PaymentProviderEnum.RAZORPAY,
+      paymentId: order.id,
+    });
+    if (unpaidOrder) {
+      // if order is created then only proceed with the payment
+      return res
+        .status(200)
+        .json(new ApiResponse(200, order, "Razorpay order generated"));
+    } else {
+      return res
+        .status(500)
+        .json(
+          new ApiResponse(
+            500,
+            null,
+            "Something went wrong while initialising the razorpay order."
+          )
+        );
+    }
   });
 });
 
 const verifyRazorpayPayment = asyncHandler(async (req, res) => {
-  const {
-    addressId,
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature,
-  } = req.body;
-
-  // Check if address is valid and is of logged in user's
-  const address = await Address.findOne({
-    _id: addressId,
-    owner: req.user._id,
-  });
-
-  if (!address) {
-    throw new ApiError(404, "Address does not exists");
-  }
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    req.body;
 
   let body = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -111,34 +134,29 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
 
   if (expectedSignature === razorpay_signature) {
     // If payment is valid
+    // Turn the payment status of the order yo true
+    const order = await EcomOrder.findOneAndUpdate(
+      {
+        paymentId: razorpay_order_id,
+      },
+      {
+        $set: {
+          isPaymentDone: true,
+        },
+      },
+      { new: true }
+    );
+
+    if (!order) {
+      throw new ApiError(404, "Order does not exist");
+    }
 
     // Get the user's card
     const cart = await Cart.findOne({
       owner: req.user._id,
     });
 
-    // User's cart and order model has the same structure
-    // First get the items in the cart
     const orderItems = cart.items;
-
-    // Then query the cart and format the data in desired structure using helper method
-    const userCart = await getCart(req.user._id);
-
-    // calculate the total price of the order
-    const totalPrice = userCart.reduce((prev, curr) => {
-      return prev + curr?.product?.price * curr?.quantity;
-    }, 0);
-
-    // Create an order instance
-    const order = await EcomOrder.create({
-      address: addressId,
-      customer: req.user._id,
-      isPaymentDone: true,
-      items: orderItems,
-      orderPrice: totalPrice ?? 0,
-      paymentProvider: PaymentProviderEnum.RAZORPAY,
-      paymentId: razorpay_payment_id,
-    });
 
     // Logic to handle product's stock change once order is placed
     let bulkStockUpdates = orderItems.map((item) => {
@@ -157,7 +175,7 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
       skipValidation: true,
     });
 
-    cart.items = [];
+    cart.items = []; // empty the cart
 
     await cart.save({ validateBeforeSave: false });
     return res
