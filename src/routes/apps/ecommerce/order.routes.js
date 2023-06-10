@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   generateRazorpayOrder,
-  generateStripeOrder,
   getOrderById,
   getOrderListAdmin,
   updateOrderStatus,
@@ -20,7 +19,6 @@ const router = Router();
 router.use(verifyJWT);
 
 router.route("/provider/razorpay").post(generateRazorpayOrder);
-router.route("/provider/stripe").post(generateStripeOrder);
 
 router
   .route("/provider/razorpay/verify-payment")

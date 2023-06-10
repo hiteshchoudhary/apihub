@@ -16,12 +16,12 @@ export const OrderStatusEnum = {
 };
 
 /**
- * @type {{ UNKNOWN:"UNKNOWN"; RAZORPAY: "RAZORPAY"; STRIPE: "STRIPE"; } as const}
+ * @type {{ UNKNOWN:"UNKNOWN"; RAZORPAY: "RAZORPAY"; PAYPAL: "PAYPAL"; } as const}
  */
 export const PaymentProviderEnum = {
   UNKNOWN: "UNKNOWN",
   RAZORPAY: "RAZORPAY",
-  STRIPE: "STRIPE",
+  PAYPAL: "PAYPAL",
 };
 
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;

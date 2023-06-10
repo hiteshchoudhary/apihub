@@ -11,48 +11,10 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getCart } from "./cart.controllers.js";
 import mongoose from "mongoose";
-import { Stripe } from "stripe";
 
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
-
-const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-const generateStripeOrder = asyncHandler(async (req, res) => {
-  const cart = await Cart.findOne({
-    owner: req.user._id,
-  });
-
-  if (!cart || !cart.items?.length) {
-    throw new ApiError(400, "User cart is empty");
-  }
-
-  const cartItems = await getCart(req.user._id);
-
-  const session = await stripeInstance.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: cartItems?.map((cartItem) => ({
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: cartItem.product?.name,
-        },
-        unit_amount: cartItem.product?.price * 100, // in paisa
-      },
-      quantity: cartItem.quantity,
-    })),
-    mode: "payment",
-    success_url: "http://localhost:8080/success", // TODO: decide success and error urls to be at the BE if there is a payment verification to be made
-    cancel_url: "http://localhost:8080/cancel", // TODO: decide success and error urls to be at the BE if there is a payment verification to be made
-  });
-
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(200, { sessionId: session.id }, "Stripe order generated")
-    );
 });
 
 const generateRazorpayOrder = asyncHandler(async (req, res) => {
@@ -383,7 +345,6 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
 
 export {
   generateRazorpayOrder,
-  generateStripeOrder,
   verifyRazorpayPayment,
   getOrderById,
   getOrderListAdmin,
