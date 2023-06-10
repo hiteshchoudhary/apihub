@@ -14,6 +14,10 @@ import { Product } from "../../../models/apps/ecommerce/product.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import {
+  orderConfirmationMailgenContent,
+  sendEmail,
+} from "../../../utils/mail.js";
 import { getCart } from "./cart.controllers.js";
 
 const generatePaypalAccessToken = async () => {
@@ -137,6 +141,7 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
     .digest("hex");
 
   if (expectedSignature === razorpay_signature) {
+    // TODO: Move following order fulfillment login in separate function and reuse it in paypal and razorpay
     // If payment is valid
     // Turn the payment status of the order yo true
     const order = await EcomOrder.findOneAndUpdate(
@@ -160,14 +165,14 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
       owner: req.user._id,
     });
 
-    const orderItems = cart.items;
+    const orderItems = await getCart(req.user._id);
 
     // Logic to handle product's stock change once order is placed
     let bulkStockUpdates = orderItems.map((item) => {
       // Reduce the products stock
       return {
         updateOne: {
-          filter: { _id: item.productId },
+          filter: { _id: item.product?._id },
           update: { $inc: { stock: -item.quantity } }, // subtract the item quantity
         },
       };
@@ -177,6 +182,15 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
     // * because with bulkWrite() there is only one network round trip to the MongoDB server.
     await Product.bulkWrite(bulkStockUpdates, {
       skipValidation: true,
+    });
+
+    await sendEmail({
+      email: req.user?.email,
+      subject: "Order confirmed",
+      mailgenContent: orderConfirmationMailgenContent(
+        req.user?.username,
+        orderItems
+      ),
     });
 
     cart.items = []; // empty the cart
@@ -311,14 +325,14 @@ const verifyPaypalPayment = asyncHandler(async (req, res) => {
 
     // User's cart and order model has the same structure
     // First get the items in the cart
-    const orderItems = cart.items;
+    const orderItems = await getCart(req.user._id);
 
     // Logic to handle product's stock change once order is placed
     let bulkStockUpdates = orderItems.map((item) => {
       // Reduce the products stock
       return {
         updateOne: {
-          filter: { _id: item.productId },
+          filter: { _id: item.product?._id },
           update: { $inc: { stock: -item.quantity } }, // subtract the item quantity
         },
       };
@@ -328,6 +342,15 @@ const verifyPaypalPayment = asyncHandler(async (req, res) => {
     // * because with bulkWrite() there is only one network round trip to the MongoDB server.
     await Product.bulkWrite(bulkStockUpdates, {
       skipValidation: true,
+    });
+
+    await sendEmail({
+      email: req.user?.email,
+      subject: "Order confirmed",
+      mailgenContent: orderConfirmationMailgenContent(
+        req.user?.username,
+        orderItems
+      ),
     });
 
     cart.items = [];
