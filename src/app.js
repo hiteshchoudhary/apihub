@@ -78,7 +78,7 @@ app.delete("/api/v1/reset-db", async (req, res) => {
     });
     return res
       .status(200)
-      .json(new ApiResponse(200, "Database dropped successfully"));
+      .json(new ApiResponse(200, null, "Database dropped successfully"));
   }
   throw new ApiError(500, "Something went wrong while dropping the database");
 });

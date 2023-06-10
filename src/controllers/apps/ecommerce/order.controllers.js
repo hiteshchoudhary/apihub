@@ -11,108 +11,16 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getCart } from "./cart.controllers.js";
 import mongoose from "mongoose";
-
-/**
- * @description Utility function which returns a common aggregation pipeline stages responsible to structure an order in a readable and detailed format
- * @returns {import("mongoose").PipelineStage[]}
- */
-// REFACTOR: Remove this in case being used in only single place that is get order by id
-export const orderStructureAggregator = () => {
-  return [
-    // lookup for an address associated with the order
-    {
-      $lookup: {
-        from: "addresses",
-        localField: "address",
-        foreignField: "_id",
-        as: "address",
-      },
-    },
-    // lookup for a customer associated with the order
-    {
-      $lookup: {
-        from: "users",
-        localField: "customer",
-        foreignField: "_id",
-        as: "customer",
-        pipeline: [
-          {
-            $project: {
-              _id: 1,
-              username: 1,
-              email: 1,
-            },
-          },
-        ],
-      },
-    },
-    // lookup returns array so get the first element of address and customer
-    {
-      $addFields: {
-        customer: { $first: "$customer" },
-        address: { $first: "$address" },
-      },
-    },
-    // Now we have array of order items with productId being the id of the product that is being ordered
-    // So we want to send complete details of that product
-
-    // To do so we first unwind the items array
-    { $unwind: "$items" },
-
-    // it gives us documents with `items` being an object with ket {_id, productId, quantity}
-    {
-      // lookup for a product associated
-      $lookup: {
-        from: "products",
-        localField: "items.productId",
-        foreignField: "_id",
-        as: "items.product", // store that looked up product in items.product key
-      },
-    },
-    // As we know lookup will return an array
-    // we want product key to be an object not array
-    // So, once lookup is done we access first item in an array
-    { $addFields: { "items.product": { $first: "$items.product" } } },
-    // As we have unwind the items array the output of the following stages is not desired one
-    // So to make it desired we need to group whatever we have unwinded
-    {
-      $group: {
-        // we group the documents with `_id (which is an order id)`
-        // The reason being, each order is unique and main entity of this api
-        _id: "$_id",
-        order: { $first: "$$ROOT" }, // we also assign whole root object to be the order
-        // we create a new key orderItems in which we will push each order item (product details and quantity) with complete product details
-        orderItems: {
-          $push: {
-            _id: "$items._id",
-            quantity: "$items.quantity",
-            product: "$items.product",
-          },
-        },
-      },
-    },
-    {
-      $addFields: {
-        // now we will create a new items key in the order object and assign the orderItems value to it to keep everything in the `order` key
-        "order.items": "$orderItems",
-      },
-    },
-    {
-      $project: {
-        // ignore the orderItems key as we don't need it
-        orderItems: 0,
-      },
-    },
-  ];
-};
+import { Stripe } from "stripe";
 
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-const generateRazorpayOrder = asyncHandler(async (req, res) => {
-  const { amount } = req.body;
+const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+const generateStripeOrder = asyncHandler(async (req, res) => {
   const cart = await Cart.findOne({
     owner: req.user._id,
   });
@@ -121,8 +29,50 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User cart is empty");
   }
 
+  const cartItems = await getCart(req.user._id);
+
+  const session = await stripeInstance.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: cartItems?.map((cartItem) => ({
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: cartItem.product?.name,
+        },
+        unit_amount: cartItem.product?.price * 100, // in paisa
+      },
+      quantity: cartItem.quantity,
+    })),
+    mode: "payment",
+    success_url: "http://localhost:8080/success", // TODO: decide success and error urls to be at the BE if there is a payment verification to be made
+    cancel_url: "http://localhost:8080/cancel", // TODO: decide success and error urls to be at the BE if there is a payment verification to be made
+  });
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, { sessionId: session.id }, "Stripe order generated")
+    );
+});
+
+const generateRazorpayOrder = asyncHandler(async (req, res) => {
+  const cart = await Cart.findOne({
+    owner: req.user._id,
+  });
+
+  if (!cart || !cart.items?.length) {
+    throw new ApiError(400, "User cart is empty");
+  }
+
+  const userCart = await getCart(req.user._id);
+
+  // calculate the total price of the order
+  const totalPrice = userCart.reduce((prev, curr) => {
+    return prev + curr?.product?.price * curr?.quantity;
+  }, 0);
+
   const orderOptions = {
-    amount: parseInt(amount),
+    amount: parseInt(totalPrice) * 100, // in paisa
     currency: "INR", // Might accept from client
     receipt: nanoid(10),
   };
@@ -280,7 +230,90 @@ const getOrderById = asyncHandler(async (req, res) => {
         _id: new mongoose.Types.ObjectId(orderId),
       },
     },
-    ...orderStructureAggregator(),
+    // lookup for an address associated with the order
+    {
+      $lookup: {
+        from: "addresses",
+        localField: "address",
+        foreignField: "_id",
+        as: "address",
+      },
+    },
+    // lookup for a customer associated with the order
+    {
+      $lookup: {
+        from: "users",
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              email: 1,
+            },
+          },
+        ],
+      },
+    },
+    // lookup returns array so get the first element of address and customer
+    {
+      $addFields: {
+        customer: { $first: "$customer" },
+        address: { $first: "$address" },
+      },
+    },
+    // Now we have array of order items with productId being the id of the product that is being ordered
+    // So we want to send complete details of that product
+
+    // To do so we first unwind the items array
+    { $unwind: "$items" },
+
+    // it gives us documents with `items` being an object with ket {_id, productId, quantity}
+    {
+      // lookup for a product associated
+      $lookup: {
+        from: "products",
+        localField: "items.productId",
+        foreignField: "_id",
+        as: "items.product", // store that looked up product in items.product key
+      },
+    },
+    // As we know lookup will return an array
+    // we want product key to be an object not array
+    // So, once lookup is done we access first item in an array
+    { $addFields: { "items.product": { $first: "$items.product" } } },
+    // As we have unwind the items array the output of the following stages is not desired one
+    // So to make it desired we need to group whatever we have unwinded
+    {
+      $group: {
+        // we group the documents with `_id (which is an order id)`
+        // The reason being, each order is unique and main entity of this api
+        _id: "$_id",
+        order: { $first: "$$ROOT" }, // we also assign whole root object to be the order
+        // we create a new key orderItems in which we will push each order item (product details and quantity) with complete product details
+        orderItems: {
+          $push: {
+            _id: "$items._id",
+            quantity: "$items.quantity",
+            product: "$items.product",
+          },
+        },
+      },
+    },
+    {
+      $addFields: {
+        // now we will create a new items key in the order object and assign the orderItems value to it to keep everything in the `order` key
+        "order.items": "$orderItems",
+      },
+    },
+    {
+      $project: {
+        // ignore the orderItems key as we don't need it
+        orderItems: 0,
+      },
+    },
   ]);
 
   if (!order[0]) {
@@ -350,6 +383,7 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
 
 export {
   generateRazorpayOrder,
+  generateStripeOrder,
   verifyRazorpayPayment,
   getOrderById,
   getOrderListAdmin,

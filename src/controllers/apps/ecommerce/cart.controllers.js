@@ -8,7 +8,7 @@ import { asyncHandler } from "../../../utils/asyncHandler.js";
  *
  * @param {string} userId
  * @description A utility function, which querys the {@link Cart} model and returns the cart in `{product: {}, quantity: 3}[]` format
- *
+ *  @returns {Promise<{_id: string, product: Product, quantity: number}[]>}
  */
 export const getCart = async (userId) => {
   return await Cart.aggregate([
