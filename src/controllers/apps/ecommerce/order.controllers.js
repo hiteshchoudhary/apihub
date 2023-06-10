@@ -1,7 +1,12 @@
 import crypto from "crypto";
+import mongoose from "mongoose";
 import { nanoid } from "nanoid";
 import Razorpay from "razorpay";
-import { OrderStatusEnum, PaymentProviderEnum } from "../../../constants.js";
+import {
+  OrderStatusEnum,
+  PaymentProviderEnum,
+  paypalBaseUrl,
+} from "../../../constants.js";
 import { Address } from "../../../models/apps/ecommerce/address.models.js";
 import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
 import { EcomOrder } from "../../../models/apps/ecommerce/order.models.js";
@@ -10,12 +15,6 @@ import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getCart } from "./cart.controllers.js";
-import mongoose from "mongoose";
-
-const paypalBaseUrl = {
-  sandbox: "https://api-m.sandbox.paypal.com",
-  production: "https://api-m.paypal.com",
-};
 
 const generatePaypalAccessToken = async () => {
   try {
@@ -76,49 +75,54 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
     receipt: nanoid(10),
   };
 
-  razorpayInstance.orders.create(orderOptions, async function (err, order) {
-    if (!order || (err && err.error)) {
-      // Throwing ApiError here will not trigger the error handler middleware
-      return res
-        .status(err.statusCode)
-        .json(
-          new ApiResponse(
-            err.statusCode,
-            null,
-            err.error.reason ||
-              "Something went wrong while initialising the razorpay order."
-          )
-        );
-    }
+  razorpayInstance.orders.create(
+    orderOptions,
+    async function (err, razorpayOrder) {
+      if (!razorpayOrder || (err && err.error)) {
+        // Throwing ApiError here will not trigger the error handler middleware
+        return res
+          .status(err.statusCode)
+          .json(
+            new ApiResponse(
+              err.statusCode,
+              null,
+              err.error.reason ||
+                "Something went wrong while initialising the razorpay order."
+            )
+          );
+      }
 
-    // Create an order while we generate razorpay session
-    // In case payment is done and there is some network issue in the payment verification api
-    // We will at least have a record of the order
-    const unpaidOrder = await EcomOrder.create({
-      address: addressId,
-      customer: req.user._id,
-      items: orderItems,
-      orderPrice: totalPrice ?? 0,
-      paymentProvider: PaymentProviderEnum.RAZORPAY,
-      paymentId: order.id,
-    });
-    if (unpaidOrder) {
-      // if order is created then only proceed with the payment
-      return res
-        .status(200)
-        .json(new ApiResponse(200, order, "Razorpay order generated"));
-    } else {
-      return res
-        .status(500)
-        .json(
-          new ApiResponse(
-            500,
-            null,
-            "Something went wrong while initialising the razorpay order."
-          )
-        );
+      // Create an order while we generate razorpay session
+      // In case payment is done and there is some network issue in the payment verification api
+      // We will at least have a record of the order
+      const unpaidOrder = await EcomOrder.create({
+        address: addressId,
+        customer: req.user._id,
+        items: orderItems,
+        orderPrice: totalPrice ?? 0,
+        paymentProvider: PaymentProviderEnum.RAZORPAY,
+        paymentId: razorpayOrder.id,
+      });
+      if (unpaidOrder) {
+        // if order is created then only proceed with the payment
+        return res
+          .status(200)
+          .json(
+            new ApiResponse(200, razorpayOrder, "Razorpay order generated")
+          );
+      } else {
+        return res
+          .status(500)
+          .json(
+            new ApiResponse(
+              500,
+              null,
+              "Something went wrong while initialising the razorpay order."
+            )
+          );
+      }
     }
-  });
+  );
 });
 
 const verifyRazorpayPayment = asyncHandler(async (req, res) => {
@@ -187,6 +191,18 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
 });
 
 const generatePaypalOrder = asyncHandler(async (req, res) => {
+  const { addressId } = req.body;
+
+  // Check if address is valid and is of logged in user's
+  const address = await Address.findOne({
+    _id: addressId,
+    owner: req.user._id,
+  });
+
+  if (!address) {
+    throw new ApiError(404, "Address does not exists");
+  }
+
   const cart = await Cart.findOne({
     owner: req.user._id,
   });
@@ -194,7 +210,7 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   if (!cart || !cart.items?.length) {
     throw new ApiError(400, "User cart is empty");
   }
-
+  const orderItems = cart.items; // these items are used further to set product stock
   const userCart = await getCart(req.user._id);
 
   // calculate the total price of the order
@@ -217,29 +233,50 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
         {
           amount: {
             currency_code: "USD",
-            value: totalPrice,
+            value: totalPrice * 0.012, // convert indian rupees to dollars
           },
         },
       ],
     }),
   });
-  const order = await response.json();
-  return res
-    .status(201)
-    .json(new ApiResponse(201, order, "Paypal order generated successfully"));
+
+  const paypalOrder = await response.json();
+
+  if (paypalOrder?.id) {
+    // Create an order while we generate paypal session
+    // In case payment is done and there is some network issue in the payment verification api
+    // We will at least have a record of the order
+    const unpaidOrder = await EcomOrder.create({
+      address: addressId,
+      customer: req.user._id,
+      items: orderItems,
+      orderPrice: totalPrice ?? 0,
+      paymentProvider: PaymentProviderEnum.PAYPAL,
+      paymentId: paypalOrder.id,
+    });
+    if (unpaidOrder) {
+      // if order is created then only proceed with the payment
+      return res
+        .status(201)
+        .json(
+          new ApiResponse(
+            201,
+            paypalOrder,
+            "Paypal order generated successfully"
+          )
+        );
+    }
+  }
+  // if there is no paypal order or unpaidOrder created throw an error
+  throw new ApiError(
+    500,
+    "Something went wrong while initialising the paypal order."
+  );
 });
 
 const verifyPaypalPayment = asyncHandler(async (req, res) => {
-  const { orderId, addressId } = req.body;
+  const { orderId } = req.body;
 
-  const address = await Address.findOne({
-    _id: addressId,
-    owner: req.user._id,
-  });
-
-  if (!address) {
-    throw new ApiError(404, "Address does not exists");
-  }
   const accessToken = await generatePaypalAccessToken();
   const url = `${paypalBaseUrl.sandbox}/v2/checkout/orders/${orderId}/capture`;
   const response = await fetch(url, {
@@ -250,11 +287,24 @@ const verifyPaypalPayment = asyncHandler(async (req, res) => {
     },
   });
   const capturedData = await response.json();
-  if (capturedData?.name === "UNPROCESSABLE_ENTITY") {
-    throw new ApiError(422, "Payment has not been verified yet");
-  }
 
   if (capturedData?.status === "COMPLETED") {
+    const order = await EcomOrder.findOneAndUpdate(
+      {
+        paymentId: capturedData.id,
+      },
+      {
+        $set: {
+          isPaymentDone: true,
+        },
+      },
+      { new: true }
+    );
+
+    if (!order) {
+      throw new ApiError(404, "Order does not exist");
+    }
+
     const cart = await Cart.findOne({
       owner: req.user._id,
     });
@@ -262,25 +312,6 @@ const verifyPaypalPayment = asyncHandler(async (req, res) => {
     // User's cart and order model has the same structure
     // First get the items in the cart
     const orderItems = cart.items;
-
-    // Then query the cart and format the data in desired structure using helper method
-    const userCart = await getCart(req.user._id);
-
-    // calculate the total price of the order
-    const totalPrice = userCart.reduce((prev, curr) => {
-      return prev + curr?.product?.price * curr?.quantity;
-    }, 0);
-
-    // Create an order instance
-    const order = await EcomOrder.create({
-      address: addressId,
-      customer: req.user._id,
-      isPaymentDone: true,
-      items: orderItems,
-      orderPrice: totalPrice ?? 0,
-      paymentProvider: PaymentProviderEnum.PAYPAL,
-      paymentId: capturedData.id,
-    });
 
     // Logic to handle product's stock change once order is placed
     let bulkStockUpdates = orderItems.map((item) => {

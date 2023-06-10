@@ -10,6 +10,7 @@ import {
 } from "../../../controllers/apps/ecommerce/order.controllers.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
+  generatePaypalPaymentValidator,
   generateRazorpayPaymentValidator,
   orderPathVariableValidator,
   orderUpdateStatusValidator,
@@ -25,7 +26,9 @@ router.use(verifyJWT);
 router
   .route("/provider/razorpay")
   .post(generateRazorpayPaymentValidator(), validate, generateRazorpayOrder);
-router.route("/provider/paypal").post(generatePaypalOrder);
+router
+  .route("/provider/paypal")
+  .post(generatePaypalPaymentValidator(), validate, generatePaypalOrder);
 
 router
   .route("/provider/razorpay/verify-payment")
