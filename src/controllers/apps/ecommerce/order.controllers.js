@@ -12,6 +12,31 @@ import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getCart } from "./cart.controllers.js";
 import mongoose from "mongoose";
 
+const paypalBaseUrl = {
+  sandbox: "https://api-m.sandbox.paypal.com",
+  production: "https://api-m.paypal.com",
+};
+
+const generatePaypalAccessToken = async () => {
+  try {
+    const auth = Buffer.from(
+      process.env.PAYPAL_CLIENT_ID + ":" + process.env.PAYPAL_SECRET
+    ).toString("base64");
+
+    const response = await fetch(`${paypalBaseUrl.sandbox}/v1/oauth2/token`, {
+      method: "POST",
+      body: "grant_type=client_credentials",
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    });
+    const data = await response.json();
+    return data?.access_token;
+  } catch (error) {
+    throw new ApiError(500, "Error while generating paypal auth token");
+  }
+};
+
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -34,8 +59,8 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   }, 0);
 
   const orderOptions = {
-    amount: parseInt(totalPrice) * 100, // in paisa
-    currency: "INR", // Might accept from client
+    amount: parseInt(totalPrice) * 100, // in cents
+    currency: "USD", // Might accept from client
     receipt: nanoid(10),
   };
 
@@ -67,13 +92,6 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
     razorpay_signature,
   } = req.body;
 
-  const cart = await Cart.findOne({
-    owner: req.user._id,
-  });
-
-  if (!cart || !cart.items?.length) {
-    throw new ApiError(400, "User cart is empty");
-  }
   // Check if address is valid and is of logged in user's
   const address = await Address.findOne({
     _id: addressId,
@@ -147,6 +165,130 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
       .json(new ApiResponse(201, order, "Order placed successfully"));
   } else {
     throw new ApiError(400, "Invalid razorpay signature");
+  }
+});
+
+const generatePaypalOrder = asyncHandler(async (req, res) => {
+  const cart = await Cart.findOne({
+    owner: req.user._id,
+  });
+
+  if (!cart || !cart.items?.length) {
+    throw new ApiError(400, "User cart is empty");
+  }
+
+  const userCart = await getCart(req.user._id);
+
+  // calculate the total price of the order
+  const totalPrice = userCart.reduce((prev, curr) => {
+    return prev + curr?.product?.price * curr?.quantity;
+  }, 0);
+
+  // create a new order
+  const accessToken = await generatePaypalAccessToken();
+  const url = `${paypalBaseUrl.sandbox}/v2/checkout/orders`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      intent: "CAPTURE",
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "USD",
+            value: totalPrice,
+          },
+        },
+      ],
+    }),
+  });
+  const order = await response.json();
+  return res
+    .status(201)
+    .json(new ApiResponse(201, order, "Paypal order generated successfully"));
+});
+
+const verifyPaypalPayment = asyncHandler(async (req, res) => {
+  const { orderId, addressId } = req.body;
+
+  const address = await Address.findOne({
+    _id: addressId,
+    owner: req.user._id,
+  });
+
+  if (!address) {
+    throw new ApiError(404, "Address does not exists");
+  }
+  const accessToken = await generatePaypalAccessToken();
+  const url = `${paypalBaseUrl.sandbox}/v2/checkout/orders/${orderId}/capture`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const capturedData = await response.json();
+  if (capturedData?.name === "UNPROCESSABLE_ENTITY") {
+    throw new ApiError(422, "Payment has not been verified yet");
+  }
+
+  if (capturedData?.status === "COMPLETED") {
+    const cart = await Cart.findOne({
+      owner: req.user._id,
+    });
+
+    // User's cart and order model has the same structure
+    // First get the items in the cart
+    const orderItems = cart.items;
+
+    // Then query the cart and format the data in desired structure using helper method
+    const userCart = await getCart(req.user._id);
+
+    // calculate the total price of the order
+    const totalPrice = userCart.reduce((prev, curr) => {
+      return prev + curr?.product?.price * curr?.quantity;
+    }, 0);
+
+    // Create an order instance
+    const order = await EcomOrder.create({
+      address: addressId,
+      customer: req.user._id,
+      isPaymentDone: true,
+      items: orderItems,
+      orderPrice: totalPrice ?? 0,
+      paymentProvider: PaymentProviderEnum.PAYPAL,
+      paymentId: capturedData.id,
+    });
+
+    // Logic to handle product's stock change once order is placed
+    let bulkStockUpdates = orderItems.map((item) => {
+      // Reduce the products stock
+      return {
+        updateOne: {
+          filter: { _id: item.productId },
+          update: { $inc: { stock: -item.quantity } }, // subtract the item quantity
+        },
+      };
+    });
+
+    // * (bulkWrite()) is faster than sending multiple independent operations (e.g. if you use create())
+    // * because with bulkWrite() there is only one network round trip to the MongoDB server.
+    await Product.bulkWrite(bulkStockUpdates, {
+      skipValidation: true,
+    });
+
+    cart.items = [];
+
+    await cart.save({ validateBeforeSave: false });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, order, "Order placed successfully"));
+  } else {
+    throw new ApiError(500, "Something went wrong with the paypal payment");
   }
 });
 
@@ -345,7 +487,9 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
 
 export {
   generateRazorpayOrder,
+  generatePaypalOrder,
   verifyRazorpayPayment,
+  verifyPaypalPayment,
   getOrderById,
   getOrderListAdmin,
   updateOrderStatus,

@@ -1,15 +1,18 @@
 import { Router } from "express";
 import {
+  generatePaypalOrder,
   generateRazorpayOrder,
   getOrderById,
   getOrderListAdmin,
   updateOrderStatus,
+  verifyPaypalPayment,
   verifyRazorpayPayment,
 } from "../../../controllers/apps/ecommerce/order.controllers.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
   orderPathVariableValidator,
   orderUpdateStatusValidator,
+  verifyPaypalPaymentValidator,
   verifyRazorpayPaymentValidator,
 } from "../../../validators/ecommerce/order.validators.js";
 import { validate } from "../../../validators/validate.js";
@@ -19,10 +22,15 @@ const router = Router();
 router.use(verifyJWT);
 
 router.route("/provider/razorpay").post(generateRazorpayOrder);
+router.route("/provider/paypal").post(generatePaypalOrder);
 
 router
   .route("/provider/razorpay/verify-payment")
   .post(verifyRazorpayPaymentValidator(), validate, verifyRazorpayPayment);
+
+router
+  .route("/provider/paypal/verify-payment")
+  .post(verifyPaypalPaymentValidator(), validate, verifyPaypalPayment);
 
 router
   .route("/:orderId")
