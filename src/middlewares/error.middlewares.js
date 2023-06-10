@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { removeUnusedMulterImageFilesOnError } from "../utils/helpers.js";
 
 /**
  *
@@ -37,6 +38,7 @@ const errorHandler = (err, req, res, next) => {
     ...(process.env.NODE_ENV === "development" && { stack: error.stack }), // Error stack traces should be visible in development for debugging
   };
 
+  removeUnusedMulterImageFilesOnError(req);
   // Send error response
   return res.status(error.statusCode).json(response);
 };

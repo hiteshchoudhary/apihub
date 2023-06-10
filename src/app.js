@@ -2,6 +2,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import fs from "fs";
+import path from "path";
 import { DB_NAME } from "./constants.js";
 import { dbInstance } from "./db/index.js";
 import { ApiError } from "./utils/ApiError.js";
@@ -73,8 +75,26 @@ app.use("/api/v1/ecommerce/orders", orderRouter);
 
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {
-    dbInstance.connection.db.dropDatabase({
+    // Drop the whole DB
+    await dbInstance.connection.db.dropDatabase({
       dbName: DB_NAME,
+    });
+
+    const directory = "./public/images";
+
+    // Remove all product images from the file system
+    fs.readdir(directory, (err, files) => {
+      if (err) {
+        // fail silently
+        console.log("Error while removing the images: ", err);
+      } else {
+        for (const file of files) {
+          if (file === ".gitkeep") continue;
+          fs.unlink(path.join(directory, file), (err) => {
+            if (err) throw err;
+          });
+        }
+      }
     });
     return res
       .status(200)
