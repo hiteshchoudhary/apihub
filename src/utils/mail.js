@@ -109,10 +109,11 @@ const forgotPasswordMailgenContent = (username, passwordResetUrl) => {
  *
  * @param {string} username
  * @param {{_id: string, product: Product, quantity: number}[]} items
+ * @param {number} totalCost
  * @returns {Mailgen.Content}
  * @description It designs the order creation invoice mail
  */
-const orderConfirmationMailgenContent = (username, items) => {
+const orderConfirmationMailgenContent = (username, items, totalCost) => {
   return {
     body: {
       name: username,
@@ -121,8 +122,7 @@ const orderConfirmationMailgenContent = (username, items) => {
         data: items?.map((item) => {
           return {
             item: item.product?.name,
-            description: item.product?.description,
-            price: "INR" + item.product?.price + "/-",
+            price: "INR " + item.product?.price + "/-",
             quantity: item.quantity,
           };
         }),
@@ -140,9 +140,10 @@ const orderConfirmationMailgenContent = (username, items) => {
           },
         },
       },
-
-      outro:
+      outro: [
+        `Total order cost: INR ${totalCost}/-`,
         "You can check the status of your order and more in your order history",
+      ],
     },
   };
 };

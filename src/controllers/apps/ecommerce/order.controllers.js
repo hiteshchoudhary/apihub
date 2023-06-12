@@ -20,8 +20,6 @@ import {
 } from "../../../utils/mail.js";
 import { getCart } from "./cart.controllers.js";
 
-// TODO: Include total order cost in the order confirmation mail
-
 // * UTILITY FUNCTIONS
 
 const generatePaypalAccessToken = async () => {
@@ -100,7 +98,8 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
     subject: "Order confirmed",
     mailgenContent: orderConfirmationMailgenContent(
       req.user?.username,
-      orderItems
+      orderItems,
+      order.orderPrice ?? 0
     ),
   });
 

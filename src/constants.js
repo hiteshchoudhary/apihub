@@ -27,7 +27,6 @@ export const PaymentProviderEnum = {
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;
 export const DB_NAME = "apihub";
 
-// TODO: can go to the .env files
 export const paypalBaseUrl = {
   sandbox: "https://api-m.sandbox.paypal.com",
 };
