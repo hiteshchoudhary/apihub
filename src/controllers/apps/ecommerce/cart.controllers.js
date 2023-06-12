@@ -4,14 +4,17 @@ import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 
+// TODO: test the getCart logic change for order creation and updation
+// TODO: add coupon service for ecom and incorporate it with the cart model to manage total order cost
+
 /**
  *
  * @param {string} userId
- * @description A utility function, which querys the {@link Cart} model and returns the cart in `{product: {}, quantity: 3}[]` format
- *  @returns {Promise<{_id: string, product: Product, quantity: number}[]>}
+ * @description A utility function, which querys the {@link Cart} model and returns the cart in `Promise<{_id: string, items: {_id: string, product: Product, quantity: number}[], cartTotal: number}>` format
+ *  @returns {Promise<{_id: string, items: {_id: string, product: Product, quantity: number}[], cartTotal: number}>}
  */
 export const getCart = async (userId) => {
-  return await Cart.aggregate([
+  const cartAggregation = await Cart.aggregate([
     {
       $match: {
         owner: userId,
@@ -30,12 +33,27 @@ export const getCart = async (userId) => {
     },
     {
       $project: {
-        _id: 0,
+        // _id: 0,
         product: { $first: "$product" },
         quantity: "$items.quantity",
       },
     },
+    {
+      $group: {
+        _id: "$_id",
+        items: {
+          $push: "$$ROOT",
+        },
+        cartTotal: {
+          $sum: {
+            $multiply: ["$product.price", "$quantity"],
+          },
+        },
+      },
+    },
   ]);
+
+  return cartAggregation[0] ?? { _id: null, items: [], cartTotal: 0 };
 };
 
 const getUserCart = asyncHandler(async (req, res) => {

@@ -74,10 +74,10 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
     owner: req.user._id,
   });
 
-  const orderItems = await getCart(req.user._id);
+  const userCart = await getCart(req.user._id);
 
   // Logic to handle product's stock change once order is placed
-  let bulkStockUpdates = orderItems.map((item) => {
+  let bulkStockUpdates = userCart.items.map((item) => {
     // Reduce the products stock
     return {
       updateOne: {
@@ -98,7 +98,7 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
     subject: "Order confirmed",
     mailgenContent: orderConfirmationMailgenContent(
       req.user?.username,
-      orderItems,
+      userCart.items,
       order.orderPrice ?? 0
     ),
   });
@@ -158,7 +158,7 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const userCart = await getCart(req.user._id);
 
   // calculate the total price of the order
-  const totalPrice = userCart.reduce((prev, curr) => {
+  const totalPrice = userCart.items.reduce((prev, curr) => {
     return prev + curr?.product?.price * curr?.quantity;
   }, 0);
 
@@ -263,7 +263,7 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   const userCart = await getCart(req.user._id);
 
   // calculate the total price of the order
-  const totalPrice = userCart.reduce((prev, curr) => {
+  const totalPrice = userCart.items.reduce((prev, curr) => {
     return prev + curr?.product?.price * curr?.quantity;
   }, 0);
   const response = await paypalApi("/", {
@@ -272,7 +272,7 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
       {
         amount: {
           currency_code: "USD",
-          value: totalPrice * 0.012, // convert indian rupees to dollars
+          value: (totalPrice * 0.012).toFixed(0), // convert indian rupees to dollars
         },
       },
     ],
