@@ -20,8 +20,9 @@ import {
 } from "../../../utils/mail.js";
 import { getCart } from "./cart.controllers.js";
 
-// TODO: refactor the fetch calls from paypal controllers
 // TODO: Include total order cost in the order confirmation mail
+
+// * UTILITY FUNCTIONS
 
 const generatePaypalAccessToken = async () => {
   try {
@@ -109,10 +110,30 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
   return order;
 };
 
+/**
+ *
+ * @param {string} endpoint
+ * @param {any} body
+ * @description utility function responsible for making paypal api calls for order generation and payment verification
+ */
+const paypalApi = async (endpoint, body = {}) => {
+  const accessToken = await generatePaypalAccessToken();
+  return await fetch(`${paypalBaseUrl.sandbox}/v2/checkout/orders${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(body),
+  });
+};
+
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
+
+// * CONTROLLERS
 
 const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const { addressId } = req.body;
@@ -246,27 +267,16 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   const totalPrice = userCart.reduce((prev, curr) => {
     return prev + curr?.product?.price * curr?.quantity;
   }, 0);
-
-  // create a new order
-  const accessToken = await generatePaypalAccessToken();
-  const url = `${paypalBaseUrl.sandbox}/v2/checkout/orders`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: totalPrice * 0.012, // convert indian rupees to dollars
-          },
+  const response = await paypalApi("/", {
+    intent: "CAPTURE",
+    purchase_units: [
+      {
+        amount: {
+          currency_code: "USD",
+          value: totalPrice * 0.012, // convert indian rupees to dollars
         },
-      ],
-    }),
+      },
+    ],
   });
 
   const paypalOrder = await response.json();
@@ -306,15 +316,7 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
 const verifyPaypalPayment = asyncHandler(async (req, res) => {
   const { orderId } = req.body;
 
-  const accessToken = await generatePaypalAccessToken();
-  const url = `${paypalBaseUrl.sandbox}/v2/checkout/orders/${orderId}/capture`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await paypalApi(`/${orderId}/capture`, {});
   const capturedData = await response.json();
 
   if (capturedData?.status === "COMPLETED") {
