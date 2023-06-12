@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { removeUnusedMulterImageFilesOnError } from "../utils/helpers.js";
 
 /**
  *
@@ -27,7 +28,7 @@ const errorHandler = (err, req, res, next) => {
 
     // set a message from native Error instance or a custom one
     const message = error.message || "Something went wrong";
-    error = new ApiError(statusCode, message, err.stack);
+    error = new ApiError(statusCode, message, error?.errors || [], err.stack);
   }
 
   // Now we are sure that the `error` variable will be an instance of ApiError class
@@ -37,6 +38,7 @@ const errorHandler = (err, req, res, next) => {
     ...(process.env.NODE_ENV === "development" && { stack: error.stack }), // Error stack traces should be visible in development for debugging
   };
 
+  removeUnusedMulterImageFilesOnError(req);
   // Send error response
   return res.status(error.statusCode).json(response);
 };

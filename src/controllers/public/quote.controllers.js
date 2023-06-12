@@ -1,5 +1,5 @@
 import quotesJson from "../../json/quotes.json" assert { type: "json" };
-import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -10,20 +10,14 @@ const getQuotes = asyncHandler(async (req, res) => {
   const query = req.query.query?.toLowerCase(); // search query
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
-  const allQuotes = quotesJson;
-
-  const startPosition = +(page - 1) * limit;
-
-  let quotesArray = (
-    query
-      ? [...quotesJson].filter((quote) => {
-          return (
-            quote.content.toLowerCase().includes(query) ||
-            quote.author?.includes(query)
-          );
-        })
-      : [...quotesJson]
-  ).slice(startPosition, startPosition + limit);
+  let quotesArray = query
+    ? structuredClone(quotesJson).filter((quote) => {
+        return (
+          quote.content.toLowerCase().includes(query) ||
+          quote.author?.includes(query)
+        );
+      })
+    : structuredClone(quotesJson);
 
   if (inc && inc[0]?.trim()) {
     quotesArray = filterObjectKeys(inc, quotesArray);
@@ -34,7 +28,7 @@ const getQuotes = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(quotesArray, allQuotes.length, req, page, limit),
+        getPaginatedPayload(quotesArray, page, limit),
         "Quotes fetched successfully"
       )
     );

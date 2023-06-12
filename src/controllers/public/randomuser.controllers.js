@@ -1,5 +1,5 @@
 import randomUsersJson from "../../json/randomuser.json" assert { type: "json" };
-import { filterObjectKeys, getPaginatedPayload } from "../../utils/index.js";
+import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
@@ -10,22 +10,16 @@ const getRandomUsers = asyncHandler(async (req, res) => {
   const query = req.query.query?.toLowerCase(); // search query
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
-  const allUsers = randomUsersJson;
-
-  const startPosition = +(page - 1) * limit;
-
-  let randomUsersArray = (
-    query
-      ? [...randomUsersJson].filter((user) => {
-          return (
-            user.name.first.toLowerCase().includes(query) ||
-            user.name.last.toLowerCase().includes(query) ||
-            user.name.title.toLowerCase().includes(query) ||
-            user.email.toLowerCase().includes(query)
-          );
-        })
-      : [...randomUsersJson]
-  ).slice(startPosition, startPosition + limit);
+  let randomUsersArray = query
+    ? structuredClone(randomUsersJson).filter((user) => {
+        return (
+          user.name.first.toLowerCase().includes(query) ||
+          user.name.last.toLowerCase().includes(query) ||
+          user.name.title.toLowerCase().includes(query) ||
+          user.email.toLowerCase().includes(query)
+        );
+      })
+    : structuredClone(randomUsersJson);
 
   if (inc && inc[0]?.trim()) {
     randomUsersArray = filterObjectKeys(inc, randomUsersArray);
@@ -36,13 +30,7 @@ const getRandomUsers = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        getPaginatedPayload(
-          randomUsersArray,
-          allUsers.length,
-          req,
-          page,
-          limit
-        ),
+        getPaginatedPayload(randomUsersArray, page, limit),
         "Random users fetched successfully"
       )
     );
