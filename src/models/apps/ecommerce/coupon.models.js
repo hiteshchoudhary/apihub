@@ -24,6 +24,10 @@ const couponSchema = new Schema(
       type: Number,
       required: true,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     minimumCartValue: {
       type: Number,
       default: 0,

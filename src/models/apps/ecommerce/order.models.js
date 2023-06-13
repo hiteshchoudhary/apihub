@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { User } from "../auth/user.models.js";
 import { Address } from "./address.models.js";
 import { Product } from "./product.models.js";
+import { Coupon } from "./coupon.models.js";
 import { OrderStatusEnum, PaymentProviderEnum } from "../../../constants.js";
 
 const orderSchema = new Schema(
@@ -9,6 +10,15 @@ const orderSchema = new Schema(
     orderPrice: {
       type: Number,
       required: true,
+    },
+    discountedOrderPrice: {
+      type: Number,
+      required: true,
+    },
+    coupon: {
+      type: mongoose.Types.ObjectId,
+      ref: "Coupon",
+      default: null,
     },
     customer: {
       type: mongoose.Types.ObjectId,

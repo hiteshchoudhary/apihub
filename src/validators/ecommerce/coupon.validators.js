@@ -105,6 +105,17 @@ const updateCouponValidator = () => {
   ];
 };
 
+const applyCouponCodeValidator = () => {
+  return [
+    body("couponCode")
+      .trim()
+      .notEmpty()
+      .withMessage("Coupon code is required")
+      .isLength({ min: 4 })
+      .withMessage("Invalid coupon code"),
+  ];
+};
+
 const couponPathVariableValidator = () => {
   return [
     param("couponId").notEmpty().isMongoId().withMessage("Invalid coupon id"),
@@ -115,4 +126,5 @@ export {
   createCouponValidator,
   couponPathVariableValidator,
   updateCouponValidator,
+  applyCouponCodeValidator,
 };

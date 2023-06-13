@@ -4,6 +4,8 @@ import { Coupon } from "../../../models/apps/ecommerce/coupon.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { getCart } from "./cart.controllers.js";
+import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
 
 const createCoupon = asyncHandler(async (req, res) => {
   const {
@@ -27,6 +29,15 @@ const createCoupon = asyncHandler(async (req, res) => {
     );
   }
 
+  if (minimumCartValue && +minimumCartValue < +discountValue) {
+    // This is important because if minimum cart value is 100 and discount value is 300,
+    // if user apply the coupon on 150 cart value the cart value will be in negative
+    throw new ApiError(
+      400,
+      "Minimum cart value must be greater than or equal to the discount value"
+    );
+  }
+
   const coupon = await Coupon.create({
     name,
     couponCode,
@@ -41,6 +52,91 @@ const createCoupon = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(new ApiResponse(201, coupon, "Coupon created successfully"));
+});
+
+const applyCoupon = asyncHandler(async (req, res) => {
+  const { couponCode } = req.body;
+
+  // check for coupon code existence
+  let aggregatedCoupon = await Coupon.aggregate([
+    {
+      $match: {
+        // check for coupon code availability
+        couponCode: couponCode.trim().toUpperCase(),
+        // coupon is valid if start date is less than current date
+        startDate: {
+          $lt: new Date(),
+        },
+        // coupon is valid if expiry date is less than current date
+        expiryDate: {
+          $gt: new Date(),
+        },
+        isActive: {
+          $eq: true,
+        },
+      },
+    },
+  ]);
+
+  const coupon = aggregatedCoupon[0];
+
+  if (!coupon) {
+    throw new ApiError(404, "Invalid coupon code");
+  }
+
+  // get the user cart
+  const userCart = await getCart(req.user._id);
+
+  // check if the cart's total is greater than the minimum cart total requirement of the coupon
+  if (userCart.cartTotal < coupon.minimumCartValue) {
+    throw new ApiError(
+      400,
+      "Add items worth INR " +
+        (coupon.minimumCartValue - userCart.cartTotal) +
+        "/- or more to apply this coupon"
+    );
+  }
+
+  // if all the above checks are passed
+  // Find the user cart and apply coupon to it
+  await Cart.findOneAndUpdate(
+    {
+      owner: req.user._id,
+    },
+    {
+      $set: {
+        coupon: coupon._id,
+      },
+    },
+    { new: true }
+  );
+
+  const newCart = await getCart(req.user._id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, newCart, "Coupon applied successfully"));
+});
+
+const removeCoupon = asyncHandler(async (req, res) => {
+  // Find the user cart and remove the coupon from it
+  await Cart.findOneAndUpdate(
+    {
+      owner: req.user._id,
+    },
+    {
+      $set: {
+        coupon: null,
+      },
+    },
+    { new: true }
+  );
+
+  const newCart = await getCart(req.user._id);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, newCart, "Coupon removed successfully"));
 });
 
 const getAllCoupons = asyncHandler(async (req, res) => {
@@ -100,6 +196,18 @@ const updateCoupon = asyncHandler(async (req, res) => {
     );
   }
 
+  // Variable to check if min cart value is greater than discount value
+  const _minimumCartValue =
+    minimumCartValue || couponToBeUpdated.minimumCartValue;
+  const _discountValue = discountValue || couponToBeUpdated.discountValue;
+
+  if (_minimumCartValue && +_minimumCartValue < +_discountValue) {
+    throw new ApiError(
+      400,
+      "Minimum cart value must be greater than or equal to the discount value"
+    );
+  }
+
   const coupon = await Coupon.findByIdAndUpdate(
     couponId,
     {
@@ -107,8 +215,8 @@ const updateCoupon = asyncHandler(async (req, res) => {
         name,
         couponCode,
         type,
-        discountValue,
-        minimumCartValue,
+        discountValue: _discountValue,
+        minimumCartValue: _minimumCartValue,
         startDate,
         expiryDate,
       },
@@ -141,4 +249,6 @@ export {
   deleteCoupon,
   getCouponById,
   updateCoupon,
+  applyCoupon,
+  removeCoupon,
 };
