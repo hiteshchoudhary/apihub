@@ -24,6 +24,14 @@ export const PaymentProviderEnum = {
   PAYPAL: "PAYPAL",
 };
 
+/**
+ * @type {{ FLAT:"FLAT"; } as const}
+ */
+export const CouponTypeEnum = {
+  FLAT: "FLAT",
+  // PERCENTAGE: "PERCENTAGE",
+};
+
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;
 export const DB_NAME = "apihub";
 

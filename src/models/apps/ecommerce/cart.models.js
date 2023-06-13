@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../auth/user.models.js";
 import { Product } from "./product.models.js";
+import { Coupon } from "./coupon.models.js";
 
 const cartSchema = new Schema(
   {
@@ -25,7 +26,13 @@ const cartSchema = new Schema(
       ],
       default: [],
     },
+    coupon: {
+      type: mongoose.Types.ObjectId,
+      ref: "Coupon",
+      default: null,
+    },
   },
+
   { timestamps: true }
 );
 

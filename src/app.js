@@ -47,6 +47,7 @@ import userRouter from "./routes/apps/auth/user.routes.js";
 import addressRouter from "./routes/apps/ecommerce/address.routes.js";
 import cartRouter from "./routes/apps/ecommerce/cart.routes.js";
 import categoryRouter from "./routes/apps/ecommerce/category.routes.js";
+import couponRouter from "./routes/apps/ecommerce/coupon.routes.js";
 import orderRouter from "./routes/apps/ecommerce/order.routes.js";
 import productRouter from "./routes/apps/ecommerce/product.routes.js";
 import profileRouter from "./routes/apps/ecommerce/profile.routes.js";
@@ -72,6 +73,7 @@ app.use("/api/v1/ecommerce/products", productRouter);
 app.use("/api/v1/ecommerce/profile", profileRouter);
 app.use("/api/v1/ecommerce/cart", cartRouter);
 app.use("/api/v1/ecommerce/orders", orderRouter);
+app.use("/api/v1/ecommerce/coupons", couponRouter);
 
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {
