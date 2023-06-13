@@ -158,9 +158,7 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const userCart = await getCart(req.user._id);
 
   // calculate the total price of the order
-  const totalPrice = userCart.items.reduce((prev, curr) => {
-    return prev + curr?.product?.price * curr?.quantity;
-  }, 0);
+  const totalPrice = userCart.cartTotal;
 
   const orderOptions = {
     amount: parseInt(totalPrice) * 100, // in paisa
@@ -263,9 +261,8 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   const userCart = await getCart(req.user._id);
 
   // calculate the total price of the order
-  const totalPrice = userCart.items.reduce((prev, curr) => {
-    return prev + curr?.product?.price * curr?.quantity;
-  }, 0);
+  const totalPrice = userCart.cartTotal;
+
   const response = await paypalApi("/", {
     intent: "CAPTURE",
     purchase_units: [

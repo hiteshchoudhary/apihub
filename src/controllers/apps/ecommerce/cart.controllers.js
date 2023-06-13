@@ -4,7 +4,6 @@ import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 
-// TODO: test the getCart logic change for order creation and updation
 // TODO: add coupon service for ecom and incorporate it with the cart model to manage total order cost
 
 /**
