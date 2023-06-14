@@ -5,6 +5,7 @@ import {
   deleteCoupon,
   getAllCoupons,
   getCouponById,
+  getValidCouponsForCustomer,
   removeCouponFromCart,
   updateCoupon,
   updateCouponActiveStatus,
@@ -21,11 +22,15 @@ import { validate } from "../../../validators/validate.js";
 
 const router = Router();
 
+// * CUSTOMER ROUTES
 router.use(verifyJWT);
 
 router.route("/apply").post(applyCouponCodeValidator(), validate, applyCoupon);
 router.route("/remove").post(removeCouponFromCart);
+// get coupons that customer can apply based on coupons active status and customer's cart value
+router.route("/customer/available").get(getValidCouponsForCustomer);
 
+// * ADMIN ROUTES
 router.use(isAdmin);
 
 router

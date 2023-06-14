@@ -175,6 +175,38 @@ const getAllCoupons = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, coupons, "Coupons fetched successfully"));
 });
 
+const getValidCouponsForCustomer = asyncHandler(async (req, res) => {
+  const userCart = await getCart(req.user._id);
+  const cartTotal = userCart.cartTotal;
+  const coupons = await Coupon.aggregate([
+    {
+      $match: {
+        // coupon is valid if start date is less than current date
+        startDate: {
+          $lt: new Date(),
+        },
+        // coupon is valid if expiry date is less than current date
+        expiryDate: {
+          $gt: new Date(),
+        },
+        isActive: {
+          $eq: true,
+        },
+        // filter coupons with minimum cart value less than or equal to customer's current cart value
+        minimumCartValue: {
+          $lte: cartTotal,
+        },
+      },
+    },
+  ]);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, coupons, "Customer coupons fetched successfully")
+    );
+});
+
 const getCouponById = asyncHandler(async (req, res) => {
   const { couponId } = req.params;
 
@@ -281,4 +313,5 @@ export {
   applyCoupon,
   removeCouponFromCart,
   updateCouponActiveStatus,
+  getValidCouponsForCustomer,
 };
