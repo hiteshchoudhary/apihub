@@ -168,7 +168,7 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Product does not exist");
   }
 
-  await Cart.findOneAndUpdate(
+  const updatedCart = await Cart.findOneAndUpdate(
     {
       owner: req.user._id,
     },
@@ -185,7 +185,18 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  const cart = await getCart(req.user._id);
+  let cart = await getCart(req.user._id);
+
+  // TODO: Do we need this check or just remove the coupon when user removes the item?
+  // check if the cart's new total is greater than the minimum cart total requirement of the coupon
+  if (cart.coupon && cart.cartTotal < cart.coupon.minimumCartValue) {
+    // if it is less than minimum cart value remove the coupon code which is applied
+    updatedCart.coupon = null;
+    await updatedCart.save({ validateBeforeSave: false });
+    // fetch the latest updated cart
+    cart = await getCart(req.user._id);
+  }
+
   return res
     .status(200)
     .json(new ApiResponse(200, cart, "Cart item removed successfully"));
