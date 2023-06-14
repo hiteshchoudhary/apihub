@@ -188,6 +188,7 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
   let cart = await getCart(req.user._id);
 
   // TODO: Do we need this check or just remove the coupon when user removes the item?
+  // TODO: Add this logic in update cart item quantity logic. So if user reduces the quantity we need to check if new cart total is greater than the minimum cart value of the coupon
   // check if the cart's new total is greater than the minimum cart total requirement of the coupon
   if (cart.coupon && cart.cartTotal < cart.coupon.minimumCartValue) {
     // if it is less than minimum cart value remove the coupon code which is applied

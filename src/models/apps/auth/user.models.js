@@ -100,7 +100,7 @@ userSchema.methods.generateTemporaryToken = function () {
     .createHash("sha256")
     .update(unHashedToken)
     .digest("hex");
-  // This is the expiry time for the token
+  // This is the expiry time for the token (20 minutes)
   const tokenExpiry = Date.now() + 20 * 60 * 1000;
 
   return { unHashedToken, hashedToken, tokenExpiry };
