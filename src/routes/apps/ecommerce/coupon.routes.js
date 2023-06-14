@@ -5,12 +5,14 @@ import {
   deleteCoupon,
   getAllCoupons,
   getCouponById,
-  removeCoupon,
+  removeCouponFromCart,
   updateCoupon,
+  updateCouponActiveStatus,
 } from "../../../controllers/apps/ecommerce/coupon.controllers.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
   applyCouponCodeValidator,
+  couponActivityStatusValidator,
   couponPathVariableValidator,
   createCouponValidator,
   updateCouponValidator,
@@ -22,7 +24,7 @@ const router = Router();
 router.use(verifyJWT);
 
 router.route("/apply").post(applyCouponCodeValidator(), validate, applyCoupon);
-router.route("/remove").post(removeCoupon);
+router.route("/remove").post(removeCouponFromCart);
 
 router.use(isAdmin);
 
@@ -41,5 +43,14 @@ router
     updateCoupon
   )
   .delete(couponPathVariableValidator(), validate, deleteCoupon);
+
+router
+  .route("/status/:couponId")
+  .patch(
+    couponPathVariableValidator(),
+    couponActivityStatusValidator(),
+    validate,
+    updateCouponActiveStatus
+  );
 
 export default router;

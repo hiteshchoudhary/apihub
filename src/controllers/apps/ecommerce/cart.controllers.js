@@ -199,6 +199,7 @@ const clearCart = asyncHandler(async (req, res) => {
     {
       $set: {
         items: [],
+        coupon: null,
       },
     },
     { new: true }

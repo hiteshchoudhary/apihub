@@ -68,10 +68,28 @@ const getMyOrders = asyncHandler(async (req, res) => {
         ],
       },
     },
+    // lookup for a coupon applied while placing the order
+    {
+      $lookup: {
+        from: "coupons",
+        foreignField: "_id",
+        localField: "coupon",
+        as: "coupon",
+        pipeline: [
+          {
+            $project: {
+              name: 1,
+              couponCode: 1,
+            },
+          },
+        ],
+      },
+    },
     {
       $addFields: {
         customer: { $first: "$customer" },
         address: { $first: "$address" },
+        coupon: { $ifNull: [{ $first: "$coupon" }, null] },
         totalOrderItems: { $size: "$items" },
       },
     },

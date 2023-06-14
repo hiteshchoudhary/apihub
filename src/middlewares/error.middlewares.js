@@ -35,7 +35,7 @@ const errorHandler = (err, req, res, next) => {
   const response = {
     ...error,
     message: error.message,
-    ...(process.env.NODE_ENV === "development" && { stack: error.stack }), // Error stack traces should be visible in development for debugging
+    ...(process.env.NODE_ENV === "development" ? { stack: error.stack } : {}), // Error stack traces should be visible in development for debugging
   };
 
   removeUnusedMulterImageFilesOnError(req);

@@ -20,8 +20,6 @@ import {
 } from "../../../utils/mail.js";
 import { getCart } from "./cart.controllers.js";
 
-//TODO: shft generate unpaid order logic into the common utility function
-
 // * UTILITY FUNCTIONS
 
 const generatePaypalAccessToken = async () => {
@@ -101,7 +99,7 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
     mailgenContent: orderConfirmationMailgenContent(
       req.user?.username,
       userCart.items,
-      order.orderPrice ?? 0
+      order.discountedOrderPrice ?? 0 // send discounted price in the mail which is paid by the user
     ),
   });
 
@@ -406,11 +404,29 @@ const getOrderById = asyncHandler(async (req, res) => {
         ],
       },
     },
+    // lookup for a coupon applied while placing the order
+    {
+      $lookup: {
+        from: "coupons",
+        foreignField: "_id",
+        localField: "coupon",
+        as: "coupon",
+        pipeline: [
+          {
+            $project: {
+              name: 1,
+              couponCode: 1,
+            },
+          },
+        ],
+      },
+    },
     // lookup returns array so get the first element of address and customer
     {
       $addFields: {
         customer: { $first: "$customer" },
         address: { $first: "$address" },
+        coupon: { $ifNull: [{ $first: "$coupon" }, null] },
       },
     },
     // Now we have array of order items with productId being the id of the product that is being ordered
