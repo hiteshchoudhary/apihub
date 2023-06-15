@@ -8,20 +8,20 @@ const getRequestHeaders = asyncHandler(async (req, res) => {
       new ApiResponse(200, { headers: req.headers }, "Request headers returned")
     );
 });
+
 const getClientIP = asyncHandler(async (req, res) => {
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        {
-          ip: req.socket.remoteAddress || req.socket.localAddress,
-          ipv: req.socket.remoteFamily || req.socket.localFamily,
-        },
-        "IP information returned"
-      )
-    );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        ip: req.socket.remoteAddress || req.socket.localAddress,
+        ipv: req.socket.remoteFamily || req.socket.localFamily,
+      },
+      "IP information returned"
+    )
+  );
 });
+
 const getUserAgent = asyncHandler(async (req, res) => {
   return res
     .status(200)
