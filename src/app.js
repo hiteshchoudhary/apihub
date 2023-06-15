@@ -54,6 +54,7 @@ import profileRouter from "./routes/apps/ecommerce/profile.routes.js";
 
 // * Kitchen sink routes
 import httpmethodRouter from "./routes/kitchen-sink/httpmethod.routes.js";
+import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
@@ -80,6 +81,7 @@ app.use("/api/v1/ecommerce/coupons", couponRouter);
 
 // * Kitchen sink apis
 app.use("/api/v1/kitchen-sink/http-methods", httpmethodRouter);
+app.use("/api/v1/kitchen-sink/status-codes", statuscodeRouter);
 
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {

@@ -1,0 +1,368 @@
+{
+  "100": {
+    "statusCode": 100,
+    "statusMessage": "Continue",
+    "description": "The initial part of the request has been received, and the client should proceed with the rest of the request.",
+    "category": "Informational"
+  },
+  "101": {
+    "statusCode": 101,
+    "statusMessage": "Switching Protocols",
+    "description": "The server agrees to switch protocols specified in the Upgrade header field of the request.",
+    "category": "Informational"
+  },
+  "102": {
+    "statusCode": 102,
+    "statusMessage": "Processing",
+    "description": "The server has received and is processing the request but has not yet completed the process.",
+    "category": "Informational"
+  },
+  "103": {
+    "statusCode": 103,
+    "statusMessage": "Early Hints",
+    "description": "The server is sending some hints to the client even before the final response is available.",
+    "category": "Informational"
+  },
+  "200": {
+    "statusCode": 200,
+    "statusMessage": "OK",
+    "description": "The request has succeeded, and the requested resource is returned as the response.",
+    "category": "Success"
+  },
+  "201": {
+    "statusCode": 201,
+    "statusMessage": "Created",
+    "description": "The request has been fulfilled, and a new resource has been created as a result.",
+    "category": "Success"
+  },
+  "202": {
+    "statusCode": 202,
+    "statusMessage": "Accepted",
+    "description": "The request has been accepted for processing, but the processing is not complete.",
+    "category": "Success"
+  },
+  "203": {
+    "statusCode": 203,
+    "statusMessage": "Non-Authoritative Information",
+    "description": "The server is a transforming proxy that has received the request but has modified the response.",
+    "category": "Success"
+  },
+  "204": {
+    "statusCode": 204,
+    "statusMessage": "No Content",
+    "description": "The server has successfully processed the request, but there is no content to return.",
+    "category": "Success"
+  },
+  "205": {
+    "statusCode": 205,
+    "statusMessage": "Reset Content",
+    "description": "The server instructs the client to reset the current resource.",
+    "category": "Success"
+  },
+  "206": {
+    "statusCode": 206,
+    "statusMessage": "Partial Content",
+    "description": "The server has fulfilled the partial GET request for the resource.",
+    "category": "Success"
+  },
+  "207": {
+    "statusCode": 207,
+    "statusMessage": "Multi-Status",
+    "description": "The response status is a collection of independent responses, potentially differing in status.",
+    "category": "Success"
+  },
+  "208": {
+    "statusCode": 208,
+    "statusMessage": "Already Reported",
+    "description": "The members of a DAV binding have already been enumerated in a preceding part of the (multistatus) response, and are not being included again.",
+    "category": "Success"
+  },
+  "218": {
+    "statusCode": 218,
+    "statusMessage": "This Is Fine",
+    "description": "Used as an Easter egg or joke, indicating that the server is returning a response despite encountering an error or problematic situation.",
+    "category": "Unofficial"
+  },
+  "226": {
+    "statusCode": 226,
+    "statusMessage": "IM Used",
+    "description": "The server has fulfilled a request for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance.",
+    "category": "Success"
+  },
+  "300": {
+    "statusCode": 300,
+    "statusMessage": "Multiple Choices",
+    "description": "The requested resource has multiple choices, each with its own URI and representation.",
+    "category": "Redirection"
+  },
+  "301": {
+    "statusCode": 301,
+    "statusMessage": "Moved Permanently",
+    "description": "The requested resource has been permanently moved to a new location.",
+    "category": "Redirection"
+  },
+  "302": {
+    "statusCode": 302,
+    "statusMessage": "Found",
+    "description": "The requested resource has been temporarily moved to a different location.",
+    "category": "Redirection"
+  },
+  "303": {
+    "statusCode": 303,
+    "statusMessage": "See Other",
+    "description": "The response to the request can be found at a different URI.",
+    "category": "Redirection"
+  },
+  "304": {
+    "statusCode": 304,
+    "statusMessage": "Not Modified",
+    "description": "The client can use a cached version of the response.",
+    "category": "Redirection"
+  },
+  "307": {
+    "statusCode": 307,
+    "statusMessage": "Temporary Redirect",
+    "description": "The requested resource is temporarily located at a different URI.",
+    "category": "Redirection"
+  },
+  "308": {
+    "statusCode": 308,
+    "statusMessage": "Permanent Redirect",
+    "description": "The requested resource has been permanently moved to a different URI.",
+    "category": "Redirection"
+  },
+  "400": {
+    "statusCode": 400,
+    "statusMessage": "Bad Request",
+    "description": "The server cannot process the request due to client error.",
+    "category": "Client Error"
+  },
+  "401": {
+    "statusCode": 401,
+    "statusMessage": "Unauthorized",
+    "description": "The request requires user authentication.",
+    "category": "Client Error"
+  },
+  "402": {
+    "statusCode": 402,
+    "statusMessage": "Payment Required",
+    "description": "Reserved for future use.",
+    "category": "Client Error"
+  },
+  "403": {
+    "statusCode": 403,
+    "statusMessage": "Forbidden",
+    "description": "The server understands the request but refuses to fulfill it.",
+    "category": "Client Error"
+  },
+  "404": {
+    "statusCode": 404,
+    "statusMessage": "Not Found",
+    "description": "The requested resource could not be found on the server.",
+    "category": "Client Error"
+  },
+  "405": {
+    "statusCode": 405,
+    "statusMessage": "Method Not Allowed",
+    "description": "The requested method is not allowed for the resource.",
+    "category": "Client Error"
+  },
+  "406": {
+    "statusCode": 406,
+    "statusMessage": "Not Acceptable",
+    "description": "The server cannot produce a response matching the client's requested characteristics.",
+    "category": "Client Error"
+  },
+  "407": {
+    "statusCode": 407,
+    "statusMessage": "Proxy Authentication Required",
+    "description": "The client must authenticate itself to a proxy server.",
+    "category": "Client Error"
+  },
+  "408": {
+    "statusCode": 408,
+    "statusMessage": "Request Timeout",
+    "description": "The server timed out waiting for the request from the client.",
+    "category": "Client Error"
+  },
+  "409": {
+    "statusCode": 409,
+    "statusMessage": "Conflict",
+    "description": "The request could not be completed due to a conflict with the current state of the target resource.",
+    "category": "Client Error"
+  },
+  "410": {
+    "statusCode": 410,
+    "statusMessage": "Gone",
+    "description": "The requested resource is no longer available and has been permanently removed.",
+    "category": "Client Error"
+  },
+  "411": {
+    "statusCode": 411,
+    "statusMessage": "Length Required",
+    "description": "The server requires a Content-Length header in the request.",
+    "category": "Client Error"
+  },
+  "412": {
+    "statusCode": 412,
+    "statusMessage": "Precondition Failed",
+    "description": "One or more conditions in the request header fields evaluated to false.",
+    "category": "Client Error"
+  },
+  "413": {
+    "statusCode": 413,
+    "statusMessage": "Payload Too Large",
+    "description": "The server refused to process the request because the payload is too large.",
+    "category": "Client Error"
+  },
+  "414": {
+    "statusCode": 414,
+    "statusMessage": "URI Too Long",
+    "description": "The server refused the request because the URI is too long.",
+    "category": "Client Error"
+  },
+  "415": {
+    "statusCode": 415,
+    "statusMessage": "Unsupported Media Type",
+    "description": "The server does not support the request's media type.",
+    "category": "Client Error"
+  },
+  "416": {
+    "statusCode": 416,
+    "statusMessage": "Range Not Satisfiable",
+    "description": "The requested range is not satisfiable.",
+    "category": "Client Error"
+  },
+  "417": {
+    "statusCode": 417,
+    "statusMessage": "Expectation Failed",
+    "description": "The server cannot meet the requirements specified by the Expect request header.",
+    "category": "Client Error"
+  },
+  "418": {
+    "statusCode": 418,
+    "statusMessage": "I'm a teapot",
+    "description": "This code was defined in 1998 as one of the traditional IETF April Fools' jokes, in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers. However, known implementations do exist.",
+    "category": "Client Error"
+  },
+  "419": {
+    "statusCode": 419,
+    "statusMessage": "Authentication Timeout",
+    "description": "Similar to 401 Unauthorized, but indicates that the client's session has expired and needs to reauthenticate.",
+    "category": "Unofficial"
+  },
+  "420": {
+    "statusCode": 420,
+    "statusMessage": "Method Failure",
+    "description": "A non-standard status code typically used to indicate that a method failed on the server.",
+    "category": "Unofficial"
+  },
+  "422": {
+    "statusCode": 422,
+    "statusMessage": "Unprocessable Entity",
+    "description": "The server understands the content of the request but cannot process it due to semantic errors or business logic failures.",
+    "category": "Unofficial"
+  },
+  "423": {
+    "statusCode": 423,
+    "statusMessage": "Locked",
+    "description": "The requested resource is locked and cannot be accessed until a specified condition is met.",
+    "category": "Unofficial"
+  },
+  "424": {
+    "statusCode": 424,
+    "statusMessage": "Failed Dependency",
+    "description": "The request failed due to the failure of a previous request.",
+    "category": "Unofficial"
+  },
+  "428": {
+    "statusCode": 428,
+    "statusMessage": "Precondition Required",
+    "description": "The server requires the request to be conditional, typically requiring the inclusion of a specific header field.",
+    "category": "Unofficial"
+  },
+  "429": {
+    "statusCode": 429,
+    "statusMessage": "Too Many Requests",
+    "description": "The user has sent too many requests in a given amount of time, exceeding the server's rate limit.",
+    "category": "Unofficial"
+  },
+  "431": {
+    "statusCode": 431,
+    "statusMessage": "Request Header Fields Too Large",
+    "description": "The server refuses to process the request because the request headers are too large.",
+    "category": "Unofficial"
+  },
+  "451": {
+    "statusCode": 451,
+    "statusMessage": "Unavailable For Legal Reasons",
+    "description": "The server is denying access to the resource due to legal reasons, such as censorship or government-mandated restrictions.",
+    "category": "Unofficial"
+  },
+  "500": {
+    "statusCode": 500,
+    "statusMessage": "Internal Server Error",
+    "description": "A generic server error has occurred.",
+    "category": "Server Error"
+  },
+  "501": {
+    "statusCode": 501,
+    "statusMessage": "Not Implemented",
+    "description": "The server does not support the functionality required to fulfill the request.",
+    "category": "Server Error"
+  },
+  "502": {
+    "statusCode": 502,
+    "statusMessage": "Bad Gateway",
+    "description": "The server, while acting as a gateway or proxy, received an invalid response from an upstream server.",
+    "category": "Server Error"
+  },
+  "503": {
+    "statusCode": 503,
+    "statusMessage": "Service Unavailable",
+    "description": "The server is currently unable to handle the request due to temporary overloading or maintenance.",
+    "category": "Server Error"
+  },
+  "504": {
+    "statusCode": 504,
+    "statusMessage": "Gateway Timeout",
+    "description": "The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server.",
+    "category": "Server Error"
+  },
+  "505": {
+    "statusCode": 505,
+    "statusMessage": "HTTP Version Not Supported",
+    "description": "The server does not support the HTTP protocol version used in the request.",
+    "category": "Server Error"
+  },
+  "506": {
+    "statusCode": 506,
+    "statusMessage": "Variant Also Negotiates",
+    "description": "The server has an internal configuration error: the chosen variant resource is configured to engage in transparent content negotiation itself and is therefore not a proper end point in the negotiation process.",
+    "category": "Server Error"
+  },
+  "507": {
+    "statusCode": 507,
+    "statusMessage": "Insufficient Storage",
+    "description": "The server is unable to store the representation needed to complete the request.",
+    "category": "Server Error"
+  },
+  "508": {
+    "statusCode": 508,
+    "statusMessage": "Loop Detected",
+    "description": "The server detected an infinite loop while processing the request.",
+    "category": "Server Error"
+  },
+  "510": {
+    "statusCode": 510,
+    "statusMessage": "Not Extended",
+    "description": "The policy for accessing the requested resource requires further extensions to be made by the client.",
+    "category": "Server Error"
+  },
+  "511": {
+    "statusCode": 511,
+    "statusMessage": "Network Authentication Required",
+    "description": "The client needs to authenticate to gain network access.",
+    "category": "Server Error"
+  }
+}
