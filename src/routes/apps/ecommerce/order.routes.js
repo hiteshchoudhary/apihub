@@ -16,7 +16,7 @@ import {
   orderUpdateStatusValidator,
   verifyPaypalPaymentValidator,
   verifyRazorpayPaymentValidator,
-} from "../../../validators/ecommerce/order.validators.js";
+} from "../../../validators/apps/ecommerce/order.validators.js";
 import { validate } from "../../../validators/validate.js";
 
 const router = Router();

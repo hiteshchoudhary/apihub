@@ -9,7 +9,7 @@ import {
 import {
   categoryRequestBodyValidator,
   categoryPathVariableValidator,
-} from "../../../validators/ecommerce/category.validators.js";
+} from "../../../validators/apps/ecommerce/category.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
 

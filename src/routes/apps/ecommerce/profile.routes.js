@@ -5,7 +5,7 @@ import {
   getMyOrders,
   updateEcomProfile,
 } from "../../../controllers/apps/ecommerce/profile.controllers.js";
-import { updateEcomProfileValidator } from "../../../validators/ecommerce/profile.validators.js";
+import { updateEcomProfileValidator } from "../../../validators/apps/ecommerce/profile.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { EcomProfile } from "../../../models/apps/ecommerce/profile.models.js";
 

@@ -1,5 +1,5 @@
 import { body, param } from "express-validator";
-import { OrderStatusEnum } from "../../constants.js";
+import { OrderStatusEnum } from "../../../constants.js";
 
 const generateRazorpayPaymentValidator = () => {
   return [

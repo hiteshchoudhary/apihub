@@ -11,7 +11,7 @@ import {
   addressPathVariableValidator,
   createAddressValidator,
   updateAddressValidator,
-} from "../../../validators/ecommerce/address.validators.js";
+} from "../../../validators/apps/ecommerce/address.validators.js";
 import { validate } from "../../../validators/validate.js";
 
 const router = Router();

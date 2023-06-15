@@ -6,10 +6,10 @@ import {
   removeItemFromCart,
 } from "../../../controllers/apps/ecommerce/cart.controllers.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
-import { addItemOrUpdateItemQuantityValidator } from "../../../validators/ecommerce/cart.validators.js";
+import { addItemOrUpdateItemQuantityValidator } from "../../../validators/apps/ecommerce/cart.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
-import { productPathVariableValidator } from "../../../validators/ecommerce/product.validators.js";
+import { productPathVariableValidator } from "../../../validators/apps/ecommerce/product.validators.js";
 
 const router = Router();
 

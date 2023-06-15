@@ -17,7 +17,7 @@ import {
   couponPathVariableValidator,
   createCouponValidator,
   updateCouponValidator,
-} from "../../../validators/ecommerce/coupon.validators.js";
+} from "../../../validators/apps/ecommerce/coupon.validators.js";
 import { validate } from "../../../validators/validate.js";
 
 const router = Router();

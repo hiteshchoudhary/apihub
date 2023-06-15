@@ -10,13 +10,13 @@ import {
 } from "../../../controllers/apps/ecommerce/product.controllers.js";
 import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
-import { categoryPathVariableValidator } from "../../../validators/ecommerce/category.validators.js";
+import { categoryPathVariableValidator } from "../../../validators/apps/ecommerce/category.validators.js";
 import {
   createProductValidator,
   productPathVariableValidator,
   subImagePathVariableValidator,
   updateProductValidator,
-} from "../../../validators/ecommerce/product.validators.js";
+} from "../../../validators/apps/ecommerce/product.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { MAXIMUM_SUB_IMAGE_COUNT } from "../../../constants.js";
 
