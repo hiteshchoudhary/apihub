@@ -10,7 +10,10 @@ import {
   updateCoupon,
   updateCouponActiveStatus,
 } from "../../../controllers/apps/ecommerce/coupon.controllers.js";
-import { isAdmin, verifyJWT } from "../../../middlewares/auth.middlewares.js";
+import {
+  verifyPermission,
+  verifyJWT,
+} from "../../../middlewares/auth.middlewares.js";
 import {
   applyCouponCodeValidator,
   couponActivityStatusValidator,
@@ -19,6 +22,7 @@ import {
   updateCouponValidator,
 } from "../../../validators/apps/ecommerce/coupon.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { UserRolesEnum } from "../../../constants.js";
 
 const router = Router();
 
@@ -31,7 +35,7 @@ router.route("/remove").post(removeCouponFromCart);
 router.route("/customer/available").get(getValidCouponsForCustomer);
 
 // * ADMIN ROUTES
-router.use(isAdmin);
+router.use(verifyPermission([UserRolesEnum.ADMIN]));
 
 router
   .route("/")

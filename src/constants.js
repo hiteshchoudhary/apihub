@@ -6,6 +6,8 @@ export const UserRolesEnum = {
   USER: "USER",
 };
 
+export const AvailableUserRoles = Object.values(UserRolesEnum);
+
 /**
  * @type {{ PENDING: "PENDING"; CANCELLED: "CANCELLED"; DELIVERED: "DELIVERED" } as const}
  */
@@ -15,6 +17,8 @@ export const OrderStatusEnum = {
   DELIVERED: "DELIVERED",
 };
 
+export const AvailableOrderStatuses = Object.values(OrderStatusEnum);
+
 /**
  * @type {{ UNKNOWN:"UNKNOWN"; RAZORPAY: "RAZORPAY"; PAYPAL: "PAYPAL"; } as const}
  */
@@ -23,6 +27,8 @@ export const PaymentProviderEnum = {
   RAZORPAY: "RAZORPAY",
   PAYPAL: "PAYPAL",
 };
+
+export const AvailablePaymentProviders = Object.values(PaymentProviderEnum);
 
 /**
  * @type {{ FLAT:"FLAT"; } as const}
