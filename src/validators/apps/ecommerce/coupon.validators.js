@@ -1,5 +1,5 @@
 import { body, param } from "express-validator";
-import { CouponTypeEnum } from "../../../constants.js";
+import { AvailableCouponTypes } from "../../../constants.js";
 
 const createCouponValidator = () => {
   return [
@@ -14,7 +14,7 @@ const createCouponValidator = () => {
       .optional()
       .trim()
       .notEmpty()
-      .isIn(Object.values(CouponTypeEnum))
+      .isIn(AvailableCouponTypes)
       .withMessage("Invalid coupon type"),
     body("discountValue")
       .trim()
@@ -68,7 +68,7 @@ const updateCouponValidator = () => {
       .optional()
       .trim()
       .notEmpty()
-      .isIn(Object.values(CouponTypeEnum))
+      .isIn(AvailableCouponTypes)
       .withMessage("Invalid coupon type"),
     body("discountValue")
       .optional()
@@ -135,9 +135,9 @@ const couponActivityStatusValidator = () => {
 };
 
 export {
-  createCouponValidator,
-  couponPathVariableValidator,
-  updateCouponValidator,
   applyCouponCodeValidator,
   couponActivityStatusValidator,
+  couponPathVariableValidator,
+  createCouponValidator,
+  updateCouponValidator,
 };
