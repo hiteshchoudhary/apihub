@@ -58,6 +58,7 @@ import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 import cookieRouter from "./routes/kitchen-sink/cookie.routes.js";
 import requestinspectionRouter from "./routes/kitchen-sink/requestinspection.routes.js";
 import redirectRouter from "./routes/kitchen-sink/redirect.routes.js";
+import imageRouter from "./routes/kitchen-sink/image.routes.js";
 
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
@@ -88,6 +89,7 @@ app.use("/api/v1/kitchen-sink/status-codes", statuscodeRouter);
 app.use("/api/v1/kitchen-sink/request", requestinspectionRouter);
 app.use("/api/v1/kitchen-sink/cookies", cookieRouter);
 app.use("/api/v1/kitchen-sink/redirect", redirectRouter);
+app.use("/api/v1/kitchen-sink/image", imageRouter);
 
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {
