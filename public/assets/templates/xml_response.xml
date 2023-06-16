@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='us-ascii'?>
+
+<carousal 
+    title="Cool carousal"
+    date="Date of creation"
+    author="Yours Truly"
+    >
+
+    <!-- TITLE SLIDE -->
+    <panel type="all">
+      <title>Javascript is the best</title>
+    </panel>
+
+    <!-- OVERVIEW -->
+    <panel type="all">
+        <title>Overview</title>
+        <item>Why <em>Javascript</em> is the best</item>
+        <item/>
+        <item>Who <em>created</em> Javascript</item>
+    </panel>
+
+</carousal>
