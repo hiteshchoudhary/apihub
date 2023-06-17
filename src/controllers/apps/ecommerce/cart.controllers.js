@@ -140,6 +140,11 @@ const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
     // If product already exist assign a new quantity to it
     // ! We are not adding or subtracting quantity to keep it dynamic. Frontend will send us updated quantity here
     addedProduct.quantity = quantity;
+    // if user updates the cart remove the coupon associated with the cart to avoid misuse
+    // Do this only if quantity changes because if user adds a new project the cart total will increase anyways
+    if (cart.coupon) {
+      cart.coupon = null;
+    }
   } else {
     // if its a new product being added in the cart push it to the cart items
     cart.items.push({
@@ -187,8 +192,6 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
 
   let cart = await getCart(req.user._id);
 
-  // TODO: Do we need this check or just remove the coupon when user removes the item?
-  // TODO: Add this logic in update cart item quantity logic. So if user reduces the quantity we need to check if new cart total is greater than the minimum cart value of the coupon
   // check if the cart's new total is greater than the minimum cart total requirement of the coupon
   if (cart.coupon && cart.cartTotal < cart.coupon.minimumCartValue) {
     // if it is less than minimum cart value remove the coupon code which is applied

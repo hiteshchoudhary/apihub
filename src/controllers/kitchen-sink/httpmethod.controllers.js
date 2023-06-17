@@ -1,14 +1,13 @@
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-// TODO: Add more request methods and also send some additional information regarding the methods
+// TODO: Add more request methods
 
 /**
  *
  * @param {import("express").Request} req
  */
 const getRequestMethodPayload = (req) => {
-  // TODO: add more info which can be relatable
   return {
     method: req.method,
     headers: req.headers,
