@@ -139,3 +139,5 @@ logs
 /public/images/*
 # except .gitkeep to push empty folder to the git repo
 !/public/images/.gitkeep
+
+NOTES.md
