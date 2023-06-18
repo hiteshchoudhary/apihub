@@ -40,6 +40,17 @@ export const CouponTypeEnum = {
 
 export const AvailableCouponTypes = Object.values(CouponTypeEnum);
 
+/**
+ * @type {{ GOOGLE: "GOOGLE"; GITHUB: "GITHUB"; EMAIL_PASSWORD: "EMAIL_PASSWORD"} as const}
+ */
+export const UserLoginType = {
+  GOOGLE: "GOOGLE",
+  GITHUB: "GITHUB",
+  EMAIL_PASSWORD: "EMAIL_PASSWORD",
+};
+
+export const AvailableSocialLogins = Object.values(UserLoginType);
+
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;
 export const DB_NAME = "apihub";
 

@@ -1,9 +1,12 @@
 import { Router } from "express";
+import passport from "passport";
+import { UserRolesEnum } from "../../../constants.js";
 import {
   assignRole,
   changeCurrentPassword,
   forgotPasswordRequest,
   getCurrentUser,
+  handleSocialLogin,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -12,7 +15,11 @@ import {
   resetForgottenPassword,
   verifyEmail,
 } from "../../../controllers/apps/auth/user.controllers.js";
-import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
+import {
+  verifyJWT,
+  verifyPermission,
+} from "../../../middlewares/auth.middlewares.js";
+import "../../../passport/index.js"; // import the passport config
 import {
   userAssignRoleValidator,
   userChangeCurrentPasswordValidator,
@@ -58,13 +65,41 @@ router
   .route("/resend-email-verification")
   .post(verifyJWT, resendEmailVerification);
 router
-  .route("/assign-role/:userId") // TODO: Add restriction on assigning role to avoid permission to nornal users
+  .route("/assign-role/:userId")
   .post(
     verifyJWT,
+    verifyPermission([UserRolesEnum.ADMIN]),
     userPathVariableValidator(),
     userAssignRoleValidator(),
     validate,
     assignRole
   );
+
+// SSO routes
+router.route("/google").get(
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  }),
+  (req, res) => {
+    res.send("redirecting to google...");
+  }
+);
+
+router.route("/github").get(
+  passport.authenticate("github", {
+    scope: ["profile", "email"],
+  }),
+  (req, res) => {
+    res.send("redirecting to github...");
+  }
+);
+
+router
+  .route("/google/callback")
+  .get(passport.authenticate("google"), handleSocialLogin);
+
+router
+  .route("/github/callback")
+  .get(passport.authenticate("github"), handleSocialLogin);
 
 export default router;

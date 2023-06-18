@@ -2,7 +2,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import session from "express-session";
 import fs from "fs";
+import passport from "passport";
 import path from "path";
 import { DB_NAME } from "./constants.js";
 import { dbInstance } from "./db/index.js";
@@ -27,6 +29,11 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public")); // configure static file to save images locally
 app.use(cookieParser());
+
+// required for passport
+app.use(session({ secret: process.env.EXPRESS_SESSION_SECRET })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 // api routes
 import { errorHandler } from "./middlewares/error.middlewares.js";
@@ -54,13 +61,13 @@ import profileRouter from "./routes/apps/ecommerce/profile.routes.js";
 import todoRouter from "./routes/apps/todo/todo.routes.js";
 
 // * Kitchen sink routes
-import httpmethodRouter from "./routes/kitchen-sink/httpmethod.routes.js";
-import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 import cookieRouter from "./routes/kitchen-sink/cookie.routes.js";
+import httpmethodRouter from "./routes/kitchen-sink/httpmethod.routes.js";
+import imageRouter from "./routes/kitchen-sink/image.routes.js";
+import redirectRouter from "./routes/kitchen-sink/redirect.routes.js";
 import requestinspectionRouter from "./routes/kitchen-sink/requestinspection.routes.js";
 import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.routes.js";
-import redirectRouter from "./routes/kitchen-sink/redirect.routes.js";
-import imageRouter from "./routes/kitchen-sink/image.routes.js";
+import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
