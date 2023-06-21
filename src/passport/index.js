@@ -66,7 +66,10 @@ passport.use(
           username: profile._json.email?.split("@")[0], // as email is unique, this username will be unique
           isEmailVerified: true, // email will be already verified
           role: UserRolesEnum.USER,
-          avatar: profile._json.picture, // set avatar as user's google picture
+          avatar: {
+            url: profile._json.picture,
+            localPath: "",
+          }, // set avatar as user's google picture
           loginType: UserLoginType.GOOGLE,
         });
         if (createdUser) {
@@ -129,7 +132,10 @@ passport.use(
               : profile?.username,
             isEmailVerified: true, // email will be already verified
             role: UserRolesEnum.USER,
-            avatar: profile._json.avatar_url,
+            avatar: {
+              url: profile._json.avatar_url,
+              localPath: "",
+            },
             loginType: UserLoginType.GITHUB,
           });
           if (createdUser) {

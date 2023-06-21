@@ -13,6 +13,7 @@ import {
   registerUser,
   resendEmailVerification,
   resetForgottenPassword,
+  updateUserAvatar,
   verifyEmail,
 } from "../../../controllers/apps/auth/user.controllers.js";
 import {
@@ -30,6 +31,7 @@ import {
   userResetForgottenPasswordValidator,
 } from "../../../validators/apps/auth/user.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { upload } from "../../../middlewares/multer.middlewares.js";
 
 const router = Router();
 
@@ -52,6 +54,9 @@ router
 
 // Secured routes
 router.route("/logout").post(verifyJWT, logoutUser);
+router
+  .route("/avatar")
+  .patch(verifyJWT, upload.single("avatar"), updateUserAvatar);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 router
   .route("/change-password")

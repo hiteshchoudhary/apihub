@@ -10,6 +10,11 @@ import {
   sendEmail,
 } from "../../../utils/mail.js";
 import { UserLoginType, UserRolesEnum } from "../../../constants.js";
+import {
+  getLocalPath,
+  getStaticFilePath,
+  removeImageFile,
+} from "../../../utils/helpers.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -453,6 +458,41 @@ const handleSocialLogin = asyncHandler(async (req, res) => {
     );
 });
 
+const updateUserAvatar = asyncHandler(async (req, res) => {
+  // Check if user has uploaded an avatar
+  if (!req.file?.filename) {
+    throw new ApiError(400, "Avatar image is required");
+  }
+
+  // get avatar file system url and local path
+  const avatarUrl = getStaticFilePath(req, req.file?.filename);
+  const avatarLocalPath = getLocalPath(req.file?.filename);
+
+  const user = await User.findById(req.user._id);
+
+  let updatedUser = await User.findByIdAndUpdate(
+    req.user._id,
+
+    {
+      $set: {
+        // set the newly uploaded avatar
+        avatar: {
+          url: avatarUrl,
+          localPath: avatarLocalPath,
+        },
+      },
+    },
+    { new: true }
+  );
+
+  // remove the old avatar
+  removeImageFile(user.avatar.localPath);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedUser, "Avatar updated successfully"));
+});
+
 export {
   assignRole,
   changeCurrentPassword,
@@ -466,4 +506,5 @@ export {
   resetForgottenPassword,
   verifyEmail,
   handleSocialLogin,
+  updateUserAvatar,
 };
