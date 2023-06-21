@@ -3,14 +3,23 @@ import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import { SocialProfile } from "../../../models/apps/social-media/profile.models.js";
 import {
   getMySocialProfile,
+  getProfileByUserName,
   updateCoverImage,
   updateSocialProfile,
 } from "../../../controllers/apps/social-media/profile.controllers.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
-import { updateSocialProfileValidator } from "../../../validators/apps/social-media/profile.validators.js";
+import {
+  getProfileByUserNameValidator,
+  updateSocialProfileValidator,
+} from "../../../validators/apps/social-media/profile.validators.js";
 import { validate } from "../../../validators/validate.js";
 
 const router = Router();
+
+// public route
+router
+  .route("/u/:username")
+  .get(getProfileByUserNameValidator(), validate, getProfileByUserName);
 
 router.use(verifyJWT);
 

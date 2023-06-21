@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 const updateSocialProfileValidator = () => {
   return [
@@ -44,4 +44,10 @@ const updateSocialProfileValidator = () => {
   ];
 };
 
-export { updateSocialProfileValidator };
+const getProfileByUserNameValidator = () => {
+  return [
+    param("username").trim().notEmpty().withMessage("Username is required"),
+  ];
+};
+
+export { updateSocialProfileValidator, getProfileByUserNameValidator };

@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../auth/user.models.js";
 
-// TODO: Add/connect followers and followee logic
 const profileSchema = new Schema(
   {
     coverImage: {
