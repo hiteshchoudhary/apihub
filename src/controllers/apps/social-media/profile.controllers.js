@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import { User } from "../../../models/apps/auth/user.models.js";
+import { SocialFollow } from "../../../models/apps/social-media/follow.models.js";
 import { SocialProfile } from "../../../models/apps/social-media/profile.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
@@ -12,11 +14,18 @@ import {
 /**
  *
  * @param {string} userId
+ * @param {import("express").Request} req
  * @description A utility function, which querys the {@link SocialProfile} model and returns the profile with account details
  */
-const getUserSocialProfile = async (userId) => {
+const getUserSocialProfile = async (userId, req) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User does not exist");
+  }
+
   const hasProfile = await SocialProfile.findOne({
-    owner: userId,
+    owner: new mongoose.Types.ObjectId(userId),
   });
 
   if (!hasProfile) {
@@ -28,7 +37,7 @@ const getUserSocialProfile = async (userId) => {
   let profile = await SocialProfile.aggregate([
     {
       $match: {
-        owner: userId,
+        owner: new mongoose.Types.ObjectId(userId),
       },
     },
     {
@@ -41,10 +50,8 @@ const getUserSocialProfile = async (userId) => {
           {
             $project: {
               avatar: 1,
-              role: 1,
               username: 1,
               email: 1,
-              loginType: 1,
               isEmailVerified: 1,
             },
           },
@@ -67,7 +74,6 @@ const getUserSocialProfile = async (userId) => {
         as: "followedBy", // users that are following the current user
       },
     },
-
     {
       $addFields: {
         account: { $first: "$account" },
@@ -82,16 +88,35 @@ const getUserSocialProfile = async (userId) => {
       },
     },
   ]);
-  return profile[0];
+
+  let isFollowing = false;
+
+  if (req.user?._id && req.user?._id?.toString() !== userId.toString()) {
+    // Check if there is a logged in user and logged in user is NOT same as the profile that is being loaded
+    // In such case we will check if the logged in user follows the loaded profile user
+    const followInstance = await SocialFollow.findOne({
+      followerId: req.user?._id, // logged in user. If this is null `isFollowing` will be false
+      followeeId: userId,
+    });
+    isFollowing = followInstance ? true : false;
+  }
+
+  const userProfile = profile[0];
+
+  if (!userProfile) {
+    throw new ApiError(404, "User profile does not exist");
+  }
+  return { ...userProfile, isFollowing };
 };
 
 const getMySocialProfile = asyncHandler(async (req, res) => {
-  let profile = await getUserSocialProfile(req.user._id);
+  let profile = await getUserSocialProfile(req.user._id, req);
   return res
     .status(200)
     .json(new ApiResponse(200, profile, "User profile fetched successfully"));
 });
 
+// Public route
 const getProfileByUserName = asyncHandler(async (req, res) => {
   const { username } = req.params;
 
@@ -101,7 +126,7 @@ const getProfileByUserName = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User does not exist");
   }
 
-  const userProfile = await getUserSocialProfile(user._id);
+  const userProfile = await getUserSocialProfile(user._id, req);
 
   return res
     .status(200)
@@ -132,7 +157,7 @@ const updateSocialProfile = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  profile = await getUserSocialProfile(req.user._id);
+  profile = await getUserSocialProfile(req.user._id, req);
 
   return res
     .status(200)
@@ -171,7 +196,7 @@ const updateCoverImage = asyncHandler(async (req, res) => {
   // remove the old cover image
   removeImageFile(profile.coverImage.localPath);
 
-  updatedProfile = await getUserSocialProfile(req.user._id);
+  updatedProfile = await getUserSocialProfile(req.user._id, req);
 
   return res
     .status(200)
