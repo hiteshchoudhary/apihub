@@ -163,11 +163,11 @@ const getFollowersListByUserName = asyncHandler(async (req, res) => {
     },
   ]);
 
+  const payload = followersList[0] ?? {};
+
   return res
     .status(200)
-    .json(
-      new ApiResponse(200, followersList, "Followers list fetched successfully")
-    );
+    .json(new ApiResponse(200, payload, "Followers list fetched successfully"));
 });
 
 const getFollowingListByUserName = asyncHandler(async (req, res) => {
@@ -272,11 +272,11 @@ const getFollowingListByUserName = asyncHandler(async (req, res) => {
     },
   ]);
 
+  const payload = followingList[0] ?? {};
+
   return res
     .status(200)
-    .json(
-      new ApiResponse(200, followingList, "Following list fetched successfully")
-    );
+    .json(new ApiResponse(200, payload, "Following list fetched successfully"));
 });
 
 export {
