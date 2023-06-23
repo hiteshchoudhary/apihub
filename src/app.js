@@ -101,7 +101,7 @@ app.use("/api/v1/ecommerce/coupons", couponRouter);
 
 app.use("/api/v1/social-media/profile", socialProfileRouter);
 app.use("/api/v1/social-media/follow", socialFollowRouter);
-app.use("/api/v1/social-media/post", socialPostRouter);
+app.use("/api/v1/social-media/posts", socialPostRouter);
 
 app.use("/api/v1/todos", todoRouter);
 
