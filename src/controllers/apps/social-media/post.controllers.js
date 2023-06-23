@@ -4,6 +4,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import {
   getLocalPath,
+  getMongoosePaginationOptions,
   getStaticFilePath,
   removeImageFile,
 } from "../../../utils/helpers.js";
@@ -263,7 +264,20 @@ const removePostImage = asyncHandler(async (req, res) => {
 });
 
 const getAllPosts = asyncHandler(async (req, res) => {
-  const posts = await SocialPost.aggregate([...postCommonAggregation()]);
+  const { page = 1, limit = 10 } = req.query;
+  const postAggregation = SocialPost.aggregate([...postCommonAggregation()]);
+
+  const posts = await SocialPost.aggregatePaginate(
+    postAggregation,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalPosts",
+        docs: "posts",
+      },
+    })
+  );
 
   return res
     .status(200)
@@ -271,7 +285,9 @@ const getAllPosts = asyncHandler(async (req, res) => {
 });
 
 const getMyPosts = asyncHandler(async (req, res) => {
-  const posts = await SocialPost.aggregate([
+  const { page = 1, limit = 10 } = req.query;
+
+  const postAggregation = await SocialPost.aggregate([
     {
       $match: {
         author: new mongoose.Types.ObjectId(req.user?._id),
@@ -279,6 +295,18 @@ const getMyPosts = asyncHandler(async (req, res) => {
     },
     ...postCommonAggregation(),
   ]);
+
+  const posts = await SocialPost.aggregatePaginate(
+    postAggregation,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalPosts",
+        docs: "posts",
+      },
+    })
+  );
 
   return res
     .status(200)

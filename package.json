@@ -31,6 +31,7 @@
     "jsonwebtoken": "^9.0.0",
     "mailgen": "^2.0.27",
     "mongoose": "^7.2.0",
+    "mongoose-aggregate-paginate-v2": "^1.0.6",
     "multer": "^1.4.5-lts.1",
     "nanoid": "^4.0.2",
     "nodemailer": "^6.9.3",
