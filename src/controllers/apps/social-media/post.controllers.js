@@ -10,7 +10,6 @@ import {
 import { ApiError } from "../../../utils/ApiError.js";
 import { MAXIMUM_SOCIAL_POST_IMAGE_COUNT } from "../../../constants.js";
 
-// TODO: implement like and unlike functionality in different controller and test the calculation implemented in postCommonAggregation utility func
 // TODO: Add bookmark model and CRUD for the same
 // TODO: include bookmark aggregation pipelines in postCommonAggregation function same as likes
 // TODO: implement comments and add aggregation pipelines for the same in postCommonAggregation
@@ -271,6 +270,21 @@ const getAllPosts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "Posts fetched successfully"));
 });
 
+const getMyPosts = asyncHandler(async (req, res) => {
+  const posts = await SocialPost.aggregate([
+    {
+      $match: {
+        author: new mongoose.Types.ObjectId(req.user?._id),
+      },
+    },
+    ...postCommonAggregation(),
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, posts, "My posts fetched successfully"));
+});
+
 const getPostById = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const post = await SocialPost.aggregate([
@@ -322,4 +336,5 @@ export {
   updatePost,
   removePostImage,
   deletePost,
+  getMyPosts,
 };

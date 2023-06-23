@@ -3,6 +3,7 @@ import {
   createPost,
   deletePost,
   getAllPosts,
+  getMyPosts,
   getPostById,
   removePostImage,
   updatePost,
@@ -32,6 +33,8 @@ router
     validate,
     createPost
   );
+
+router.route("/my").get(verifyJWT, getMyPosts);
 
 router
   .route("/:postId")
