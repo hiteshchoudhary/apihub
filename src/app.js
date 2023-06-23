@@ -7,10 +7,19 @@ import session from "express-session";
 import fs from "fs";
 import passport from "passport";
 import path from "path";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yaml";
 import { DB_NAME } from "./constants.js";
 import { dbInstance } from "./db/index.js";
 import { ApiError } from "./utils/ApiError.js";
 import { ApiResponse } from "./utils/ApiResponse.js";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
+const swaggerDocument = YAML.parse(file);
 
 dotenv.config({
   path: "./.env",
@@ -96,6 +105,10 @@ import requestinspectionRouter from "./routes/kitchen-sink/requestinspection.rou
 import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.routes.js";
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 
+// * API DOCS
+app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
 // * Public apis
