@@ -36,14 +36,15 @@ const productSchema = new Schema(
       default: 0,
       type: Number,
     },
-    subImages: [
-      {
-        type: {
+    subImages: {
+      type: [
+        {
           url: String,
           localPath: String,
         },
-      },
-    ],
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );
