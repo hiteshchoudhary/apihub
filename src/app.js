@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import { rateLimit } from "express-rate-limit";
 import session from "express-session";
 import fs from "fs";
 import passport from "passport";
@@ -24,6 +25,25 @@ app.use(
     credentials: true,
   })
 );
+
+// Rate limiter to avoid misuse of the service and avoid cost spikes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 500, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  handler: (_, __, ___, options) => {
+    throw new ApiError(
+      options.statusCode || 500,
+      `There are too many requests. You are only allowed ${
+        options.max
+      } requests per ${options.windowMs / 60000} minutes`
+    );
+  },
+});
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
@@ -60,10 +80,10 @@ import orderRouter from "./routes/apps/ecommerce/order.routes.js";
 import productRouter from "./routes/apps/ecommerce/product.routes.js";
 import ecomProfileRouter from "./routes/apps/ecommerce/profile.routes.js";
 
-import socialProfileRouter from "./routes/apps/social-media/profile.routes.js";
 import socialFollowRouter from "./routes/apps/social-media/follow.routes.js";
-import socialPostRouter from "./routes/apps/social-media/post.routes.js";
 import socialLikeRouter from "./routes/apps/social-media/like.routes.js";
+import socialPostRouter from "./routes/apps/social-media/post.routes.js";
+import socialProfileRouter from "./routes/apps/social-media/profile.routes.js";
 
 import todoRouter from "./routes/apps/todo/todo.routes.js";
 
