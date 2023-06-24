@@ -3,12 +3,16 @@ import {
   createPost,
   deletePost,
   getAllPosts,
+  getBookMarkedPosts,
   getMyPosts,
   getPostById,
   removePostImage,
   updatePost,
 } from "../../../controllers/apps/social-media/post.controllers.js";
-import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
+import {
+  getLoggedInUserOrIgnore,
+  verifyJWT,
+} from "../../../middlewares/auth.middlewares.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
 import {
   createPostValidator,
@@ -23,7 +27,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(getAllPosts)
+  .get(getLoggedInUserOrIgnore, getAllPosts)
   .post(
     verifyJWT,
     upload.fields([
@@ -34,11 +38,18 @@ router
     createPost
   );
 
-router.route("/my").get(verifyJWT, getMyPosts);
+router.route("/get/my").get(verifyJWT, getMyPosts);
+
+router.route("/get/bookmarked").get(verifyJWT, getBookMarkedPosts);
 
 router
   .route("/:postId")
-  .get(postPathVariableValidator(), validate, getPostById)
+  .get(
+    getLoggedInUserOrIgnore,
+    postPathVariableValidator(),
+    validate,
+    getPostById
+  )
   .patch(
     verifyJWT,
     upload.fields([
@@ -52,7 +63,7 @@ router
   .delete(verifyJWT, postPathVariableValidator(), validate, deletePost);
 
 router
-  .route("/:postId/:imageId")
+  .route("/remove-image/:postId/:imageId")
   .patch(
     verifyJWT,
     postPathVariableValidator(),

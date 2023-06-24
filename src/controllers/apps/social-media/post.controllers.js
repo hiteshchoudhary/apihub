@@ -10,16 +10,16 @@ import {
 } from "../../../utils/helpers.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { MAXIMUM_SOCIAL_POST_IMAGE_COUNT } from "../../../constants.js";
+import { SocialBookmark } from "../../../models/apps/social-media/bookmark.models.js";
 
-// TODO: Add bookmark model and CRUD for the same
-// TODO: include bookmark aggregation pipelines in postCommonAggregation function same as likes
 // TODO: implement comments and add aggregation pipelines for the same in postCommonAggregation
 
 /**
+ * @param {import("express").Request} req
  * @description Utility function which returns the pipeline stages to structure the social post schema with calculations like, likes count, comments count, isLiked, isBookmarked etc
  * @returns {mongoose.PipelineStage[]}
  */
-const postCommonAggregation = () => {
+const postCommonAggregation = (req) => {
   return [
     {
       $lookup: {
@@ -32,9 +32,31 @@ const postCommonAggregation = () => {
     {
       $lookup: {
         from: "sociallikes",
-        localField: "author",
-        foreignField: "likedBy",
+        localField: "_id",
+        foreignField: "postId",
         as: "isLiked",
+        pipeline: [
+          {
+            $match: {
+              likedBy: new mongoose.Types.ObjectId(req.user?._id),
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "socialbookmarks",
+        localField: "_id",
+        foreignField: "postId",
+        as: "isBookmarked",
+        pipeline: [
+          {
+            $match: {
+              bookmarkedBy: new mongoose.Types.ObjectId(req.user?._id),
+            },
+          },
+        ],
       },
     },
     {
@@ -84,6 +106,21 @@ const postCommonAggregation = () => {
             else: false,
           },
         },
+        isBookmarked: {
+          $cond: {
+            if: {
+              $gte: [
+                {
+                  // if the isBookmarked key has document in it
+                  $size: "$isBookmarked",
+                },
+                1,
+              ],
+            },
+            then: true,
+            else: false,
+          },
+        },
       },
     },
   ];
@@ -124,7 +161,7 @@ const createPost = asyncHandler(async (req, res) => {
         _id: post._id,
       },
     },
-    ...postCommonAggregation(),
+    ...postCommonAggregation(req),
   ]);
 
   return res
@@ -203,7 +240,7 @@ const updatePost = asyncHandler(async (req, res) => {
         _id: updatedPost._id,
       },
     },
-    ...postCommonAggregation(),
+    ...postCommonAggregation(req),
   ]);
 
   return res
@@ -253,7 +290,7 @@ const removePostImage = asyncHandler(async (req, res) => {
         _id: updatedPost._id,
       },
     },
-    ...postCommonAggregation(),
+    ...postCommonAggregation(req),
   ]);
 
   return res
@@ -265,7 +302,7 @@ const removePostImage = asyncHandler(async (req, res) => {
 
 const getAllPosts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
-  const postAggregation = SocialPost.aggregate([...postCommonAggregation()]);
+  const postAggregation = SocialPost.aggregate([...postCommonAggregation(req)]);
 
   const posts = await SocialPost.aggregatePaginate(
     postAggregation,
@@ -287,13 +324,13 @@ const getAllPosts = asyncHandler(async (req, res) => {
 const getMyPosts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
-  const postAggregation = await SocialPost.aggregate([
+  const postAggregation = SocialPost.aggregate([
     {
       $match: {
         author: new mongoose.Types.ObjectId(req.user?._id),
       },
     },
-    ...postCommonAggregation(),
+    ...postCommonAggregation(req),
   ]);
 
   const posts = await SocialPost.aggregatePaginate(
@@ -313,6 +350,55 @@ const getMyPosts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "My posts fetched successfully"));
 });
 
+const getBookMarkedPosts = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+
+  const postAggregation = SocialBookmark.aggregate([
+    {
+      $match: {
+        bookmarkedBy: new mongoose.Types.ObjectId(req.user?._id),
+      },
+    },
+    {
+      $lookup: {
+        from: "socialposts",
+        localField: "postId",
+        foreignField: "_id",
+        as: "post",
+        pipeline: postCommonAggregation(req), // after lookup we need to structure the posts same as other post apis
+      },
+    },
+    {
+      $addFields: {
+        post: { $first: "$post" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        postId: 0,
+        __v: 0,
+      },
+    },
+  ]);
+
+  const posts = await SocialBookmark.aggregatePaginate(
+    postAggregation,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalBookmarkedPosts",
+        docs: "bookmarkedPosts",
+      },
+    })
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, posts, "Bookmarked posts fetched successfully"));
+});
+
 const getPostById = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const post = await SocialPost.aggregate([
@@ -321,7 +407,7 @@ const getPostById = asyncHandler(async (req, res) => {
         _id: new mongoose.Types.ObjectId(postId),
       },
     },
-    ...postCommonAggregation(),
+    ...postCommonAggregation(req),
   ]);
 
   if (!post[0]) {
@@ -365,4 +451,5 @@ export {
   removePostImage,
   deletePost,
   getMyPosts,
+  getBookMarkedPosts,
 };

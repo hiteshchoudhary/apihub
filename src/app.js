@@ -93,6 +93,7 @@ import socialFollowRouter from "./routes/apps/social-media/follow.routes.js";
 import socialLikeRouter from "./routes/apps/social-media/like.routes.js";
 import socialPostRouter from "./routes/apps/social-media/post.routes.js";
 import socialProfileRouter from "./routes/apps/social-media/profile.routes.js";
+import socialBookmarkRouter from "./routes/apps/social-media/bookmark.routes.js";
 
 import todoRouter from "./routes/apps/todo/todo.routes.js";
 
@@ -137,6 +138,7 @@ app.use("/api/v1/social-media/profile", socialProfileRouter);
 app.use("/api/v1/social-media/follow", socialFollowRouter);
 app.use("/api/v1/social-media/posts", socialPostRouter);
 app.use("/api/v1/social-media/likes", socialLikeRouter);
+app.use("/api/v1/social-media/bookmarks", socialBookmarkRouter);
 
 app.use("/api/v1/todos", todoRouter);
 
