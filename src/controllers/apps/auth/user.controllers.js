@@ -15,6 +15,9 @@ import {
   getStaticFilePath,
   removeImageFile,
 } from "../../../utils/helpers.js";
+import { EcomProfile } from "../../../models/apps/ecommerce/profile.models.js";
+import { SocialProfile } from "../../../models/apps/social-media/profile.models.js";
+import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -84,6 +87,24 @@ const registerUser = asyncHandler(async (req, res) => {
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken -emailVerificationToken -emailVerificationExpiry"
   );
+
+  if (!createdUser) {
+    throw new ApiError(500, "Something went wrong while registering the user");
+  }
+
+  // Setup necessary ecommerce m‚odels for the user
+  await EcomProfile.create({
+    owner: createdUser._id,
+  });
+  await Cart.create({
+    owner: createdUser._id,
+    items: [],
+  });
+
+  // Setup necessary social media models for the user
+  await SocialProfile.create({
+    owner: createdUser._id,
+  });
 
   return res
     .status(201)

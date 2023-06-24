@@ -24,16 +24,6 @@ const getUserSocialProfile = async (userId, req) => {
     throw new ApiError(404, "User does not exist");
   }
 
-  const hasProfile = await SocialProfile.findOne({
-    owner: new mongoose.Types.ObjectId(userId),
-  });
-
-  if (!hasProfile) {
-    await SocialProfile.create({
-      owner: userId,
-    });
-  }
-
   let profile = await SocialProfile.aggregate([
     {
       $match: {
