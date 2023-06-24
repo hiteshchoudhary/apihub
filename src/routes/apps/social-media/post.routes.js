@@ -63,7 +63,7 @@ router
   .delete(verifyJWT, postPathVariableValidator(), validate, deletePost);
 
 router
-  .route("/remove-image/:postId/:imageId")
+  .route("/remove/image/:postId/:imageId")
   .patch(
     verifyJWT,
     postPathVariableValidator(),
