@@ -129,15 +129,26 @@ const paypalApi = async (endpoint, body = {}) => {
   });
 };
 
-const razorpayInstance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+let razorpayInstance;
+
+try {
+  razorpayInstance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+} catch (error) {
+  console.error("RAZORPAY ERROR: ", error);
+}
 
 // * CONTROLLERS
 
 const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const { addressId } = req.body;
+
+  if (!razorpayInstance) {
+    console.error("RAZORPAY ERROR: `key_id` is mandatory");
+    throw new ApiError(500, "Internal server error");
+  }
 
   // Check if address is valid and is of logged in user's
   const address = await Address.findOne({
@@ -313,6 +324,9 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
     }
   }
   // if there is no paypal order or unpaidOrder created throw an error
+  console.log(
+    "Make sure you have provided your PAYPAL credentials in the .env file"
+  );
   throw new ApiError(
     500,
     "Something went wrong while initialising the paypal order."
