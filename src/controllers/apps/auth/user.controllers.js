@@ -1,23 +1,20 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { UserLoginType, UserRolesEnum } from "../../../constants.js";
 import { User } from "../../../models/apps/auth/user.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import {
-  emailVerificationMailgenContent,
-  forgotPasswordMailgenContent,
-  sendEmail,
-} from "../../../utils/mail.js";
-import { UserLoginType, UserRolesEnum } from "../../../constants.js";
-import {
   getLocalPath,
   getStaticFilePath,
   removeImageFile,
 } from "../../../utils/helpers.js";
-import { EcomProfile } from "../../../models/apps/ecommerce/profile.models.js";
-import { SocialProfile } from "../../../models/apps/social-media/profile.models.js";
-import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
+import {
+  emailVerificationMailgenContent,
+  forgotPasswordMailgenContent,
+  sendEmail,
+} from "../../../utils/mail.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -91,20 +88,6 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new ApiError(500, "Something went wrong while registering the user");
   }
-
-  // Setup necessary ecommerce m‚odels for the user
-  await EcomProfile.create({
-    owner: createdUser._id,
-  });
-  await Cart.create({
-    owner: createdUser._id,
-    items: [],
-  });
-
-  // Setup necessary social media models for the user
-  await SocialProfile.create({
-    owner: createdUser._id,
-  });
 
   return res
     .status(201)
@@ -519,13 +502,13 @@ export {
   changeCurrentPassword,
   forgotPasswordRequest,
   getCurrentUser,
+  handleSocialLogin,
   loginUser,
   logoutUser,
   refreshAccessToken,
   registerUser,
   resendEmailVerification,
   resetForgottenPassword,
-  verifyEmail,
-  handleSocialLogin,
   updateUserAvatar,
+  verifyEmail,
 };

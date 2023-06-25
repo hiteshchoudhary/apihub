@@ -1,21 +1,19 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../auth/user.models.js";
 import { SocialPost } from "./post.models.js";
-import { SocialComment } from "./comment.models.js";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const likeSchema = new Schema(
+const commentSchema = new Schema(
   {
+    content: {
+      type: String,
+      required: true,
+    },
     postId: {
       type: mongoose.Types.ObjectId,
       ref: "SocialPost",
-      default: null,
     },
-    commentId: {
-      type: mongoose.Types.ObjectId,
-      ref: "SocialComment",
-      default: null,
-    },
-    likedBy: {
+    author: {
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
@@ -23,4 +21,6 @@ const likeSchema = new Schema(
   { timestamps: true }
 );
 
-export const SocialLike = mongoose.model("SocialLike", likeSchema);
+commentSchema.plugin(mongooseAggregatePaginate);
+
+export const SocialComment = mongoose.model("SocialComment", commentSchema);
