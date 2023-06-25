@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../auth/user.models.js";
 import { AvailableCouponTypes, CouponTypeEnum } from "../../../constants.js";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const couponSchema = new Schema(
   {
@@ -47,5 +48,7 @@ const couponSchema = new Schema(
   },
   { timestamps: true }
 );
+
+couponSchema.plugin(mongooseAggregatePaginate);
 
 export const Coupon = mongoose.model("Coupon", couponSchema);
