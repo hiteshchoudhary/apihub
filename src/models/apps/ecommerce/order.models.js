@@ -9,6 +9,7 @@ import {
   OrderStatusEnum,
   PaymentProviderEnum,
 } from "../../../constants.js";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const orderSchema = new Schema(
   {
@@ -71,5 +72,7 @@ const orderSchema = new Schema(
   },
   { timestamps: true }
 );
+
+orderSchema.plugin(mongooseAggregatePaginate);
 
 export const EcomOrder = mongoose.model("EcomOrder", orderSchema);
