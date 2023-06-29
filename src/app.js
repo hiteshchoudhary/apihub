@@ -106,6 +106,9 @@ import redirectRouter from "./routes/kitchen-sink/redirect.routes.js";
 import requestinspectionRouter from "./routes/kitchen-sink/requestinspection.routes.js";
 import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.routes.js";
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
+import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
+import { seedTodos } from "./seeds/todo.seeds.js";
+import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 
 // * API DOCS
 app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -152,6 +155,12 @@ app.use("/api/v1/kitchen-sink/response", responseinspectionRouter);
 app.use("/api/v1/kitchen-sink/cookies", cookieRouter);
 app.use("/api/v1/kitchen-sink/redirect", redirectRouter);
 app.use("/api/v1/kitchen-sink/image", imageRouter);
+
+// * Seeding
+app.get("/api/v1/seed/generated-credentials", getGeneratedCredentials);
+app.post("/api/v1/seed/users", seedUsers(false));
+app.post("/api/v1/seed/todos", seedTodos);
+app.post("/api/v1/seed/ecommerce", seedUsers(true), seedEcommerce);
 
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {

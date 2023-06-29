@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/hiteshchoudhary/apihub#readme",
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

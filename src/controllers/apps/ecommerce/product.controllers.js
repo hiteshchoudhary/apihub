@@ -7,7 +7,7 @@ import {
   getLocalPath,
   getMongoosePaginationOptions,
   getStaticFilePath,
-  removeImageFile,
+  removeLocalFile,
 } from "../../../utils/helpers.js";
 import { MAXIMUM_SUB_IMAGE_COUNT } from "../../../constants.js";
 import { Category } from "../../../models/apps/ecommerce/category.models.js";
@@ -131,10 +131,10 @@ const updateProduct = asyncHandler(async (req, res) => {
     // Before throwing an error we need to do some cleanup
 
     // remove the  newly uploaded sub images by multer as there is not updation happening
-    subImages?.map((img) => removeImageFile(img.localPath));
+    subImages?.map((img) => removeLocalFile(img.localPath));
     if (product.mainImage.url !== mainImage.url) {
       // If use has uploaded new main image remove the newly uploaded main image as there is no updation happening
-      removeImageFile(mainImage.localPath);
+      removeLocalFile(mainImage.localPath);
     }
     throw new ApiError(
       400,
@@ -170,7 +170,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   // Once the product is updated. Do some cleanup
   if (product.mainImage.url !== mainImage.url) {
     // If user is uploading new main image remove the previous one because we don't need that anymore
-    removeImageFile(product.mainImage.localPath);
+    removeLocalFile(product.mainImage.localPath);
   }
 
   return res
@@ -263,7 +263,7 @@ const removeProductSubImage = asyncHandler(async (req, res) => {
 
   if (removedSubImage) {
     // remove the file from file system as well
-    removeImageFile(removedSubImage.localPath);
+    removeLocalFile(removedSubImage.localPath);
   }
 
   return res
@@ -288,7 +288,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
   productImages.map((image) => {
     // remove images associated with the product that is being deleted
-    removeImageFile(image.localPath);
+    removeLocalFile(image.localPath);
   });
 
   return res

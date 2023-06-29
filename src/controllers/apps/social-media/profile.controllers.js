@@ -8,7 +8,7 @@ import { asyncHandler } from "../../../utils/asyncHandler.js";
 import {
   getLocalPath,
   getStaticFilePath,
-  removeImageFile,
+  removeLocalFile,
 } from "../../../utils/helpers.js";
 
 /**
@@ -184,7 +184,7 @@ const updateCoverImage = asyncHandler(async (req, res) => {
   );
 
   // remove the old cover image
-  removeImageFile(profile.coverImage.localPath);
+  removeLocalFile(profile.coverImage.localPath);
 
   updatedProfile = await getUserSocialProfile(req.user._id, req);
 
