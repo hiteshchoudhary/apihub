@@ -9,14 +9,13 @@ import { EcomProfile } from "../models/apps/ecommerce/profile.models.js";
 import { Cart } from "../models/apps/ecommerce/cart.models.js";
 import fs from "fs";
 import { ApiError } from "../utils/ApiError.js";
+import { USERS_COUNT } from "./_constants.js";
 
-// TODO: Add comments
 // TODO: Do meeting on is this approach good or not
 // TODO: Add social media seedings
-// TODO: ecommerce order seeding refactor. Now order items are only 1 product but we need multiple products as well in a single order so handle that
-// ! TODO: Do we need users seeding? as there is no point generating users if developer is only building Auth system. Can we treat it as a middleware for other api services which require authentication?
 
-const users = new Array(50).fill("_").map(() => ({
+// Array of fake users
+const users = new Array(USERS_COUNT).fill("_").map(() => ({
   avatar: {
     url: faker.internet.avatar(),
     localPath: "",
@@ -32,14 +31,16 @@ const users = new Array(50).fill("_").map(() => ({
  * @description Seeding middleware for users api which other api services can use which are dependent on users
  */
 const seedUsers = asyncHandler(async (req, res, next) => {
-  await User.deleteMany({});
-  await SocialProfile.deleteMany({});
-  await EcomProfile.deleteMany({});
-  await Cart.deleteMany({});
+  await User.deleteMany({}); // delete all the existing users from previous seedings
+  await SocialProfile.deleteMany({}); // delete dependent model documents as well
+  await EcomProfile.deleteMany({}); // delete dependent model documents as well
+  await Cart.deleteMany({}); // delete dependent model documents as well
   // remove cred json if
-  removeLocalFile("./public/temp/seed-credentials.json");
+  removeLocalFile("./public/temp/seed-credentials.json"); // remove old credentials
 
   const credentials = [];
+
+  // create Promise array
   const userCreationPromise = users.map(async (user) => {
     credentials.push({
       username: user.username.toLowerCase(),
@@ -49,8 +50,10 @@ const seedUsers = asyncHandler(async (req, res, next) => {
     await User.create(user);
   });
 
+  // pass promises array to the Promise.all method
   await Promise.all(userCreationPromise);
 
+  // Once users are created dump the credentials to the json file
   const json = JSON.stringify(credentials);
 
   fs.writeFileSync(
@@ -62,9 +65,13 @@ const seedUsers = asyncHandler(async (req, res, next) => {
     }
   );
 
+  // proceed with the request
   next();
 });
 
+/**
+ * @description This api gives the saved credentials generated while seeding.
+ */
 const getGeneratedCredentials = asyncHandler(async (req, res) => {
   try {
     const json = fs.readFileSync("./public/temp/seed-credentials.json", "utf8");
