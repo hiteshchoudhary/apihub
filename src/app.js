@@ -158,9 +158,8 @@ app.use("/api/v1/kitchen-sink/image", imageRouter);
 
 // * Seeding
 app.get("/api/v1/seed/generated-credentials", getGeneratedCredentials);
-app.post("/api/v1/seed/users", seedUsers(false));
 app.post("/api/v1/seed/todos", seedTodos);
-app.post("/api/v1/seed/ecommerce", seedUsers(true), seedEcommerce);
+app.post("/api/v1/seed/ecommerce", seedUsers, seedEcommerce);
 
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {

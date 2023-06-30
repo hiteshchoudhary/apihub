@@ -29,51 +29,41 @@ const users = new Array(50).fill("_").map(() => ({
 }));
 
 /**
- * @description Seeding handler for users as well as act as a middleware for api services which needs user to be registered
- * @param {boolean} isMiddleware
+ * @description Seeding middleware for users api which other api services can use which are dependent on users
  */
-const seedUsers = (isMiddleware = true) =>
-  asyncHandler(async (req, res, next) => {
-    await User.deleteMany({});
-    await SocialProfile.deleteMany({});
-    await EcomProfile.deleteMany({});
-    await Cart.deleteMany({});
-    // remove cred json if
-    removeLocalFile("./public/temp/seed-credentials.json");
+const seedUsers = asyncHandler(async (req, res, next) => {
+  await User.deleteMany({});
+  await SocialProfile.deleteMany({});
+  await EcomProfile.deleteMany({});
+  await Cart.deleteMany({});
+  // remove cred json if
+  removeLocalFile("./public/temp/seed-credentials.json");
 
-    const credentials = [];
-    const userCreationPromise = users.map(async (user) => {
-      credentials.push({
-        username: user.username.toLowerCase(),
-        password: user.password,
-        role: user.role,
-      });
-      await User.create(user);
+  const credentials = [];
+  const userCreationPromise = users.map(async (user) => {
+    credentials.push({
+      username: user.username.toLowerCase(),
+      password: user.password,
+      role: user.role,
     });
-
-    await Promise.all(userCreationPromise);
-
-    const json = JSON.stringify(credentials);
-
-    fs.writeFileSync(
-      "./public/temp/seed-credentials.json",
-      json,
-      "utf8",
-      (err) => {
-        console.log("Error while writing the credentials", err);
-      }
-    );
-
-    if (isMiddleware) {
-      // This seeding handler can be used as a middleware for the endpoints which require user accounts to be made first
-      next();
-    } else {
-      // If the seeding function called as a controller
-      return res
-        .status(201)
-        .json(new ApiResponse(201, {}, "Users inserted successfully"));
-    }
+    await User.create(user);
   });
+
+  await Promise.all(userCreationPromise);
+
+  const json = JSON.stringify(credentials);
+
+  fs.writeFileSync(
+    "./public/temp/seed-credentials.json",
+    json,
+    "utf8",
+    (err) => {
+      console.log("Error while writing the credentials", err);
+    }
+  );
+
+  next();
+});
 
 const getGeneratedCredentials = asyncHandler(async (req, res) => {
   try {

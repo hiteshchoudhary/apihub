@@ -68,7 +68,7 @@ const products = new Array(50).fill("_").map(() => {
       }),
       localPath: "",
     },
-    price: +faker.commerce.price({ dec: 0, min: 200, max: 2000 }),
+    price: +faker.commerce.price({ dec: 0, min: 200, max: 500 }),
     stock: +faker.commerce.price({ dec: 0, min: 10, max: 200 }),
     subImages: new Array(4).fill("_").map(() => ({
       url: faker.image.urlLoremFlickr({
@@ -79,7 +79,7 @@ const products = new Array(50).fill("_").map(() => {
   };
 });
 
-const orders = new Array(15).fill("_").map(() => {
+const orders = new Array(20).fill("_").map(() => {
   const paymentProvider =
     AvailablePaymentProviders[
       getRandomNumber(AvailablePaymentProviders.length)
@@ -141,45 +141,64 @@ const seedOrders = async () => {
   const products = await Product.find();
   const addresses = await Address.find();
 
-  const orderItems = products
-    .slice(0, getRandomNumber(products.length - 10))
-    .map((prod) => {
-      const orderItem = {
-        productId: prod._id,
-        quantity: +faker.commerce.price({ dec: 0, min: 1, max: 5 }),
-      };
-      const orderPrice = prod.price * orderItem.quantity;
-      let coupon = coupons[getRandomNumber(coupons.length + 20)] ?? null;
-      let discountedOrderPrice = orderPrice;
-      if (coupon && coupon.minimumCartValue <= orderPrice) {
-        discountedOrderPrice -= coupon.discountValue;
-      } else {
-        coupon = null;
-      }
-      return {
-        items: [orderItem],
-        orderPrice,
-        discountedOrderPrice,
-        coupon,
-      };
-    });
+  const orderPayload = new Array(20).fill("_").map(() => {
+    const totalOrderProducts = getRandomNumber(5); // get total products to be included in the order items
+
+    // map through the available products
+    const orderItems = products
+      .slice(0, totalOrderProducts > 1 ? totalOrderProducts : 2) // We need at least 1 product in the items array
+      .map((prod) => ({
+        productId: prod._id, // this field we need to add while creating the order
+        quantity: +faker.commerce.price({ dec: 0, min: 1, max: 5 }), // this field we need to add while creating the order
+        price: prod.price, // this field we need to calculate total order price
+      }));
+
+    // calculate total order price based on product price and it's quantity
+    const orderPrice = orderItems.reduce(
+      (prev, curr) => prev + curr.price * curr.quantity,
+      0
+    );
+
+    // Randomly assign or ignore coupon
+    // If we find any coupon we set it, if the index is out of range we keep coupon null
+    let coupon = coupons[getRandomNumber(coupons.length + 20)] ?? null;
+    let discountedOrderPrice = orderPrice; // by default discountedOrderPrice is orderPrice if there is no coupon
+    if (coupon && coupon.minimumCartValue <= orderPrice) {
+      // Check if there is coupon selected and the minimumCartValue is less than current order price
+      discountedOrderPrice -= coupon.discountValue;
+    } else {
+      coupon = null;
+    }
+    // return the required metadata
+    return {
+      orderItems: orderItems.map((prod) => ({
+        productId: prod.productId,
+        quantity: prod.quantity,
+      })),
+      orderPrice,
+      discountedOrderPrice,
+      coupon,
+    };
+  });
 
   await EcomOrder.deleteMany({});
   await EcomOrder.insertMany(
     orders.map((order) => {
       const customer = customers[getRandomNumber(customers.length)];
-      const orderData = orderItems[getRandomNumber(orderItems.length)];
+      const orderInstance = orderPayload[getRandomNumber(orderPayload.length)];
       return {
         ...order,
         customer,
         address:
+          // Find address which is of order's customer
+          // In rare cases if it does not exist. Select a random one
           addresses.find(
             (add) => add.owner?.toString() === customer?._id.toString()
           )?._id ?? addresses[getRandomNumber(addresses.length)],
-        items: orderData.items,
-        coupon: orderData.coupon,
-        orderPrice: orderData.orderPrice,
-        discountedOrderPrice: orderData.discountedOrderPrice,
+        items: orderInstance.orderItems,
+        coupon: orderInstance.coupon,
+        orderPrice: orderInstance.orderPrice,
+        discountedOrderPrice: orderInstance.discountedOrderPrice,
       };
     })
   );
