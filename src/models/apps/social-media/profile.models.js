@@ -23,18 +23,23 @@ const profileSchema = new Schema(
     },
     bio: {
       type: String,
+      default: "",
     },
     dob: {
       type: Date,
+      default: null,
     },
     location: {
       type: String,
+      default: "",
     },
     countryCode: {
       type: String,
+      default: "",
     },
     phoneNumber: {
       type: String,
+      default: "",
     },
     owner: {
       type: mongoose.Types.ObjectId,
