@@ -1,19 +1,20 @@
 import { faker } from "@faker-js/faker";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { Category } from "../models/apps/ecommerce/category.models.js";
-import { User } from "../models/apps/auth/user.models.js";
 import {
   AvailableOrderStatuses,
   AvailablePaymentProviders,
   UserRolesEnum,
 } from "../constants.js";
+import { User } from "../models/apps/auth/user.models.js";
 import { Address } from "../models/apps/ecommerce/address.models.js";
-import { getRandomNumber } from "../utils/helpers.js";
+import { Category } from "../models/apps/ecommerce/category.models.js";
 import { Coupon } from "../models/apps/ecommerce/coupon.models.js";
-import { ApiError } from "../utils/ApiError.js";
-import { Product } from "../models/apps/ecommerce/product.models.js";
 import { EcomOrder } from "../models/apps/ecommerce/order.models.js";
+import { Product } from "../models/apps/ecommerce/product.models.js";
+import { EcomProfile } from "../models/apps/ecommerce/profile.models.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { getRandomNumber } from "../utils/helpers.js";
 import {
   ADDRESSES_COUNT,
   CATEGORIES_COUNT,
@@ -111,32 +112,49 @@ const orders = new Array(ORDERS_COUNT).fill("_").map(() => {
   };
 });
 
-const seedCategories = async (owner) => {
+const seedEcomProfiles = async () => {
+  const profiles = await EcomProfile.find();
+  const ecomProfileUpdatePromise = profiles.map(async (profile) => {
+    await EcomProfile.findByIdAndUpdate(profile._id, {
+      $set: {
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
+        countryCode: "+91",
+        phoneNumber: faker.phone.number("9#########"),
+      },
+    });
+  });
+  await Promise.all(ecomProfileUpdatePromise);
+};
+
+const seedEcomCategories = async (owner) => {
   await Category.deleteMany({});
   await Category.insertMany(
     categories.map((cat) => ({ ...cat, owner: owner }))
   );
 };
 
-const seedAddresses = async () => {
+const seedEcomAddresses = async () => {
   const users = await User.find();
   await Address.deleteMany({});
   await Address.insertMany(
-    addresses.map((add) => ({
-      ...add,
-      owner: users[getRandomNumber(users.length)], // set random user as a owner
-    }))
+    addresses.map((add, i) => {
+      return {
+        ...add,
+        owner: users[i] ?? users[getRandomNumber(users.length)], // set address to every user and then set random user as a owner
+      };
+    })
   );
 };
 
-const seedCoupons = async (owner) => {
+const seedEcomCoupons = async (owner) => {
   await Coupon.deleteMany({});
   await Coupon.insertMany(
     coupons.map((coupon) => ({ ...coupon, owner: owner }))
   );
 };
 
-const seedProducts = async () => {
+const seedEcomProducts = async () => {
   const users = await User.find();
   const categories = await Category.find();
 
@@ -150,7 +168,7 @@ const seedProducts = async () => {
   );
 };
 
-const seedOrders = async () => {
+const seedEcomOrders = async () => {
   const customers = await User.find();
   const coupons = await Coupon.find();
   const products = await Product.find();
@@ -236,12 +254,12 @@ const seedEcommerce = asyncHandler(async (req, res) => {
       "Something went wrong while seeding the data. Please try again once"
     );
   }
-
-  await seedCategories(owner._id);
-  await seedAddresses();
-  await seedCoupons(owner._id);
-  await seedProducts();
-  await seedOrders();
+  await seedEcomProfiles();
+  await seedEcomCategories(owner._id);
+  await seedEcomAddresses();
+  await seedEcomCoupons(owner._id);
+  await seedEcomProducts();
+  await seedEcomOrders();
   return res
     .status(201)
     .json(

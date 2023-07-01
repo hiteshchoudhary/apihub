@@ -1,18 +1,17 @@
 import { faker } from "@faker-js/faker";
+import fs from "fs";
 import { AvailableUserRoles } from "../constants.js";
 import { User } from "../models/apps/auth/user.models.js";
+import { Cart } from "../models/apps/ecommerce/cart.models.js";
+import { EcomProfile } from "../models/apps/ecommerce/profile.models.js";
+import { SocialProfile } from "../models/apps/social-media/profile.models.js";
+import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { getRandomNumber, removeLocalFile } from "../utils/helpers.js";
-import { SocialProfile } from "../models/apps/social-media/profile.models.js";
-import { EcomProfile } from "../models/apps/ecommerce/profile.models.js";
-import { Cart } from "../models/apps/ecommerce/cart.models.js";
-import fs from "fs";
-import { ApiError } from "../utils/ApiError.js";
 import { USERS_COUNT } from "./_constants.js";
 
 // TODO: Do meeting on is this approach good or not
-// TODO: Add social media seedings
 
 // Array of fake users
 const users = new Array(USERS_COUNT).fill("_").map(() => ({
@@ -31,11 +30,17 @@ const users = new Array(USERS_COUNT).fill("_").map(() => ({
  * @description Seeding middleware for users api which other api services can use which are dependent on users
  */
 const seedUsers = asyncHandler(async (req, res, next) => {
+  const userCount = await User.count();
+  if (userCount >= USERS_COUNT) {
+    // Don't re-generate the users if we already have them in the database
+    next();
+    return;
+  }
   await User.deleteMany({}); // delete all the existing users from previous seedings
   await SocialProfile.deleteMany({}); // delete dependent model documents as well
   await EcomProfile.deleteMany({}); // delete dependent model documents as well
   await Cart.deleteMany({}); // delete dependent model documents as well
-  // remove cred json if
+  // remove cred json
   removeLocalFile("./public/temp/seed-credentials.json"); // remove old credentials
 
   const credentials = [];
@@ -89,4 +94,4 @@ const getGeneratedCredentials = asyncHandler(async (req, res) => {
   }
 });
 
-export { seedUsers, getGeneratedCredentials };
+export { getGeneratedCredentials, seedUsers };
