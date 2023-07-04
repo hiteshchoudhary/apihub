@@ -8,12 +8,12 @@ import fs from "fs";
 import passport from "passport";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
+import { fileURLToPath } from "url";
 import YAML from "yaml";
 import { DB_NAME } from "./constants.js";
 import { dbInstance } from "./db/index.js";
 import { ApiError } from "./utils/ApiError.js";
 import { ApiResponse } from "./utils/ApiResponse.js";
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -89,12 +89,12 @@ import orderRouter from "./routes/apps/ecommerce/order.routes.js";
 import productRouter from "./routes/apps/ecommerce/product.routes.js";
 import ecomProfileRouter from "./routes/apps/ecommerce/profile.routes.js";
 
+import socialBookmarkRouter from "./routes/apps/social-media/bookmark.routes.js";
+import socialCommentRouter from "./routes/apps/social-media/comment.routes.js";
 import socialFollowRouter from "./routes/apps/social-media/follow.routes.js";
 import socialLikeRouter from "./routes/apps/social-media/like.routes.js";
 import socialPostRouter from "./routes/apps/social-media/post.routes.js";
 import socialProfileRouter from "./routes/apps/social-media/profile.routes.js";
-import socialBookmarkRouter from "./routes/apps/social-media/bookmark.routes.js";
-import socialCommentRouter from "./routes/apps/social-media/comment.routes.js";
 
 import todoRouter from "./routes/apps/todo/todo.routes.js";
 
@@ -106,6 +106,10 @@ import redirectRouter from "./routes/kitchen-sink/redirect.routes.js";
 import requestinspectionRouter from "./routes/kitchen-sink/requestinspection.routes.js";
 import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.routes.js";
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
+import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
+import { seedSocialMedia } from "./seeds/social-media.seeds.js";
+import { seedTodos } from "./seeds/todo.seeds.js";
+import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
 
 // * API DOCS
 app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -152,6 +156,12 @@ app.use("/api/v1/kitchen-sink/response", responseinspectionRouter);
 app.use("/api/v1/kitchen-sink/cookies", cookieRouter);
 app.use("/api/v1/kitchen-sink/redirect", redirectRouter);
 app.use("/api/v1/kitchen-sink/image", imageRouter);
+
+// * Seeding
+app.get("/api/v1/seed/generated-credentials", getGeneratedCredentials);
+app.post("/api/v1/seed/todos", seedTodos);
+app.post("/api/v1/seed/ecommerce", seedUsers, seedEcommerce);
+app.post("/api/v1/seed/social-media", seedUsers, seedSocialMedia);
 
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {
