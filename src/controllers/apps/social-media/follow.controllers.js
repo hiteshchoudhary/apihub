@@ -236,12 +236,58 @@ const getFollowersListByUserName = asyncHandler(async (req, res) => {
 
 const getFollowingListByUserName = asyncHandler(async (req, res) => {
   const { username } = req.params;
-  const user = await User.findOne({ username });
+  const { page = 1, limit = 10 } = req.query;
+
+  const userAggregation = await User.aggregate([
+    {
+      $match: {
+        username: username.toLowerCase(),
+      },
+    },
+    {
+      $lookup: {
+        // lookup for the each user's profile
+        from: "socialprofiles",
+        localField: "_id",
+        foreignField: "owner",
+        as: "profile",
+        pipeline: [
+          {
+            $project: {
+              firstName: 1,
+              lastName: 1,
+              bio: 1,
+              location: 1,
+              countryCode: 1,
+              phoneNumber: 1,
+              coverImage: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: { profile: { $first: "$profile" } },
+    },
+    {
+      $project: {
+        username: 1,
+        email: 1,
+        isEmailVerified: 1,
+        avatar: 1,
+        profile: 1,
+      },
+    },
+  ]);
+
+  const user = userAggregation[0];
+
   if (!user) {
     throw new ApiError(404, "User does not exist");
   }
+
   const userId = user._id;
-  const followingList = await SocialFollow.aggregate([
+  const followingAggregate = SocialFollow.aggregate([
     {
       $match: {
         // When we are fetching the following list we want to match the follow documents with follower as current user
@@ -325,60 +371,39 @@ const getFollowingListByUserName = asyncHandler(async (req, res) => {
       },
     },
     {
-      $group: {
-        // Now group the aggregation results by follower id (current user's id)
-        _id: "$followerId",
-        // Push all the profiles that current user is following into an array with key `following`
-        following: {
-          $push: "$following",
-        },
-      },
-    },
-    {
-      $lookup: {
-        // lookup for the current user's profile
-        from: "users",
-        localField: "_id",
-        foreignField: "_id",
-        as: "user",
-        pipeline: [
-          {
-            $lookup: {
-              from: "socialprofiles",
-              localField: "_id",
-              foreignField: "owner",
-              as: "profile",
-            },
-          },
-          { $addFields: { profile: { $first: "$profile" } } },
-          {
-            $project: {
-              username: 1,
-              email: 1,
-              avatar: 1,
-              profile: 1,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $addFields: {
-        user: { $first: "$user" },
-      },
-    },
-    {
       $project: {
         _id: 0,
+        following: 1,
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: "$following",
       },
     },
   ]);
 
-  const payload = followingList[0] ?? {};
+  const followingList = await SocialFollow.aggregatePaginate(
+    followingAggregate,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalFollowing",
+        docs: "following",
+      },
+    })
+  );
 
   return res
     .status(200)
-    .json(new ApiResponse(200, payload, "Following list fetched successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { user, ...followingList },
+        "Following list fetched successfully"
+      )
+    );
 });
 
 export {
