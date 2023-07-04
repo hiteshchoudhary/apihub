@@ -11,8 +11,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { getRandomNumber, removeLocalFile } from "../utils/helpers.js";
 import { USERS_COUNT } from "./_constants.js";
 
-// TODO: Do meeting on is this approach good or not
-
 // Array of fake users
 const users = new Array(USERS_COUNT).fill("_").map(() => ({
   avatar: {
