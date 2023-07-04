@@ -13,8 +13,6 @@ import {
   removeLocalFile,
 } from "../../../utils/helpers.js";
 
-// TODO: implement comments and add aggregation pipelines for the same in postCommonAggregation
-
 /**
  * @param {import("express").Request} req
  * @description Utility function which returns the pipeline stages to structure the social post schema with calculations like, likes count, comments count, isLiked, isBookmarked etc
@@ -496,6 +494,44 @@ const deletePost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Post deleted successfully"));
 });
 
+const getPostsByTag = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  const { tag } = req.params;
+
+  const postAggregation = SocialPost.aggregate([
+    {
+      $redact: {
+        $cond: {
+          if: {
+            $in: [tag, "$tags"],
+          },
+          then: "$$KEEP",
+          else: "$$PRUNE",
+        },
+      },
+    },
+    ...postCommonAggregation(req),
+  ]);
+
+  const posts = await SocialPost.aggregatePaginate(
+    postAggregation,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalPosts",
+        docs: "posts",
+      },
+    })
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, posts, `Posts with tag #${tag} fetched successfully`)
+    );
+});
+
 export {
   createPost,
   deletePost,
@@ -506,4 +542,5 @@ export {
   getPostsByUsername,
   removePostImage,
   updatePost,
+  getPostsByTag,
 };

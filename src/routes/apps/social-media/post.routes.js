@@ -7,6 +7,7 @@ import {
   getBookMarkedPosts,
   getMyPosts,
   getPostById,
+  getPostsByTag,
   getPostsByUsername,
   removePostImage,
   updatePost,
@@ -20,6 +21,7 @@ import {
   createPostValidator,
   postImagePathVariableValidator,
   postPathVariableValidator,
+  tagPathVariableValidator,
   updatePostValidator,
   usernamePathVariableValidator,
 } from "../../../validators/apps/social-media/post.validators.js";
@@ -51,6 +53,15 @@ router
     usernamePathVariableValidator(),
     validate,
     getPostsByUsername
+  );
+
+router
+  .route("/get/t/:tag")
+  .get(
+    getLoggedInUserOrIgnore,
+    tagPathVariableValidator(),
+    validate,
+    getPostsByTag
   );
 
 router
