@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { MAXIMUM_SOCIAL_POST_IMAGE_COUNT } from "../../../constants.js";
 import {
   createPost,
   deletePost,
@@ -6,6 +7,7 @@ import {
   getBookMarkedPosts,
   getMyPosts,
   getPostById,
+  getPostsByUsername,
   removePostImage,
   updatePost,
 } from "../../../controllers/apps/social-media/post.controllers.js";
@@ -19,9 +21,9 @@ import {
   postImagePathVariableValidator,
   postPathVariableValidator,
   updatePostValidator,
+  usernamePathVariableValidator,
 } from "../../../validators/apps/social-media/post.validators.js";
 import { validate } from "../../../validators/validate.js";
-import { MAXIMUM_SOCIAL_POST_IMAGE_COUNT } from "../../../constants.js";
 
 const router = Router();
 
@@ -41,6 +43,15 @@ router
 router.route("/get/my").get(verifyJWT, getMyPosts);
 
 router.route("/get/bookmarked").get(verifyJWT, getBookMarkedPosts);
+
+router
+  .route("/get/u/:username")
+  .get(
+    getLoggedInUserOrIgnore,
+    usernamePathVariableValidator(),
+    validate,
+    getPostsByUsername
+  );
 
 router
   .route("/:postId")
