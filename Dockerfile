@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node
 
 RUN mkdir -p /usr/src/apihub && chown -R node:node /usr/src/apihub
 

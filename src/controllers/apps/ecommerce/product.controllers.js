@@ -5,14 +5,28 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import {
   getLocalPath,
+  getMongoosePaginationOptions,
   getStaticFilePath,
-  removeImageFile,
+  removeLocalFile,
 } from "../../../utils/helpers.js";
 import { MAXIMUM_SUB_IMAGE_COUNT } from "../../../constants.js";
 import { Category } from "../../../models/apps/ecommerce/category.models.js";
 
 const getAllProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  const { page = 1, limit = 10 } = req.query;
+  const productAggregate = Product.aggregate([{ $match: {} }]);
+
+  const products = await Product.aggregatePaginate(
+    productAggregate,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalProducts",
+        docs: "products",
+      },
+    })
+  );
 
   return res
     .status(200)
@@ -117,10 +131,10 @@ const updateProduct = asyncHandler(async (req, res) => {
     // Before throwing an error we need to do some cleanup
 
     // remove the  newly uploaded sub images by multer as there is not updation happening
-    subImages?.map((img) => removeImageFile(img.localPath));
+    subImages?.map((img) => removeLocalFile(img.localPath));
     if (product.mainImage.url !== mainImage.url) {
       // If use has uploaded new main image remove the newly uploaded main image as there is no updation happening
-      removeImageFile(mainImage.localPath);
+      removeLocalFile(mainImage.localPath);
     }
     throw new ApiError(
       400,
@@ -156,7 +170,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   // Once the product is updated. Do some cleanup
   if (product.mainImage.url !== mainImage.url) {
     // If user is uploading new main image remove the previous one because we don't need that anymore
-    removeImageFile(product.mainImage.localPath);
+    removeLocalFile(product.mainImage.localPath);
   }
 
   return res
@@ -179,54 +193,43 @@ const getProductById = asyncHandler(async (req, res) => {
 
 const getProductsByCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
+  const { page = 1, limit = 10 } = req.query;
 
-  const products = await Product.aggregate([
+  const category = await Category.findById(categoryId).select("name _id");
+
+  if (!category) {
+    throw new ApiError(404, "Category does not exist");
+  }
+
+  const productAggregate = Product.aggregate([
     {
       // match the products with provided category
       $match: {
         category: new mongoose.Types.ObjectId(categoryId),
       },
     },
-    // group the products array based on category so that we get products key with array of products
-    // and we can do a lookup for category to send category name as well in the response
-    {
-      $group: {
-        _id: "$category",
-        products: {
-          $push: "$$ROOT", // push the whole ROOT which is an individual project object into the `products` array
-        },
-      },
-    },
-    {
-      // Do a lookup for category to get the name
-      $lookup: {
-        from: "categories",
-        localField: "_id",
-        foreignField: "_id",
-        as: "lookedUpCategory",
-        pipeline: [
-          {
-            // Only project what is needed
-            $project: {
-              name: 1,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        category: { $first: "$lookedUpCategory" },
-        products: 1,
-      },
-    },
   ]);
+
+  const products = await Product.aggregatePaginate(
+    productAggregate,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalProducts",
+        docs: "products",
+      },
+    })
+  );
 
   return res
     .status(200)
     .json(
-      new ApiResponse(200, products, "Category products fetched successfully")
+      new ApiResponse(
+        200,
+        { ...products, category },
+        "Category products fetched successfully"
+      )
     );
 });
 
@@ -260,7 +263,7 @@ const removeProductSubImage = asyncHandler(async (req, res) => {
 
   if (removedSubImage) {
     // remove the file from file system as well
-    removeImageFile(removedSubImage.localPath);
+    removeLocalFile(removedSubImage.localPath);
   }
 
   return res
@@ -285,7 +288,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
   productImages.map((image) => {
     // remove images associated with the product that is being deleted
-    removeImageFile(image.localPath);
+    removeLocalFile(image.localPath);
   });
 
   return res

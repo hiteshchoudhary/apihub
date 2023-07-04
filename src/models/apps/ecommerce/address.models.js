@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "../auth/user.models.js";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const addressSchema = new Schema(
   {
@@ -33,5 +34,7 @@ const addressSchema = new Schema(
   },
   { timestamps: true }
 );
+
+addressSchema.plugin(mongooseAggregatePaginate);
 
 export const Address = mongoose.model("Address", addressSchema);

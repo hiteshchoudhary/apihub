@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { nanoid } from "nanoid";
 import Razorpay from "razorpay";
 import {
+  AvailableOrderStatuses,
   OrderStatusEnum,
   PaymentProviderEnum,
   paypalBaseUrl,
@@ -19,6 +20,7 @@ import {
   sendEmail,
 } from "../../../utils/mail.js";
 import { getCart } from "./cart.controllers.js";
+import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 
 // * UTILITY FUNCTIONS
 
@@ -74,10 +76,10 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
     owner: req.user._id,
   });
 
-  const orderItems = await getCart(req.user._id);
+  const userCart = await getCart(req.user._id);
 
   // Logic to handle product's stock change once order is placed
-  let bulkStockUpdates = orderItems.map((item) => {
+  let bulkStockUpdates = userCart.items.map((item) => {
     // Reduce the products stock
     return {
       updateOne: {
@@ -98,12 +100,13 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
     subject: "Order confirmed",
     mailgenContent: orderConfirmationMailgenContent(
       req.user?.username,
-      orderItems,
-      order.orderPrice ?? 0
+      userCart.items,
+      order.discountedOrderPrice ?? 0 // send discounted price in the mail which is paid by the user
     ),
   });
 
   cart.items = []; // empty the cart
+  cart.coupon = null; // remove the associated coupon
 
   await cart.save({ validateBeforeSave: false });
   return order;
@@ -127,15 +130,26 @@ const paypalApi = async (endpoint, body = {}) => {
   });
 };
 
-const razorpayInstance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+let razorpayInstance;
+
+try {
+  razorpayInstance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+} catch (error) {
+  console.error("RAZORPAY ERROR: ", error);
+}
 
 // * CONTROLLERS
 
 const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const { addressId } = req.body;
+
+  if (!razorpayInstance) {
+    console.error("RAZORPAY ERROR: `key_id` is mandatory");
+    throw new ApiError(500, "Internal server error");
+  }
 
   // Check if address is valid and is of logged in user's
   const address = await Address.findOne({
@@ -157,13 +171,13 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const orderItems = cart.items;
   const userCart = await getCart(req.user._id);
 
-  // calculate the total price of the order
-  const totalPrice = userCart.reduce((prev, curr) => {
-    return prev + curr?.product?.price * curr?.quantity;
-  }, 0);
+  // note down th total cart value and cart value after the discount
+  // If no coupon is applied the total and discounted prices will be the same
+  const totalPrice = userCart.cartTotal;
+  const totalDiscountedPrice = userCart.discountedTotal;
 
   const orderOptions = {
-    amount: parseInt(totalPrice) * 100, // in paisa
+    amount: parseInt(totalDiscountedPrice) * 100, // in paisa
     currency: "INR", // Might accept from client
     receipt: nanoid(10),
   };
@@ -193,8 +207,10 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
         customer: req.user._id,
         items: orderItems,
         orderPrice: totalPrice ?? 0,
+        discountedOrderPrice: totalDiscountedPrice ?? 0,
         paymentProvider: PaymentProviderEnum.RAZORPAY,
         paymentId: razorpayOrder.id,
+        coupon: userCart.coupon?._id,
       });
       if (unpaidOrder) {
         // if order is created then only proceed with the payment
@@ -262,17 +278,18 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   const orderItems = cart.items; // these items are used further to set product stock
   const userCart = await getCart(req.user._id);
 
-  // calculate the total price of the order
-  const totalPrice = userCart.reduce((prev, curr) => {
-    return prev + curr?.product?.price * curr?.quantity;
-  }, 0);
+  // note down th total cart value and cart value after the discount
+  // If no coupon is applied the total and discounted prices will be the same
+  const totalPrice = userCart.cartTotal;
+  const totalDiscountedPrice = userCart.discountedTotal;
+
   const response = await paypalApi("/", {
     intent: "CAPTURE",
     purchase_units: [
       {
         amount: {
           currency_code: "USD",
-          value: totalPrice * 0.012, // convert indian rupees to dollars
+          value: (totalDiscountedPrice * 0.012).toFixed(0), // convert indian rupees to dollars
         },
       },
     ],
@@ -289,8 +306,10 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
       customer: req.user._id,
       items: orderItems,
       orderPrice: totalPrice ?? 0,
+      discountedOrderPrice: totalDiscountedPrice ?? 0,
       paymentProvider: PaymentProviderEnum.PAYPAL,
       paymentId: paypalOrder.id,
+      coupon: userCart.coupon?._id,
     });
     if (unpaidOrder) {
       // if order is created then only proceed with the payment
@@ -306,6 +325,9 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
     }
   }
   // if there is no paypal order or unpaidOrder created throw an error
+  console.log(
+    "Make sure you have provided your PAYPAL credentials in the .env file"
+  );
   throw new ApiError(
     500,
     "Something went wrong while initialising the paypal order."
@@ -398,11 +420,29 @@ const getOrderById = asyncHandler(async (req, res) => {
         ],
       },
     },
+    // lookup for a coupon applied while placing the order
+    {
+      $lookup: {
+        from: "coupons",
+        foreignField: "_id",
+        localField: "coupon",
+        as: "coupon",
+        pipeline: [
+          {
+            $project: {
+              name: 1,
+              couponCode: 1,
+            },
+          },
+        ],
+      },
+    },
     // lookup returns array so get the first element of address and customer
     {
       $addFields: {
         customer: { $first: "$customer" },
         address: { $first: "$address" },
+        coupon: { $ifNull: [{ $first: "$coupon" }, null] },
       },
     },
     // Now we have array of order items with productId being the id of the product that is being ordered
@@ -467,13 +507,13 @@ const getOrderById = asyncHandler(async (req, res) => {
 });
 
 const getOrderListAdmin = asyncHandler(async (req, res) => {
-  const { status } = req.query;
-  const orders = await EcomOrder.aggregate([
+  const { status, page = 1, limit = 10 } = req.query;
+  const orderAggregate = EcomOrder.aggregate([
     {
       $match:
-        status && Object.values(OrderStatusEnum).includes(status)
+        status && AvailableOrderStatuses.includes(status.toUpperCase())
           ? {
-              status: status,
+              status: status.toUpperCase(),
             }
           : {},
     },
@@ -504,9 +544,26 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
       },
     },
     {
+      $lookup: {
+        from: "coupons",
+        foreignField: "_id",
+        localField: "coupon",
+        as: "coupon",
+        pipeline: [
+          {
+            $project: {
+              name: 1,
+              couponCode: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
       $addFields: {
         customer: { $first: "$customer" },
         address: { $first: "$address" },
+        coupon: { $ifNull: [{ $first: "$coupon" }, null] },
         totalOrderItems: { $size: "$items" },
       },
     },
@@ -516,6 +573,18 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
       },
     },
   ]);
+
+  const orders = await EcomOrder.aggregatePaginate(
+    orderAggregate,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalOrders",
+        docs: "orders",
+      },
+    })
+  );
 
   return res
     .status(200)

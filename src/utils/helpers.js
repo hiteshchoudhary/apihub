@@ -1,4 +1,5 @@
 import fs from "fs";
+import mongoose from "mongoose";
 
 /**
  *
@@ -111,13 +112,13 @@ export const getLocalPath = (fileName) => {
 /**
  *
  * @param {string} localPath
- * @description Removed the image file from the local file system based on the file name
+ * @description Removed the local file from the local file system based on the file path
  */
-export const removeImageFile = (localPath) => {
+export const removeLocalFile = (localPath) => {
   fs.unlink(localPath, (err) => {
-    if (err) console.log("Error while removing image files: ", err);
+    if (err) console.log("Error while removing local files: ", err);
     else {
-      console.log("Removed image:", localPath);
+      console.log("Removed local: ", localPath);
     }
   });
 };
@@ -140,7 +141,7 @@ export const removeUnusedMulterImageFilesOnError = (req) => {
     if (multerFile) {
       // If there is file uploaded and there is validation error
       // We want to remove that file
-      removeImageFile(multerFile.path);
+      removeLocalFile(multerFile.path);
     }
 
     if (multerFiles) {
@@ -150,7 +151,7 @@ export const removeUnusedMulterImageFilesOnError = (req) => {
       // We want to remove those files as well
       filesValueArray.map((fileFields) => {
         fileFields.map((fileObject) => {
-          removeImageFile(fileObject.path);
+          removeLocalFile(fileObject.path);
         });
       });
     }
@@ -158,4 +159,32 @@ export const removeUnusedMulterImageFilesOnError = (req) => {
     // fail silently
     console.log("Error while removing image files: ", error);
   }
+};
+
+/**
+ *
+ * @param {{page: number; limit: number; customLabels: mongoose.CustomLabels;}} options
+ * @returns {mongoose.PaginateOptions}
+ */
+export const getMongoosePaginationOptions = ({
+  page = 1,
+  limit = 10,
+  customLabels,
+}) => {
+  return {
+    page: Math.max(page, 1),
+    limit: Math.max(limit, 1),
+    pagination: true,
+    customLabels: {
+      pagingCounter: "serialNumberStartFrom",
+      ...customLabels,
+    },
+  };
+};
+
+/**
+ * @param {number} max Ceil threshold (exclusive)
+ */
+export const getRandomNumber = (max) => {
+  return Math.floor(Math.random() * max);
 };

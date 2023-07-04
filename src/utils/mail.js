@@ -46,7 +46,9 @@ const sendEmail = async (options) => {
   } catch (error) {
     // As sending email is not strongly coupled to the business logic it is not worth to raise an error when email sending fails
     // So it's better to fail silently rather than breaking the app
-    console.log("Email service failed silently");
+    console.log(
+      "Email service failed silently. Make sure you have provided your MAILTRAP credentials in the .env file"
+    );
     console.log("Error: ", error);
   }
 };

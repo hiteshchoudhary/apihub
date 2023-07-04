@@ -14,12 +14,16 @@ const storage = multer.diskStorage({
         file.originalname.lastIndexOf(".")
       );
     }
+    const filenameWithoutExtension = file.originalname
+      .toLowerCase()
+      .split(" ")
+      .join("-")
+      ?.split(".")[0];
     cb(
       null,
-      file.originalname.toLowerCase().split(" ").join("-") +
-        "-" +
+      filenameWithoutExtension +
         Date.now() +
-        Math.ceil(Math.random() * 1e8) + // avoid rare name conflict
+        Math.ceil(Math.random() * 1e5) + // avoid rare name conflict
         fileExtension
     );
   },
