@@ -6,6 +6,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getCart } from "./cart.controllers.js";
 import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
+import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 
 const createCoupon = asyncHandler(async (req, res) => {
   const {
@@ -172,14 +173,17 @@ const getAllCoupons = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const couponAggregate = Coupon.aggregate([{ $match: {} }]);
 
-  const coupons = await Coupon.aggregatePaginate(couponAggregate, {
-    page,
-    limit,
-    customLabels: {
-      totalDocs: "totalCoupons",
-      docs: "coupons",
-    },
-  });
+  const coupons = await Coupon.aggregatePaginate(
+    couponAggregate,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalCoupons",
+        docs: "coupons",
+      },
+    })
+  );
 
   return res
     .status(200)
@@ -213,14 +217,17 @@ const getValidCouponsForCustomer = asyncHandler(async (req, res) => {
     },
   ]);
 
-  const coupons = await Coupon.aggregatePaginate(couponAggregate, {
-    page,
-    limit,
-    customLabels: {
-      totalDocs: "totalCoupons",
-      docs: "coupons",
-    },
-  });
+  const coupons = await Coupon.aggregatePaginate(
+    couponAggregate,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalCoupons",
+        docs: "coupons",
+      },
+    })
+  );
 
   return res
     .status(200)
