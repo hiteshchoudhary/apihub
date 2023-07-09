@@ -62,9 +62,43 @@ const sendXMLData = asyncHandler(async (req, res) => {
     });
 });
 
+const sendGzipResponse = asyncHandler(async (req, res) => {
+  // This controller is guarded by compression middleware which compresses the response
+  const animal = "elephant";
+  // It will repeatedly send the word 'elephant' in a
+  // 'text/html' format file
+  res.status(200).send(
+    new ApiResponse(
+      200,
+      {
+        contentEncoding: "gzip",
+        string: animal.repeat(1000),
+      },
+      "Response compressed with gzip"
+    )
+  );
+});
+
+const sendBrotliResponse = asyncHandler(async (req, res) => {
+  // This controller is guarded by compression middleware which compresses the response in `br` encoding
+  const animal = "elephant";
+  res.status(200).send(
+    new ApiResponse(
+      200,
+      {
+        contentEncoding: "br",
+        string: animal.repeat(1000),
+      },
+      "Response compressed with brotli"
+    )
+  );
+});
+
 export {
   getResponseHeaders,
   setCacheControlHeader,
   sendHTMLTemplate,
   sendXMLData,
+  sendGzipResponse,
+  sendBrotliResponse,
 };
