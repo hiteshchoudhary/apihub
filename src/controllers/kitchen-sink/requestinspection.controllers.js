@@ -34,4 +34,31 @@ const getUserAgent = asyncHandler(async (req, res) => {
     );
 });
 
-export { getClientIP, getRequestHeaders, getUserAgent };
+const getPathVariables = asyncHandler(async (req, res) => {
+  const { pathVariable } = req.params;
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { pathVariable },
+        "Path variables caught successfully"
+      )
+    );
+});
+
+const getQueryParameters = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, req.query, "Query parameters caught successfully")
+    );
+});
+
+export {
+  getClientIP,
+  getRequestHeaders,
+  getUserAgent,
+  getPathVariables,
+  getQueryParameters,
+};
