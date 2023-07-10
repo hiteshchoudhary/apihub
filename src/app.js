@@ -112,7 +112,15 @@ import { seedTodos } from "./seeds/todo.seeds.js";
 import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
 
 // * API DOCS
-app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  "/api/v1/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    swaggerOptions: {
+      docExpansion: "none", // keep all the sections collapsed by default
+    },
+  })
+);
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
