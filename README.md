@@ -11,3 +11,7 @@ Install Docker on your machine and run the following command inside the root fol
 ```
 docker-compose up --build
 ```
+
+# Swagger Docs
+
+[Swagger Docs](http://localhost:8080/api/v1/docs/)

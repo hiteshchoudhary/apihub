@@ -30,6 +30,16 @@ const postPathVariableValidator = () => {
   ];
 };
 
+const usernamePathVariableValidator = () => {
+  return [
+    param("username").toLowerCase().notEmpty().withMessage("Invalid username"),
+  ];
+};
+
+const tagPathVariableValidator = () => {
+  return [param("tag").notEmpty().withMessage("Tag is required")];
+};
+
 const postImagePathVariableValidator = () => {
   return [
     param("imageId").notEmpty().isMongoId().withMessage("Invalid post id"),
@@ -41,4 +51,6 @@ export {
   updatePostValidator,
   postPathVariableValidator,
   postImagePathVariableValidator,
+  usernamePathVariableValidator,
+  tagPathVariableValidator,
 };

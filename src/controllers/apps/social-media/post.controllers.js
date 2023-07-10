@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
+import { MAXIMUM_SOCIAL_POST_IMAGE_COUNT } from "../../../constants.js";
+import { User } from "../../../models/apps/auth/user.models.js";
+import { SocialBookmark } from "../../../models/apps/social-media/bookmark.models.js";
 import { SocialPost } from "../../../models/apps/social-media/post.models.js";
+import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import {
@@ -8,11 +12,6 @@ import {
   getStaticFilePath,
   removeLocalFile,
 } from "../../../utils/helpers.js";
-import { ApiError } from "../../../utils/ApiError.js";
-import { MAXIMUM_SOCIAL_POST_IMAGE_COUNT } from "../../../constants.js";
-import { SocialBookmark } from "../../../models/apps/social-media/bookmark.models.js";
-
-// TODO: implement comments and add aggregation pipelines for the same in postCommonAggregation
 
 /**
  * @param {import("express").Request} req
@@ -330,6 +329,49 @@ const getAllPosts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "Posts fetched successfully"));
 });
 
+const getPostsByUsername = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  const { username } = req.params;
+
+  const user = await User.findOne({
+    username: username.toLowerCase(),
+  });
+
+  if (!user) {
+    throw new ApiError(
+      404,
+      "User with username '" + username + "' does not exist"
+    );
+  }
+
+  const userId = user._id;
+
+  const postAggregation = SocialPost.aggregate([
+    {
+      $match: {
+        author: new mongoose.Types.ObjectId(userId),
+      },
+    },
+    ...postCommonAggregation(req),
+  ]);
+
+  const posts = await SocialPost.aggregatePaginate(
+    postAggregation,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalPosts",
+        docs: "posts",
+      },
+    })
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, posts, "User's posts fetched successfully"));
+});
+
 const getMyPosts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
@@ -385,8 +427,12 @@ const getBookMarkedPosts = asyncHandler(async (req, res) => {
     {
       $project: {
         _id: 0,
-        postId: 0,
-        __v: 0,
+        post: 1,
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: "$post",
       },
     },
   ]);
@@ -452,13 +498,53 @@ const deletePost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Post deleted successfully"));
 });
 
+const getPostsByTag = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  const { tag } = req.params;
+
+  const postAggregation = SocialPost.aggregate([
+    {
+      $redact: {
+        $cond: {
+          if: {
+            $in: [tag, "$tags"],
+          },
+          then: "$$KEEP",
+          else: "$$PRUNE",
+        },
+      },
+    },
+    ...postCommonAggregation(req),
+  ]);
+
+  const posts = await SocialPost.aggregatePaginate(
+    postAggregation,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalPosts",
+        docs: "posts",
+      },
+    })
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, posts, `Posts with tag #${tag} fetched successfully`)
+    );
+});
+
 export {
   createPost,
-  getAllPosts,
-  getPostById,
-  updatePost,
-  removePostImage,
   deletePost,
-  getMyPosts,
+  getAllPosts,
   getBookMarkedPosts,
+  getMyPosts,
+  getPostById,
+  getPostsByUsername,
+  removePostImage,
+  updatePost,
+  getPostsByTag,
 };
