@@ -4,7 +4,6 @@ import {
   createPost,
   deletePost,
   getAllPosts,
-  getBookMarkedPosts,
   getMyPosts,
   getPostById,
   getPostsByTag,
@@ -43,8 +42,6 @@ router
   );
 
 router.route("/get/my").get(verifyJWT, getMyPosts);
-
-router.route("/get/bookmarked").get(verifyJWT, getBookMarkedPosts);
 
 router
   .route("/get/u/:username")

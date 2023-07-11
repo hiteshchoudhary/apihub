@@ -151,7 +151,7 @@ app.use("/api/v1/social-media/profile", socialProfileRouter);
 app.use("/api/v1/social-media/follow", socialFollowRouter);
 app.use("/api/v1/social-media/posts", socialPostRouter);
 app.use("/api/v1/social-media/like", socialLikeRouter);
-app.use("/api/v1/social-media/bookmark", socialBookmarkRouter);
+app.use("/api/v1/social-media/bookmarks", socialBookmarkRouter);
 app.use("/api/v1/social-media/comments", socialCommentRouter);
 
 app.use("/api/v1/todos", todoRouter);
