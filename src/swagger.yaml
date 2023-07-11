@@ -30213,7 +30213,191 @@ paths:
         schema:
           type: string
           example: 64a3e45c9d02a1e3d365f08d
-  /social-media/posts/get/bookmarked:
+  /social-media/like/post/{postId}:
+    post:
+      tags:
+        
+        - Social Media
+        
+      summary: Like or unlike post
+      description: Like or unlike post
+      operationId: likeOrUnlikePost
+      responses:
+        '200':
+          description: Like or unlike post
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '91'
+            Date:
+              schema:
+                type: string
+                example: Sat, 24 Jun 2023 19:12:27 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"5b-Hp3h+mfkkH7ImHW+0LDh1X0XaJc"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            RateLimit-Limit:
+              schema:
+                type: string
+                example: '500'
+            RateLimit-Remaining:
+              schema:
+                type: string
+                example: '496'
+            RateLimit-Reset:
+              schema:
+                type: string
+                example: '863'
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      isLiked:
+                        type: boolean
+                        example: false
+                  message:
+                    type: string
+                    example: Unliked successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Like or unlike post:
+                  value:
+                    data:
+                      isLiked: false
+                    message: Unliked successfully
+                    statusCode: 200
+                    success: true
+    parameters:
+      - name: postId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: 649736ac3e2615fb255a948b
+  /social-media/like/comment/{commentId}:
+    post:
+      tags:
+        
+        - Social Media
+        
+      summary: Like or unlike comment
+      description: Like or unlike comment
+      operationId: likeOrUnlikeComment
+      responses:
+        '200':
+          description: Like or unlike post Copy
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '88'
+            Date:
+              schema:
+                type: string
+                example: Sat, 24 Jun 2023 19:13:53 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"58-o4ladX2lyoc77W1/Dec1O7nYJpk"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            RateLimit-Limit:
+              schema:
+                type: string
+                example: '500'
+            RateLimit-Remaining:
+              schema:
+                type: string
+                example: '498'
+            RateLimit-Reset:
+              schema:
+                type: string
+                example: '881'
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      isLiked:
+                        type: boolean
+                        example: true
+                  message:
+                    type: string
+                    example: Liked successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Like or unlike post Copy:
+                  value:
+                    data:
+                      isLiked: true
+                    message: Liked successfully
+                    statusCode: 200
+                    success: true
+    parameters:
+      - name: commentId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: 649769d2b883005dbdcc3292
+  /social-media/bookmarks:
     get:
       tags:
         
@@ -31094,191 +31278,7 @@ paths:
                     message: Bookmarked posts fetched successfully
                     statusCode: 200
                     success: true
-  /social-media/like/post/{postId}:
-    post:
-      tags:
-        
-        - Social Media
-        
-      summary: Like or unlike post
-      description: Like or unlike post
-      operationId: likeOrUnlikePost
-      responses:
-        '200':
-          description: Like or unlike post
-          headers:
-            Access-Control-Allow-Credentials:
-              schema:
-                type: string
-                example: 'true'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: '91'
-            Date:
-              schema:
-                type: string
-                example: Sat, 24 Jun 2023 19:12:27 GMT
-            ETag:
-              schema:
-                type: string
-                example: W/"5b-Hp3h+mfkkH7ImHW+0LDh1X0XaJc"
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-            RateLimit-Limit:
-              schema:
-                type: string
-                example: '500'
-            RateLimit-Remaining:
-              schema:
-                type: string
-                example: '496'
-            RateLimit-Reset:
-              schema:
-                type: string
-                example: '863'
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      isLiked:
-                        type: boolean
-                        example: false
-                  message:
-                    type: string
-                    example: Unliked successfully
-                  statusCode:
-                    type: number
-                    example: 200
-                  success:
-                    type: boolean
-                    example: true
-              examples:
-                Like or unlike post:
-                  value:
-                    data:
-                      isLiked: false
-                    message: Unliked successfully
-                    statusCode: 200
-                    success: true
-    parameters:
-      - name: postId
-        in: path
-        required: true
-        schema:
-          type: string
-          example: 649736ac3e2615fb255a948b
-  /social-media/like/comment/{commentId}:
-    post:
-      tags:
-        
-        - Social Media
-        
-      summary: Like or unlike comment
-      description: Like or unlike comment
-      operationId: likeOrUnlikeComment
-      responses:
-        '200':
-          description: Like or unlike post Copy
-          headers:
-            Access-Control-Allow-Credentials:
-              schema:
-                type: string
-                example: 'true'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: '88'
-            Date:
-              schema:
-                type: string
-                example: Sat, 24 Jun 2023 19:13:53 GMT
-            ETag:
-              schema:
-                type: string
-                example: W/"58-o4ladX2lyoc77W1/Dec1O7nYJpk"
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-            RateLimit-Limit:
-              schema:
-                type: string
-                example: '500'
-            RateLimit-Remaining:
-              schema:
-                type: string
-                example: '498'
-            RateLimit-Reset:
-              schema:
-                type: string
-                example: '881'
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      isLiked:
-                        type: boolean
-                        example: true
-                  message:
-                    type: string
-                    example: Liked successfully
-                  statusCode:
-                    type: number
-                    example: 200
-                  success:
-                    type: boolean
-                    example: true
-              examples:
-                Like or unlike post Copy:
-                  value:
-                    data:
-                      isLiked: true
-                    message: Liked successfully
-                    statusCode: 200
-                    success: true
-    parameters:
-      - name: commentId
-        in: path
-        required: true
-        schema:
-          type: string
-          example: 649769d2b883005dbdcc3292
-  /social-media/bookmark/{postId}:
+  /social-media/bookmarks/{postId}:
     post:
       tags:
         
