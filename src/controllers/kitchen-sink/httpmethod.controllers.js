@@ -1,7 +1,7 @@
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-// TODO: Add more request methods
+// TODO: Add more request methods (low priority)
 
 /**
  *
