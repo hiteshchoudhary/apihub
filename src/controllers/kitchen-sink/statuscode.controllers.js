@@ -21,7 +21,6 @@ const getStatusCode = asyncHandler(async (req, res) => {
   return res
     .status(
       // If the status codes are causing problem in sending response just send 200 OK response so that user can see the response
-      // TODO: We can send 200 as an original response status to avoid making success flag false for 4xx statuses
       CONFLICTING_STATUS_CODES.includes(payload.statusCode)
         ? 200
         : payload.statusCode

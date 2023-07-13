@@ -106,6 +106,8 @@ import redirectRouter from "./routes/kitchen-sink/redirect.routes.js";
 import requestinspectionRouter from "./routes/kitchen-sink/requestinspection.routes.js";
 import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.routes.js";
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
+
+// * Seeding handlers
 import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
 import { seedTodos } from "./seeds/todo.seeds.js";
@@ -171,6 +173,7 @@ app.post("/api/v1/seed/todos", seedTodos);
 app.post("/api/v1/seed/ecommerce", seedUsers, seedEcommerce);
 app.post("/api/v1/seed/social-media", seedUsers, seedSocialMedia);
 
+// ! 🚫 Danger Zone
 app.delete("/api/v1/reset-db", async (req, res) => {
   if (dbInstance) {
     // Drop the whole DB
