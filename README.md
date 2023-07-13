@@ -8,7 +8,7 @@ It empowers developers to consume these APIs, enabling them to build projects th
 
 By utilizing these APIs, developers can gain hands-on experience in working with APIs, honing their skills, and gaining a deeper understanding of API integration and usage.
 
-[Jump to the setup](#🏁-installation)
+[Jump to the setup](#-installation)
 
 ## 🧰 Usage
 
