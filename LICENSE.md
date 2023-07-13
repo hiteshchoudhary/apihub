@@ -1,6 +1,6 @@
 MIT License
 
-ApiHub
+FreeAPI
 
 Copyright (c) 2023 Hitesh Choudhary
 
