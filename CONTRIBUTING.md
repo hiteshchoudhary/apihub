@@ -1,12 +1,12 @@
-# Contributing to ApiHub
+# Contributing to FreeAPI
 
-Thank you for your interest in contributing to ApiHub! We welcome contributions from the software community to help improve and enhance this project.
+Thank you for your interest in contributing to FreeAPI! We welcome contributions from the software community to help improve and enhance this project.
 
-By contributing, you can help make ApiHub a more valuable resource for developers and contribute to the growth of the open-source community.
+By contributing, you can help make FreeAPI a more valuable resource for developers and contribute to the growth of the open-source community.
 
 ## How to Contribute
 
-To contribute to ApiHub, please follow these guidelines:
+To contribute to FreeAPI, please follow these guidelines:
 
 1. Fork the repository on GitHub.
 2. Clone your forked repository to your local machine.
@@ -17,37 +17,18 @@ To contribute to ApiHub, please follow these guidelines:
 
 ## Guidelines for Contribution
 
-To ensure smooth and effective collaboration, please adhere to the following guidelines:
+Here's a guide on how you can effectively contribute to our API hub:
 
-### Branching and Committing
+1. Pull Requests for Readme Updates: Please refrain from sending pull requests solely for updating the project's readme file. While we appreciate the importance of clear and concise documentation, we prefer to focus on substantial code contributions and feature enhancements.
 
-- Follow the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model for your feature branches.
-- Write clear and descriptive commit messages for each commit.
-- Make sure each commit represents a logical unit of change.
-- Keep your commits focused and avoid including unrelated changes.
+2. Grammar Updates: Our team values effective communication, but we're not grammar sticklers. You don't need to send pull requests solely for grammar fixes or minor language improvements. Instead, concentrate on the core functionalities and features of the project.
 
-### Code Quality
+3. Avoid Updating Existing Public APIs: To maintain stability and consistency, we discourage direct updates to existing public APIs within the API hub. These APIs have been thoroughly tested and approved. However, if you encounter any bugs or issues, we encourage you to open an issue on our project's issue tracker to notify us.
 
-- Write clean and readable code following the project's coding conventions and style guidelines.
-- Maintain consistent indentation and formatting.
-- Include appropriate comments to enhance code understandability.
-- Ensure your changes do not introduce any linting errors or warnings.
-- Run tests locally to verify that your changes do not break existing functionality.
+4. Build New Project APIs: We encourage you to explore your creativity and contribute by building complete project APIs. These APIs should provide comprehensive solutions that can assist developers in constructing complex projects to showcase their skills and abilities. Your contributions in this area will greatly benefit the community.
 
-### Documentation
+5. Draft a Proposal and Discuss on Discord: Before diving into your project, we recommend drafting a proposal. This can include a mind map or outline of the API you intend to build and its potential benefits. Join our Discord community, where you can share your proposal, discuss ideas, and gather feedback from fellow contributors. Engaging in these discussions will enhance your backend portfolio and help shape the future direction of the project.
 
-- Provide clear and concise documentation for new features, APIs, or significant changes.
-- Update relevant sections of the README.md file to reflect any changes or additions.
-- Include inline comments in the code to explain complex logic or provide additional context.
+We appreciate your enthusiasm and look forward to your valuable contributions to our open source API hub project.
 
-### Communication and Collaboration
-
-- Be respectful and considerate towards other contributors and maintain a positive and inclusive environment.
-- Participate in discussions and provide constructive feedback when appropriate.
-- Respond to comments and suggestions in a timely manner.
-
-## Getting Help
-
-If you have any questions or need assistance, feel free to reach out by creating an issue or leaving a comment on the relevant pull request. We are here to help and guide you through the contribution process.
-
-Thank you for your interest in contributing to ApiHub. Your contributions are highly appreciated, and we look forward to collaborating with you to make this project even better!
+Together, we can foster a collaborative environment and make a significant impact in the API integration landscape.
