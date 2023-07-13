@@ -61,7 +61,7 @@ We welcome contributions from the software community. To contribute to ApiHub, p
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix: `git checkout -b feat/your-feature-name` or `git checkout -b fix/your-bug-fix-name`.
 3. Make your changes and commit them with descriptive messages: `git commit -am 'Add your commit message'`.
-4. Push your changes to your forked repository: `git push origin feature/your-feature-name`.
+4. Push your changes to your forked repository: `git push origin feat/your-feature-name`.
 5. Submit a pull request to the main repository, explaining the changes you've made and providing any necessary details.
 
 Please adhere to the following industry standards and best practices when contributing:
