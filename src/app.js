@@ -1,6 +1,5 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import express from "express";
 import { rateLimit } from "express-rate-limit";
 import session from "express-session";
@@ -20,10 +19,6 @@ const __dirname = path.dirname(__filename);
 
 const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
 const swaggerDocument = YAML.parse(file);
-
-dotenv.config({
-  path: "./.env",
-});
 
 const app = express();
 
@@ -60,7 +55,13 @@ app.use(express.static("public")); // configure static file to save images local
 app.use(cookieParser());
 
 // required for passport
-app.use(session({ secret: process.env.EXPRESS_SESSION_SECRET })); // session secret
+app.use(
+  session({
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  })
+); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 

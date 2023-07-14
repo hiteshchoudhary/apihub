@@ -82,6 +82,8 @@ Click [here](https://github.com/hiteshchoudhary/apihub/blob/dev/CONTRIBUTING.md)
 
 ## 🏁 Installation
 
+### 📦 Using Docker (recommended)
+
 To run the ApiHub project, follow these steps:
 
 1. Install [Docker](https://www.docker.com/) on your machine.
@@ -92,6 +94,28 @@ To run the ApiHub project, follow these steps:
 
 ```bash
 docker-compose up --build
+```
+
+6. Access the project APIs at the specified endpoints.
+
+### 💻 Running locally
+
+To run the ApiHub project locally, follow these steps:
+
+1. Install [Yarn](https://yarnpkg.com/), [NodeJs](https://www.nodejs.org/), [MongoDB](https://www.mongodb.com) and [MongoDB Compass (optional)](https://www.mongodb.com/products/compass) on your machine.
+2. Clone the project repository.
+3. Navigate to the project directory.
+4. Create `.env` file in the root folder and copy paste the content of `.env.sample`, and add necessary credentials.
+5. Install the packages:
+
+```bash
+yarn install
+```
+
+6. Run the project:
+
+```bash
+yarn start
 ```
 
 6. Access the project APIs at the specified endpoints.
