@@ -1,6 +1,10 @@
+import dotenv from "dotenv";
 import { app } from "./app.js";
 import connectDB from "./db/index.js";
 
+dotenv.config({
+  path: "./.env",
+});
 /**
  * Starting from Node.js v14 top-level await is available and it is only available in ES modules.
  * This means you can not use it with common js modules or Node version < 14.
@@ -27,4 +31,3 @@ if (majorNodeVersion >= 14) {
       console.log("Mongo db connect error: ", err);
     });
 }
-console.log("Node version: ", majorNodeVersion);
