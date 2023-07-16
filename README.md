@@ -54,7 +54,7 @@ By combining open source principles, accessibility, and a focus on learning, our
 
 We welcome your interest in contributing to our open source project!
 
-To contribute to ApiHub, please follow these steps:
+To contribute to FreeAPI, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix: `git checkout -b feat/your-feature-name` or `git checkout -b fix/your-bug-fix-name`.
@@ -84,7 +84,7 @@ Click [here](https://github.com/hiteshchoudhary/apihub/blob/dev/CONTRIBUTING.md)
 
 ### 📦 Using Docker (recommended)
 
-To run the ApiHub project, follow these steps:
+To run the FreeAPI project, follow these steps:
 
 1. Install [Docker](https://www.docker.com/) on your machine.
 2. Clone the project repository.
@@ -100,7 +100,7 @@ docker-compose up --build
 
 ### 💻 Running locally
 
-To run the ApiHub project locally, follow these steps:
+To run the FreeAPI project locally, follow these steps:
 
 1. Install [Yarn](https://yarnpkg.com/), [NodeJs](https://www.nodejs.org/), [MongoDB](https://www.mongodb.com) and [MongoDB Compass (optional)](https://www.mongodb.com/products/compass) on your machine.
 2. Clone the project repository.

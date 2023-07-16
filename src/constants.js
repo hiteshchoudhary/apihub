@@ -54,8 +54,7 @@ export const AvailableSocialLogins = Object.values(UserLoginType);
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;
 export const MAXIMUM_SOCIAL_POST_IMAGE_COUNT = 6;
 
-// ? REFACTOR: change name "apihub" everywhere in the codebase to "freeapi" (low priority)
-export const DB_NAME = "apihub";
+export const DB_NAME = "freeapi";
 
 export const paypalBaseUrl = {
   sandbox: "https://api-m.sandbox.paypal.com",
