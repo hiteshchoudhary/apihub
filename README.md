@@ -78,7 +78,7 @@ We appreciate your enthusiasm and look forward to your valuable contributions to
 
 Together, we can foster a collaborative environment and make a significant impact in the API integration landscape.
 
-Click [here](https://github.com/hiteshchoudhary/apihub/blob/dev/CONTRIBUTING.md) for details contribution guide.
+Click [here](https://github.com/hiteshchoudhary/apihub/blob/dev/CONTRIBUTING.md) for detailed contribution guide.
 
 ## 🏁 Installation
 
