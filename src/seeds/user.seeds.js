@@ -88,7 +88,10 @@ const getGeneratedCredentials = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    throw new ApiError(404, "No credentials generated yet");
+    throw new ApiError(
+      404,
+      "No credentials generated yet. Make sure you have seeded social media or ecommerce api data first which generates users as dependencies."
+    );
   }
 });
 

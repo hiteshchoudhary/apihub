@@ -116,12 +116,13 @@ import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
 
 // * API DOCS
 app.use(
-  "/api/v1/docs",
+  "/",
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument, {
     swaggerOptions: {
       docExpansion: "none", // keep all the sections collapsed by default
     },
+    customSiteTitle: "FreeAPI docs",
   })
 );
 

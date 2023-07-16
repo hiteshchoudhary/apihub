@@ -122,4 +122,4 @@ yarn start
 
 # 📜 Swagger Docs
 
-[Swagger Docs](http://localhost:8080/api/v1/docs/): http://localhost:8080/api/v1/docs/
+[Swagger Docs](http://localhost:8080): http://localhost:8080
