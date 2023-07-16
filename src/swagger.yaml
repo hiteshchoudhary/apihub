@@ -12573,7 +12573,7 @@ paths:
                         example: '2023-06-30T06:42:26.163Z'
                       email:
                         type: string
-                        example: waje.shubham111@gmail.com
+                        example: user.email@domain.com
                       isEmailVerified:
                         type: boolean
                         example: false
@@ -12588,7 +12588,7 @@ paths:
                         example: '2023-06-30T06:44:29.831Z'
                       username:
                         type: string
-                        example: wajeshubham
+                        example: doejohn
                   message:
                     type: string
                     example: Current user fetched successfully
@@ -12609,12 +12609,12 @@ paths:
                         localPath: ''
                         url: https://via.placeholder.com/200x200.png
                       createdAt: '2023-06-30T06:42:26.163Z'
-                      email: waje.shubham111@gmail.com
+                      email: user.email@domain.com
                       isEmailVerified: false
                       loginType: EMAIL_PASSWORD
                       role: ADMIN
                       updatedAt: '2023-06-30T06:44:29.831Z'
-                      username: wajeshubham
+                      username: doejohn
                     message: Current user fetched successfully
                     statusCode: 200
                     success: true
@@ -12727,7 +12727,7 @@ paths:
               properties:
                 email:
                   type: string
-                  example: waje.shubham111@gmail.com
+                  example: user.email@domain.com
                 password:
                   type: string
                   example: test@123
@@ -12736,12 +12736,12 @@ paths:
                   example: ADMIN
                 username:
                   type: string
-                  example: wajeshubham
+                  example: doejohn
             example:
-              email: waje.shubham111@gmail.com
+              email: user.email@domain.com
               password: test@123
               role: ADMIN
-              username: wajeshubham
+              username: doejohn
       responses:
         '201':
           description: Register user
@@ -12824,7 +12824,7 @@ paths:
                             example: '2023-06-30T06:42:26.163Z'
                           email:
                             type: string
-                            example: waje.shubham111@gmail.com
+                            example: user.email@domain.com
                           isEmailVerified:
                             type: boolean
                             example: false
@@ -12839,7 +12839,7 @@ paths:
                             example: '2023-06-30T06:42:26.247Z'
                           username:
                             type: string
-                            example: wajeshubham
+                            example: doejohn
                   message:
                     type: string
                     example: >-
@@ -12863,12 +12863,12 @@ paths:
                           localPath: ''
                           url: https://via.placeholder.com/200x200.png
                         createdAt: '2023-06-30T06:42:26.163Z'
-                        email: waje.shubham111@gmail.com
+                        email: user.email@domain.com
                         isEmailVerified: false
                         loginType: EMAIL_PASSWORD
                         role: ADMIN
                         updatedAt: '2023-06-30T06:42:26.247Z'
-                        username: wajeshubham
+                        username: doejohn
                     message: >-
                       Users registered successfully and verification email has
                       been sent on your email.
@@ -12915,10 +12915,10 @@ paths:
                   example: test@123
                 username:
                   type: string
-                  example: wajeshubham
+                  example: doejohn
             example:
               password: test@123
-              username: wajeshubham
+              username: doejohn
       responses:
         '200':
           description: Login user
@@ -13015,7 +13015,7 @@ paths:
                             example: '2023-06-30T06:42:26.163Z'
                           email:
                             type: string
-                            example: waje.shubham111@gmail.com
+                            example: user.email@domain.com
                           isEmailVerified:
                             type: boolean
                             example: false
@@ -13030,7 +13030,7 @@ paths:
                             example: '2023-06-30T06:44:29.831Z'
                           username:
                             type: string
-                            example: wajeshubham
+                            example: doejohn
                   message:
                     type: string
                     example: User logged in successfully
@@ -13056,12 +13056,12 @@ paths:
                           localPath: ''
                           url: https://via.placeholder.com/200x200.png
                         createdAt: '2023-06-30T06:42:26.163Z'
-                        email: waje.shubham111@gmail.com
+                        email: user.email@domain.com
                         isEmailVerified: false
                         loginType: EMAIL_PASSWORD
                         role: ADMIN
                         updatedAt: '2023-06-30T06:44:29.831Z'
-                        username: wajeshubham
+                        username: doejohn
                     message: User logged in successfully
                     statusCode: 200
                     success: true
@@ -13509,7 +13509,7 @@ paths:
                     type: string
                     example: |-
                       Error: Email is already verified!
-                          at file:///usr/src/apihub/src/controllers/apps/auth/user.controllers.js:240:11
+                          at file:///usr/src/freeapi/src/controllers/apps/auth/user.controllers.js:240:11
                           at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
                   statusCode:
                     type: number
@@ -13525,7 +13525,7 @@ paths:
                     message: Email is already verified!
                     stack: |-
                       Error: Email is already verified!
-                          at file:///usr/src/apihub/src/controllers/apps/auth/user.controllers.js:240:11
+                          at file:///usr/src/freeapi/src/controllers/apps/auth/user.controllers.js:240:11
                           at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
                     statusCode: 409
                     success: false
@@ -13651,9 +13651,9 @@ paths:
               properties:
                 email:
                   type: string
-                  example: waje.shubham111@gmail.com
+                  example: user.email@domain.com
             example:
-              email: waje.shubham111@gmail.com
+              email: user.email@domain.com
       responses:
         '200':
           description: Forgot password request
@@ -13916,7 +13916,7 @@ paths:
                         example: '2023-06-30T06:42:26.163Z'
                       email:
                         type: string
-                        example: waje.shubham111@gmail.com
+                        example: user.email@domain.com
                       emailVerificationExpiry:
                         type: string
                         example: '2023-06-30T07:02:26.246Z'
@@ -13946,7 +13946,7 @@ paths:
                         example: '2023-06-30T06:45:46.055Z'
                       username:
                         type: string
-                        example: wajeshubham
+                        example: doejohn
                   message:
                     type: string
                     example: Avatar updated successfully
@@ -13968,7 +13968,7 @@ paths:
                         url: >-
                           http://localhost:8080/images/plastic168810754602425641.jpeg
                       createdAt: '2023-06-30T06:42:26.163Z'
-                      email: waje.shubham111@gmail.com
+                      email: user.email@domain.com
                       emailVerificationExpiry: '2023-06-30T07:02:26.246Z'
                       emailVerificationToken: >-
                         d2749e5298e1acf73cf09d06477669415503bb81e3c6505eff4560c6522ad263
@@ -13980,7 +13980,7 @@ paths:
                         eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDllNzk1MjY0ZTdkYmEyOWI3MjY5MzYiLCJpYXQiOjE2ODgxMDc1MjAsImV4cCI6MTY4ODk3MTUyMH0.Y9w5ZbXs8S8n2kuTLBHA5co8ez4KvebyJS2_o-9mxKU
                       role: ADMIN
                       updatedAt: '2023-06-30T06:45:46.055Z'
-                      username: wajeshubham
+                      username: doejohn
                     message: Avatar updated successfully
                     statusCode: 200
                     success: true
@@ -14073,10 +14073,10 @@ paths:
                         example: '2023-06-30T06:42:26.237Z'
                       firstName:
                         type: string
-                        example: Shubham
+                        example: John
                       lastName:
                         type: string
-                        example: Waje
+                        example: Doe
                       owner:
                         type: string
                         example: 649e795264e7dba29b726936
@@ -14103,8 +14103,8 @@ paths:
                       _id: 649e795264e7dba29b72693b
                       countryCode: '+91'
                       createdAt: '2023-06-30T06:42:26.237Z'
-                      firstName: Shubham
-                      lastName: Waje
+                      firstName: John
+                      lastName: Doe
                       owner: 649e795264e7dba29b726936
                       phoneNumber: '9893894838'
                       updatedAt: '2023-06-30T06:47:27.835Z'
@@ -14137,17 +14137,17 @@ paths:
                   example: '+91'
                 firstName:
                   type: string
-                  example: Shubham
+                  example: John
                 lastName:
                   type: string
-                  example: Waje
+                  example: Doe
                 phoneNumber:
                   type: string
                   example: '9893894838'
             example:
               countryCode: '+91'
-              firstName: Shubham
-              lastName: Waje
+              firstName: John
+              lastName: Doe
               phoneNumber: '9893894838'
       responses:
         '200':
@@ -14207,10 +14207,10 @@ paths:
                         example: '2023-06-03T15:58:45.283Z'
                       firstName:
                         type: string
-                        example: Shubham
+                        example: John
                       lastName:
                         type: string
-                        example: Waje
+                        example: Doe
                       owner:
                         type: string
                         example: 6476e34ebe1cfb9cc08bd446
@@ -14237,8 +14237,8 @@ paths:
                       _id: 647b633598f964861cfc48e5
                       countryCode: '+91'
                       createdAt: '2023-06-03T15:58:45.283Z'
-                      firstName: Shubham
-                      lastName: Waje
+                      firstName: John
+                      lastName: Doe
                       owner: 6476e34ebe1cfb9cc08bd446
                       phoneNumber: '9893894838'
                       updatedAt: '2023-06-03T16:17:45.744Z'
@@ -20264,7 +20264,7 @@ paths:
                     example: >-
                       Error: Add items worth INR 170/- or more to apply this
                       coupon
-                          at file:///usr/src/apihub/src/controllers/apps/ecommerce/coupon.controllers.js:92:11
+                          at file:///usr/src/freeapi/src/controllers/apps/ecommerce/coupon.controllers.js:92:11
                           at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
                   statusCode:
                     type: number
@@ -20281,7 +20281,7 @@ paths:
                     stack: >-
                       Error: Add items worth INR 170/- or more to apply this
                       coupon
-                          at file:///usr/src/apihub/src/controllers/apps/ecommerce/coupon.controllers.js:92:11
+                          at file:///usr/src/freeapi/src/controllers/apps/ecommerce/coupon.controllers.js:92:11
                           at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
                     statusCode: 400
                     success: false
@@ -24461,10 +24461,10 @@ paths:
                   example: '2023-06-20T17:25:24.365Z'
                 firstName:
                   type: string
-                  example: Shubham
+                  example: John
                 lastName:
                   type: string
-                  example: Waje
+                  example: Doe
                 location:
                   type: string
                   example: Mumbai, India
@@ -24475,8 +24475,8 @@ paths:
               bio: This is my bio text
               countryCode: '+91'
               dob: '2023-06-20T17:25:24.365Z'
-              firstName: Shubham
-              lastName: Waje
+              firstName: John
+              lastName: Doe
               location: Mumbai, India
               phoneNumber: '8273827837'
       responses:
@@ -24551,7 +24551,7 @@ paths:
                                   example: https://via.placeholder.com/200x200.png
                             email:
                               type: string
-                              example: waje.shubham111@gmail.com
+                              example: user.email@domain.com
                             isEmailVerified:
                               type: boolean
                               example: false
@@ -24563,7 +24563,7 @@ paths:
                               example: ADMIN
                             username:
                               type: string
-                              example: wajeshubham
+                              example: doejohn
                         bio:
                           type: string
                           example: This is my bio text
@@ -24592,10 +24592,10 @@ paths:
                           example: '2023-06-20T17:25:24.365Z'
                         firstName:
                           type: string
-                          example: Shubham
+                          example: John
                         lastName:
                           type: string
-                          example: Waje
+                          example: Doe
                         location:
                           type: string
                           example: Mumbai, India
@@ -24617,11 +24617,11 @@ paths:
                             _id: 6491e1045420697399d92642
                             localPath: ''
                             url: https://via.placeholder.com/200x200.png
-                          email: waje.shubham111@gmail.com
+                          email: user.email@domain.com
                           isEmailVerified: false
                           loginType: EMAIL_PASSWORD
                           role: ADMIN
-                          username: wajeshubham
+                          username: doejohn
                         bio: This is my bio text
                         countryCode: '+91'
                         coverImage:
@@ -24631,8 +24631,8 @@ paths:
                             http://localhost:8080/images/bottle.jpg-168728294397895743007.jpg
                         createdAt: '2023-06-20T17:26:09.021Z'
                         dob: '2023-06-20T17:25:24.365Z'
-                        firstName: Shubham
-                        lastName: Waje
+                        firstName: John
+                        lastName: Doe
                         location: Mumbai, India
                         owner: 6491e1045420697399d92643
                         phoneNumber: '8273827837'
@@ -24658,11 +24658,11 @@ paths:
                             _id: 6491e1045420697399d92642
                             localPath: ''
                             url: https://via.placeholder.com/200x200.png
-                          email: waje.shubham111@gmail.com
+                          email: user.email@domain.com
                           isEmailVerified: false
                           loginType: EMAIL_PASSWORD
                           role: ADMIN
-                          username: wajeshubham
+                          username: doejohn
                         bio: This is my bio text
                         countryCode: '+91'
                         coverImage:
@@ -24672,8 +24672,8 @@ paths:
                             http://localhost:8080/images/bottle.jpg-168728294397895743007.jpg
                         createdAt: '2023-06-20T17:26:09.021Z'
                         dob: '2023-06-20T17:25:24.365Z'
-                        firstName: Shubham
-                        lastName: Waje
+                        firstName: John
+                        lastName: Doe
                         location: Mumbai, India
                         owner: 6491e1045420697399d92643
                         phoneNumber: '8273827837'
@@ -24994,7 +24994,7 @@ paths:
                                   example: https://via.placeholder.com/200x200.png
                             email:
                               type: string
-                              example: waje.shubham111@gmail.com
+                              example: user.email@domain.com
                             isEmailVerified:
                               type: boolean
                               example: false
@@ -25006,7 +25006,7 @@ paths:
                               example: ADMIN
                             username:
                               type: string
-                              example: wajeshubham
+                              example: doejohn
                         bio:
                           type: string
                           example: This is my bio text
@@ -25035,10 +25035,10 @@ paths:
                           example: '2023-06-20T17:25:24.365Z'
                         firstName:
                           type: string
-                          example: Shubham
+                          example: John
                         lastName:
                           type: string
-                          example: Waje
+                          example: Doe
                         location:
                           type: string
                           example: Mumbai, India
@@ -25060,11 +25060,11 @@ paths:
                             _id: 6491e1045420697399d92642
                             localPath: ''
                             url: https://via.placeholder.com/200x200.png
-                          email: waje.shubham111@gmail.com
+                          email: user.email@domain.com
                           isEmailVerified: false
                           loginType: EMAIL_PASSWORD
                           role: ADMIN
-                          username: wajeshubham
+                          username: doejohn
                         bio: This is my bio text
                         countryCode: '+91'
                         coverImage:
@@ -25074,8 +25074,8 @@ paths:
                             http://localhost:8080/images/bottle.jpg-168728294397895743007.jpg
                         createdAt: '2023-06-20T17:26:09.021Z'
                         dob: '2023-06-20T17:25:24.365Z'
-                        firstName: Shubham
-                        lastName: Waje
+                        firstName: John
+                        lastName: Doe
                         location: Mumbai, India
                         owner: 6491e1045420697399d92643
                         phoneNumber: '8273827837'
@@ -25101,11 +25101,11 @@ paths:
                             _id: 6491e1045420697399d92642
                             localPath: ''
                             url: https://via.placeholder.com/200x200.png
-                          email: waje.shubham111@gmail.com
+                          email: user.email@domain.com
                           isEmailVerified: false
                           loginType: EMAIL_PASSWORD
                           role: ADMIN
-                          username: wajeshubham
+                          username: doejohn
                         bio: This is my bio text
                         countryCode: '+91'
                         coverImage:
@@ -25115,8 +25115,8 @@ paths:
                             http://localhost:8080/images/bottle.jpg-168728294397895743007.jpg
                         createdAt: '2023-06-20T17:26:09.021Z'
                         dob: '2023-06-20T17:25:24.365Z'
-                        firstName: Shubham
-                        lastName: Waje
+                        firstName: John
+                        lastName: Doe
                         location: Mumbai, India
                         owner: 6491e1045420697399d92643
                         phoneNumber: '8273827837'
@@ -28030,7 +28030,7 @@ paths:
                     example: >-
                       Error: Maximum 6 images are allowed for a post. There are
                       already 6 images attached to the post.
-                          at file:///usr/src/apihub/src/controllers/apps/social-media/post.controllers.js:219:11
+                          at file:///usr/src/freeapi/src/controllers/apps/social-media/post.controllers.js:219:11
                           at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
                   statusCode:
                     type: number
@@ -28049,7 +28049,7 @@ paths:
                     stack: >-
                       Error: Maximum 6 images are allowed for a post. There are
                       already 6 images attached to the post.
-                          at file:///usr/src/apihub/src/controllers/apps/social-media/post.controllers.js:219:11
+                          at file:///usr/src/freeapi/src/controllers/apps/social-media/post.controllers.js:219:11
                           at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
                     statusCode: 400
                     success: false

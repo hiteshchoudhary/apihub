@@ -1,5 +1,5 @@
 {
-  "name": "apihub",
+  "name": "freeapi",
   "version": "1.0.0",
   "description": "A API learning go",
   "type": "module",
@@ -12,7 +12,12 @@
     "url": "git+https://github.com/hiteshchoudhary/apihub.git"
   },
   "keywords": [
-    "apihub"
+    "apihub",
+    "freeapi",
+    "open source",
+    "api as a service",
+    "public apis",
+    "kitchen sink"
   ],
   "author": "Hitesh Choudhary",
   "license": "ISC",
