@@ -7,6 +7,11 @@
   "scripts": {
     "start": "nodemon -r dotenv/config src/index.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hiteshchoudhary/apihub.git"
@@ -51,7 +56,9 @@
     "yaml": "^2.3.1"
   },
   "devDependencies": {
+    "husky": "^8.0.3",
     "nodemon": "^2.0.22",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "pretty-quick": "^3.1.3"
   }
 }
