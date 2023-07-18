@@ -99,6 +99,9 @@ import socialProfileRouter from "./routes/apps/social-media/profile.routes.js";
 
 import todoRouter from "./routes/apps/todo/todo.routes.js";
 
+import exerciseRouter from "./routes/apps/fitness-tracker/exercise.routes.js";
+import usersRouter from "./routes/apps/fitness-tracker/user.routes.js";
+
 // * Kitchen sink routes
 import cookieRouter from "./routes/kitchen-sink/cookie.routes.js";
 import httpmethodRouter from "./routes/kitchen-sink/httpmethod.routes.js";
@@ -147,6 +150,9 @@ app.use("/api/v1/social-media/bookmarks", socialBookmarkRouter);
 app.use("/api/v1/social-media/comments", socialCommentRouter);
 
 app.use("/api/v1/todos", todoRouter);
+
+app.use("/api/v1/exercises", exerciseRouter);
+app.use("/api/v1/users", usersRouter);
 
 // * Kitchen sink apis
 app.use("/api/v1/kitchen-sink/http-methods", httpmethodRouter);
