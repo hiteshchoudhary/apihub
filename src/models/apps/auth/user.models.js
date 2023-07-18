@@ -159,4 +159,9 @@ userSchema.methods.generateTemporaryToken = function () {
   return { unHashedToken, hashedToken, tokenExpiry };
 };
 
+userSchema.pre(/^find/, async function (next) {
+  this.select("-password");
+  next();
+});
+
 export const User = mongoose.model("User", userSchema);
