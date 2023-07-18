@@ -5,6 +5,7 @@ import mongoose, { Schema } from "mongoose";
 import {
   AvailableSocialLogins,
   AvailableUserRoles,
+  USER_TEMPORARY_TOKEN_EXPIRY,
   UserLoginType,
   UserRolesEnum,
 } from "../../../constants.js";
@@ -153,8 +154,7 @@ userSchema.methods.generateTemporaryToken = function () {
     .update(unHashedToken)
     .digest("hex");
   // This is the expiry time for the token (20 minutes)
-  // REFACTOR: Shift expiry time calculation in constant
-  const tokenExpiry = Date.now() + 20 * 60 * 1000;
+  const tokenExpiry = Date.now() + USER_TEMPORARY_TOKEN_EXPIRY;
 
   return { unHashedToken, hashedToken, tokenExpiry };
 };
