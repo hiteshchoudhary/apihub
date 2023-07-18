@@ -24,7 +24,7 @@ const addExercise = asyncHandler(async (req, res) => {
         .catch(err => res.json(new ApiError(400, err, "Failed to add Exercise")))
 })
 
-// router.route('/add').post((req,res) =>{
+
 
 
 const getExerciseById = asyncHandler(async (req, res) => {
@@ -33,9 +33,7 @@ const getExerciseById = asyncHandler(async (req, res) => {
     .catch(err => res.json(new ApiError(400, err, "Unable to find Exercise")))
 })
 
-// router.route('/:id').get((req,res) => {
-   
-// });
+
 
 const deleteExercise = asyncHandler(async (req, res) => {
     Exercise.findByIdAndDelete(req.params.id)
@@ -43,9 +41,7 @@ const deleteExercise = asyncHandler(async (req, res) => {
         .catch(err => res.json(new ApiError(400, err)))
 })
 
-// router.route('/:id').delete((req,res) => {
-    
-// });
+
 
 const updateExercise = asyncHandler(async (req, res) => {
     Exercise.findById(req.params.id)
@@ -60,9 +56,7 @@ const updateExercise = asyncHandler(async (req, res) => {
     });
 })
 
-// router.route('/update/:id').post((req,res) =>{
-    
-// });
+
 
 
 

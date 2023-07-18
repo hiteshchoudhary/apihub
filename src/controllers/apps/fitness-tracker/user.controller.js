@@ -19,9 +19,7 @@ const addUsers = asyncHandler(async (req, res) => {
         .catch(err => res.json(new ApiError(400, err, 'Could not add user')))
 })
 
-// router.route('/add').post((req,res) => {
-    
-// });
+
 
 export {
     getAllUsers,
