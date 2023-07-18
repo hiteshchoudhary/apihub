@@ -187,6 +187,11 @@ app.delete("/api/v1/reset-db", async (req, res) => {
         }
       }
     });
+    // remove the seeded users if exist
+    fs.unlink("./public/temp/seed-credentials.json", (err) => {
+      // fail silently
+      if (err) console.log("Seed credentials are missing.");
+    });
     return res
       .status(200)
       .json(new ApiResponse(200, null, "Database dropped successfully"));
