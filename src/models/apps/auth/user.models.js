@@ -112,8 +112,10 @@ userSchema.post("save", async function (user, next) {
   next();
 });
 
-userSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcrypt.compare(password, this.password);
+userSchema.methods.isPasswordCorrect = async function (password, User) {
+  // fetch the password of user for comparision
+  let { password: userPassword } = await User.findById({_id: this._id}).select('password')
+  return await bcrypt.compare(password, userPassword);
 };
 
 userSchema.methods.generateAccessToken = function () {
@@ -159,6 +161,7 @@ userSchema.methods.generateTemporaryToken = function () {
   return { unHashedToken, hashedToken, tokenExpiry };
 };
 
+// this prehook will remove password whenever find query will be executed
 userSchema.pre(/^find/, async function (next) {
   this.select("-password");
   next();

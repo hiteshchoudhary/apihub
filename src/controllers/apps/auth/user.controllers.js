@@ -129,7 +129,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   // Compare the incoming password with hashed password
-  const isPasswordValid = await user.isPasswordCorrect(password);
+  const isPasswordValid = await user.isPasswordCorrect(password, User);
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid user credentials");
@@ -398,7 +398,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user?._id);
 
   // check the old password
-  const isPasswordValid = await user.isPasswordCorrect(oldPassword);
+  const isPasswordValid = await user.isPasswordCorrect(oldPassword, User);
 
   if (!isPasswordValid) {
     throw new ApiError(400, "Invalid old password");
