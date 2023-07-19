@@ -90,17 +90,18 @@ To run the FreeAPI project, follow these steps:
 2. Clone the project repository.
 3. Navigate to the project directory.
 4. Create `.env` file in the root folder and copy paste the content of `.env.sample`, and add necessary credentials.
-5. Run the Docker Compose command:
+5. Run the command: ``` make docker-start ```
 
-```bash
-docker-compose up --build --attach backend
+   OR if you want to run the Docker Compose manually, run
+   ```bash
+   docker-compose up --build --attach backend
 
-# --build: Rebuild the image and run the containers
-# --attach: only show logs of Node app container and not mongodb
-```
+   # --build: Rebuild the image and run the containers
+   # --attach: only show logs of Node app container and not mongodb
+   ```
 
 6. Access the project APIs at the specified endpoints.
-
+7. To stop and remove the Docker containers, run ``` make docker-stop ``` which is quivalent of ```docker-compose down```, as preferred
 ### 💻 Running locally
 
 To run the FreeAPI project locally, follow these steps:
