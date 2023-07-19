@@ -5,7 +5,9 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon -r dotenv/config src/index.js"
+    "start": "nodemon -r dotenv/config src/index.js",
+    "pre-commit": "lint-staged",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -51,6 +53,10 @@
     "yaml": "^2.3.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.5",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
     "nodemon": "^2.0.22",
     "prettier": "^3.0.0"
   }
