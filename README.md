@@ -121,7 +121,7 @@ yarn install
 yarn start
 ```
 
-6. Access the project APIs at the specified endpoints.
+7. Access the project APIs at the specified endpoints.
 
 ### 🚄 Using Railway (One-click Deploy)
 
