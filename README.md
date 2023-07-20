@@ -123,6 +123,40 @@ yarn start
 
 6. Access the project APIs at the specified endpoints.
 
+### 🚄 Using Railway (One-click Deploy)
+
+To have a self-hosting of the FreeAPI.app application you can take advantage of pre-built template that is readily available
+
+[![Deploy FreeAPI.app](https://railway.app/button.svg)](https://railway.app/template/B2f7Hq)
+
+1. Click on the below button to visit railway.app
+
+2. Click on **Deploy Now** button
+
+3. (Optional) Sign in with GitHub to Deploy
+
+4. To fill in Repository details:
+   - Specify the repo name (ex. freeapi-app)
+   - Checkmark for Pubic/Private repository
+
+5. To fill in Environment variables, we have provided some default values in the `ENV` to reduce the burden. But some parameters are mandatory
+   - `PORT`: Don't change the value, let it be set to 8080 inorder to view the swagger docs after deployment
+   - `MONGODB_URI`: Provide the mongodb atlas database URL. An example is prefilled for you, edit/update to continue
+   - `NODE_ENV`: Default set to 'development' inorder to view the logs. You may choose to change to anyother value such as 'prod' to hide them
+   - `EXPRESS_SESSION_SECRET`: Advised to change the default value to your own secret value
+   - `ACCESS_TOKEN_SECRET`: Advised to change the default value to your own secret value
+   - `ACCESS_TOKEN_EXPIRY`: Set to 1 day as default
+   - `REFRESH_TOKEN_SECRET`: Advised to change the default value to your own secret value
+   - `REFRESH_TOKEN_EXPIRY`: Set to 10 days as default
+
+6. Once you fill in the required parameters of env, if you choose the add the others as such such as Paypal, Google & Razorpay please proceed to mention your credentials in the form
+
+7. Click on **Deploy** button to trigger the first build
+
+* Monitor the server logs, if you come across any deployment problems feel free to raise an issue for our team to look into.
+
+Note: Once the application is deployed please way for 3-5 mintues for the swagger docs to be available.
+
 # 📜 Swagger Docs
 
 [Swagger Docs](http://localhost:8080): http://localhost:8080
