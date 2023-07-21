@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon -r dotenv/config src/index.js",
+    "start": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
     "pre-commit": "lint-staged",
     "prepare": "node prepare.js"
   },
@@ -40,7 +40,7 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "mailgen": "^2.0.27",
-    "mongoose": "^7.2.0",
+    "mongoose": "^7.4.0",
     "mongoose-aggregate-paginate-v2": "^1.0.6",
     "multer": "^1.4.5-lts.1",
     "nanoid": "^4.0.2",
