@@ -14,9 +14,11 @@ To contribute to FreeAPI, please follow these guidelines:
 4. Make your changes and commit them with descriptive messages: `git commit -am 'add your commit message'`. ([Commit format guidelines](#commit-message-format))
 5. Push your changes to your forked repository: `git push origin feat/your-feature-name`.
 6. Submit a pull request to the main repository.
-To create a table in your README that showcases the commit message types and their descriptions, you can use the following format:
+
 ## Commit Message Format
+
 We follow the conventional commit message format to provide a clear and standardized history of our project's changes. Each commit message should consist of a type and a descriptive message.
+
 | Type      | Heading  | Rule                                      | Description                                  |
 | --------- | -------- | ----------------------------------------- | -------------------------------------------- |
 | ci        | CI       | Continuous Integration                    | Changes related to continuous integration.   |
