@@ -11,7 +11,7 @@ To contribute to FreeAPI, please follow these guidelines:
 1. Fork the repository on GitHub.
 2. Clone your forked repository to your local machine.
 3. Create a new branch for your feature or bug fix: `git checkout -b feat/your-feature-name` or `git checkout -b fix/your-bug-fix-name`.
-4. Make your changes and commit them with descriptive messages: `git commit -am 'Add your commit message'`. ([Commit format guidelines](#commit-message-format))
+4. Make your changes and commit them with descriptive messages: `git commit -am 'add your commit message'`. ([Commit format guidelines](#commit-message-format))
 5. Push your changes to your forked repository: `git push origin feat/your-feature-name`.
 6. Submit a pull request to the main repository.
 To create a table in your README that showcases the commit message types and their descriptions, you can use the following format:
@@ -35,8 +35,8 @@ We follow the conventional commit message format to provide a clear and standard
 The commit message should start with the type, followed by a colon and a space, and then the descriptive message in present tense.
 
 Example:
-- feat: Add user authentication feature
-- fix: Correct typo in README
+- feat: add user authentication feature
+- fix: correct typo in README
 
 Please adhere to this format when making commits. This will help us maintain a clean and organized commit history.
 
