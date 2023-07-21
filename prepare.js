@@ -1,5 +1,6 @@
 import { spawnSync } from "child_process";
 import os from "os";
+import fs from "fs";
 
 // Function to run commands depending on the OS
 const runCommand = (command, args) => {
@@ -20,9 +21,14 @@ const prepareHusky = () => {
   // Run husky install
   const huskyInstallStatus = runCommand("npx", ["husky", "install"]);
 
+  // Check if .husky directory exists, if not, create it
+  if (!fs.existsSync(".husky")) {
+    fs.mkdirSync(".husky");
+  }
+
   // Set permissions for husky on macOS/Linux
   if (os.platform() !== "win32") {
-    const setPermissionsStatus = runCommand("chmod", ["+x", ".husky/*"]);
+    const setPermissionsStatus = runCommand("chmod", ["-R", "ug+x", ".husky"]);
     if (setPermissionsStatus !== 0) {
       console.error("Setting permissions failed");
       process.exit(1);
