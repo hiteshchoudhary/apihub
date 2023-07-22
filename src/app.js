@@ -78,6 +78,7 @@ import quoteRouter from "./routes/public/quote.routes.js";
 import randomjokeRouter from "./routes/public/randomjoke.routes.js";
 import randomproductRouter from "./routes/public/randomproduct.routes.js";
 import randomuserRouter from "./routes/public/randomuser.routes.js";
+import youtubeRouter from "./routes/public/youtube.routes.js";
 
 // * App routes
 import userRouter from "./routes/apps/auth/user.routes.js";
@@ -127,6 +128,7 @@ app.use("/api/v1/public/quotes", quoteRouter);
 app.use("/api/v1/public/meals", mealRouter);
 app.use("/api/v1/public/dogs", dogRouter);
 app.use("/api/v1/public/cats", catRouter);
+app.use("/api/v1/public/youtube", youtubeRouter);
 
 // * App apis
 app.use("/api/v1/users", userRouter);
