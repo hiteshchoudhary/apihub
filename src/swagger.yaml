@@ -8369,7 +8369,7 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        
+        - YouTube API
       summary: Get channel details
       description: "This Channel Details API is your gateway to access comprehensive information about a specific YouTube channel.\n\nBy leveraging a static JSON file, you can effortlessly retrieve and explore vital details, statistics, and metadata associated with the channel to build stunning YouTube like channel page UI.\n\n**Disclaimer:**\n\nData provided by the API is static and not real-time.\n\nThis simplifies the process of developing a\_**YouTube clone**, allowing developers to solely focus on UI design and creativity, without worrying about complex API key configuration."
       operationId: getChannelDetails
@@ -8809,7 +8809,7 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        
+        - YouTube API
       summary: Get youtube videos
       description: >-
         This API endpoint enables you to retrieve all YouTube videos from a JSON
@@ -8865,15 +8865,15 @@ paths:
             Content-Length:
               schema:
                 type: string
-                example: '26414'
+                example: '26415'
             Date:
               schema:
                 type: string
-                example: Sat, 22 Jul 2023 16:26:00 GMT
+                example: Sun, 23 Jul 2023 11:45:37 GMT
             ETag:
               schema:
                 type: string
-                example: W/"672e-lhkls84u8tO9aQazzTDX5soi6RM"
+                example: W/"672f-sR7JaYKpJ8S/c+WC/AZCEosyCwM"
             Keep-Alive:
               schema:
                 type: string
@@ -8889,7 +8889,7 @@ paths:
             RateLimit-Reset:
               schema:
                 type: string
-                example: '860'
+                example: '863'
             X-Powered-By:
               schema:
                 type: string
@@ -10467,10 +10467,10 @@ paths:
                         example: false
                       totalItems:
                         type: number
-                        example: 27
+                        example: 96
                       totalPages:
                         type: number
-                        example: 3
+                        example: 10
                   message:
                     type: string
                     example: Videos fetched successfully
@@ -11789,8 +11789,8 @@ paths:
                       nextPage: false
                       page: 1
                       previousPage: false
-                      totalItems: 27
-                      totalPages: 3
+                      totalItems: 96
+                      totalPages: 10
                     message: Videos fetched successfully
                     statusCode: 200
                     success: true
@@ -11798,7 +11798,7 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        
+        - YouTube API
       summary: Get video by id
       description: >-
         This API endpoint allows you to retrieve a YouTube video's complete
@@ -11847,15 +11847,15 @@ paths:
             Content-Length:
               schema:
                 type: string
-                example: '5042'
+                example: '4787'
             Date:
               schema:
                 type: string
-                example: Sat, 22 Jul 2023 16:26:06 GMT
+                example: Sun, 23 Jul 2023 12:34:21 GMT
             ETag:
               schema:
                 type: string
-                example: W/"13b2-Cwf4jEF+CKot248s6YiSgiOc86I"
+                example: W/"12b3-7DslZ5hMUDyHbUqQC9AdnE9AB2M"
             Keep-Alive:
               schema:
                 type: string
@@ -11867,11 +11867,17 @@ paths:
             RateLimit-Remaining:
               schema:
                 type: string
-                example: '496'
+                example: '499'
             RateLimit-Reset:
               schema:
                 type: string
-                example: '854'
+                example: '892'
+            Set-Cookie:
+              schema:
+                type: string
+                example: >-
+                  connect.sid=s%3A7xYlK-u4qJKcfUre7Bp_ZQp4qZoCdfzG.M2%2BuvcpNpwwaVLqMTyyHphKEsNquMsVVYhtPxW0klRY;
+                  Path=/; HttpOnly
             X-Powered-By:
               schema:
                 type: string
@@ -12058,7 +12064,7 @@ paths:
                                     example: 2d
                                   duration:
                                     type: string
-                                    example: PT19M6S
+                                    example: PT5M48S
                                   licensedContent:
                                     type: boolean
                                     example: true
@@ -12067,7 +12073,7 @@ paths:
                                     example: rectangular
                               id:
                                 type: string
-                                example: cv-6bAeYsOY
+                                example: EQwmQLU1S6I
                               kind:
                                 type: string
                                 example: youtube#video
@@ -12089,12 +12095,6 @@ paths:
                                   description:
                                     type: string
                                     example: >-
-                                      Here is a sample snippet that I saved and
-                                      everyone can use:
-
-                                      https://hitesh.pieces.cloud/?p=3fcb449271
-
-
                                       https://hc.lco.dev/jscamp2
 
                                       Wallpaper: https://imgur.com/a/FYHfk
@@ -12133,12 +12133,6 @@ paths:
                                       description:
                                         type: string
                                         example: >-
-                                          Here is a sample snippet that I saved
-                                          and everyone can use:
-
-                                          https://hitesh.pieces.cloud/?p=3fcb449271
-
-
                                           https://hc.lco.dev/jscamp2
 
                                           Wallpaper: https://imgur.com/a/FYHfk
@@ -12171,11 +12165,11 @@ paths:
                                       title:
                                         type: string
                                         example: >-
-                                          Pieces: An Essential Tool for the Modern
-                                          Developer's Toolkit
+                                          Let's kill all programming language |
+                                          playlist intro
                                   publishedAt:
                                     type: string
-                                    example: '2023-06-05T13:39:26Z'
+                                    example: '2023-05-23T12:30:05Z'
                                   tags:
                                     type: array
                                     items:
@@ -12184,12 +12178,12 @@ paths:
                                     example:
                                       - Programming
                                       - javascript
-                                      - devops
-                                      - cloud
-                                      - pieces
-                                      - pieces for developers
-                                      - developers productivity
-                                      - pieces in vscode
+                                      - python
+                                      - rust
+                                      - java
+                                      - c++
+                                      - swift
+                                      - typescript
                                   thumbnails:
                                     type: object
                                     properties:
@@ -12202,7 +12196,7 @@ paths:
                                           url:
                                             type: string
                                             example: >-
-                                              https://i.ytimg.com/vi/cv-6bAeYsOY/default.jpg
+                                              https://i.ytimg.com/vi/EQwmQLU1S6I/default.jpg
                                           width:
                                             type: number
                                             example: 120
@@ -12215,7 +12209,7 @@ paths:
                                           url:
                                             type: string
                                             example: >-
-                                              https://i.ytimg.com/vi/cv-6bAeYsOY/hqdefault.jpg
+                                              https://i.ytimg.com/vi/EQwmQLU1S6I/hqdefault.jpg
                                           width:
                                             type: number
                                             example: 480
@@ -12228,7 +12222,7 @@ paths:
                                           url:
                                             type: string
                                             example: >-
-                                              https://i.ytimg.com/vi/cv-6bAeYsOY/maxresdefault.jpg
+                                              https://i.ytimg.com/vi/EQwmQLU1S6I/maxresdefault.jpg
                                           width:
                                             type: number
                                             example: 1280
@@ -12241,7 +12235,7 @@ paths:
                                           url:
                                             type: string
                                             example: >-
-                                              https://i.ytimg.com/vi/cv-6bAeYsOY/mqdefault.jpg
+                                              https://i.ytimg.com/vi/EQwmQLU1S6I/mqdefault.jpg
                                           width:
                                             type: number
                                             example: 320
@@ -12254,36 +12248,36 @@ paths:
                                           url:
                                             type: string
                                             example: >-
-                                              https://i.ytimg.com/vi/cv-6bAeYsOY/sddefault.jpg
+                                              https://i.ytimg.com/vi/EQwmQLU1S6I/sddefault.jpg
                                           width:
                                             type: number
                                             example: 640
                                   title:
                                     type: string
                                     example: >-
-                                      Pieces: An Essential Tool for the Modern
-                                      Developer's Toolkit
+                                      Let's kill all programming language |
+                                      playlist intro
                               statistics:
                                 type: object
                                 properties:
                                   commentCount:
                                     type: string
-                                    example: '85'
+                                    example: '53'
                                   favoriteCount:
                                     type: string
                                     example: '0'
                                   likeCount:
                                     type: string
-                                    example: '798'
+                                    example: '433'
                                   viewCount:
                                     type: string
-                                    example: '20990'
+                                    example: '7861'
                           kind:
                             type: string
                             example: youtube#videoListResponse
                   message:
                     type: string
-                    example: Success
+                    example: Video fetched successfully
                   statusCode:
                     type: number
                     example: 200
@@ -12392,10 +12386,10 @@ paths:
                             contentRating: {}
                             definition: hd
                             dimension: 2d
-                            duration: PT19M6S
+                            duration: PT5M48S
                             licensedContent: true
                             projection: rectangular
-                          id: cv-6bAeYsOY
+                          id: EQwmQLU1S6I
                           kind: youtube#video
                           snippet:
                             categoryId: '28'
@@ -12403,12 +12397,6 @@ paths:
                             channelTitle: Hitesh Choudhary
                             defaultAudioLanguage: en
                             description: >-
-                              Here is a sample snippet that I saved and everyone
-                              can use:
-
-                              https://hitesh.pieces.cloud/?p=3fcb449271
-
-
                               https://hc.lco.dev/jscamp2
 
                               Wallpaper: https://imgur.com/a/FYHfk
@@ -12438,12 +12426,6 @@ paths:
                             liveBroadcastContent: none
                             localized:
                               description: >-
-                                Here is a sample snippet that I saved and
-                                everyone can use:
-
-                                https://hitesh.pieces.cloud/?p=3fcb449271
-
-
                                 https://hc.lco.dev/jscamp2
 
                                 Wallpaper: https://imgur.com/a/FYHfk
@@ -12473,53 +12455,53 @@ paths:
 
                                 All Amazon links are affiliate links (If any).
                               title: >-
-                                Pieces: An Essential Tool for the Modern
-                                Developer's Toolkit
-                            publishedAt: '2023-06-05T13:39:26Z'
+                                Let's kill all programming language | playlist
+                                intro
+                            publishedAt: '2023-05-23T12:30:05Z'
                             tags:
                               - Programming
                               - javascript
-                              - devops
-                              - cloud
-                              - pieces
-                              - pieces for developers
-                              - developers productivity
-                              - pieces in vscode
+                              - python
+                              - rust
+                              - java
+                              - c++
+                              - swift
+                              - typescript
                             thumbnails:
                               default:
                                 height: 90
-                                url: https://i.ytimg.com/vi/cv-6bAeYsOY/default.jpg
+                                url: https://i.ytimg.com/vi/EQwmQLU1S6I/default.jpg
                                 width: 120
                               high:
                                 height: 360
                                 url: >-
-                                  https://i.ytimg.com/vi/cv-6bAeYsOY/hqdefault.jpg
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/hqdefault.jpg
                                 width: 480
                               maxres:
                                 height: 720
                                 url: >-
-                                  https://i.ytimg.com/vi/cv-6bAeYsOY/maxresdefault.jpg
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/maxresdefault.jpg
                                 width: 1280
                               medium:
                                 height: 180
                                 url: >-
-                                  https://i.ytimg.com/vi/cv-6bAeYsOY/mqdefault.jpg
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/mqdefault.jpg
                                 width: 320
                               standard:
                                 height: 480
                                 url: >-
-                                  https://i.ytimg.com/vi/cv-6bAeYsOY/sddefault.jpg
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/sddefault.jpg
                                 width: 640
                             title: >-
-                              Pieces: An Essential Tool for the Modern
-                              Developer's Toolkit
+                              Let's kill all programming language | playlist
+                              intro
                           statistics:
-                            commentCount: '85'
+                            commentCount: '53'
                             favoriteCount: '0'
-                            likeCount: '798'
-                            viewCount: '20990'
+                            likeCount: '433'
+                            viewCount: '7861'
                         kind: youtube#videoListResponse
-                    message: Success
+                    message: Video fetched successfully
                     statusCode: 200
                     success: true
     parameters:
@@ -12528,12 +12510,12 @@ paths:
         required: true
         schema:
           type: string
-          example: cv-6bAeYsOY
+          example: EQwmQLU1S6I
   /public/youtube/comments/{videoId}:
     get:
       tags:
         - 📢 Public APIs
-        
+        - YouTube API
       summary: Get video comments
       description: >-
         The API endpoint allows you to retrieve YouTube video comments based on
@@ -12988,7 +12970,7 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        
+        - YouTube API
       summary: Get related videos
       description: >-
         The API endpoint returns a list of recommended YouTube videos based on
@@ -14363,6 +14345,1629 @@ paths:
         schema:
           type: string
           example: eLyISYdoVac
+  /public/youtube/playlists:
+    get:
+      tags:
+        - 📢 Public APIs
+        - YouTube API
+      summary: Get playlists
+      description: "This API endpoint allows users to retrieve playlists associated with the channel.\n\nBy accessing this endpoint, users can obtain a collection of playlists that belong to the channel.\n\nThis functionality is particularly useful for implementing a \"Playlists\" tab in the channel page UI design, where users can view the playlists conveniently.\n\n**Disclaimer:**\n\nData provided by the API is static and not real-time.\n\nThis simplifies the process of developing a\_**YouTube clone**, allowing developers to solely focus on UI design and creativity, without worrying about complex API key configuration."
+      operationId: getPlaylists
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: string
+            example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: string
+            example: '5'
+      responses:
+        '200':
+          description: Get playlists
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '6488'
+            Date:
+              schema:
+                type: string
+                example: Sun, 23 Jul 2023 13:26:24 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"1958-isic3h/l3iO4YhXyOSqLJYioyk4"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            RateLimit-Limit:
+              schema:
+                type: string
+                example: '500'
+            RateLimit-Remaining:
+              schema:
+                type: string
+                example: '470'
+            RateLimit-Reset:
+              schema:
+                type: string
+                example: '493'
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      currentPageItems:
+                        type: number
+                        example: 5
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: PLRAV69dS1uWTNPzObtUpbxe1L1lB97z2R
+                            kind:
+                              type: string
+                              example: youtube#playlist
+                            snippet:
+                              type: object
+                              properties:
+                                channelId:
+                                  type: string
+                                  example: UCXgGY0wkgOzynnHvSEVmE3A
+                                channelTitle:
+                                  type: string
+                                  example: Hitesh Choudhary
+                                description:
+                                  type: string
+                                  example: Learn flutter by building mobile apps
+                                localized:
+                                  type: object
+                                  properties:
+                                    description:
+                                      type: string
+                                      example: Learn flutter by building mobile apps
+                                    title:
+                                      type: string
+                                      example: Flutter | a project based learning
+                                publishedAt:
+                                  type: string
+                                  example: '2023-07-19T13:14:09Z'
+                                thumbnails:
+                                  type: object
+                                  properties:
+                                    default:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 90
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/75hqPk6pq5g/default.jpg
+                                        width:
+                                          type: number
+                                          example: 120
+                                    high:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 360
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/75hqPk6pq5g/hqdefault.jpg
+                                        width:
+                                          type: number
+                                          example: 480
+                                    maxres:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 720
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/75hqPk6pq5g/maxresdefault.jpg
+                                        width:
+                                          type: number
+                                          example: 1280
+                                    medium:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 180
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/75hqPk6pq5g/mqdefault.jpg
+                                        width:
+                                          type: number
+                                          example: 320
+                                    standard:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 480
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/75hqPk6pq5g/sddefault.jpg
+                                        width:
+                                          type: number
+                                          example: 640
+                                title:
+                                  type: string
+                                  example: Flutter | a project based learning
+                        example:
+                          - id: PLRAV69dS1uWTNPzObtUpbxe1L1lB97z2R
+                            kind: youtube#playlist
+                            snippet:
+                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle: Hitesh Choudhary
+                              description: Learn flutter by building mobile apps
+                              localized:
+                                description: Learn flutter by building mobile apps
+                                title: Flutter | a project based learning
+                              publishedAt: '2023-07-19T13:14:09Z'
+                              thumbnails:
+                                default:
+                                  height: 90
+                                  url: >-
+                                    https://i.ytimg.com/vi/75hqPk6pq5g/default.jpg
+                                  width: 120
+                                high:
+                                  height: 360
+                                  url: >-
+                                    https://i.ytimg.com/vi/75hqPk6pq5g/hqdefault.jpg
+                                  width: 480
+                                maxres:
+                                  height: 720
+                                  url: >-
+                                    https://i.ytimg.com/vi/75hqPk6pq5g/maxresdefault.jpg
+                                  width: 1280
+                                medium:
+                                  height: 180
+                                  url: >-
+                                    https://i.ytimg.com/vi/75hqPk6pq5g/mqdefault.jpg
+                                  width: 320
+                                standard:
+                                  height: 480
+                                  url: >-
+                                    https://i.ytimg.com/vi/75hqPk6pq5g/sddefault.jpg
+                                  width: 640
+                              title: Flutter | a project based learning
+                          - id: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                            kind: youtube#playlist
+                            snippet:
+                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle: Hitesh Choudhary
+                              description: >-
+                                Learn and master API with our open source
+                                project, https://freeapi.app
+                              localized:
+                                description: >-
+                                  Learn and master API with our open source
+                                  project, https://freeapi.app
+                                title: FreeAPI.app
+                              publishedAt: '2023-07-18T12:28:02Z'
+                              thumbnails:
+                                default:
+                                  height: 90
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                                  width: 120
+                                high:
+                                  height: 360
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                                  width: 480
+                                maxres:
+                                  height: 720
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                                  width: 1280
+                                medium:
+                                  height: 180
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                                  width: 320
+                                standard:
+                                  height: 480
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                                  width: 640
+                              title: FreeAPI.app
+                          - id: PLRAV69dS1uWR7KF-zV6YPYtKYEHENETyE
+                            kind: youtube#playlist
+                            snippet:
+                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle: Hitesh Choudhary
+                              description: >-
+                                Learn about the lastest nextjs, new ways to
+                                create pages and API routes and middleware. This
+                                playlist will help you to understand nextjs in
+                                depth and you will be able to manage all
+                                projects easily after this.
+                              localized:
+                                description: >-
+                                  Learn about the lastest nextjs, new ways to
+                                  create pages and API routes and middleware.
+                                  This playlist will help you to understand
+                                  nextjs in depth and you will be able to manage
+                                  all projects easily after this.
+                                title: Nextjs Fullstack course on Authentication
+                              publishedAt: '2023-06-30T11:35:07Z'
+                              thumbnails:
+                                default:
+                                  height: 90
+                                  url: >-
+                                    https://i.ytimg.com/vi/iPGXk-i-VYU/default.jpg
+                                  width: 120
+                                high:
+                                  height: 360
+                                  url: >-
+                                    https://i.ytimg.com/vi/iPGXk-i-VYU/hqdefault.jpg
+                                  width: 480
+                                maxres:
+                                  height: 720
+                                  url: >-
+                                    https://i.ytimg.com/vi/iPGXk-i-VYU/maxresdefault.jpg
+                                  width: 1280
+                                medium:
+                                  height: 180
+                                  url: >-
+                                    https://i.ytimg.com/vi/iPGXk-i-VYU/mqdefault.jpg
+                                  width: 320
+                                standard:
+                                  height: 480
+                                  url: >-
+                                    https://i.ytimg.com/vi/iPGXk-i-VYU/sddefault.jpg
+                                  width: 640
+                              title: Nextjs Fullstack course on Authentication
+                          - id: PLRAV69dS1uWTjW8wHMv_fQSgU-8is6KTR
+                            kind: youtube#playlist
+                            snippet:
+                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle: Hitesh Choudhary
+                              description: >-
+                                Dive into our comprehensive AWS Certified Cloud
+                                Practitioner playlist. This series is tailored
+                                to assist you in your journey towards becoming
+                                an AWS Certified Cloud Practitioner. From
+                                understanding AWS core services to security
+                                basics and architectural principles, we've got
+                                you covered. Each video in this series breaks
+                                down complex cloud concepts into easily
+                                digestible segments, ensuring an optimal
+                                learning experience. Whether you're a novice
+                                just starting with AWS, or an IT professional
+                                looking to enhance your skills, this playlist is
+                                your stepping stone towards mastering the AWS
+                                cloud. Don't wait to transform your career,
+                                start your cloud certification journey today
+                              localized:
+                                description: >-
+                                  Dive into our comprehensive AWS Certified
+                                  Cloud Practitioner playlist. This series is
+                                  tailored to assist you in your journey towards
+                                  becoming an AWS Certified Cloud Practitioner.
+                                  From understanding AWS core services to
+                                  security basics and architectural principles,
+                                  we've got you covered. Each video in this
+                                  series breaks down complex cloud concepts into
+                                  easily digestible segments, ensuring an
+                                  optimal learning experience. Whether you're a
+                                  novice just starting with AWS, or an IT
+                                  professional looking to enhance your skills,
+                                  this playlist is your stepping stone towards
+                                  mastering the AWS cloud. Don't wait to
+                                  transform your career, start your cloud
+                                  certification journey today
+                                title: AWS Certified Cloud Practitioner
+                              publishedAt: '2023-06-16T17:56:18Z'
+                              thumbnails:
+                                default:
+                                  height: 90
+                                  url: >-
+                                    https://i.ytimg.com/vi/VXqIJ2SJh9s/default.jpg
+                                  width: 120
+                                high:
+                                  height: 360
+                                  url: >-
+                                    https://i.ytimg.com/vi/VXqIJ2SJh9s/hqdefault.jpg
+                                  width: 480
+                                maxres:
+                                  height: 720
+                                  url: >-
+                                    https://i.ytimg.com/vi/VXqIJ2SJh9s/maxresdefault.jpg
+                                  width: 1280
+                                medium:
+                                  height: 180
+                                  url: >-
+                                    https://i.ytimg.com/vi/VXqIJ2SJh9s/mqdefault.jpg
+                                  width: 320
+                                standard:
+                                  height: 480
+                                  url: >-
+                                    https://i.ytimg.com/vi/VXqIJ2SJh9s/sddefault.jpg
+                                  width: 640
+                              title: AWS Certified Cloud Practitioner
+                          - id: PLRAV69dS1uWRfTGI-ZEWIWVj0Vs5IJwkh
+                            kind: youtube#playlist
+                            snippet:
+                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle: Hitesh Choudhary
+                              description: >-
+                                A playlist to tease beginners by poking their
+                                sentiment around tools. If you know it, enjoy
+                                the comment section otherwise go on full rage
+                                mode in comments. 🫣
+                              localized:
+                                description: >-
+                                  A playlist to tease beginners by poking their
+                                  sentiment around tools. If you know it, enjoy
+                                  the comment section otherwise go on full rage
+                                  mode in comments. 🫣
+                                title: Is XYZ Dead
+                              publishedAt: '2023-05-18T12:12:46Z'
+                              thumbnails:
+                                default:
+                                  height: 90
+                                  url: >-
+                                    https://i.ytimg.com/vi/EQwmQLU1S6I/default.jpg
+                                  width: 120
+                                high:
+                                  height: 360
+                                  url: >-
+                                    https://i.ytimg.com/vi/EQwmQLU1S6I/hqdefault.jpg
+                                  width: 480
+                                maxres:
+                                  height: 720
+                                  url: >-
+                                    https://i.ytimg.com/vi/EQwmQLU1S6I/maxresdefault.jpg
+                                  width: 1280
+                                medium:
+                                  height: 180
+                                  url: >-
+                                    https://i.ytimg.com/vi/EQwmQLU1S6I/mqdefault.jpg
+                                  width: 320
+                                standard:
+                                  height: 480
+                                  url: >-
+                                    https://i.ytimg.com/vi/EQwmQLU1S6I/sddefault.jpg
+                                  width: 640
+                              title: Is XYZ Dead
+                      limit:
+                        type: number
+                        example: 5
+                      nextPage:
+                        type: boolean
+                        example: false
+                      page:
+                        type: number
+                        example: 1
+                      previousPage:
+                        type: boolean
+                        example: false
+                      totalItems:
+                        type: number
+                        example: 20
+                      totalPages:
+                        type: number
+                        example: 4
+                  message:
+                    type: string
+                    example: Playlists fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get playlists:
+                  value:
+                    data:
+                      currentPageItems: 5
+                      data:
+                        - id: PLRAV69dS1uWTNPzObtUpbxe1L1lB97z2R
+                          kind: youtube#playlist
+                          snippet:
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            channelTitle: Hitesh Choudhary
+                            description: Learn flutter by building mobile apps
+                            localized:
+                              description: Learn flutter by building mobile apps
+                              title: Flutter | a project based learning
+                            publishedAt: '2023-07-19T13:14:09Z'
+                            thumbnails:
+                              default:
+                                height: 90
+                                url: https://i.ytimg.com/vi/75hqPk6pq5g/default.jpg
+                                width: 120
+                              high:
+                                height: 360
+                                url: >-
+                                  https://i.ytimg.com/vi/75hqPk6pq5g/hqdefault.jpg
+                                width: 480
+                              maxres:
+                                height: 720
+                                url: >-
+                                  https://i.ytimg.com/vi/75hqPk6pq5g/maxresdefault.jpg
+                                width: 1280
+                              medium:
+                                height: 180
+                                url: >-
+                                  https://i.ytimg.com/vi/75hqPk6pq5g/mqdefault.jpg
+                                width: 320
+                              standard:
+                                height: 480
+                                url: >-
+                                  https://i.ytimg.com/vi/75hqPk6pq5g/sddefault.jpg
+                                width: 640
+                            title: Flutter | a project based learning
+                        - id: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                          kind: youtube#playlist
+                          snippet:
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            channelTitle: Hitesh Choudhary
+                            description: >-
+                              Learn and master API with our open source project,
+                              https://freeapi.app
+                            localized:
+                              description: >-
+                                Learn and master API with our open source
+                                project, https://freeapi.app
+                              title: FreeAPI.app
+                            publishedAt: '2023-07-18T12:28:02Z'
+                            thumbnails:
+                              default:
+                                height: 90
+                                url: https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                                width: 120
+                              high:
+                                height: 360
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                                width: 480
+                              maxres:
+                                height: 720
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                                width: 1280
+                              medium:
+                                height: 180
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                                width: 320
+                              standard:
+                                height: 480
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                                width: 640
+                            title: FreeAPI.app
+                        - id: PLRAV69dS1uWR7KF-zV6YPYtKYEHENETyE
+                          kind: youtube#playlist
+                          snippet:
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            channelTitle: Hitesh Choudhary
+                            description: >-
+                              Learn about the lastest nextjs, new ways to create
+                              pages and API routes and middleware. This playlist
+                              will help you to understand nextjs in depth and
+                              you will be able to manage all projects easily
+                              after this.
+                            localized:
+                              description: >-
+                                Learn about the lastest nextjs, new ways to
+                                create pages and API routes and middleware. This
+                                playlist will help you to understand nextjs in
+                                depth and you will be able to manage all
+                                projects easily after this.
+                              title: Nextjs Fullstack course on Authentication
+                            publishedAt: '2023-06-30T11:35:07Z'
+                            thumbnails:
+                              default:
+                                height: 90
+                                url: https://i.ytimg.com/vi/iPGXk-i-VYU/default.jpg
+                                width: 120
+                              high:
+                                height: 360
+                                url: >-
+                                  https://i.ytimg.com/vi/iPGXk-i-VYU/hqdefault.jpg
+                                width: 480
+                              maxres:
+                                height: 720
+                                url: >-
+                                  https://i.ytimg.com/vi/iPGXk-i-VYU/maxresdefault.jpg
+                                width: 1280
+                              medium:
+                                height: 180
+                                url: >-
+                                  https://i.ytimg.com/vi/iPGXk-i-VYU/mqdefault.jpg
+                                width: 320
+                              standard:
+                                height: 480
+                                url: >-
+                                  https://i.ytimg.com/vi/iPGXk-i-VYU/sddefault.jpg
+                                width: 640
+                            title: Nextjs Fullstack course on Authentication
+                        - id: PLRAV69dS1uWTjW8wHMv_fQSgU-8is6KTR
+                          kind: youtube#playlist
+                          snippet:
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            channelTitle: Hitesh Choudhary
+                            description: >-
+                              Dive into our comprehensive AWS Certified Cloud
+                              Practitioner playlist. This series is tailored to
+                              assist you in your journey towards becoming an AWS
+                              Certified Cloud Practitioner. From understanding
+                              AWS core services to security basics and
+                              architectural principles, we've got you covered.
+                              Each video in this series breaks down complex
+                              cloud concepts into easily digestible segments,
+                              ensuring an optimal learning experience. Whether
+                              you're a novice just starting with AWS, or an IT
+                              professional looking to enhance your skills, this
+                              playlist is your stepping stone towards mastering
+                              the AWS cloud. Don't wait to transform your
+                              career, start your cloud certification journey
+                              today
+                            localized:
+                              description: >-
+                                Dive into our comprehensive AWS Certified Cloud
+                                Practitioner playlist. This series is tailored
+                                to assist you in your journey towards becoming
+                                an AWS Certified Cloud Practitioner. From
+                                understanding AWS core services to security
+                                basics and architectural principles, we've got
+                                you covered. Each video in this series breaks
+                                down complex cloud concepts into easily
+                                digestible segments, ensuring an optimal
+                                learning experience. Whether you're a novice
+                                just starting with AWS, or an IT professional
+                                looking to enhance your skills, this playlist is
+                                your stepping stone towards mastering the AWS
+                                cloud. Don't wait to transform your career,
+                                start your cloud certification journey today
+                              title: AWS Certified Cloud Practitioner
+                            publishedAt: '2023-06-16T17:56:18Z'
+                            thumbnails:
+                              default:
+                                height: 90
+                                url: https://i.ytimg.com/vi/VXqIJ2SJh9s/default.jpg
+                                width: 120
+                              high:
+                                height: 360
+                                url: >-
+                                  https://i.ytimg.com/vi/VXqIJ2SJh9s/hqdefault.jpg
+                                width: 480
+                              maxres:
+                                height: 720
+                                url: >-
+                                  https://i.ytimg.com/vi/VXqIJ2SJh9s/maxresdefault.jpg
+                                width: 1280
+                              medium:
+                                height: 180
+                                url: >-
+                                  https://i.ytimg.com/vi/VXqIJ2SJh9s/mqdefault.jpg
+                                width: 320
+                              standard:
+                                height: 480
+                                url: >-
+                                  https://i.ytimg.com/vi/VXqIJ2SJh9s/sddefault.jpg
+                                width: 640
+                            title: AWS Certified Cloud Practitioner
+                        - id: PLRAV69dS1uWRfTGI-ZEWIWVj0Vs5IJwkh
+                          kind: youtube#playlist
+                          snippet:
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            channelTitle: Hitesh Choudhary
+                            description: >-
+                              A playlist to tease beginners by poking their
+                              sentiment around tools. If you know it, enjoy the
+                              comment section otherwise go on full rage mode in
+                              comments. 🫣
+                            localized:
+                              description: >-
+                                A playlist to tease beginners by poking their
+                                sentiment around tools. If you know it, enjoy
+                                the comment section otherwise go on full rage
+                                mode in comments. 🫣
+                              title: Is XYZ Dead
+                            publishedAt: '2023-05-18T12:12:46Z'
+                            thumbnails:
+                              default:
+                                height: 90
+                                url: https://i.ytimg.com/vi/EQwmQLU1S6I/default.jpg
+                                width: 120
+                              high:
+                                height: 360
+                                url: >-
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/hqdefault.jpg
+                                width: 480
+                              maxres:
+                                height: 720
+                                url: >-
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/maxresdefault.jpg
+                                width: 1280
+                              medium:
+                                height: 180
+                                url: >-
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/mqdefault.jpg
+                                width: 320
+                              standard:
+                                height: 480
+                                url: >-
+                                  https://i.ytimg.com/vi/EQwmQLU1S6I/sddefault.jpg
+                                width: 640
+                            title: Is XYZ Dead
+                      limit: 5
+                      nextPage: false
+                      page: 1
+                      previousPage: false
+                      totalItems: 20
+                      totalPages: 4
+                    message: Playlists fetched successfully
+                    statusCode: 200
+                    success: true
+  /public/youtube/playlists/{playlistId}:
+    get:
+      tags:
+        - 📢 Public APIs
+        - YouTube API
+      summary: Get playlist details and items
+      description: >-
+        This API endpoint provides the details of a playlist, including playlist
+        metadata and the videos included in the playlist, based on the specified
+        playlist ID.
+
+
+        When accessing this endpoint and providing a valid playlist ID as a
+        parameter, you will receive a response containing comprehensive
+        information about the playlist, such as its title, description, and
+        other metadata.
+
+
+        Additionally, the response will include a list of videos that are part
+        of the playlist, enabling you to access the video details.
+
+
+        **Disclaimer:**
+
+
+        Data provided by the API is static and not real-time.
+
+
+        This simplifies the process of developing a **YouTube clone**, allowing
+        developers to solely focus on UI design and creativity, without worrying
+        about complex API key configuration.
+      operationId: getPlaylistDetailsAndItems
+      responses:
+        '200':
+          description: Get playlist details and items
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '6461'
+            Date:
+              schema:
+                type: string
+                example: Sun, 23 Jul 2023 12:34:40 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"193d-cM8Wa3iq2lCvzj4G5zJuDuaHpMs"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            RateLimit-Limit:
+              schema:
+                type: string
+                example: '500'
+            RateLimit-Remaining:
+              schema:
+                type: string
+                example: '498'
+            RateLimit-Reset:
+              schema:
+                type: string
+                example: '873'
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      channel:
+                        type: object
+                        properties:
+                          info:
+                            type: object
+                            properties:
+                              country:
+                                type: string
+                                example: IN
+                              customUrl:
+                                type: string
+                                example: '@hiteshchoudharydotcom'
+                              description:
+                                type: string
+                                example: >-
+                                  Website: https://hiteshchoudhary.com
+
+                                  Hey there everyone, Hitesh here back again
+                                  with another video!
+
+                                  This means I create a lot of videos, every
+                                  single week. I cover a wide range of subjects
+                                  like programming, what's latest in tech, new
+                                  frameworks, open-source products etc. I keep
+                                  my interest in a wide area of tech like
+                                  Javascript, Python, PHP, Machine Learning,
+                                  etc.
+
+
+                                  For the Business purpose, Sponsorships and
+                                  invitation, reach out at
+                                  team@hiteshchoudhary.com
+
+
+                                  NOTE: Personal questions and code-related
+                                  questions are not answered at this email. Post
+                                  them in the course discussion section or react
+                                  me out at social platforms.
+
+
+                                  #iWriteCode
+
+
+                                  Instagram:
+                                  https://instagram.com/hiteshchoudharyofficial
+
+                                  Facebook: www.fb.com/HiteshChoudharyPage
+                              localized:
+                                type: object
+                                properties:
+                                  description:
+                                    type: string
+                                    example: >-
+                                      Website: https://hiteshchoudhary.com
+
+                                      Hey there everyone, Hitesh here back again
+                                      with another video!
+
+                                      This means I create a lot of videos, every
+                                      single week. I cover a wide range of
+                                      subjects like programming, what's latest
+                                      in tech, new frameworks, open-source
+                                      products etc. I keep my interest in a wide
+                                      area of tech like Javascript, Python, PHP,
+                                      Machine Learning, etc.
+
+
+                                      For the Business purpose, Sponsorships and
+                                      invitation, reach out at
+                                      team@hiteshchoudhary.com
+
+
+                                      NOTE: Personal questions and code-related
+                                      questions are not answered at this email.
+                                      Post them in the course discussion section
+                                      or react me out at social platforms.
+
+
+                                      #iWriteCode
+
+
+                                      Instagram:
+                                      https://instagram.com/hiteshchoudharyofficial
+
+                                      Facebook: www.fb.com/HiteshChoudharyPage
+                                  title:
+                                    type: string
+                                    example: Hitesh Choudhary
+                              publishedAt:
+                                type: string
+                                example: '2011-10-24T10:25:16Z'
+                              thumbnails:
+                                type: object
+                                properties:
+                                  default:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 88
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s88-c-k-c0x00ffffff-no-rj
+                                      width:
+                                        type: number
+                                        example: 88
+                                  high:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 800
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s800-c-k-c0x00ffffff-no-rj
+                                      width:
+                                        type: number
+                                        example: 800
+                                  medium:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 240
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s240-c-k-c0x00ffffff-no-rj
+                                      width:
+                                        type: number
+                                        example: 240
+                              title:
+                                type: string
+                                example: Hitesh Choudhary
+                          statistics:
+                            type: object
+                            properties:
+                              hiddenSubscriberCount:
+                                type: boolean
+                                example: false
+                              subscriberCount:
+                                type: string
+                                example: '801000'
+                              videoCount:
+                                type: string
+                                example: '1442'
+                              viewCount:
+                                type: string
+                                example: '54384618'
+                      playlist:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                          kind:
+                            type: string
+                            example: youtube#playlist
+                          snippet:
+                            type: object
+                            properties:
+                              channelId:
+                                type: string
+                                example: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle:
+                                type: string
+                                example: Hitesh Choudhary
+                              description:
+                                type: string
+                                example: >-
+                                  Learn and master API with our open source
+                                  project, https://freeapi.app
+                              localized:
+                                type: object
+                                properties:
+                                  description:
+                                    type: string
+                                    example: >-
+                                      Learn and master API with our open source
+                                      project, https://freeapi.app
+                                  title:
+                                    type: string
+                                    example: FreeAPI.app
+                              publishedAt:
+                                type: string
+                                example: '2023-07-18T12:28:02Z'
+                              thumbnails:
+                                type: object
+                                properties:
+                                  default:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 90
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                                      width:
+                                        type: number
+                                        example: 120
+                                  high:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 360
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                                      width:
+                                        type: number
+                                        example: 480
+                                  maxres:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 720
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                                      width:
+                                        type: number
+                                        example: 1280
+                                  medium:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 180
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                                      width:
+                                        type: number
+                                        example: 320
+                                  standard:
+                                    type: object
+                                    properties:
+                                      height:
+                                        type: number
+                                        example: 480
+                                      url:
+                                        type: string
+                                        example: >-
+                                          https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                                      width:
+                                        type: number
+                                        example: 640
+                              title:
+                                type: string
+                                example: FreeAPI.app
+                      playlistItems:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: >-
+                                UExSQVY2OWRTMXVXU3g0ZXJIR3E4aFdfR0UtRWFqNjByLS41NkI0NEY2RDEwNTU3Q0M2
+                            kind:
+                              type: string
+                              example: youtube#playlistItem
+                            snippet:
+                              type: object
+                              properties:
+                                channelId:
+                                  type: string
+                                  example: UCXgGY0wkgOzynnHvSEVmE3A
+                                channelTitle:
+                                  type: string
+                                  example: Hitesh Choudhary
+                                description:
+                                  type: string
+                                  example: >-
+                                    Learn about API and master them with our new
+                                    open source project. Check it out here:
+
+                                    https://freeapi.app
+
+
+                                    Facebook:
+                                    https://www.facebook.com/HiteshChoudharyPage
+
+                                    Instagram:
+                                    https://instagram.com/hiteshchoudharyofficial
+
+                                    homepage: http://www.hiteshChoudhary.com
+
+
+                                    Disclaimer:
+
+                                    It doesn't feel good to have a disclaimer in
+                                    every video but this is how the world is
+                                    right now. 
+
+                                    All videos are for educational purposes and
+                                    use them wisely. Any video may have a slight
+                                    mistake, please take decisions based on your
+                                    research. This video is not forcing anything
+                                    on you.
+
+
+                                    All Amazon links are affiliate links (If
+                                    any).
+                                playlistId:
+                                  type: string
+                                  example: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                                position:
+                                  type: number
+                                  example: 0
+                                publishedAt:
+                                  type: string
+                                  example: '2023-07-18T12:28:08Z'
+                                resourceId:
+                                  type: object
+                                  properties:
+                                    kind:
+                                      type: string
+                                      example: youtube#video
+                                    videoId:
+                                      type: string
+                                      example: xJq0EQMFGyg
+                                thumbnails:
+                                  type: object
+                                  properties:
+                                    default:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 90
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                                        width:
+                                          type: number
+                                          example: 120
+                                    high:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 360
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                                        width:
+                                          type: number
+                                          example: 480
+                                    maxres:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 720
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                                        width:
+                                          type: number
+                                          example: 1280
+                                    medium:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 180
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                                        width:
+                                          type: number
+                                          example: 320
+                                    standard:
+                                      type: object
+                                      properties:
+                                        height:
+                                          type: number
+                                          example: 480
+                                        url:
+                                          type: string
+                                          example: >-
+                                            https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                                        width:
+                                          type: number
+                                          example: 640
+                                title:
+                                  type: string
+                                  example: Open Source Project Launch | FreeAPI.app
+                                videoOwnerChannelId:
+                                  type: string
+                                  example: UCXgGY0wkgOzynnHvSEVmE3A
+                                videoOwnerChannelTitle:
+                                  type: string
+                                  example: Hitesh Choudhary
+                        example:
+                          - id: >-
+                              UExSQVY2OWRTMXVXU3g0ZXJIR3E4aFdfR0UtRWFqNjByLS41NkI0NEY2RDEwNTU3Q0M2
+                            kind: youtube#playlistItem
+                            snippet:
+                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle: Hitesh Choudhary
+                              description: >-
+                                Learn about API and master them with our new
+                                open source project. Check it out here:
+
+                                https://freeapi.app
+
+
+                                Facebook:
+                                https://www.facebook.com/HiteshChoudharyPage
+
+                                Instagram:
+                                https://instagram.com/hiteshchoudharyofficial
+
+                                homepage: http://www.hiteshChoudhary.com
+
+
+                                Disclaimer:
+
+                                It doesn't feel good to have a disclaimer in
+                                every video but this is how the world is right
+                                now. 
+
+                                All videos are for educational purposes and use
+                                them wisely. Any video may have a slight
+                                mistake, please take decisions based on your
+                                research. This video is not forcing anything on
+                                you.
+
+
+                                All Amazon links are affiliate links (If any).
+                              playlistId: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                              position: 0
+                              publishedAt: '2023-07-18T12:28:08Z'
+                              resourceId:
+                                kind: youtube#video
+                                videoId: xJq0EQMFGyg
+                              thumbnails:
+                                default:
+                                  height: 90
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                                  width: 120
+                                high:
+                                  height: 360
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                                  width: 480
+                                maxres:
+                                  height: 720
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                                  width: 1280
+                                medium:
+                                  height: 180
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                                  width: 320
+                                standard:
+                                  height: 480
+                                  url: >-
+                                    https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                                  width: 640
+                              title: Open Source Project Launch | FreeAPI.app
+                              videoOwnerChannelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              videoOwnerChannelTitle: Hitesh Choudhary
+                          - id: >-
+                              UExSQVY2OWRTMXVXU3g0ZXJIR3E4aFdfR0UtRWFqNjByLS4yODlGNEE0NkRGMEEzMEQy
+                            kind: youtube#playlistItem
+                            snippet:
+                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              channelTitle: Hitesh Choudhary
+                              description: >-
+                                https://hc.lco.dev/jscamp2
+
+                                Wallpaper: https://imgur.com/a/FYHfk
+
+
+                                Facebook:
+                                https://www.facebook.com/HiteshChoudharyPage
+
+                                Instagram:
+                                https://instagram.com/hiteshchoudharyofficial
+
+                                homepage: http://www.hiteshChoudhary.com
+
+
+                                Disclaimer:
+
+                                It doesn't feel good to have a disclaimer in
+                                every video but this is how the world is right
+                                now. 
+
+                                All videos are for educational purposes and use
+                                them wisely. Any video may have a slight
+                                mistake, please take decisions based on your
+                                research. This video is not forcing anything on
+                                you.
+
+
+                                All Amazon links are affiliate links (If any).
+                              playlistId: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                              position: 1
+                              publishedAt: '2023-07-18T12:49:04Z'
+                              resourceId:
+                                kind: youtube#video
+                                videoId: dtzfTePFKgM
+                              thumbnails:
+                                default:
+                                  height: 90
+                                  url: >-
+                                    https://i.ytimg.com/vi/dtzfTePFKgM/default.jpg
+                                  width: 120
+                                high:
+                                  height: 360
+                                  url: >-
+                                    https://i.ytimg.com/vi/dtzfTePFKgM/hqdefault.jpg
+                                  width: 480
+                                maxres:
+                                  height: 720
+                                  url: >-
+                                    https://i.ytimg.com/vi/dtzfTePFKgM/maxresdefault.jpg
+                                  width: 1280
+                                medium:
+                                  height: 180
+                                  url: >-
+                                    https://i.ytimg.com/vi/dtzfTePFKgM/mqdefault.jpg
+                                  width: 320
+                                standard:
+                                  height: 480
+                                  url: >-
+                                    https://i.ytimg.com/vi/dtzfTePFKgM/sddefault.jpg
+                                  width: 640
+                              title: FreeAPI local setup with npm
+                              videoOwnerChannelId: UCXgGY0wkgOzynnHvSEVmE3A
+                              videoOwnerChannelTitle: Hitesh Choudhary
+                  message:
+                    type: string
+                    example: Playlist fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get playlist details and items:
+                  value:
+                    data:
+                      channel:
+                        info:
+                          country: IN
+                          customUrl: '@hiteshchoudharydotcom'
+                          description: >-
+                            Website: https://hiteshchoudhary.com
+
+                            Hey there everyone, Hitesh here back again with
+                            another video!
+
+                            This means I create a lot of videos, every single
+                            week. I cover a wide range of subjects like
+                            programming, what's latest in tech, new frameworks,
+                            open-source products etc. I keep my interest in a
+                            wide area of tech like Javascript, Python, PHP,
+                            Machine Learning, etc.
+
+
+                            For the Business purpose, Sponsorships and
+                            invitation, reach out at team@hiteshchoudhary.com
+
+
+                            NOTE: Personal questions and code-related questions
+                            are not answered at this email. Post them in the
+                            course discussion section or react me out at social
+                            platforms.
+
+
+                            #iWriteCode
+
+
+                            Instagram:
+                            https://instagram.com/hiteshchoudharyofficial
+
+                            Facebook: www.fb.com/HiteshChoudharyPage
+                          localized:
+                            description: >-
+                              Website: https://hiteshchoudhary.com
+
+                              Hey there everyone, Hitesh here back again with
+                              another video!
+
+                              This means I create a lot of videos, every single
+                              week. I cover a wide range of subjects like
+                              programming, what's latest in tech, new
+                              frameworks, open-source products etc. I keep my
+                              interest in a wide area of tech like Javascript,
+                              Python, PHP, Machine Learning, etc.
+
+
+                              For the Business purpose, Sponsorships and
+                              invitation, reach out at team@hiteshchoudhary.com
+
+
+                              NOTE: Personal questions and code-related
+                              questions are not answered at this email. Post
+                              them in the course discussion section or react me
+                              out at social platforms.
+
+
+                              #iWriteCode
+
+
+                              Instagram:
+                              https://instagram.com/hiteshchoudharyofficial
+
+                              Facebook: www.fb.com/HiteshChoudharyPage
+                            title: Hitesh Choudhary
+                          publishedAt: '2011-10-24T10:25:16Z'
+                          thumbnails:
+                            default:
+                              height: 88
+                              url: >-
+                                https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s88-c-k-c0x00ffffff-no-rj
+                              width: 88
+                            high:
+                              height: 800
+                              url: >-
+                                https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s800-c-k-c0x00ffffff-no-rj
+                              width: 800
+                            medium:
+                              height: 240
+                              url: >-
+                                https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s240-c-k-c0x00ffffff-no-rj
+                              width: 240
+                          title: Hitesh Choudhary
+                        statistics:
+                          hiddenSubscriberCount: false
+                          subscriberCount: '801000'
+                          videoCount: '1442'
+                          viewCount: '54384618'
+                      playlist:
+                        id: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                        kind: youtube#playlist
+                        snippet:
+                          channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                          channelTitle: Hitesh Choudhary
+                          description: >-
+                            Learn and master API with our open source project,
+                            https://freeapi.app
+                          localized:
+                            description: >-
+                              Learn and master API with our open source project,
+                              https://freeapi.app
+                            title: FreeAPI.app
+                          publishedAt: '2023-07-18T12:28:02Z'
+                          thumbnails:
+                            default:
+                              height: 90
+                              url: https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                              width: 120
+                            high:
+                              height: 360
+                              url: https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                              width: 480
+                            maxres:
+                              height: 720
+                              url: >-
+                                https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                              width: 1280
+                            medium:
+                              height: 180
+                              url: https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                              width: 320
+                            standard:
+                              height: 480
+                              url: https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                              width: 640
+                          title: FreeAPI.app
+                      playlistItems:
+                        - id: >-
+                            UExSQVY2OWRTMXVXU3g0ZXJIR3E4aFdfR0UtRWFqNjByLS41NkI0NEY2RDEwNTU3Q0M2
+                          kind: youtube#playlistItem
+                          snippet:
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            channelTitle: Hitesh Choudhary
+                            description: >-
+                              Learn about API and master them with our new open
+                              source project. Check it out here:
+
+                              https://freeapi.app
+
+
+                              Facebook:
+                              https://www.facebook.com/HiteshChoudharyPage
+
+                              Instagram:
+                              https://instagram.com/hiteshchoudharyofficial
+
+                              homepage: http://www.hiteshChoudhary.com
+
+
+                              Disclaimer:
+
+                              It doesn't feel good to have a disclaimer in every
+                              video but this is how the world is right now. 
+
+                              All videos are for educational purposes and use
+                              them wisely. Any video may have a slight mistake,
+                              please take decisions based on your research. This
+                              video is not forcing anything on you.
+
+
+                              All Amazon links are affiliate links (If any).
+                            playlistId: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                            position: 0
+                            publishedAt: '2023-07-18T12:28:08Z'
+                            resourceId:
+                              kind: youtube#video
+                              videoId: xJq0EQMFGyg
+                            thumbnails:
+                              default:
+                                height: 90
+                                url: https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                                width: 120
+                              high:
+                                height: 360
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                                width: 480
+                              maxres:
+                                height: 720
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                                width: 1280
+                              medium:
+                                height: 180
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                                width: 320
+                              standard:
+                                height: 480
+                                url: >-
+                                  https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                                width: 640
+                            title: Open Source Project Launch | FreeAPI.app
+                            videoOwnerChannelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            videoOwnerChannelTitle: Hitesh Choudhary
+                        - id: >-
+                            UExSQVY2OWRTMXVXU3g0ZXJIR3E4aFdfR0UtRWFqNjByLS4yODlGNEE0NkRGMEEzMEQy
+                          kind: youtube#playlistItem
+                          snippet:
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            channelTitle: Hitesh Choudhary
+                            description: >-
+                              https://hc.lco.dev/jscamp2
+
+                              Wallpaper: https://imgur.com/a/FYHfk
+
+
+                              Facebook:
+                              https://www.facebook.com/HiteshChoudharyPage
+
+                              Instagram:
+                              https://instagram.com/hiteshchoudharyofficial
+
+                              homepage: http://www.hiteshChoudhary.com
+
+
+                              Disclaimer:
+
+                              It doesn't feel good to have a disclaimer in every
+                              video but this is how the world is right now. 
+
+                              All videos are for educational purposes and use
+                              them wisely. Any video may have a slight mistake,
+                              please take decisions based on your research. This
+                              video is not forcing anything on you.
+
+
+                              All Amazon links are affiliate links (If any).
+                            playlistId: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
+                            position: 1
+                            publishedAt: '2023-07-18T12:49:04Z'
+                            resourceId:
+                              kind: youtube#video
+                              videoId: dtzfTePFKgM
+                            thumbnails:
+                              default:
+                                height: 90
+                                url: https://i.ytimg.com/vi/dtzfTePFKgM/default.jpg
+                                width: 120
+                              high:
+                                height: 360
+                                url: >-
+                                  https://i.ytimg.com/vi/dtzfTePFKgM/hqdefault.jpg
+                                width: 480
+                              maxres:
+                                height: 720
+                                url: >-
+                                  https://i.ytimg.com/vi/dtzfTePFKgM/maxresdefault.jpg
+                                width: 1280
+                              medium:
+                                height: 180
+                                url: >-
+                                  https://i.ytimg.com/vi/dtzfTePFKgM/mqdefault.jpg
+                                width: 320
+                              standard:
+                                height: 480
+                                url: >-
+                                  https://i.ytimg.com/vi/dtzfTePFKgM/sddefault.jpg
+                                width: 640
+                            title: FreeAPI local setup with npm
+                            videoOwnerChannelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            videoOwnerChannelTitle: Hitesh Choudhary
+                    message: Playlist fetched successfully
+                    statusCode: 200
+                    success: true
+    parameters:
+      - name: playlistId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-
   /kitchen-sink/http-methods/get:
     get:
       tags:
