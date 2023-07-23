@@ -124,16 +124,16 @@ const getVideos = asyncHandler(async (req, res) => {
       break;
     case YouTubeFilterEnum.MOST_LIKED:
       videosArray.sort(
-        (a, b) => +b.items.statistics.likeCount - a.items.statistics.likeCount
+        (a, b) => +b.items.statistics.likeCount - +a.items.statistics.likeCount
       );
-
       break;
     case YouTubeFilterEnum.MOST_VIEWED:
       videosArray.sort(
-        (a, b) => +b.items.statistics.viewCount - a.items.statistics.viewCount
+        (a, b) => +b.items.statistics.viewCount - +a.items.statistics.viewCount
       );
       break;
     default:
+      // Return latest videos by default
       videosArray.sort(
         (a, b) =>
           new Date(b.items.snippet.publishedAt) -
