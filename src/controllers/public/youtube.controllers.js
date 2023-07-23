@@ -1,3 +1,4 @@
+import { YouTubeFilterEnum, AvailableYouTubeFilters } from "../../constants.js";
 import channelJson from "../../json/youtube/channel.json" assert { type: "json" };
 import commentsJson from "../../json/youtube/comments.json" assert { type: "json" };
 import playlistItemsJson from "../../json/youtube/playlistitems.json" assert { type: "json" };
@@ -78,6 +79,12 @@ const getPlaylistById = asyncHandler(async (req, res) => {
 const getVideos = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
+
+  /**
+   * @type {AvailableYouTubeFilters[0]}
+   */
+  const sortBy = req.query.sortBy;
+
   const query = req.query.query?.toLowerCase(); // search query
   const inc = req.query.inc?.split(","); // only include fields mentioned in this query
 
@@ -96,6 +103,43 @@ const getVideos = asyncHandler(async (req, res) => {
 
   if (inc && inc[0]?.trim()) {
     videosArray = filterObjectKeys(inc, videosArray);
+  }
+
+  switch (sortBy) {
+    case YouTubeFilterEnum.LATEST:
+      // sort by publishedAt key in descending order
+      videosArray.sort(
+        (a, b) =>
+          new Date(b.items.snippet.publishedAt) -
+          new Date(a.items.snippet.publishedAt)
+      );
+      break;
+    case YouTubeFilterEnum.OLDEST:
+      // sort by publishedAt key in ascending order
+      videosArray.sort(
+        (a, b) =>
+          new Date(a.items.snippet.publishedAt) -
+          new Date(b.items.snippet.publishedAt)
+      );
+      break;
+    case YouTubeFilterEnum.MOST_LIKED:
+      videosArray.sort(
+        (a, b) => +b.items.statistics.likeCount - a.items.statistics.likeCount
+      );
+
+      break;
+    case YouTubeFilterEnum.MOST_VIEWED:
+      videosArray.sort(
+        (a, b) => +b.items.statistics.viewCount - a.items.statistics.viewCount
+      );
+      break;
+    default:
+      videosArray.sort(
+        (a, b) =>
+          new Date(b.items.snippet.publishedAt) -
+          new Date(a.items.snippet.publishedAt)
+      );
+      break;
   }
 
   return res

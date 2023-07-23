@@ -8846,6 +8846,11 @@ paths:
           schema:
             type: string
             example: javascript
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            example: "keep one: mostLiked | mostViewed | latest | oldest"
       responses:
         '200':
           description: Get youtube videos
@@ -10483,1317 +10488,734 @@ paths:
               examples:
                 Get youtube videos:
                   value:
+                    statusCode: 200
                     data:
+                      page: 1
+                      limit: 10
+                      totalPages: 10
+                      previousPage: false
+                      nextPage: true
+                      totalItems: 96
                       currentPageItems: 10
                       data:
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT1H17M17S
-                              licensedContent: true
-                              projection: rectangular
-                            id: zg06ec5arCs
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                Here is the link to get code files for this
-                                video:
-
-                                https://hitesh.pieces.cloud/?p=a2ac4ab4b3
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  Here is the link to get code files for this
-                                  video:
-
-                                  https://hitesh.pieces.cloud/?p=a2ac4ab4b3
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  Learn to build file based routing from scratch
-                                  like Nextjs
-                              publishedAt: '2023-07-12T12:20:42Z'
-                              tags:
-                                - Programming
-                                - javascript
-                                - cloud
-                                - pieces
-                                - nextjs
-                                - file based routing
-                                - learn react
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/zg06ec5arCs/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/zg06ec5arCs/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/zg06ec5arCs/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/zg06ec5arCs/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/zg06ec5arCs/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                Learn to build file based routing from scratch
-                                like Nextjs
-                            statistics:
-                              commentCount: '43'
-                              favoriteCount: '0'
-                              likeCount: '292'
-                              viewCount: '4144'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT16M36S
-                              licensedContent: true
-                              projection: rectangular
-                            id: y2Fz0dkI4v8
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  This will change DSA and Leetcode preparation
-                                  forever | Pieces for developers
-                              publishedAt: '2023-06-12T16:50:08Z'
-                              tags:
-                                - Programming
-                                - python
-                                - javascript
-                                - Dsa
-                                - leetcode
-                                - code conversion
-                                - pieces for developers
-                                - best developer tool
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/y2Fz0dkI4v8/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/y2Fz0dkI4v8/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/y2Fz0dkI4v8/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/y2Fz0dkI4v8/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/y2Fz0dkI4v8/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                This will change DSA and Leetcode preparation
-                                forever | Pieces for developers
-                            statistics:
-                              commentCount: '133'
-                              favoriteCount: '0'
-                              likeCount: '2112'
-                              viewCount: '51896'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT1H6M31S
-                              licensedContent: true
-                              projection: rectangular
-                            id: rWv0zzEYB2w
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                Learn to create custom context of Appwrite in
-                                React native so that your whole app knows if the
-                                user is logged in or not.
-
-
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  Learn to create custom context of Appwrite in
-                                  React native so that your whole app knows if
-                                  the user is logged in or not.
-
-
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  Using Appwrite service with custom context in
-                                  React Native
-                              publishedAt: '2023-06-07T12:14:23Z'
-                              tags:
-                                - Programming
-                                - javascript
-                                - react
-                                - react native
-                                - appwrite
-                                - database as a service
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/rWv0zzEYB2w/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/rWv0zzEYB2w/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/rWv0zzEYB2w/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/rWv0zzEYB2w/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/rWv0zzEYB2w/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                Using Appwrite service with custom context in
-                                React Native
-                            statistics:
-                              commentCount: '30'
-                              favoriteCount: '0'
-                              likeCount: '119'
-                              viewCount: '19154'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT19M6S
-                              licensedContent: true
-                              projection: rectangular
-                            id: cv-6bAeYsOY
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                Here is a sample snippet that I saved and
-                                everyone can use:
-
-                                https://hitesh.pieces.cloud/?p=3fcb449271
-
-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  Here is a sample snippet that I saved and
-                                  everyone can use:
-
-                                  https://hitesh.pieces.cloud/?p=3fcb449271
-
-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  Pieces: An Essential Tool for the Modern
-                                  Developer's Toolkit
-                              publishedAt: '2023-06-05T13:39:26Z'
-                              tags:
-                                - Programming
-                                - javascript
-                                - devops
-                                - cloud
-                                - pieces
-                                - pieces for developers
-                                - developers productivity
-                                - pieces in vscode
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/cv-6bAeYsOY/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/cv-6bAeYsOY/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/cv-6bAeYsOY/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/cv-6bAeYsOY/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/cv-6bAeYsOY/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                Pieces: An Essential Tool for the Modern
-                                Developer's Toolkit
-                            statistics:
-                              commentCount: '85'
-                              favoriteCount: '0'
-                              likeCount: '798'
-                              viewCount: '20990'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT43M33S
-                              licensedContent: true
-                              projection: rectangular
-                            id: zlojM-Jbux4
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                https://hitesh.ai/appwrite
-
-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  https://hitesh.ai/appwrite
-
-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: Complete Appwrite authentication walkthrough
-                              publishedAt: '2023-05-22T15:30:14Z'
-                              tags:
-                                - Programming
-                                - javascript
-                                - cloud
-                                - appwrite
-                                - backend
-                                - backend as a service
-                                - authentication
-                                - auth
-                                - react
-                                - react native
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/zlojM-Jbux4/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/zlojM-Jbux4/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/zlojM-Jbux4/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/zlojM-Jbux4/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/zlojM-Jbux4/sddefault.jpg
-                                  width: 640
-                              title: Complete Appwrite authentication walkthrough
-                            statistics:
-                              commentCount: '39'
-                              favoriteCount: '0'
-                              likeCount: '224'
-                              viewCount: '23974'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT3M51S
-                              licensedContent: true
-                              projection: rectangular
-                            id: VeSUgWHbphk
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                https://hitesh.ai/appwrite
-
-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  https://hitesh.ai/appwrite
-
-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  Building a React native app with Appwrite
-                                  authentication | App demo
-                              publishedAt: '2023-05-22T09:14:24Z'
-                              tags:
-                                - Programming
-                                - javascript
-                                - cloud
-                                - appwrite
-                                - authentication
-                                - react native
-                                - mobile app development
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/VeSUgWHbphk/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/VeSUgWHbphk/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/VeSUgWHbphk/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/VeSUgWHbphk/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/VeSUgWHbphk/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                Building a React native app with Appwrite
-                                authentication | App demo
-                            statistics:
-                              commentCount: '41'
-                              favoriteCount: '0'
-                              likeCount: '152'
-                              viewCount: '21531'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT7M58S
-                              licensedContent: true
-                              projection: rectangular
-                            id: zLdcmJDIXt8
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: Get Postman in your VSCode | 1st look
-                              publishedAt: '2023-05-16T13:01:32Z'
-                              tags:
-                                - Programming
-                                - python
-                                - javascript
-                                - devops
-                                - cloud
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/zLdcmJDIXt8/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/zLdcmJDIXt8/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/zLdcmJDIXt8/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/zLdcmJDIXt8/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/zLdcmJDIXt8/sddefault.jpg
-                                  width: 640
-                              title: Get Postman in your VSCode | 1st look
-                            statistics:
-                              commentCount: '113'
-                              favoriteCount: '0'
-                              likeCount: '458'
-                              viewCount: '14158'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT56M20S
-                              licensedContent: true
-                              projection: rectangular
-                            id: daURe-AI5qQ
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                A really long video showing my setup of a new
-                                Apple Macbook Air M2 machine. I will be using it
-                                for all of my mobile development videos, python
-                                work for college and Javascript fun on this
-                                channel.
-
-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  A really long video showing my setup of a new
-                                  Apple Macbook Air M2 machine. I will be using
-                                  it for all of my mobile development videos,
-                                  python work for college and Javascript fun on
-                                  this channel.
-
-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  Code Like a Pro | Setting Up Your MacBook Air
-                                  M2 for Development in 2023
-                              publishedAt: '2023-05-10T13:30:15Z'
-                              tags:
-                                - Programming
-                                - python
-                                - javascript
-                                - devops
-                                - cloud
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/daURe-AI5qQ/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/daURe-AI5qQ/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/daURe-AI5qQ/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/daURe-AI5qQ/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/daURe-AI5qQ/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                Code Like a Pro | Setting Up Your MacBook Air M2
-                                for Development in 2023
-                            statistics:
-                              commentCount: '90'
-                              favoriteCount: '0'
-                              likeCount: '705'
-                              viewCount: '27999'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT10M31S
-                              licensedContent: true
-                              projection: rectangular
-                            id: 9BfMfDJpbjI
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                Document your progress and share your React
-                                Native journey on your own Hashnode blog for
-                                free: 
-
-                                https://hashnode.com/?source=hitesh
-
-                                Tag your posts with #reactnative so they can be
-                                easily discovered by Hashnode's global community
-
-                                https://github.com/hiteshchoudhary/React-native-projects
-
-                                Discord: https://hc.lco.dev/discord
-
-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  Document your progress and share your React
-                                  Native journey on your own Hashnode blog for
-                                  free: 
-
-                                  https://hashnode.com/?source=hitesh
-
-                                  Tag your posts with #reactnative so they can
-                                  be easily discovered by Hashnode's global
-                                  community
-
-                                  https://github.com/hiteshchoudhary/React-native-projects
-
-                                  Discord: https://hc.lco.dev/discord
-
-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  Creating components to display mobile in react
-                                  native
-                              publishedAt: '2023-05-03T18:30:11Z'
-                              tags:
-                                - Programming
-                                - python
-                                - javascript
-                                - devops
-                                - cloud
-                                - React-native
-                                - react
-                                - hashnode
-                                - android
-                                - mobile apps
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/9BfMfDJpbjI/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/9BfMfDJpbjI/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/9BfMfDJpbjI/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/9BfMfDJpbjI/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/9BfMfDJpbjI/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                Creating components to display mobile in react
-                                native
-                            statistics:
-                              commentCount: '12'
-                              favoriteCount: '0'
-                              likeCount: '69'
-                              viewCount: '6098'
-                          kind: youtube#videoListResponse
-                        - items:
-                            contentDetails:
-                              caption: 'false'
-                              contentRating: {}
-                              definition: hd
-                              dimension: 2d
-                              duration: PT8M32S
-                              licensedContent: true
-                              projection: rectangular
-                            id: iZloRI4LVYY
-                            kind: youtube#video
-                            snippet:
-                              categoryId: '28'
-                              channelId: UCXgGY0wkgOzynnHvSEVmE3A
-                              channelTitle: Hitesh Choudhary
-                              defaultAudioLanguage: en
-                              description: >-
-                                https://hc.lco.dev/jscamp2
-
-                                Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                Facebook:
-                                https://www.facebook.com/HiteshChoudharyPage
-
-                                Instagram:
-                                https://instagram.com/hiteshchoudharyofficial
-
-                                homepage: http://www.hiteshChoudhary.com
-
-
-                                Disclaimer:
-
-                                It doesn't feel good to have a disclaimer in
-                                every video but this is how the world is right
-                                now. 
-
-                                All videos are for educational purposes and use
-                                them wisely. Any video may have a slight
-                                mistake, please take decisions based on your
-                                research. This video is not forcing anything on
-                                you.
-
-
-                                All Amazon links are affiliate links (If any).
-                              liveBroadcastContent: none
-                              localized:
-                                description: >-
-                                  https://hc.lco.dev/jscamp2
-
-                                  Wallpaper: https://imgur.com/a/FYHfk
-
-
-                                  Facebook:
-                                  https://www.facebook.com/HiteshChoudharyPage
-
-                                  Instagram:
-                                  https://instagram.com/hiteshchoudharyofficial
-
-                                  homepage: http://www.hiteshChoudhary.com
-
-
-                                  Disclaimer:
-
-                                  It doesn't feel good to have a disclaimer in
-                                  every video but this is how the world is right
-                                  now. 
-
-                                  All videos are for educational purposes and
-                                  use them wisely. Any video may have a slight
-                                  mistake, please take decisions based on your
-                                  research. This video is not forcing anything
-                                  on you.
-
-
-                                  All Amazon links are affiliate links (If any).
-                                title: >-
-                                  These IITians are doing crazy thing to learn
-                                  web development
-                              publishedAt: '2023-05-03T15:30:08Z'
-                              tags:
-                                - Programming
-                                - python
-                                - javascript
-                                - devops
-                                - cloud
-                                - IIT
-                                - IITian
-                                - Learning story
-                              thumbnails:
-                                default:
-                                  height: 90
-                                  url: >-
-                                    https://i.ytimg.com/vi/iZloRI4LVYY/default.jpg
-                                  width: 120
-                                high:
-                                  height: 360
-                                  url: >-
-                                    https://i.ytimg.com/vi/iZloRI4LVYY/hqdefault.jpg
-                                  width: 480
-                                maxres:
-                                  height: 720
-                                  url: >-
-                                    https://i.ytimg.com/vi/iZloRI4LVYY/maxresdefault.jpg
-                                  width: 1280
-                                medium:
-                                  height: 180
-                                  url: >-
-                                    https://i.ytimg.com/vi/iZloRI4LVYY/mqdefault.jpg
-                                  width: 320
-                                standard:
-                                  height: 480
-                                  url: >-
-                                    https://i.ytimg.com/vi/iZloRI4LVYY/sddefault.jpg
-                                  width: 640
-                              title: >-
-                                These IITians are doing crazy thing to learn web
-                                development
-                            statistics:
-                              commentCount: '295'
-                              favoriteCount: '0'
-                              likeCount: '4332'
-                              viewCount: '88056'
-                          kind: youtube#videoListResponse
-                      limit: 10
-                      nextPage: false
-                      page: 1
-                      previousPage: false
-                      totalItems: 96
-                      totalPages: 10
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: 75hqPk6pq5g
+                          snippet:
+                            publishedAt: '2023-07-19T13:16:33Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Flutter Windows Installation
+                            description: "https://hitesh.ai/discord\n\nFacebook: https://www.facebook.com/HiteshChoudharyPage\nInstagram:
+                              https://instagram.com/hiteshchoudharyofficial\nhomepage: http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt
+                              doesn't feel good to have a disclaimer in every video but this is how the
+                              world is right now. \nAll videos are for educational purposes and use them
+                              wisely. Any video may have a slight mistake, please take decisions based
+                              on your research. This video is not forcing anything on you.\n\nAll Amazon
+                              links are affiliate links (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/75hqPk6pq5g/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/75hqPk6pq5g/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/75hqPk6pq5g/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/75hqPk6pq5g/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/75hqPk6pq5g/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - javascript
+                            - flutter
+                            - flutter windows
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Flutter Windows Installation
+                              description: "https://hitesh.ai/discord\n\nFacebook: https://www.facebook.com/HiteshChoudharyPage\nInstagram:
+                                https://instagram.com/hiteshchoudharyofficial\nhomepage: http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt
+                                doesn't feel good to have a disclaimer in every video but this is how
+                                the world is right now. \nAll videos are for educational purposes and
+                                use them wisely. Any video may have a slight mistake, please take decisions
+                                based on your research. This video is not forcing anything on you.\n\nAll
+                                Amazon links are affiliate links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT19M35S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '2955'
+                            likeCount: '163'
+                            favoriteCount: '0'
+                            commentCount: '51'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: dtzfTePFKgM
+                          snippet:
+                            publishedAt: '2023-07-18T16:30:07Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: FreeAPI local setup with npm
+                            description: "https://hc.lco.dev/jscamp2\nWallpaper: https://imgur.com/a/FYHfk\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/dtzfTePFKgM/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/dtzfTePFKgM/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/dtzfTePFKgM/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/dtzfTePFKgM/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/dtzfTePFKgM/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - python
+                            - javascript
+                            - devops
+                            - cloud
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: FreeAPI local setup with npm
+                              description: "https://hc.lco.dev/jscamp2\nWallpaper: https://imgur.com/a/FYHfk\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT15M12S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '2528'
+                            likeCount: '128'
+                            favoriteCount: '0'
+                            commentCount: '20'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: xJq0EQMFGyg
+                          snippet:
+                            publishedAt: '2023-07-18T12:33:40Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Open Source Project Launch | FreeAPI.app
+                            description: "Learn about API and master them with our new open source project.
+                              Check it out here:\nhttps://freeapi.app\n\nFacebook: https://www.facebook.com/HiteshChoudharyPage\nInstagram:
+                              https://instagram.com/hiteshchoudharyofficial\nhomepage: http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt
+                              doesn't feel good to have a disclaimer in every video but this is how the
+                              world is right now. \nAll videos are for educational purposes and use them
+                              wisely. Any video may have a slight mistake, please take decisions based
+                              on your research. This video is not forcing anything on you.\n\nAll Amazon
+                              links are affiliate links (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - python
+                            - javascript
+                            - devops
+                            - cloud
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Open Source Project Launch | FreeAPI.app
+                              description: "Learn about API and master them with our new open source project.
+                                Check it out here:\nhttps://freeapi.app\n\nFacebook: https://www.facebook.com/HiteshChoudharyPage\nInstagram:
+                                https://instagram.com/hiteshchoudharyofficial\nhomepage: http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt
+                                doesn't feel good to have a disclaimer in every video but this is how
+                                the world is right now. \nAll videos are for educational purposes and
+                                use them wisely. Any video may have a slight mistake, please take decisions
+                                based on your research. This video is not forcing anything on you.\n\nAll
+                                Amazon links are affiliate links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT8M45S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '17208'
+                            likeCount: '1068'
+                            favoriteCount: '0'
+                            commentCount: '91'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: zg06ec5arCs
+                          snippet:
+                            publishedAt: '2023-07-12T12:20:42Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Learn to build file based routing from scratch like Nextjs
+                            description: "Here is the link to get code files for this video:\nhttps://hitesh.pieces.cloud/?p=a2ac4ab4b3\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/zg06ec5arCs/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/zg06ec5arCs/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/zg06ec5arCs/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/zg06ec5arCs/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/zg06ec5arCs/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - javascript
+                            - cloud
+                            - pieces
+                            - nextjs
+                            - file based routing
+                            - learn react
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Learn to build file based routing from scratch like Nextjs
+                              description: "Here is the link to get code files for this video:\nhttps://hitesh.pieces.cloud/?p=a2ac4ab4b3\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT1H17M17S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '4144'
+                            likeCount: '292'
+                            favoriteCount: '0'
+                            commentCount: '43'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: eSYvfCoWIzA
+                          snippet:
+                            publishedAt: '2023-07-07T14:17:22Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Appwrite Nextjs and context api
+                            description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/eSYvfCoWIzA/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/eSYvfCoWIzA/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/eSYvfCoWIzA/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/eSYvfCoWIzA/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/eSYvfCoWIzA/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - javascript
+                            - devops
+                            - reactjs
+                            - nextjs
+                            - appwrite
+                            - appwrite cloud
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Appwrite Nextjs and context api
+                              description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT39M29S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '10028'
+                            likeCount: '86'
+                            favoriteCount: '0'
+                            commentCount: '14'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: fyEA1R4lFyQ
+                          snippet:
+                            publishedAt: '2023-07-06T11:41:53Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Nextjs componets to talk to Appwrite
+                            description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/fyEA1R4lFyQ/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/fyEA1R4lFyQ/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/fyEA1R4lFyQ/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/fyEA1R4lFyQ/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/fyEA1R4lFyQ/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - javascript
+                            - cloud
+                            - appwrite
+                            - auth
+                            - nextjs
+                            - reactjs
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Nextjs componets to talk to Appwrite
+                              description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT30M23S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '9138'
+                            likeCount: '68'
+                            favoriteCount: '0'
+                            commentCount: '9'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: 1SMO6kWb9Eo
+                          snippet:
+                            publishedAt: '2023-07-04T12:45:00Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: How to integrate appwrite to nextjs
+                            description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/1SMO6kWb9Eo/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/1SMO6kWb9Eo/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/1SMO6kWb9Eo/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/1SMO6kWb9Eo/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/1SMO6kWb9Eo/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - javascript
+                            - cloud
+                            - appwrite
+                            - nextjs
+                            - reactjs
+                            - learn react
+                            - learn nextjs
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: How to integrate appwrite to nextjs
+                              description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT36M32S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '9873'
+                            likeCount: '95'
+                            favoriteCount: '0'
+                            commentCount: '7'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: n1edxEq8syI
+                          snippet:
+                            publishedAt: '2023-07-02T16:10:43Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Nextjs meets Appwrite
+                            description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/n1edxEq8syI/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/n1edxEq8syI/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/n1edxEq8syI/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/n1edxEq8syI/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/n1edxEq8syI/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - python
+                            - javascript
+                            - devops
+                            - cloud
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Nextjs meets Appwrite
+                              description: "https://github.com/hiteshchoudhary/nextjs-appwrite-auth\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT5M41S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '16158'
+                            likeCount: '263'
+                            favoriteCount: '0'
+                            commentCount: '49'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: eaQc7vbV4po
+                          snippet:
+                            publishedAt: '2023-07-02T11:59:15Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Complete Nextjs fullstack Authentication course
+                            description: "00:00:00 - Introduction and file structure for front end\n01:04:17
+                              - Mongodb, signup and login\n02:05:51 - JWT, cookies and protected routes,
+                              middleware\n02:47:30 - User verification and emails\n03:43:34 - Deployment
+                              and assignment\n\nhttps://github.com/hiteshchoudhary/nextjs-fullstack-auth\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/eaQc7vbV4po/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/eaQc7vbV4po/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/eaQc7vbV4po/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/eaQc7vbV4po/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/eaQc7vbV4po/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - javascript
+                            - devops
+                            - cloud
+                            - nextjs
+                            - mongodb
+                            - reactjs
+                            - authentication
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Complete Nextjs fullstack Authentication course
+                              description: "00:00:00 - Introduction and file structure for front end\n01:04:17
+                                - Mongodb, signup and login\n02:05:51 - JWT, cookies and protected routes,
+                                middleware\n02:47:30 - User verification and emails\n03:43:34 - Deployment
+                                and assignment\n\nhttps://github.com/hiteshchoudhary/nextjs-fullstack-auth\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT3H56M54S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '17806'
+                            likeCount: '804'
+                            favoriteCount: '0'
+                            commentCount: '78'
+                      - kind: youtube#videoListResponse
+                        items:
+                          kind: youtube#video
+                          id: qJkey7UPyiw
+                          snippet:
+                            publishedAt: '2023-07-01T13:45:02Z'
+                            channelId: UCXgGY0wkgOzynnHvSEVmE3A
+                            title: Nextjs Deployment
+                            description: "https://github.com/hiteshchoudhary/nextjs-fullstack-auth/\n\nFacebook:
+                              https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                              http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to have
+                              a disclaimer in every video but this is how the world is right now. \nAll
+                              videos are for educational purposes and use them wisely. Any video may have
+                              a slight mistake, please take decisions based on your research. This video
+                              is not forcing anything on you.\n\nAll Amazon links are affiliate links
+                              (If any)."
+                            thumbnails:
+                              default:
+                                url: https://i.ytimg.com/vi/qJkey7UPyiw/default.jpg
+                                width: 120
+                                height: 90
+                              medium:
+                                url: https://i.ytimg.com/vi/qJkey7UPyiw/mqdefault.jpg
+                                width: 320
+                                height: 180
+                              high:
+                                url: https://i.ytimg.com/vi/qJkey7UPyiw/hqdefault.jpg
+                                width: 480
+                                height: 360
+                              standard:
+                                url: https://i.ytimg.com/vi/qJkey7UPyiw/sddefault.jpg
+                                width: 640
+                                height: 480
+                              maxres:
+                                url: https://i.ytimg.com/vi/qJkey7UPyiw/maxresdefault.jpg
+                                width: 1280
+                                height: 720
+                            channelTitle: Hitesh Choudhary
+                            tags:
+                            - Programming
+                            - javascript
+                            - reactjs
+                            - nextjs
+                            - mongodb
+                            categoryId: '28'
+                            liveBroadcastContent: none
+                            localized:
+                              title: Nextjs Deployment
+                              description: "https://github.com/hiteshchoudhary/nextjs-fullstack-auth/\n\nFacebook:
+                                https://www.facebook.com/HiteshChoudharyPage\nInstagram: https://instagram.com/hiteshchoudharyofficial\nhomepage:
+                                http://www.hiteshChoudhary.com\n\nDisclaimer:\nIt doesn't feel good to
+                                have a disclaimer in every video but this is how the world is right now.
+                                \nAll videos are for educational purposes and use them wisely. Any video
+                                may have a slight mistake, please take decisions based on your research.
+                                This video is not forcing anything on you.\n\nAll Amazon links are affiliate
+                                links (If any)."
+                            defaultAudioLanguage: en
+                          contentDetails:
+                            duration: PT13M24S
+                            dimension: 2d
+                            definition: hd
+                            caption: 'false'
+                            licensedContent: true
+                            contentRating: {}
+                            projection: rectangular
+                          statistics:
+                            viewCount: '2782'
+                            likeCount: '102'
+                            favoriteCount: '0'
+                            commentCount: '22'
                     message: Videos fetched successfully
-                    statusCode: 200
                     success: true
+
   /public/youtube/videos/{videoId}:
     get:
       tags:
