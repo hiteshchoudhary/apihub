@@ -1,5 +1,6 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import { rateLimit } from "express-rate-limit";
 import session from "express-session";
@@ -21,6 +22,9 @@ const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
 const swaggerDocument = YAML.parse(file);
 
 const app = express();
+
+// configure .env
+dotenv.config();
 
 // global middlewares
 app.use(
