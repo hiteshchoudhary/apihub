@@ -23890,12 +23890,19 @@ paths:
       operationId: updateTodo
       requestBody:
         content:
-          text/plain:
-            example: |-
-              {
-                  // "description": "Updated descripton",
-                  "title": "Updated ruby name"
-              }
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: Updated description of the todo
+                title:
+                  type: string
+                  example: Updated todo title
+            example:
+              description: A new description for the todo
+              title: A new title for the todo
       responses:
         '200':
           description: Update todo
