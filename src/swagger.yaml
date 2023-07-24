@@ -17326,25 +17326,31 @@ paths:
         quantity of existing products, providing a convenient way for users to
         manage their shopping cart.
 
+        E.g. If user has `4` products already in cart and if user click on `add
+        more` button frontend should send quantity as `5` in the same api.
+        
 
-        _**NOTE:**_ _Quanity that is passed in the request body will be assigned
+        _**NOTES:**_ 
+       
+       
+        _Quanity that is passed in the request body will be assigned
         directly and will be treated as a new quantity for the respective
         product._
 
-
-        E.g. If user has `4` products already in cart and if user click on `add
-        more` button frontend should send quantity as `5` in the same api.
+       
+        _Minimum quantity should be 1. Once user decrements it from 1, instead of sending 0 call remove item from cart api._
       operationId: addItemOrUpdateItemQuantity
       requestBody:
         content:
-          text/plain:
-            example: |-
-              {
-                  // When calling add to cart send quantity as 1 in the first call
-                  // Then increment or decrement the item quantity to update
-                  // minimum quantity should be 1. Once user decrements it from 1, instead of sending 0 call remove item from cart api
-                  "quantity": 4 // Becakend will set this quantity
-              }
+          application/json:
+              schema:
+                type: object
+                properties:
+                  quantity:
+                    type: string
+                    example: 4
+              example:
+                quantity: 4
       responses:
         '200':
           description: Add item or update item quantity
@@ -18916,17 +18922,42 @@ paths:
       operationId: createCoupon
       requestBody:
         content:
-          text/plain:
-            example: |-
-              {
-                  "name": "Season sale",
-                  "couponCode": "GET600", // must be unique
-                  "type": "FLAT", // "FLAT" enum
-                  "discountValue": 600,
-                  "minimumCartValue": 700,
-                  "expiryDate": "2024-06-13T11:07:10.693Z",
-                  "startDate": "2023-02-13T11:07:10.693Z" // default is current date
-              }
+            application/json:
+              schema:
+                type: object
+                properties:
+                    name:
+                        type: string
+                        example: Season sale
+                    couponCode:
+                        type: string
+                        example: must be unique like 'GET600'
+                    type:
+                        type: string
+                        enum: ["FLAT"]
+                        example: "FLAT"
+                    discountValue:
+                        type: number
+                        example: 600
+                    minimumCartValue:
+                        type: number
+                        example: 700
+                    expiryDate:
+                        type: string
+                        format: date-time
+                        example: "2024-06-13T11:07:10.693Z"
+                    startDate:
+                        type: string
+                        format: date-time
+                        example: "2023-02-13T11:07:10.693Z"
+              example:
+                name: "Season sale"
+                couponCode: "GET600"
+                type: "FLAT"
+                discountValue: 600
+                minimumCartValue: 700
+                expiryDate: "2024-06-13T11:07:10.693Z"
+                startDate: "2023-02-13T11:07:10.693Z"
       responses:
         '201':
           description: Create coupon
@@ -19814,11 +19845,15 @@ paths:
       operationId: applyCouponCode
       requestBody:
         content:
-          text/plain:
-            example: |-
-              {
-                  "couponCode": "CORRUPTI845" // must be unique
-              }
+          application/json:
+              schema:
+                type: object
+                properties:
+                  couponCode:
+                    type: string
+                    example: must be unique like 'CORRUPTI845'
+              example:
+                couponCode: "CORRUPTI845"
       responses:
         '200':
           description: Apply coupon code
@@ -20307,11 +20342,15 @@ paths:
       operationId: removeCouponCode
       requestBody:
         content:
-          text/plain:
-            example: |-
-              {
-                  "couponCode": "FIRST150" // must be unique
-              }
+          application/json:
+              schema:
+                type: object
+                properties:
+                  couponCode:
+                    type: string
+                    example: must be unique like 'CORRUPTI845'
+              example:
+                couponCode: "CORRUPTI845"
       responses:
         '200':
           description: Remove coupon code
@@ -20918,16 +20957,35 @@ paths:
       operationId: createAddress
       requestBody:
         content:
-          text/plain:
-            example: |-
-              {
-                  "addressLine1": "New lane central, D-203",
-                  "addressLine2": "", // optional
-                  "city": "Mumbai",
-                  "state": "Maharashtra",
-                  "pincode": "409209", // min and max length is 6 and should be numeric
-                  "country": "India"
-              }
+          application/json:
+            schema:
+              type: object
+              properties:
+                addressLine1:
+                  type: string
+                  example: New lane central, D-203
+                addressLine2:
+                  type: string
+                  example: Opposite to central park (Optional)
+                city:
+                  type: string
+                  example: Mumbai
+                state:
+                  type: string
+                  example: Maharashtra
+                pincode:
+                  type: string
+                  example: 409209
+                country:
+                  type: string
+                  example: India
+            example:
+                addressLine1: New lane central, D-203
+                addressLine2: Opposite to central park
+                city: Mumbai
+                state: Maharashtra
+                pincode: 409209
+                country: India
       responses:
         '201':
           description: Create address
@@ -21316,16 +21374,35 @@ paths:
       operationId: updateAddress
       requestBody:
         content:
-          text/plain:
-            example: |-
-              {
-                  "addressLine1": "Updated MG Road, D-203",
-                  "addressLine2": "Andheri" // optional
-                  // "city": "Mumbai",
-                  // "state": "Maharashtra",
-                  // "pincode": "409300", // min and max length is 6 and should be numeric
-                  // "country": "India2"
-              }
+          application/json:
+              schema:
+                type: object
+                properties:
+                  addressLine1:
+                    type: string
+                    example: New lane central, D-203
+                  addressLine2:
+                    type: string
+                    example: Opposite to central park (Optional)
+                  city:
+                    type: string
+                    example: Mumbai
+                  state:
+                    type: string
+                    example: Maharashtra
+                  pincode:
+                    type: string
+                    example: 409209
+                  country:
+                    type: string
+                    example: India
+              example:
+                  addressLine1: New lane central, D-203
+                  addressLine2: Opposite to central park
+                  city: Mumbai
+                  state: Maharashtra
+                  pincode: 409209
+                  country: India
       responses:
         '200':
           description: Update address
