@@ -78,7 +78,7 @@ We appreciate your enthusiasm and look forward to your valuable contributions to
 
 Together, we can foster a collaborative environment and make a significant impact in the API integration landscape.
 
-Click [here](https://github.com/hiteshchoudhary/apihub/blob/dev/CONTRIBUTING.md) for detailed contribution guide.
+Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md) for detailed contribution guide.
 
 ## 🏁 Installation
 
@@ -136,10 +136,12 @@ To self-host the FreeAPI.app application, you can take advantage of a pre-built 
 3. (Optional) Sign in with GitHub to deploy.
 
 4. Fill in the Repository details:
+
    - Specify the repo name (e.g., freeapi-app).
    - Checkmark for Public/Private repository.
 
 5. For Environment variables, we have provided some default values in the `ENV` to reduce the burden, but some parameters are mandatory:
+
    - `PORT`: Do not change the value, let it be set to 8080 to view the swagger docs after deployment.
    - `MONGODB_URI`: Provide the MongoDB Atlas database URL. An example is prefilled for you, edit/update it to continue.
    - `NODE_ENV`: Default set to 'development' to view the logs. You may choose to change it to any other value such as 'prod' to hide them.
