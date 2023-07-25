@@ -1,0 +1,55 @@
+{
+  "channel": {
+    "kind": "youtube#channelListResponse",
+    "info": {
+      "kind": "youtube#channel",
+      "id": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "snippet": {
+        "title": "Hitesh Choudhary",
+        "description": "Website: https://hiteshchoudhary.com\nHey there everyone, Hitesh here back again with another video!\nThis means I create a lot of videos, every single week. I cover a wide range of subjects like programming, what's latest in tech, new frameworks, open-source products etc. I keep my interest in a wide area of tech like Javascript, Python, PHP, Machine Learning, etc.\n\nFor the Business purpose, Sponsorships and invitation, reach out at team@hiteshchoudhary.com\n\nNOTE: Personal questions and code-related questions are not answered at this email. Post them in the course discussion section or react me out at social platforms.\n\n#iWriteCode\n\nInstagram: https://instagram.com/hiteshchoudharyofficial\nFacebook: www.fb.com/HiteshChoudharyPage",
+        "customUrl": "@hiteshchoudharydotcom",
+        "publishedAt": "2011-10-24T10:25:16Z",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s88-c-k-c0x00ffffff-no-rj",
+            "width": 88,
+            "height": 88
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s240-c-k-c0x00ffffff-no-rj",
+            "width": 240,
+            "height": 240
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/ytc/AOPolaTLK52bUQ_YHxgb7RK8GMt_bksIMavy-aEZ9fUOvg=s800-c-k-c0x00ffffff-no-rj",
+            "width": 800,
+            "height": 800
+          }
+        },
+        "localized": {
+          "title": "Hitesh Choudhary",
+          "description": "Website: https://hiteshchoudhary.com\nHey there everyone, Hitesh here back again with another video!\nThis means I create a lot of videos, every single week. I cover a wide range of subjects like programming, what's latest in tech, new frameworks, open-source products etc. I keep my interest in a wide area of tech like Javascript, Python, PHP, Machine Learning, etc.\n\nFor the Business purpose, Sponsorships and invitation, reach out at team@hiteshchoudhary.com\n\nNOTE: Personal questions and code-related questions are not answered at this email. Post them in the course discussion section or react me out at social platforms.\n\n#iWriteCode\n\nInstagram: https://instagram.com/hiteshchoudharyofficial\nFacebook: www.fb.com/HiteshChoudharyPage"
+        },
+        "country": "IN"
+      },
+      "statistics": {
+        "viewCount": "54384618",
+        "subscriberCount": "801000",
+        "hiddenSubscriberCount": false,
+        "videoCount": "1442"
+      },
+      "brandingSettings": {
+        "channel": {
+          "title": "Hitesh Choudhary",
+          "description": "Website: https://hiteshchoudhary.com\nHey there everyone, Hitesh here back again with another video!\nThis means I create a lot of videos, every single week. I cover a wide range of subjects like programming, what's latest in tech, new frameworks, open-source products etc. I keep my interest in a wide area of tech like Javascript, Python, PHP, Machine Learning, etc.\n\nFor the Business purpose, Sponsorships and invitation, reach out at team@hiteshchoudhary.com\n\nNOTE: Personal questions and code-related questions are not answered at this email. Post them in the course discussion section or react me out at social platforms.\n\n#iWriteCode\n\nInstagram: https://instagram.com/hiteshchoudharyofficial\nFacebook: www.fb.com/HiteshChoudharyPage",
+          "keywords": "Programming computers code hitesh udemy Udacity Edx \"machine learning\" python javascript devops cloud",
+          "unsubscribedTrailer": "xJq0EQMFGyg",
+          "country": "IN"
+        },
+        "image": {
+          "bannerExternalUrl": "https://yt3.googleusercontent.com/xGlR3Vz-RYHgwRj50-VEdBksVyjyJhvzQUEVttMCd5iRVdw-OXdFkPBPswF2nG_13QR2UfXnCQ"
+        }
+      }
+    }
+  }
+}

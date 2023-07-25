@@ -144,3 +144,4 @@ logs
 !/public/temp/.gitkeep
 
 NOTES.md
+.DS_Store

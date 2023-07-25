@@ -51,6 +51,18 @@ export const UserLoginType = {
 
 export const AvailableSocialLogins = Object.values(UserLoginType);
 
+/**
+ * @type {{ MOST_VIEWED: "mostViewed"; MOST_LIKED: "mostLiked"; LATEST: "latest"; OLDEST: "oldest"} as const}
+ */
+export const YouTubeFilterEnum = {
+  MOST_VIEWED: "mostViewed",
+  MOST_LIKED: "mostLiked",
+  LATEST: "latest",
+  OLDEST: "oldest",
+};
+
+export const AvailableYouTubeFilters = Object.values(YouTubeFilterEnum);
+
 export const USER_TEMPORARY_TOKEN_EXPIRY = 20 * 60 * 1000; // 20 minutes
 
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;

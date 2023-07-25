@@ -1,0 +1,842 @@
+[
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTNPzObtUpbxe1L1lB97z2R",
+    "snippet": {
+      "publishedAt": "2023-07-19T13:14:09Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Flutter | a project based learning",
+      "description": "Learn flutter by building mobile apps",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/75hqPk6pq5g/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/75hqPk6pq5g/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/75hqPk6pq5g/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/75hqPk6pq5g/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/75hqPk6pq5g/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Flutter | a project based learning",
+        "description": "Learn flutter by building mobile apps"
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWSx4erHGq8hW_GE-Eaj60r-",
+    "snippet": {
+      "publishedAt": "2023-07-18T12:28:02Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "FreeAPI.app",
+      "description": "Learn and master API with our open source project, https://freeapi.app",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/xJq0EQMFGyg/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/xJq0EQMFGyg/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/xJq0EQMFGyg/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/xJq0EQMFGyg/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/xJq0EQMFGyg/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "FreeAPI.app",
+        "description": "Learn and master API with our open source project, https://freeapi.app"
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWR7KF-zV6YPYtKYEHENETyE",
+    "snippet": {
+      "publishedAt": "2023-06-30T11:35:07Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Nextjs Fullstack course on Authentication",
+      "description": "Learn about the lastest nextjs, new ways to create pages and API routes and middleware. This playlist will help you to understand nextjs in depth and you will be able to manage all projects easily after this.",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/iPGXk-i-VYU/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/iPGXk-i-VYU/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/iPGXk-i-VYU/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/iPGXk-i-VYU/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/iPGXk-i-VYU/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Nextjs Fullstack course on Authentication",
+        "description": "Learn about the lastest nextjs, new ways to create pages and API routes and middleware. This playlist will help you to understand nextjs in depth and you will be able to manage all projects easily after this."
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTjW8wHMv_fQSgU-8is6KTR",
+    "snippet": {
+      "publishedAt": "2023-06-16T17:56:18Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "AWS Certified Cloud Practitioner",
+      "description": "Dive into our comprehensive AWS Certified Cloud Practitioner playlist. This series is tailored to assist you in your journey towards becoming an AWS Certified Cloud Practitioner. From understanding AWS core services to security basics and architectural principles, we've got you covered. Each video in this series breaks down complex cloud concepts into easily digestible segments, ensuring an optimal learning experience. Whether you're a novice just starting with AWS, or an IT professional looking to enhance your skills, this playlist is your stepping stone towards mastering the AWS cloud. Don't wait to transform your career, start your cloud certification journey today",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/VXqIJ2SJh9s/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/VXqIJ2SJh9s/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/VXqIJ2SJh9s/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/VXqIJ2SJh9s/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/VXqIJ2SJh9s/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "AWS Certified Cloud Practitioner",
+        "description": "Dive into our comprehensive AWS Certified Cloud Practitioner playlist. This series is tailored to assist you in your journey towards becoming an AWS Certified Cloud Practitioner. From understanding AWS core services to security basics and architectural principles, we've got you covered. Each video in this series breaks down complex cloud concepts into easily digestible segments, ensuring an optimal learning experience. Whether you're a novice just starting with AWS, or an IT professional looking to enhance your skills, this playlist is your stepping stone towards mastering the AWS cloud. Don't wait to transform your career, start your cloud certification journey today"
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWRfTGI-ZEWIWVj0Vs5IJwkh",
+    "snippet": {
+      "publishedAt": "2023-05-18T12:12:46Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Is XYZ Dead",
+      "description": "A playlist to tease beginners by poking their sentiment around tools. If you know it, enjoy the comment section otherwise go on full rage mode in comments. 🫣",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/EQwmQLU1S6I/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/EQwmQLU1S6I/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/EQwmQLU1S6I/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/EQwmQLU1S6I/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/EQwmQLU1S6I/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Is XYZ Dead",
+        "description": "A playlist to tease beginners by poking their sentiment around tools. If you know it, enjoy the comment section otherwise go on full rage mode in comments. 🫣"
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTcGaBdIhAU4rdvhWKl1spk",
+    "snippet": {
+      "publishedAt": "2023-04-18T12:12:27Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Javascript fun projects",
+      "description": "some fun javascript project for beginners",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/O7zPiurDdDk/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/O7zPiurDdDk/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/O7zPiurDdDk/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/O7zPiurDdDk/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/O7zPiurDdDk/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Javascript fun projects",
+        "description": "some fun javascript project for beginners"
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTK8g1CH9g4pzk0zagfmLoR",
+    "snippet": {
+      "publishedAt": "2023-03-05T20:20:24Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Code Cast with HC",
+      "description": "Code Cast with HC",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/yjrUbWL3Nss/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/yjrUbWL3Nss/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/yjrUbWL3Nss/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/yjrUbWL3Nss/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/yjrUbWL3Nss/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Code Cast with HC",
+        "description": "Code Cast with HC"
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWSjBBJ-egNNOd4mdblt1P4c",
+    "snippet": {
+      "publishedAt": "2023-01-24T12:35:45Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "React Native Mastery with 10 apps",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/kGtEax1WQFg/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/kGtEax1WQFg/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/kGtEax1WQFg/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/kGtEax1WQFg/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/kGtEax1WQFg/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "React Native Mastery with 10 apps",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWSA0lDIi204LrcS_QTtTcBW",
+    "snippet": {
+      "publishedAt": "2022-12-01T13:35:09Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Javascript Interview Preparation guide",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/Q4UWFGRVOpQ/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/Q4UWFGRVOpQ/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/Q4UWFGRVOpQ/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/Q4UWFGRVOpQ/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/Q4UWFGRVOpQ/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Javascript Interview Preparation guide",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWRjBBG6zgR7GMkMBVu0IA9M",
+    "snippet": {
+      "publishedAt": "2022-11-30T10:49:17Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Certified Cloud Practitioner | AWS",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/1eR8CstyPdY/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/1eR8CstyPdY/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/1eR8CstyPdY/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/1eR8CstyPdY/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/1eR8CstyPdY/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Certified Cloud Practitioner | AWS",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTqRoFyDBaocL9GPnfjCySj",
+    "snippet": {
+      "publishedAt": "2022-11-15T18:33:42Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Auth system in GitHub codespaces",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/D_5T6KMTRb8/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/D_5T6KMTRb8/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/D_5T6KMTRb8/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/D_5T6KMTRb8/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/D_5T6KMTRb8/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Auth system in GitHub codespaces",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWQKITluruJ8ciyCi9bybQ9E",
+    "snippet": {
+      "publishedAt": "2022-10-27T18:00:42Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Long form Videos",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/ZchBYjHFCC4/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/ZchBYjHFCC4/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/ZchBYjHFCC4/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/ZchBYjHFCC4/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/ZchBYjHFCC4/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Long form Videos",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTDMYA_7mzG2dN9TKC9ed3m",
+    "snippet": {
+      "publishedAt": "2022-09-21T11:33:05Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Before you start interview preparation",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/Trsho3HVAdI/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/Trsho3HVAdI/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/Trsho3HVAdI/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/Trsho3HVAdI/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/Trsho3HVAdI/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Before you start interview preparation",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWRPSfKzwZsIm-Axxq-LxqhW",
+    "snippet": {
+      "publishedAt": "2022-09-07T16:41:07Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Typescript",
+      "description": "Videos are in order from top to bottom\n\nhttps://github.com/hiteshchoudhary/typescript-youtube-22",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/j89BvWz8Eag/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/j89BvWz8Eag/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/j89BvWz8Eag/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/j89BvWz8Eag/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/j89BvWz8Eag/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Typescript",
+        "description": "Videos are in order from top to bottom\n\nhttps://github.com/hiteshchoudhary/typescript-youtube-22"
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTuDGJBa7UdqX_pxoEXy00p",
+    "snippet": {
+      "publishedAt": "2022-08-22T05:30:50Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Prisma | backend development",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/IiqhMNPWGEs/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/IiqhMNPWGEs/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/IiqhMNPWGEs/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/IiqhMNPWGEs/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/IiqhMNPWGEs/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Prisma | backend development",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWR3m57Vo39j5lQE9h5w0vkG",
+    "snippet": {
+      "publishedAt": "2022-06-15T10:21:57Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Javascript Marathon",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/_gg5_gFP0gQ/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/_gg5_gFP0gQ/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/_gg5_gFP0gQ/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/_gg5_gFP0gQ/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/_gg5_gFP0gQ/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Javascript Marathon",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWQMXekDgw7fRAsHmsbKWkwu",
+    "snippet": {
+      "publishedAt": "2022-05-18T09:47:07Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Zustand | react state management",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/KCr-UNsM3vA/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/KCr-UNsM3vA/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/KCr-UNsM3vA/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/KCr-UNsM3vA/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/KCr-UNsM3vA/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Zustand | react state management",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWTZwo7H13G3m6Hghtwpb0B6",
+    "snippet": {
+      "publishedAt": "2022-01-10T09:41:08Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Nextjs full stack",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/3DVNl8uwoAo/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/3DVNl8uwoAo/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/3DVNl8uwoAo/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/3DVNl8uwoAo/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/3DVNl8uwoAo/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Nextjs full stack",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWRBEZsfbp-557w-ZuY--wrO",
+    "snippet": {
+      "publishedAt": "2021-12-11T17:33:36Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Saturday live (2022)",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/9Jvgh6txd1k/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/9Jvgh6txd1k/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/9Jvgh6txd1k/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/9Jvgh6txd1k/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/9Jvgh6txd1k/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Saturday live (2022)",
+        "description": ""
+      }
+    }
+  },
+  {
+    "kind": "youtube#playlist",
+    "id": "PLRAV69dS1uWQGDQoBYMZWKjzuhCaOnBpa",
+    "snippet": {
+      "publishedAt": "2021-08-31T11:04:01Z",
+      "channelId": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "title": "Let's go with golang",
+      "description": "",
+      "thumbnails": {
+        "default": {
+          "url": "https://i.ytimg.com/vi/JoJ8Sw5Yb4c/default.jpg",
+          "width": 120,
+          "height": 90
+        },
+        "medium": {
+          "url": "https://i.ytimg.com/vi/JoJ8Sw5Yb4c/mqdefault.jpg",
+          "width": 320,
+          "height": 180
+        },
+        "high": {
+          "url": "https://i.ytimg.com/vi/JoJ8Sw5Yb4c/hqdefault.jpg",
+          "width": 480,
+          "height": 360
+        },
+        "standard": {
+          "url": "https://i.ytimg.com/vi/JoJ8Sw5Yb4c/sddefault.jpg",
+          "width": 640,
+          "height": 480
+        },
+        "maxres": {
+          "url": "https://i.ytimg.com/vi/JoJ8Sw5Yb4c/maxresdefault.jpg",
+          "width": 1280,
+          "height": 720
+        }
+      },
+      "channelTitle": "Hitesh Choudhary",
+      "localized": {
+        "title": "Let's go with golang",
+        "description": ""
+      }
+    }
+  }
+]
