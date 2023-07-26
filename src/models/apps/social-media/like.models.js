@@ -6,17 +6,17 @@ import { SocialComment } from "./comment.models.js";
 const likeSchema = new Schema(
   {
     postId: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "SocialPost",
       default: null,
     },
     commentId: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "SocialComment",
       default: null,
     },
     likedBy: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   },

@@ -42,7 +42,7 @@ const couponSchema = new Schema(
       default: null,
     },
     owner: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   },

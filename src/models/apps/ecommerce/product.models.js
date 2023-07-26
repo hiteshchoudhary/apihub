@@ -8,7 +8,7 @@ const productSchema = new Schema(
     category: {
       ref: "Category",
       required: true,
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
     },
     description: {
       required: true,
@@ -27,7 +27,7 @@ const productSchema = new Schema(
     },
     owner: {
       ref: "User",
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
     },
     price: {
       default: 0,

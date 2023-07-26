@@ -6,12 +6,12 @@ const followSchema = new Schema(
   {
     // The one who follows
     followerId: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
     // The one who is being followed
     followeeId: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   },

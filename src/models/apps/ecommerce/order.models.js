@@ -22,19 +22,19 @@ const orderSchema = new Schema(
       required: true,
     },
     coupon: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Coupon",
       default: null,
     },
     customer: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
     items: {
       type: [
         {
           productId: {
-            type: mongoose.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Product",
           },
           quantity: {
@@ -48,7 +48,7 @@ const orderSchema = new Schema(
       default: [],
     },
     address: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Address",
     },
     status: {

@@ -21,7 +21,7 @@ const addressSchema = new Schema(
     },
     owner: {
       ref: "User",
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
     },
     pincode: {
       required: true,

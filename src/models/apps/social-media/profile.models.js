@@ -42,7 +42,7 @@ const profileSchema = new Schema(
       default: "",
     },
     owner: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   },

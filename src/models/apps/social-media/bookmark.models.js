@@ -6,11 +6,11 @@ import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 const bookmarkSchema = new Schema(
   {
     postId: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "SocialPost",
     },
     bookmarkedBy: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   },

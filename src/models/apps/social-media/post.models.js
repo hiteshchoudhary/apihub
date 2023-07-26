@@ -23,7 +23,7 @@ const postSchema = new Schema(
       default: [],
     },
     author: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   },

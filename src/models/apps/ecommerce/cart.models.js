@@ -6,14 +6,14 @@ import { Coupon } from "./coupon.models.js";
 const cartSchema = new Schema(
   {
     owner: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
     items: {
       type: [
         {
           productId: {
-            type: mongoose.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Product",
           },
           quantity: {
@@ -27,7 +27,7 @@ const cartSchema = new Schema(
       default: [],
     },
     coupon: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Coupon",
       default: null,
     },
