@@ -16,7 +16,10 @@ const createAGroupChatValidator = () => {
 
 const receiverPathVariableValidator = () => {
   return [
-    param("receiverId").notEmpty().isMongoId().withMessage("Invalid user id"),
+    param("receiverId")
+      .notEmpty()
+      .isMongoId()
+      .withMessage("Invalid receiver id"),
   ];
 };
 
@@ -25,13 +28,13 @@ const participantIdPathVariableValidator = () => {
     param("participantId")
       .notEmpty()
       .isMongoId()
-      .withMessage("Invalid user id"),
+      .withMessage("Invalid participant id"),
   ];
 };
 
 const chatIdPathVariableValidator = () => {
   return [
-    param("chatId").notEmpty().isMongoId().withMessage("Invalid user id"),
+    param("chatId").notEmpty().isMongoId().withMessage("Invalid chat id"),
   ];
 };
 
