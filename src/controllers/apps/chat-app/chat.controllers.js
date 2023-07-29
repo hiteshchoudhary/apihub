@@ -10,7 +10,7 @@ import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
  * @description Utility function which returns the pipeline stages to structure the chat schema with common lookups
  * @returns {mongoose.PipelineStage[]}
  */
-const chatCommonAggregation = () => {
+export const chatCommonAggregation = () => {
   return [
     {
       $lookup: {
