@@ -72,6 +72,35 @@ const chatCommonAggregation = () => {
   ];
 };
 
+const searchAvailableUsers = asyncHandler(async (req, res) => {
+  const { query } = req.query;
+  const users = await User.aggregate([
+    {
+      $match:
+        query?.length > 0
+          ? // return docs if either of the following keys match
+            {
+              $or: [
+                { username: { $regex: query.toLowerCase(), $options: "i" } },
+                { email: { $regex: query.toLowerCase(), $options: "i" } },
+              ],
+            }
+          : {},
+    },
+    {
+      $match: {
+        _id: {
+          $ne: req.user._id, // avoid logged in user
+        },
+      },
+    },
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, users, "Users fetched successfully"));
+});
+
 const getAOneOnOneChat = asyncHandler(async (req, res) => {
   const { receiverId } = req.params;
 
@@ -361,4 +390,5 @@ export {
   getAllChats,
   removeParticipantFromGroupChat,
   renameGroupChat,
+  searchAvailableUsers,
 };

@@ -7,6 +7,7 @@ import {
   getAllChats,
   removeParticipantFromGroupChat,
   renameGroupChat,
+  searchAvailableUsers,
 } from "../../../controllers/apps/chat-app/chat.controllers.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
@@ -23,6 +24,8 @@ const router = Router();
 router.use(verifyJWT);
 
 router.route("/").get(getAllChats);
+
+router.route("/users").get(searchAvailableUsers);
 
 router
   .route("/group")
