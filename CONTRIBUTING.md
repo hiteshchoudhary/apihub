@@ -11,7 +11,7 @@ To contribute to FreeAPI, please follow these guidelines:
 1. Fork the repository on GitHub.
 2. Clone your forked repository to your local machine.
 3. Create a new branch for your feature or bug fix: `git checkout -b feat/your-feature-name` or `git checkout -b fix/your-bug-fix-name`.
-4. Make your changes and commit them with descriptive messages: `git commit -am 'add your commit message'`. ([Commit format guidelines](#commit-message-format))
+4. Make your changes and commit them with descriptive messages: `git commit -am 'add your commit message'`.
 5. Push your changes to your forked repository: `git push origin feat/your-feature-name`.
 6. Submit a pull request to the main repository.
 
