@@ -22,9 +22,13 @@ const prepareHusky = () => {
   const huskyInstallStatus = runCommand("npx", ["husky", "install"]);
 
   // Check if .husky directory exists, if not, create it
-  if (!fs.existsSync(".husky")) {
-    fs.mkdirSync(".husky");
-  }
+  fs.mkdir(".husky", (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(".husky directory created successfully!");
+    }
+  });
 
   // Set permissions for husky on macOS/Linux
   if (os.platform() !== "win32") {
