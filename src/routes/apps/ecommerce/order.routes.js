@@ -13,15 +13,13 @@ import {
   verifyJWT,
 } from "../../../middlewares/auth.middlewares.js";
 import {
-  generatePaypalPaymentValidator,
-  generateRazorpayPaymentValidator,
-  orderPathVariableValidator,
   orderUpdateStatusValidator,
   verifyPaypalPaymentValidator,
   verifyRazorpayPaymentValidator,
 } from "../../../validators/apps/ecommerce/order.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { UserRolesEnum } from "../../../constants.js";
+import { mongoIdPathVariableValidator, mongoIdRequestBodyValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
@@ -29,10 +27,10 @@ router.use(verifyJWT);
 
 router
   .route("/provider/razorpay")
-  .post(generateRazorpayPaymentValidator(), validate, generateRazorpayOrder);
+  .post(mongoIdRequestBodyValidator("addressId"), validate, generateRazorpayOrder);
 router
   .route("/provider/paypal")
-  .post(generatePaypalPaymentValidator(), validate, generatePaypalOrder);
+  .post(mongoIdRequestBodyValidator("addressId"), validate, generatePaypalOrder);
 
 router
   .route("/provider/razorpay/verify-payment")
@@ -44,7 +42,7 @@ router
 
 router
   .route("/:orderId")
-  .get(orderPathVariableValidator(), validate, getOrderById);
+  .get(mongoIdPathVariableValidator("orderId"), validate, getOrderById);
 
 router
   .route("/list/admin")
@@ -53,7 +51,7 @@ router
   .route("/status/:orderId")
   .patch(
     verifyPermission([UserRolesEnum.ADMIN]),
-    orderPathVariableValidator(),
+    mongoIdPathVariableValidator("orderId"),
     orderUpdateStatusValidator(),
     validate,
     updateOrderStatus

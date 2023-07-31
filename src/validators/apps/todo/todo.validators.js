@@ -1,4 +1,4 @@
-import { body, param, query } from "express-validator";
+import { body, query } from "express-validator";
 
 const getAllTodosQueryValidators = () => {
   return [
@@ -38,19 +38,9 @@ const updateTodoValidator = () => {
   ];
 };
 
-const todoPathVariableValidator = () => {
-  return [
-    param("todoId")
-      .notEmpty()
-      .withMessage("Todo id is required")
-      .isMongoId()
-      .withMessage("Invalid todo id"),
-  ];
-};
 
 export {
   createTodoValidator,
   updateTodoValidator,
-  todoPathVariableValidator,
   getAllTodosQueryValidators,
 };

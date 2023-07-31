@@ -7,8 +7,8 @@ import {
 } from "../../../controllers/apps/ecommerce/cart.controllers.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import { addItemOrUpdateItemQuantityValidator } from "../../../validators/apps/ecommerce/cart.validators.js";
-import { productPathVariableValidator } from "../../../validators/apps/ecommerce/product.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
@@ -21,11 +21,11 @@ router.route("/clear").delete(clearCart);
 router
   .route("/item/:productId")
   .post(
-    productPathVariableValidator(),
+    mongoIdPathVariableValidator("productId"),
     addItemOrUpdateItemQuantityValidator(),
     validate,
     addItemOrUpdateItemQuantity
   )
-  .delete(productPathVariableValidator(), validate, removeItemFromCart);
+  .delete(mongoIdPathVariableValidator("productId"), validate, removeItemFromCart);
 
 export default router;

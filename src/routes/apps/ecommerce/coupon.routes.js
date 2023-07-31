@@ -17,12 +17,12 @@ import {
 import {
   applyCouponCodeValidator,
   couponActivityStatusValidator,
-  couponPathVariableValidator,
   createCouponValidator,
   updateCouponValidator,
 } from "../../../validators/apps/ecommerce/coupon.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { UserRolesEnum } from "../../../constants.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
@@ -46,19 +46,19 @@ router
 
 router
   .route("/:couponId")
-  .get(couponPathVariableValidator(), validate, getCouponById)
+  .get(mongoIdPathVariableValidator("couponId"), validate, getCouponById)
   .patch(
-    couponPathVariableValidator(),
+    mongoIdPathVariableValidator("couponId"),
     updateCouponValidator(),
     validate,
     updateCoupon
   )
-  .delete(couponPathVariableValidator(), validate, deleteCoupon);
+  .delete(mongoIdPathVariableValidator("couponId"), validate, deleteCoupon);
 
 router
   .route("/status/:couponId")
   .patch(
-    couponPathVariableValidator(),
+    mongoIdPathVariableValidator("couponId"),
     couponActivityStatusValidator(),
     validate,
     updateCouponActiveStatus

@@ -8,11 +8,11 @@ import {
 } from "../../../controllers/apps/ecommerce/address.controllers.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
-  addressPathVariableValidator,
   createAddressValidator,
   updateAddressValidator,
 } from "../../../validators/apps/ecommerce/address.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
@@ -26,11 +26,11 @@ router
 
 router
   .route("/:addressId")
-  .get(addressPathVariableValidator(), validate, getAddressById)
-  .delete(addressPathVariableValidator(), validate, deleteAddress)
+  .get(mongoIdPathVariableValidator("addressId"), validate, getAddressById)
+  .delete(mongoIdPathVariableValidator("addressId"), validate, deleteAddress)
   .patch(
     updateAddressValidator(),
-    addressPathVariableValidator(),
+    mongoIdPathVariableValidator("addressId"),
     validate,
     updateAddress
   );
