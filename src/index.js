@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { app } from "./app.js";
+import { httpServer } from "./app.js";
 import connectDB from "./db/index.js";
 
 dotenv.config({
@@ -13,7 +13,7 @@ dotenv.config({
 const majorNodeVersion = +process.env.NODE_VERSION?.split(".")[0] || 0;
 
 const startServer = () => {
-  app.listen(process.env.PORT || 8080, () => {
+  httpServer.listen(process.env.PORT || 8080, () => {
     console.info(
       `📑 Visit the documentation at: http://localhost:${
         process.env.PORT || 8080

@@ -3,7 +3,7 @@ import {
   addNewParticipantInGroupChat,
   createAGroupChat,
   deleteGroupChat,
-  getAOneOnOneChat,
+  createOrGetAOneOnOneChat,
   getAllChats,
   removeParticipantFromGroupChat,
   renameGroupChat,
@@ -58,6 +58,6 @@ router
 
 router
   .route("/c/:receiverId")
-  .get(receiverPathVariableValidator(), validate, getAOneOnOneChat);
+  .post(receiverPathVariableValidator(), validate, createOrGetAOneOnOneChat);
 
 export default router;

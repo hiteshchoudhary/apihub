@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ChatEventEnum } from "../../../constants.js";
 import { User } from "../../../models/apps/auth/user.models.js";
 import { Chat } from "../../../models/apps/chat-app/chat.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
@@ -10,7 +11,7 @@ import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
  * @description Utility function which returns the pipeline stages to structure the chat schema with common lookups
  * @returns {mongoose.PipelineStage[]}
  */
-export const chatCommonAggregation = () => {
+const chatCommonAggregation = () => {
   return [
     {
       $lookup: {
@@ -101,15 +102,17 @@ const searchAvailableUsers = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, users, "Users fetched successfully"));
 });
 
-const getAOneOnOneChat = asyncHandler(async (req, res) => {
+const createOrGetAOneOnOneChat = asyncHandler(async (req, res) => {
   const { receiverId } = req.params;
 
+  // Check if it's a valid receiver
   const receiver = await User.findById(receiverId);
 
   if (!receiver) {
     throw new ApiError(404, "Receiver does not exist");
   }
 
+  // check if receiver is not the user who is requesting a chat
   if (receiver._id.toString() === req.user._id.toString()) {
     throw new ApiError(400, "You cannot chat with yourself");
   }
@@ -117,7 +120,8 @@ const getAOneOnOneChat = asyncHandler(async (req, res) => {
   const chat = await Chat.aggregate([
     {
       $match: {
-        isGroupChat: false,
+        isGroupChat: false, // avoid group chats. This controller is responsible for one on one chats
+        // Also, filter chats with participants having receiver and logged in user only
         $and: [
           {
             participants: { $elemMatch: { $eq: req.user._id } },
@@ -134,30 +138,55 @@ const getAOneOnOneChat = asyncHandler(async (req, res) => {
   ]);
 
   if (chat.length) {
+    // if we find the chat that means user already has created a chat
     return res
       .status(200)
       .json(new ApiResponse(200, chat[0], "Chat retrieved successfully"));
   }
 
-  const newChat = await Chat.create({
+  // if not we need to create a new one on one chat
+  const newChatInstance = await Chat.create({
     name: "One on one chat",
-    participants: [req.user._id, new mongoose.Types.ObjectId(receiverId)],
+    participants: [req.user._id, new mongoose.Types.ObjectId(receiverId)], // add receiver and logged in user as participants
     admin: req.user._id,
   });
 
-  const createdChat = await Chat.findById(newChat._id).populate(
-    "participants",
-    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry -forgotPasswordToken -forgotPasswordExpiry"
-  );
+  // structure the chat as per the common aggregation to keep the consistency
+  const createdChat = await Chat.aggregate([
+    {
+      $match: {
+        _id: newChatInstance._id,
+      },
+    },
+    ...chatCommonAggregation(),
+  ]);
+
+  const payload = createdChat[0]; // store the aggregation result
+
+  if (!payload) {
+    throw new ApiError(500, "Internal server error");
+  }
+
+  // logic to emit socket event about the new chat added to the participants
+  payload?.participants?.forEach((participant) => {
+    if (participant._id.toString() === req.user._id.toString()) return; // don't emit the event for the logged in use as he is the one who is initiating the chat
+
+    // emit event to other participants with new chat as a payload
+    req.app
+      .get("io")
+      .in(participant._id.toString())
+      .emit(ChatEventEnum.NEW_CHAT_EVENT, payload);
+  });
 
   return res
     .status(201)
-    .json(new ApiResponse(201, createdChat, "Chat retrieved successfully"));
+    .json(new ApiResponse(201, payload, "Chat retrieved successfully"));
 });
 
 const createAGroupChat = asyncHandler(async (req, res) => {
   const { name, participants } = req.body;
 
+  // Check if user is not sending himself as a participant. This will be done manually
   if (participants.includes(req.user._id.toString())) {
     throw new ApiError(
       400,
@@ -165,9 +194,18 @@ const createAGroupChat = asyncHandler(async (req, res) => {
     );
   }
 
-  // TODO: Check for duplicates in members array
-  const members = [...participants, req.user._id];
+  const members = [...new Set([...participants, req.user._id.toString()])]; // check for duplicates
 
+  if (members.length < 3) {
+    // check after removing the duplicate
+    // We want group chat to have minimum 3 members including admin
+    throw new ApiError(
+      400,
+      "Seems like you have passed duplicate members in the members."
+    );
+  }
+
+  // Create a group chat with provided members
   const groupChat = await Chat.create({
     name,
     isGroupChat: true,
@@ -175,6 +213,7 @@ const createAGroupChat = asyncHandler(async (req, res) => {
     admin: req.user._id,
   });
 
+  // structure the chat
   const chat = await Chat.aggregate([
     {
       $match: {
@@ -184,9 +223,25 @@ const createAGroupChat = asyncHandler(async (req, res) => {
     ...chatCommonAggregation(),
   ]);
 
+  const payload = chat[0];
+
+  if (!payload) {
+    throw new ApiError(500, "Internal server error");
+  }
+
+  // logic to emit socket event about the new group chat added to the participants
+  payload?.participants?.forEach((participant) => {
+    if (participant._id.toString() === req.user._id.toString()) return; // don't emit the event for the logged in use as he is the one who is initiating the chat
+    // emit event to other participants with new chat as a payload
+    req.app
+      .get("io")
+      .in(participant._id.toString())
+      .emit(ChatEventEnum.NEW_CHAT_EVENT, payload);
+  });
+
   return res
     .status(201)
-    .json(new ApiResponse(201, chat[0], "Group chat created successfully"));
+    .json(new ApiResponse(201, payload, "Group chat created successfully"));
 });
 
 const renameGroupChat = asyncHandler(async (req, res) => {
@@ -385,8 +440,8 @@ const getAllChats = asyncHandler(async (req, res) => {
 export {
   addNewParticipantInGroupChat,
   createAGroupChat,
+  createOrGetAOneOnOneChat,
   deleteGroupChat,
-  getAOneOnOneChat,
   getAllChats,
   removeParticipantFromGroupChat,
   renameGroupChat,

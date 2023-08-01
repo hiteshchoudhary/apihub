@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-// TODO: Add image and pdf file sharing in next version
+// TODO: Add image and pdf file sharing in the next version
 const chatMessageSchema = new Schema(
   {
     sender: {
