@@ -6,13 +6,4 @@ const categoryRequestBodyValidator = () => {
   ];
 };
 
-const categoryPathVariableValidator = () => {
-  return [
-    param("categoryId")
-      .notEmpty()
-      .isMongoId()
-      .withMessage("Invalid category id"),
-  ];
-};
-
-export { categoryRequestBodyValidator, categoryPathVariableValidator };
+export { categoryRequestBodyValidator };

@@ -116,12 +116,6 @@ const applyCouponCodeValidator = () => {
   ];
 };
 
-const couponPathVariableValidator = () => {
-  return [
-    param("couponId").notEmpty().isMongoId().withMessage("Invalid coupon id"),
-  ];
-};
-
 const couponActivityStatusValidator = () => {
   return [
     body("isActive")
@@ -137,7 +131,6 @@ const couponActivityStatusValidator = () => {
 export {
   applyCouponCodeValidator,
   couponActivityStatusValidator,
-  couponPathVariableValidator,
   createCouponValidator,
   updateCouponValidator,
 };

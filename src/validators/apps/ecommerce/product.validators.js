@@ -1,4 +1,5 @@
-import { body, check, param } from "express-validator";
+import { body } from "express-validator";
+import { mongoIdRequestBodyValidator } from "../../common/mongodb.validators.js";
 
 const createProductValidator = () => {
   return [
@@ -20,7 +21,7 @@ const createProductValidator = () => {
       .withMessage("Stock is required")
       .isNumeric()
       .withMessage("Stock must be a number"),
-    body("category").notEmpty().isMongoId().withMessage("Invalid category id"),
+    ...mongoIdRequestBodyValidator("category")
   ];
 };
 
@@ -46,31 +47,11 @@ const updateProductValidator = () => {
       .withMessage("Stock is required")
       .isNumeric()
       .withMessage("Stock must be a number"),
-    body("category")
-      .optional()
-      .notEmpty()
-      .isMongoId()
-      .withMessage("Invalid category id"),
-  ];
-};
-
-const productPathVariableValidator = () => {
-  return [
-    param("productId").notEmpty().isMongoId().withMessage("Invalid product id"),
-  ];
-};
-const subImagePathVariableValidator = () => {
-  return [
-    param("subImageId")
-      .notEmpty()
-      .isMongoId()
-      .withMessage("Invalid product id"),
+    ...mongoIdRequestBodyValidator("category")
   ];
 };
 
 export {
-  productPathVariableValidator,
-  subImagePathVariableValidator,
   createProductValidator,
   updateProductValidator,
 };
