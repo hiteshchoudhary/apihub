@@ -73,18 +73,18 @@ router
     upload.fields([
       { name: "images", maxCount: MAXIMUM_SOCIAL_POST_IMAGE_COUNT },
     ]),
-    mongoIdPathVariableValidator(),
+    mongoIdPathVariableValidator("postId"),
     updatePostValidator(),
     validate,
     updatePost
   )
-  .delete(verifyJWT, mongoIdPathVariableValidator(), validate, deletePost);
+  .delete(verifyJWT, mongoIdPathVariableValidator("postId"), validate, deletePost);
 
 router
   .route("/remove/image/:postId/:imageId")
   .patch(
     verifyJWT,
-    mongoIdPathVariableValidator(),
+    mongoIdPathVariableValidator("postId"),
     mongoIdPathVariableValidator("imageId"),
     validate,
     removePostImage
