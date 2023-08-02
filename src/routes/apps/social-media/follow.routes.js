@@ -8,14 +8,14 @@ import {
   getLoggedInUserOrIgnore,
   verifyJWT,
 } from "../../../middlewares/auth.middlewares.js";
-import { toBeFollowedUserIdValidator } from "../../../validators/apps/social-media/follow.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
 router
   .route("/:toBeFollowedUserId")
-  .post(verifyJWT, toBeFollowedUserIdValidator(), validate, followUnFollowUser);
+  .post(verifyJWT, mongoIdPathVariableValidator("toBeFollowedUserId"), validate, followUnFollowUser);
 
 router
   .route("/list/followers/:username")

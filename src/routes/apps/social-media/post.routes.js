@@ -18,13 +18,12 @@ import {
 import { upload } from "../../../middlewares/multer.middlewares.js";
 import {
   createPostValidator,
-  postImagePathVariableValidator,
-  postPathVariableValidator,
   tagPathVariableValidator,
   updatePostValidator,
   usernamePathVariableValidator,
 } from "../../../validators/apps/social-media/post.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
@@ -65,7 +64,7 @@ router
   .route("/:postId")
   .get(
     getLoggedInUserOrIgnore,
-    postPathVariableValidator(),
+    mongoIdPathVariableValidator("postId"),
     validate,
     getPostById
   )
@@ -74,19 +73,19 @@ router
     upload.fields([
       { name: "images", maxCount: MAXIMUM_SOCIAL_POST_IMAGE_COUNT },
     ]),
-    postPathVariableValidator(),
+    mongoIdPathVariableValidator("postId"),
     updatePostValidator(),
     validate,
     updatePost
   )
-  .delete(verifyJWT, postPathVariableValidator(), validate, deletePost);
+  .delete(verifyJWT, mongoIdPathVariableValidator("postId"), validate, deletePost);
 
 router
   .route("/remove/image/:postId/:imageId")
   .patch(
     verifyJWT,
-    postPathVariableValidator(),
-    postImagePathVariableValidator(),
+    mongoIdPathVariableValidator("postId"),
+    mongoIdPathVariableValidator("imageId"),
     validate,
     removePostImage
   );

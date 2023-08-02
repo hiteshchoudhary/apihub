@@ -1,16 +1,6 @@
 import { body, param } from "express-validator";
 import { AvailableOrderStatuses } from "../../../constants.js";
 
-const generateRazorpayPaymentValidator = () => {
-  return [
-    body("addressId")
-      .trim()
-      .notEmpty()
-      .isMongoId()
-      .withMessage("Invalid address id"),
-  ];
-};
-
 const verifyRazorpayPaymentValidator = () => {
   return [
     body("razorpay_order_id")
@@ -28,25 +18,9 @@ const verifyRazorpayPaymentValidator = () => {
   ];
 };
 
-const generatePaypalPaymentValidator = () => {
-  return [
-    body("addressId")
-      .trim()
-      .notEmpty()
-      .isMongoId()
-      .withMessage("Invalid address id"),
-  ];
-};
-
 const verifyPaypalPaymentValidator = () => {
   return [
     body("orderId").trim().notEmpty().withMessage("Paypal order id is missing"),
-  ];
-};
-
-const orderPathVariableValidator = () => {
-  return [
-    param("orderId").notEmpty().isMongoId().withMessage("Invalid order id"),
   ];
 };
 
@@ -61,10 +35,7 @@ const orderUpdateStatusValidator = () => {
 };
 
 export {
-  generateRazorpayPaymentValidator,
   verifyRazorpayPaymentValidator,
-  generatePaypalPaymentValidator,
   verifyPaypalPaymentValidator,
-  orderPathVariableValidator,
   orderUpdateStatusValidator,
 };

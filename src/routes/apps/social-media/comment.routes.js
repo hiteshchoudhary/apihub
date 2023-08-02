@@ -11,10 +11,9 @@ import {
 } from "../../../middlewares/auth.middlewares.js";
 import {
   commentContentValidator,
-  commentPathVariableValidator,
 } from "../../../validators/apps/social-media/comment.validators.js";
-import { postPathVariableValidator } from "../../../validators/apps/social-media/post.validators.js";
 import { validate } from "../../../validators/validate.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
@@ -22,13 +21,13 @@ router
   .route("/post/:postId")
   .get(
     getLoggedInUserOrIgnore,
-    postPathVariableValidator(),
+    mongoIdPathVariableValidator("postId"),
     validate,
     getPostComments
   )
   .post(
     verifyJWT,
-    postPathVariableValidator(),
+    mongoIdPathVariableValidator("postId"),
     commentContentValidator(),
     validate,
     addComment
@@ -36,10 +35,10 @@ router
 
 router
   .route("/:commentId")
-  .delete(verifyJWT, commentPathVariableValidator(), validate, deleteComment)
+  .delete(verifyJWT, mongoIdPathVariableValidator("commentId"), validate, deleteComment)
   .patch(
     verifyJWT,
-    commentPathVariableValidator(),
+    mongoIdPathVariableValidator("commentId"),
     commentContentValidator(),
     validate,
     updateComment

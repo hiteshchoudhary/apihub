@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body } from "express-validator";
 
 const commentContentValidator = () => {
   return [
@@ -9,10 +9,4 @@ const commentContentValidator = () => {
   ];
 };
 
-const commentPathVariableValidator = () => {
-  return [
-    param("commentId").notEmpty().isMongoId().withMessage("Invalid comment id"),
-  ];
-};
-
-export { commentContentValidator, commentPathVariableValidator };
+export { commentContentValidator };
