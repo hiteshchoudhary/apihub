@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body } from "express-validator";
 
 const sendMessageValidator = () => {
   return [body("content").trim().notEmpty().withMessage("Content is required")];

@@ -4,9 +4,9 @@ import {
   sendMessage,
 } from "../../../controllers/apps/chat-app/message.controllers.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
-import { chatIdPathVariableValidator } from "../../../validators/apps/chat-app/chat.validators.js";
-import { validate } from "../../../validators/validate.js";
 import { sendMessageValidator } from "../../../validators/apps/chat-app/message.validators.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
+import { validate } from "../../../validators/validate.js";
 
 const router = Router();
 
@@ -14,9 +14,9 @@ router.use(verifyJWT);
 
 router
   .route("/:chatId")
-  .get(chatIdPathVariableValidator(), validate, getAllMessages)
+  .get(mongoIdPathVariableValidator("chatId"), validate, getAllMessages)
   .post(
-    chatIdPathVariableValidator(),
+    mongoIdPathVariableValidator("chatId"),
     sendMessageValidator(),
     validate,
     sendMessage

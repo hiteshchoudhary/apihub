@@ -2,8 +2,8 @@ import { Router } from "express";
 import {
   addNewParticipantInGroupChat,
   createAGroupChat,
-  deleteGroupChat,
   createOrGetAOneOnOneChat,
+  deleteGroupChat,
   getAllChats,
   removeParticipantFromGroupChat,
   renameGroupChat,
@@ -11,12 +11,10 @@ import {
 } from "../../../controllers/apps/chat-app/chat.controllers.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
-  chatIdPathVariableValidator,
   createAGroupChatValidator,
-  participantIdPathVariableValidator,
-  receiverPathVariableValidator,
   updateGroupChatNameValidator,
 } from "../../../validators/apps/chat-app/chat.validators.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 import { validate } from "../../../validators/validate.js";
 
 const router = Router();
@@ -34,30 +32,34 @@ router
 router
   .route("/group/:chatId")
   .patch(
-    chatIdPathVariableValidator(),
+    mongoIdPathVariableValidator("chatId"),
     updateGroupChatNameValidator(),
     validate,
     renameGroupChat
   )
-  .delete(chatIdPathVariableValidator(), validate, deleteGroupChat);
+  .delete(mongoIdPathVariableValidator("chatId"), validate, deleteGroupChat);
 
 router
   .route("/group/:chatId/:participantId")
   .post(
-    chatIdPathVariableValidator(),
-    participantIdPathVariableValidator(),
+    mongoIdPathVariableValidator("chatId"),
+    mongoIdPathVariableValidator("participantId"),
     validate,
     addNewParticipantInGroupChat
   )
   .delete(
-    chatIdPathVariableValidator(),
-    participantIdPathVariableValidator(),
+    mongoIdPathVariableValidator("chatId"),
+    mongoIdPathVariableValidator("participantId"),
     validate,
     removeParticipantFromGroupChat
   );
 
 router
   .route("/c/:receiverId")
-  .post(receiverPathVariableValidator(), validate, createOrGetAOneOnOneChat);
+  .post(
+    mongoIdPathVariableValidator("receiverId"),
+    validate,
+    createOrGetAOneOnOneChat
+  );
 
 export default router;
