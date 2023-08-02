@@ -20,3 +20,8 @@ export const SOCIAL_LIKES_COUNT = 2000;
 export const SOCIAL_FOLLOWS_COUNT = 1000;
 export const SOCIAL_COMMENTS_COUNT = 500;
 export const SOCIAL_BOOKMARKS_COUNT = 200;
+
+// * CHAT APP
+export const ONE_ON_ONE_CHATS_COUNT = 100;
+export const GROUP_CHATS_COUNT = 30;
+export const GROUP_CHAT_MAX_PARTICIPANTS_COUNT = 10;
