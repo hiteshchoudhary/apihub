@@ -78,7 +78,6 @@ export const paypalBaseUrl = {
  * @description set of events that we are using in chat app. more to be added as we develop the chat app
  */
 export const ChatEventEnum = {
-  SETUP_EVENT: "setup", // ? get socket ready for user
   CONNECTED_EVENT: "connected", // ? once user is ready to go
   JOIN_CHAT_EVENT: "joinChat", // ? when new chat or group chat get's added
   NEW_CHAT_EVENT: "newChat", // ? when user selects an existing user to chat with
@@ -86,4 +85,5 @@ export const ChatEventEnum = {
   STOP_TYPING_EVENT: "stopTyping", // ? when participant stops typing
   MESSAGE_RECEIVED_EVENT: "messageReceived", // ? when new message is received
   DISCONNECT_EVENT: "disconnect", // ? when user gets disconnected
+  SOCKET_ERROR_EVENT: "socketError", // ? when there is an error in socket
 };
