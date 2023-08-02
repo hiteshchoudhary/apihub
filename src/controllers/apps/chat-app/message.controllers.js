@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import { ChatEventEnum } from "../../../constants.js";
 import { Chat } from "../../../models/apps/chat-app/chat.models.js";
 import { ChatMessage } from "../../../models/apps/chat-app/message.models.js";
+import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
-import { ChatEventEnum } from "../../../constants.js";
 
 /**
  * @description Utility function which returns the pipeline stages to structure the chat message schema with common lookups
@@ -40,6 +41,12 @@ const chatMessageCommonAggregation = () => {
 const getAllMessages = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
+  const selectedChat = await Chat.findById(chatId);
+
+  if (!selectedChat) {
+    throw new ApiError(404, "Chat does not exist");
+  }
+
   const messages = await ChatMessage.aggregate([
     {
       $match: {
@@ -64,6 +71,12 @@ const getAllMessages = asyncHandler(async (req, res) => {
 const sendMessage = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const { content } = req.body;
+
+  const selectedChat = await Chat.findById(chatId);
+
+  if (!selectedChat) {
+    throw new ApiError(404, "Chat does not exist");
+  }
 
   // Create a new message instance with appropriate metadata
   const message = await ChatMessage.create({
