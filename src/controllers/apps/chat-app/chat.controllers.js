@@ -252,6 +252,7 @@ const getGroupChatDetails = asyncHandler(async (req, res) => {
     {
       $match: {
         _id: new mongoose.Types.ObjectId(chatId),
+        isGroupChat: true,
       },
     },
     ...chatCommonAggregation(),
@@ -304,6 +305,21 @@ const renameGroupChat = asyncHandler(async (req, res) => {
     ...chatCommonAggregation(),
   ]);
 
+  const payload = chat[0];
+
+  if (!payload) {
+    throw new ApiError(500, "Internal server error");
+  }
+
+  // logic to emit socket event about the updated chat name to the participants
+  payload?.participants?.forEach((participant) => {
+    // emit event to all the participants with updated chat as a payload
+    req.app
+      .get("io")
+      .in(participant._id.toString())
+      .emit(ChatEventEnum.UPDATE_GROUP_NAME_EVENT, payload);
+  });
+
   return res
     .status(200)
     .json(
@@ -314,20 +330,37 @@ const renameGroupChat = asyncHandler(async (req, res) => {
 const deleteGroupChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
-  const groupChat = await Chat.findOne({
-    _id: new mongoose.Types.ObjectId(chatId),
-    isGroupChat: true,
-  });
+  const groupChat = await Chat.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(chatId),
+        isGroupChat: true,
+      },
+    },
+    ...chatCommonAggregation(),
+  ]);
 
-  if (!groupChat) {
+  const chat = groupChat[0];
+
+  if (!chat) {
     throw new ApiError(404, "Group chat does not exist");
   }
 
-  if (groupChat.admin?.toString() !== req.user._id?.toString()) {
+  if (chat.admin?.toString() !== req.user._id?.toString()) {
     throw new ApiError(404, "Only admin can delete the group");
   }
 
   await Chat.findByIdAndDelete(chatId);
+
+  // logic to emit socket event about the group chat deleted to the participants
+  chat?.participants?.forEach((participant) => {
+    if (participant._id.toString() === req.user._id.toString()) return; // don't emit the event for the logged in use as he is the one who is deleting
+    // emit event to other participants with left chat as a payload
+    req.app
+      .get("io")
+      .in(participant._id.toString())
+      .emit(ChatEventEnum.LEAVE_CHAT_EVENT, chat);
+  });
 
   return res
     .status(200)
@@ -375,9 +408,21 @@ const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
     ...chatCommonAggregation(),
   ]);
 
+  const payload = chat[0];
+
+  if (!payload) {
+    throw new ApiError(500, "Internal server error");
+  }
+
+  // emit new chat event to the added participant
+  req.app
+    .get("io")
+    .in(participantId)
+    .emit(ChatEventEnum.NEW_CHAT_EVENT, payload);
+
   return res
     .status(200)
-    .json(new ApiResponse(200, chat[0], "Participant added successfully"));
+    .json(new ApiResponse(200, payload, "Participant added successfully"));
 });
 
 const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
@@ -421,9 +466,21 @@ const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
     ...chatCommonAggregation(),
   ]);
 
+  const payload = chat[0];
+
+  if (!payload) {
+    throw new ApiError(500, "Internal server error");
+  }
+
+  // emit leave chat event to the removed participant
+  req.app
+    .get("io")
+    .in(participantId)
+    .emit(ChatEventEnum.LEAVE_CHAT_EVENT, payload);
+
   return res
     .status(200)
-    .json(new ApiResponse(200, chat[0], "Participant removed successfully"));
+    .json(new ApiResponse(200, payload, "Participant removed successfully"));
 });
 
 const getAllChats = asyncHandler(async (req, res) => {
