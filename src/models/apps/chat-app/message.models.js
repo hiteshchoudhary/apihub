@@ -9,10 +9,8 @@ const chatMessageSchema = new Schema(
     },
     content: {
       type: String,
-      trim: true,
-      required: true,
     },
-    files: {
+    attachments: {
       type: [
         {
           url: String,

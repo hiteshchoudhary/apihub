@@ -2,9 +2,11 @@ import mongoose from "mongoose";
 import { ChatEventEnum } from "../../../constants.js";
 import { User } from "../../../models/apps/auth/user.models.js";
 import { Chat } from "../../../models/apps/chat-app/chat.models.js";
+import { ChatMessage } from "../../../models/apps/chat-app/message.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { removeLocalFile } from "../../../utils/helpers.js";
 
 /**
  * @description Utility function which returns the pipeline stages to structure the chat schema with common lookups
@@ -73,20 +75,7 @@ const chatCommonAggregation = () => {
 };
 
 const searchAvailableUsers = asyncHandler(async (req, res) => {
-  const { query } = req.query;
   const users = await User.aggregate([
-    {
-      $match:
-        query?.length > 0
-          ? // return docs if either of the following keys match
-            {
-              $or: [
-                { username: { $regex: query.toLowerCase(), $options: "i" } },
-                { email: { $regex: query.toLowerCase(), $options: "i" } },
-              ],
-            }
-          : {},
-    },
     {
       $match: {
         _id: {
@@ -350,7 +339,31 @@ const deleteGroupChat = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Only admin can delete the group");
   }
 
-  await Chat.findByIdAndDelete(chatId);
+  await Chat.findByIdAndDelete(chatId); // delete the chart
+
+  // fetch the messages associated with the chat to remove
+  const messages = await ChatMessage.find({
+    chat: new mongoose.Types.ObjectId(chatId),
+  });
+
+  let attachments = [];
+
+  // get the attachments present in the messages
+  attachments = attachments.concat(
+    ...messages.map((message) => {
+      return message.attachments;
+    })
+  );
+
+  attachments.forEach((attachment) => {
+    // remove attachment files from the local storage
+    removeLocalFile(attachment.localPath);
+  });
+
+  // delete all the messages
+  await ChatMessage.deleteMany({
+    chat: new mongoose.Types.ObjectId(chatId),
+  });
 
   // logic to emit socket event about the group chat deleted to the participants
   chat?.participants?.forEach((participant) => {
@@ -365,6 +378,65 @@ const deleteGroupChat = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, {}, "Group chat deleted successfully"));
+});
+
+const deleteOneOnOneChat = asyncHandler(async (req, res) => {
+  const { chatId } = req.params;
+
+  const chat = await Chat.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(chatId),
+      },
+    },
+    ...chatCommonAggregation(),
+  ]);
+
+  const payload = chat[0];
+
+  if (!payload) {
+    throw new ApiError(404, "Chat does not exist");
+  }
+
+  await Chat.findByIdAndDelete(chatId); // delete the chart
+
+  // fetch the messages associated with the chat to remove
+  const messages = await ChatMessage.find({
+    chat: new mongoose.Types.ObjectId(chatId),
+  });
+
+  let attachments = [];
+
+  // get the attachments present in the messages
+  attachments = attachments.concat(
+    ...messages.map((message) => {
+      return message.attachments;
+    })
+  );
+
+  attachments.forEach((attachment) => {
+    // remove attachment files from the local storage
+    removeLocalFile(attachment.localPath);
+  });
+
+  // delete all the messages
+  await ChatMessage.deleteMany({
+    chat: new mongoose.Types.ObjectId(chatId),
+  });
+
+  const otherParticipant = payload?.participants?.find(
+    (participant) => participant?._id.toString() !== req.user._id.toString() // get the other participant in chat for socket
+  );
+
+  // emit event to other participant with left chat as a payload
+  req.app
+    .get("io")
+    .in(otherParticipant?._id.toString())
+    .emit(ChatEventEnum.LEAVE_CHAT_EVENT, payload);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Chat deleted successfully"));
 });
 
 const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
@@ -510,6 +582,7 @@ export {
   createAGroupChat,
   createOrGetAOneOnOneChat,
   deleteGroupChat,
+  deleteOneOnOneChat,
   getAllChats,
   getGroupChatDetails,
   removeParticipantFromGroupChat,

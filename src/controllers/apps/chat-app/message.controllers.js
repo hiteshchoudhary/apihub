@@ -73,6 +73,10 @@ const sendMessage = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const { content } = req.body;
 
+  if (!content && !req.files?.attachments?.length) {
+    throw new ApiError(400, "Message content or attachment is required");
+  }
+
   const selectedChat = await Chat.findById(chatId);
 
   if (!selectedChat) {
@@ -81,11 +85,11 @@ const sendMessage = asyncHandler(async (req, res) => {
 
   const messageFiles = [];
 
-  if (req.files && req.files.file?.length > 0) {
-    req.files.file?.map((file) => {
+  if (req.files && req.files.attachments?.length > 0) {
+    req.files.attachments?.map((attachment) => {
       messageFiles.push({
-        url: getStaticFilePath(req, file.filename),
-        localPath: getLocalPath(file.filename),
+        url: getStaticFilePath(req, attachment.filename),
+        localPath: getLocalPath(attachment.filename),
       });
     });
   }
@@ -93,9 +97,9 @@ const sendMessage = asyncHandler(async (req, res) => {
   // Create a new message instance with appropriate metadata
   const message = await ChatMessage.create({
     sender: new mongoose.Types.ObjectId(req.user._id),
-    content,
+    content: content || "",
     chat: new mongoose.Types.ObjectId(chatId),
-    files: messageFiles,
+    attachments: messageFiles,
   });
 
   // update the chat's last message which could be utilized to show last message in the list item

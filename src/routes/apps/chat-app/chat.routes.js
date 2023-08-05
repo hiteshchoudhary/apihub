@@ -4,6 +4,7 @@ import {
   createAGroupChat,
   createOrGetAOneOnOneChat,
   deleteGroupChat,
+  deleteOneOnOneChat,
   getAllChats,
   getGroupChatDetails,
   removeParticipantFromGroupChat,
@@ -63,5 +64,9 @@ router
     validate,
     createOrGetAOneOnOneChat
   );
+
+router
+  .route("/remove/:chatId")
+  .delete(mongoIdPathVariableValidator("chatId"), validate, deleteOneOnOneChat);
 
 export default router;
