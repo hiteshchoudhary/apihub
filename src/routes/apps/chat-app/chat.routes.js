@@ -5,6 +5,7 @@ import {
   createOrGetAOneOnOneChat,
   deleteGroupChat,
   getAllChats,
+  getGroupChatDetails,
   removeParticipantFromGroupChat,
   renameGroupChat,
   searchAvailableUsers,
@@ -31,6 +32,7 @@ router
 
 router
   .route("/group/:chatId")
+  .get(mongoIdPathVariableValidator("chatId"), validate, getGroupChatDetails)
   .patch(
     mongoIdPathVariableValidator("chatId"),
     updateGroupChatNameValidator(),

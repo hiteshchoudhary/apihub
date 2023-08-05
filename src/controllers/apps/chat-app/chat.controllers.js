@@ -246,6 +246,28 @@ const createAGroupChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, payload, "Group chat created successfully"));
 });
 
+const getGroupChatDetails = asyncHandler(async (req, res) => {
+  const { chatId } = req.params;
+  const groupChat = await Chat.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(chatId),
+      },
+    },
+    ...chatCommonAggregation(),
+  ]);
+
+  const chat = groupChat[0];
+
+  if (!chat) {
+    throw new ApiError(404, "Group chat does not exist");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, chat, "Group chat fetched successfully"));
+});
+
 const renameGroupChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const { name } = req.body;
@@ -432,6 +454,7 @@ export {
   createOrGetAOneOnOneChat,
   deleteGroupChat,
   getAllChats,
+  getGroupChatDetails,
   removeParticipantFromGroupChat,
   renameGroupChat,
   searchAvailableUsers,
