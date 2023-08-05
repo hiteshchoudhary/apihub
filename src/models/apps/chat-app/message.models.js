@@ -12,6 +12,15 @@ const chatMessageSchema = new Schema(
       trim: true,
       required: true,
     },
+    files: {
+      type: [
+        {
+          url: String,
+          localPath: String,
+        },
+      ],
+      default: [],
+    },
     chat: {
       type: Schema.Types.ObjectId,
       ref: "Chat",

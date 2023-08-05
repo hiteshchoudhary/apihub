@@ -5,6 +5,7 @@ import { ChatMessage } from "../../../models/apps/chat-app/message.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { getLocalPath, getStaticFilePath } from "../../../utils/helpers.js";
 
 /**
  * @description Utility function which returns the pipeline stages to structure the chat message schema with common lookups
@@ -78,11 +79,23 @@ const sendMessage = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Chat does not exist");
   }
 
+  const messageFiles = [];
+
+  if (req.files && req.files.file?.length > 0) {
+    req.files.file?.map((file) => {
+      messageFiles.push({
+        url: getStaticFilePath(req, file.filename),
+        localPath: getLocalPath(file.filename),
+      });
+    });
+  }
+
   // Create a new message instance with appropriate metadata
   const message = await ChatMessage.create({
     sender: new mongoose.Types.ObjectId(req.user._id),
     content,
     chat: new mongoose.Types.ObjectId(chatId),
+    files: messageFiles,
   });
 
   // update the chat's last message which could be utilized to show last message in the list item
