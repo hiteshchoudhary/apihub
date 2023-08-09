@@ -15,6 +15,7 @@ import { removeLocalFile } from "../../../utils/helpers.js";
 const chatCommonAggregation = () => {
   return [
     {
+      // lookup for the participants present
       $lookup: {
         from: "users",
         foreignField: "_id",
@@ -35,6 +36,7 @@ const chatCommonAggregation = () => {
       },
     },
     {
+      // lookup for the group chats
       $lookup: {
         from: "chatmessages",
         foreignField: "_id",
@@ -42,6 +44,7 @@ const chatCommonAggregation = () => {
         as: "lastMessage",
         pipeline: [
           {
+            // get details of the sender
             $lookup: {
               from: "users",
               foreignField: "_id",
@@ -293,6 +296,7 @@ const renameGroupChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const { name } = req.body;
 
+  // check for chat existence
   const groupChat = await Chat.findOne({
     _id: new mongoose.Types.ObjectId(chatId),
     isGroupChat: true,
@@ -302,6 +306,7 @@ const renameGroupChat = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group chat does not exist");
   }
 
+  // only admin can change the name
   if (groupChat.admin?.toString() !== req.user._id?.toString()) {
     throw new ApiError(404, "You are not an admin");
   }
@@ -350,6 +355,7 @@ const renameGroupChat = asyncHandler(async (req, res) => {
 const deleteGroupChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
+  // check for the group chat existence
   const groupChat = await Chat.aggregate([
     {
       $match: {
@@ -366,13 +372,14 @@ const deleteGroupChat = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group chat does not exist");
   }
 
+  // check if the user who is deleting is the group admin
   if (chat.admin?.toString() !== req.user._id?.toString()) {
     throw new ApiError(404, "Only admin can delete the group");
   }
 
-  await Chat.findByIdAndDelete(chatId); // delete the chart
+  await Chat.findByIdAndDelete(chatId); // delete the chat
 
-  await deleteCascadeChatMessages(chatId);
+  await deleteCascadeChatMessages(chatId); // remove all messages and attachments associated with the chat
 
   // logic to emit socket event about the group chat deleted to the participants
   chat?.participants?.forEach((participant) => {
@@ -392,6 +399,7 @@ const deleteGroupChat = asyncHandler(async (req, res) => {
 const deleteOneOnOneChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
+  // check for chat existence
   const chat = await Chat.aggregate([
     {
       $match: {
@@ -407,9 +415,9 @@ const deleteOneOnOneChat = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Chat does not exist");
   }
 
-  await Chat.findByIdAndDelete(chatId); // delete the chart
+  await Chat.findByIdAndDelete(chatId); // delete the chat even if user is not admin because it's a personal chat
 
-  await deleteCascadeChatMessages(chatId);
+  await deleteCascadeChatMessages(chatId); // delete all the messages and attachments associated with the chat
 
   const otherParticipant = payload?.participants?.find(
     (participant) => participant?._id.toString() !== req.user._id.toString() // get the other participant in chat for socket
@@ -429,6 +437,7 @@ const deleteOneOnOneChat = asyncHandler(async (req, res) => {
 const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
   const { chatId, participantId } = req.params;
 
+  // check if chat is a group
   const groupChat = await Chat.findOne({
     _id: new mongoose.Types.ObjectId(chatId),
     isGroupChat: true,
@@ -438,12 +447,14 @@ const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group chat does not exist");
   }
 
+  // check if user who is adding is a group admin
   if (groupChat.admin?.toString() !== req.user._id?.toString()) {
     throw new ApiError(404, "You are not an admin");
   }
 
   const existingParticipants = groupChat.participants;
 
+  // check if the participant that is being added in a part of the group
   if (existingParticipants?.includes(participantId)) {
     throw new ApiError(409, "Participant already in a group chat");
   }
@@ -452,7 +463,7 @@ const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
     chatId,
     {
       $push: {
-        participants: participantId,
+        participants: participantId, // add new participant id
       },
     },
     { new: true }
@@ -487,6 +498,7 @@ const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
 const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
   const { chatId, participantId } = req.params;
 
+  // check if chat is a group
   const groupChat = await Chat.findOne({
     _id: new mongoose.Types.ObjectId(chatId),
     isGroupChat: true,
@@ -496,12 +508,14 @@ const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group chat does not exist");
   }
 
+  // check if user who is deleting is a group admin
   if (groupChat.admin?.toString() !== req.user._id?.toString()) {
     throw new ApiError(404, "You are not an admin");
   }
 
   const existingParticipants = groupChat.participants;
 
+  // check if the participant that is being removed in a part of the group
   if (!existingParticipants?.includes(participantId)) {
     throw new ApiError(400, "Participant does not exist in the group chat");
   }
@@ -510,7 +524,7 @@ const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
     chatId,
     {
       $pull: {
-        participants: participantId,
+        participants: participantId, // remove participant id
       },
     },
     { new: true }
@@ -546,7 +560,7 @@ const getAllChats = asyncHandler(async (req, res) => {
   const chats = await Chat.aggregate([
     {
       $match: {
-        participants: { $elemMatch: { $eq: req.user._id } },
+        participants: { $elemMatch: { $eq: req.user._id } }, // get all chats that have logged in user as a participant
       },
     },
     {

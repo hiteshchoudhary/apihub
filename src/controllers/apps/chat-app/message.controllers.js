@@ -38,7 +38,6 @@ const chatMessageCommonAggregation = () => {
   ];
 };
 
-// TODO: Add chat profile as an extra layer
 const getAllMessages = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
