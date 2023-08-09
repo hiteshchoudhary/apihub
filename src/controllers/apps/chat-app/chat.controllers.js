@@ -74,6 +74,37 @@ const chatCommonAggregation = () => {
   ];
 };
 
+/**
+ *
+ * @param {string} chatId
+ * @description utility function responsible for removing all the messages and file attachments attached to the deleted chat
+ */
+const deleteCascadeChatMessages = async (chatId) => {
+  // fetch the messages associated with the chat to remove
+  const messages = await ChatMessage.find({
+    chat: new mongoose.Types.ObjectId(chatId),
+  });
+
+  let attachments = [];
+
+  // get the attachments present in the messages
+  attachments = attachments.concat(
+    ...messages.map((message) => {
+      return message.attachments;
+    })
+  );
+
+  attachments.forEach((attachment) => {
+    // remove attachment files from the local storage
+    removeLocalFile(attachment.localPath);
+  });
+
+  // delete all the messages
+  await ChatMessage.deleteMany({
+    chat: new mongoose.Types.ObjectId(chatId),
+  });
+};
+
 const searchAvailableUsers = asyncHandler(async (req, res) => {
   const users = await User.aggregate([
     {
@@ -341,29 +372,7 @@ const deleteGroupChat = asyncHandler(async (req, res) => {
 
   await Chat.findByIdAndDelete(chatId); // delete the chart
 
-  // fetch the messages associated with the chat to remove
-  const messages = await ChatMessage.find({
-    chat: new mongoose.Types.ObjectId(chatId),
-  });
-
-  let attachments = [];
-
-  // get the attachments present in the messages
-  attachments = attachments.concat(
-    ...messages.map((message) => {
-      return message.attachments;
-    })
-  );
-
-  attachments.forEach((attachment) => {
-    // remove attachment files from the local storage
-    removeLocalFile(attachment.localPath);
-  });
-
-  // delete all the messages
-  await ChatMessage.deleteMany({
-    chat: new mongoose.Types.ObjectId(chatId),
-  });
+  await deleteCascadeChatMessages(chatId);
 
   // logic to emit socket event about the group chat deleted to the participants
   chat?.participants?.forEach((participant) => {
@@ -400,29 +409,7 @@ const deleteOneOnOneChat = asyncHandler(async (req, res) => {
 
   await Chat.findByIdAndDelete(chatId); // delete the chart
 
-  // fetch the messages associated with the chat to remove
-  const messages = await ChatMessage.find({
-    chat: new mongoose.Types.ObjectId(chatId),
-  });
-
-  let attachments = [];
-
-  // get the attachments present in the messages
-  attachments = attachments.concat(
-    ...messages.map((message) => {
-      return message.attachments;
-    })
-  );
-
-  attachments.forEach((attachment) => {
-    // remove attachment files from the local storage
-    removeLocalFile(attachment.localPath);
-  });
-
-  // delete all the messages
-  await ChatMessage.deleteMany({
-    chat: new mongoose.Types.ObjectId(chatId),
-  });
+  await deleteCascadeChatMessages(chatId);
 
   const otherParticipant = payload?.participants?.find(
     (participant) => participant?._id.toString() !== req.user._id.toString() // get the other participant in chat for socket
