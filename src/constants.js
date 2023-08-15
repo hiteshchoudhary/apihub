@@ -77,7 +77,7 @@ export const paypalBaseUrl = {
 /**
  * @description set of events that we are using in chat app. more to be added as we develop the chat app
  */
-export const ChatEventEnum = {
+export const ChatEventEnum = Object.freeze({
   // ? once user is ready to go
   CONNECTED_EVENT: "connected",
   // ? when user gets disconnected
@@ -98,4 +98,4 @@ export const ChatEventEnum = {
   STOP_TYPING_EVENT: "stopTyping",
   // ? when participant starts typing
   TYPING_EVENT: "typing",
-};
+});
