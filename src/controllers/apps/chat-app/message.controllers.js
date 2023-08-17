@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { ChatEventEnum } from "../../../constants.js";
 import { Chat } from "../../../models/apps/chat-app/chat.models.js";
 import { ChatMessage } from "../../../models/apps/chat-app/message.models.js";
+import { emitSocketEvent } from "../../../socket/index.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
@@ -136,10 +137,12 @@ const sendMessage = asyncHandler(async (req, res) => {
     if (participantObjectId.toString() === req.user._id.toString()) return;
 
     // emit the receive message event to the other participants with received message as the payload
-    req.app
-      .get("io")
-      .in(participantObjectId.toString())
-      .emit(ChatEventEnum.MESSAGE_RECEIVED_EVENT, receivedMessage);
+    emitSocketEvent(
+      req,
+      participantObjectId.toString(),
+      ChatEventEnum.MESSAGE_RECEIVED_EVENT,
+      receivedMessage
+    );
   });
 
   return res

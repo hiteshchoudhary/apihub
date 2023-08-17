@@ -99,3 +99,5 @@ export const ChatEventEnum = Object.freeze({
   // ? when participant starts typing
   TYPING_EVENT: "typing",
 });
+
+export const AvailableChatEvents = Object.values(ChatEventEnum);
