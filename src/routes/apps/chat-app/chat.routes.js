@@ -7,6 +7,7 @@ import {
   deleteOneOnOneChat,
   getAllChats,
   getGroupChatDetails,
+  leaveGroupChat,
   removeParticipantFromGroupChat,
   renameGroupChat,
   searchAvailableUsers,
@@ -26,6 +27,14 @@ router.use(verifyJWT);
 router.route("/").get(getAllChats);
 
 router.route("/users").get(searchAvailableUsers);
+
+router
+  .route("/c/:receiverId")
+  .post(
+    mongoIdPathVariableValidator("receiverId"),
+    validate,
+    createOrGetAOneOnOneChat
+  );
 
 router
   .route("/group")
@@ -58,12 +67,8 @@ router
   );
 
 router
-  .route("/c/:receiverId")
-  .post(
-    mongoIdPathVariableValidator("receiverId"),
-    validate,
-    createOrGetAOneOnOneChat
-  );
+  .route("/leave/group/:chatId")
+  .delete(mongoIdPathVariableValidator("chatId"), validate, leaveGroupChat);
 
 router
   .route("/remove/:chatId")

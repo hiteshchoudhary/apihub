@@ -229,7 +229,7 @@ const createAGroupChat = asyncHandler(async (req, res) => {
     // We want group chat to have minimum 3 members including admin
     throw new ApiError(
       400,
-      "Seems like you have passed duplicate members in the members."
+      "Seems like you have passed duplicate participants."
     );
   }
 
@@ -445,6 +445,56 @@ const deleteOneOnOneChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Chat deleted successfully"));
 });
 
+const leaveGroupChat = asyncHandler(async (req, res) => {
+  const { chatId } = req.params;
+
+  // check if chat is a group
+  const groupChat = await Chat.findOne({
+    _id: new mongoose.Types.ObjectId(chatId),
+    isGroupChat: true,
+  });
+
+  if (!groupChat) {
+    throw new ApiError(404, "Group chat does not exist");
+  }
+
+  const existingParticipants = groupChat.participants;
+
+  // check if the participant that is leaving the group, is part of the group
+  if (!existingParticipants?.includes(req.user?._id)) {
+    throw new ApiError(400, "You are not a part of this group chat");
+  }
+
+  const updatedChat = await Chat.findByIdAndUpdate(
+    chatId,
+    {
+      $pull: {
+        participants: req.user?._id, // leave the group
+      },
+    },
+    { new: true }
+  );
+
+  const chat = await Chat.aggregate([
+    {
+      $match: {
+        _id: updatedChat._id,
+      },
+    },
+    ...chatCommonAggregation(),
+  ]);
+
+  const payload = chat[0];
+
+  if (!payload) {
+    throw new ApiError(500, "Internal server error");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, payload, "Left a group successfully"));
+});
+
 const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
   const { chatId, participantId } = req.params;
 
@@ -591,6 +641,7 @@ export {
   deleteOneOnOneChat,
   getAllChats,
   getGroupChatDetails,
+  leaveGroupChat,
   removeParticipantFromGroupChat,
   renameGroupChat,
   searchAvailableUsers,
