@@ -48,6 +48,11 @@ const getAllMessages = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Chat does not exist");
   }
 
+  // Only send messages if the logged in user is a part of the chat he is requesting messages of
+  if (!selectedChat.participants?.includes(req.user?._id)) {
+    throw new ApiError(400, "User is not a part of this chat");
+  }
+
   const messages = await ChatMessage.aggregate([
     {
       $match: {
