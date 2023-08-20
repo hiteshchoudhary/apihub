@@ -67,7 +67,9 @@ export const getChatObjectMetadata = (
       avatar: "https://via.placeholder.com/100x100.png",
       title: chat.name, // Group name serves as the title.
       description: `${chat.participants.length} members in the chat`, // Description indicates the number of members.
-      lastMessage,
+      lastMessage: chat.lastMessage
+        ? chat.lastMessage?.sender?.username + ": " + lastMessage
+        : lastMessage,
     };
   } else {
     // Case: Individual chat
