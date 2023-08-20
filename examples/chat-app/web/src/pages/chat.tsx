@@ -411,8 +411,14 @@ const ChatPage = () => {
                       unreadMessages.filter((n) => n.chat === chat._id).length
                     }
                     onClick={(chat) => {
+                      if (
+                        currentChat.current?._id &&
+                        currentChat.current?._id === chat._id
+                      )
+                        return;
                       LocalStorage.set("currentChat", chat);
                       currentChat.current = chat;
+                      setMessage("");
                       getMessages();
                     }}
                     key={chat._id}
