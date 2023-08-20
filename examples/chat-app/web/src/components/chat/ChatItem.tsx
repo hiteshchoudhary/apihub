@@ -26,7 +26,7 @@ const ChatItem: React.FC<{
   const deleteChat = async () => {
     await requestHandler(
       async () => await deleteOneOnOneChat(chat._id),
-      () => {},
+      null,
       () => {
         onChatDelete(chat._id);
       },

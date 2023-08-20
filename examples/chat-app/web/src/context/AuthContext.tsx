@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import { UserInterface } from "../interfaces/user";
 import { LocalStorage, requestHandler } from "../utils";
 
+// Create a context to manage authentication-related data and functions
 const AuthContext = createContext<{
   user: UserInterface | null;
   token: string | null;
@@ -23,8 +24,10 @@ const AuthContext = createContext<{
   logout: async () => {},
 });
 
+// Create a hook to access the AuthContext
 const useAuth = () => useContext(AuthContext);
 
+// Create a component that provides authentication-related data and functions
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -34,6 +37,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const navigate = useNavigate();
 
+  // Function to handle user login
   const login = async (data: { username: string; password: string }) => {
     await requestHandler(
       async () => await loginUser(data),
@@ -44,12 +48,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setToken(data.accessToken);
         LocalStorage.set("user", data.user);
         LocalStorage.set("token", data.accessToken);
-        navigate("/chat");
+        navigate("/chat"); // Redirect to the chat page after successful login
       },
-      alert
+      alert // Display error alerts on request failure
     );
   };
 
+  // Function to handle user registration
   const register = async (data: {
     email: string;
     username: string;
@@ -60,12 +65,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsLoading,
       () => {
         alert("Account created successfully! Go ahead and login.");
-        navigate("/login");
+        navigate("/login"); // Redirect to the login page after successful registration
       },
-      alert
+      alert // Display error alerts on request failure
     );
   };
 
+  // Function to handle user logout
   const logout = async () => {
     await requestHandler(
       async () => await logoutUser(),
@@ -73,13 +79,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       () => {
         setUser(null);
         setToken(null);
-        LocalStorage.clear();
-        navigate("/login");
+        LocalStorage.clear(); // Clear local storage on logout
+        navigate("/login"); // Redirect to the login page after successful logout
       },
-      alert
+      alert // Display error alerts on request failure
     );
   };
 
+  // Check for saved user and token in local storage during component initialization
   useEffect(() => {
     setIsLoading(true);
     const _token = LocalStorage.get("token");
@@ -91,12 +98,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(false);
   }, []);
 
+  // Provide authentication-related data and functions through the context
   return (
     <AuthContext.Provider value={{ user, login, register, logout, token }}>
-      {isLoading ? <Loader /> : children}
+      {isLoading ? <Loader /> : children} {/* Display a loader while loading */}
     </AuthContext.Provider>
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
+// Export the context, provider component, and custom hook
 export { AuthContext, AuthProvider, useAuth };

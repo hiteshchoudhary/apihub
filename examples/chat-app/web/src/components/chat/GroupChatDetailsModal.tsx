@@ -45,7 +45,7 @@ const GroupChatDetailsModal: React.FC<{
     if (!newGroupName) return alert("Group name is required");
     requestHandler(
       async () => await updateGroupName(chatId, newGroupName),
-      () => {},
+      null,
       (res) => {
         const { data } = res;
         setGroupDetails(data);
@@ -60,7 +60,7 @@ const GroupChatDetailsModal: React.FC<{
   const getUsers = async () => {
     requestHandler(
       async () => await getAvailableUsers(),
-      () => {},
+      null,
       (res) => {
         const { data } = res;
         setUsers(data || []);
@@ -75,7 +75,7 @@ const GroupChatDetailsModal: React.FC<{
     }
     requestHandler(
       async () => await deleteGroup(chatId),
-      () => {},
+      null,
       () => {
         onGroupDelete(chatId);
         handleClose();
@@ -87,7 +87,7 @@ const GroupChatDetailsModal: React.FC<{
   const removeParticipant = async (participantId: string) => {
     requestHandler(
       async () => await removeParticipantFromGroup(chatId, participantId),
-      () => {},
+      null,
       () => {
         const updatedGroupDetails = {
           ...groupDetails,
@@ -110,7 +110,7 @@ const GroupChatDetailsModal: React.FC<{
       return alert("Please select a participant to add.");
     requestHandler(
       async () => await addParticipantToGroup(chatId, participantToBeAdded),
-      () => {},
+      null,
       (res) => {
         const { data } = res;
         const updatedGroupDetails = {
@@ -127,7 +127,7 @@ const GroupChatDetailsModal: React.FC<{
   const fetchGroupInformation = async () => {
     requestHandler(
       async () => await getGroupInfo(chatId),
-      () => {},
+      null,
       (res) => {
         const { data } = res;
         setGroupDetails(data);

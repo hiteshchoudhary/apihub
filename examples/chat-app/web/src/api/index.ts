@@ -1,16 +1,20 @@
+// Import necessary modules and utilities
 import axios from "axios";
 import { LocalStorage } from "../utils";
 
+// Create an Axios instance for API requests
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URI,
   withCredentials: true,
   timeout: 10000,
 });
 
+// Add an interceptor to set authorization header with user token before requests
 apiClient.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
+    // Retrieve user token from local storage
     const token = LocalStorage.get("token");
+    // Set authorization header with bearer token
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
@@ -19,6 +23,7 @@ apiClient.interceptors.request.use(
   }
 );
 
+// API functions for different actions
 const loginUser = (data: { username: string; password: string }) => {
   return apiClient.post("/users/login", data);
 };
@@ -90,6 +95,7 @@ const sendMessage = (chatId: string, content: string, attachments: File[]) => {
   return apiClient.post(`/chat-app/messages/${chatId}`, formData);
 };
 
+// Export all the API functions
 export {
   addParticipantToGroup,
   createGroupChat,
