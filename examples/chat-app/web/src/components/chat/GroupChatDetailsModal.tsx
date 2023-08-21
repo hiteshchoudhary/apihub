@@ -30,67 +30,93 @@ const GroupChatDetailsModal: React.FC<{
   onGroupDelete: (chatId: string) => void;
 }> = ({ open, onClose, chatId, onGroupDelete }) => {
   const { user } = useAuth();
+  // State to manage the UI flag for adding a participant
   const [addingParticipant, setAddingParticipant] = useState(false);
+  // State to manage the UI flag for renaming a group
   const [renamingGroup, setRenamingGroup] = useState(false);
 
+  // State to capture the ID of the participant to be added
   const [participantToBeAdded, setParticipantToBeAdded] = useState("");
+  // State to capture the new name when renaming a group
   const [newGroupName, setNewGroupName] = useState("");
 
+  // State to store the current group details, initially set to null
   const [groupDetails, setGroupDetails] =
     useState<ChatListItemInterface | null>(null);
 
+  // State to manage a list of users, initially set as an empty array
   const [users, setUsers] = useState<UserInterface[]>([]);
 
+  // Function to handle the update of the group name.
   const handleGroupNameUpdate = async () => {
+    // Check if the new group name is provided.
     if (!newGroupName) return alert("Group name is required");
+
+    // Request to update the group name.
     requestHandler(
+      // Call to update the group name with the provided chatId and newGroupName.
       async () => await updateGroupName(chatId, newGroupName),
       null,
+      // On successful update, set the new group details and other related states.
       (res) => {
         const { data } = res;
-        setGroupDetails(data);
-        setNewGroupName(data.name);
-        setRenamingGroup(false);
-        alert("Group name updated to " + data.name);
+        setGroupDetails(data); // Set the new group details.
+        setNewGroupName(data.name); // Set the new group name state.
+        setRenamingGroup(false); // Set the state to not renaming.
+        alert("Group name updated to " + data.name); // Alert the user about the update.
       },
-      alert
+      alert // Use default alert for any error messages.
     );
   };
 
+  // Function to retrieve available users.
   const getUsers = async () => {
     requestHandler(
+      // Call to get the list of available users.
       async () => await getAvailableUsers(),
       null,
+      // On successful retrieval, set the users' state.
       (res) => {
         const { data } = res;
         setUsers(data || []);
       },
-      alert
+      alert // Use default alert for any error messages.
     );
   };
 
+  // Function to delete a group chat.
   const deleteGroupChat = async () => {
+    // Check if the user is the admin of the group before deletion.
     if (groupDetails?.admin !== user?._id) {
-      return alert("Your are not the admin of the group");
+      return alert("You are not the admin of the group");
     }
+
+    // Request to delete the group chat.
     requestHandler(
+      // Call to delete the group using the provided chatId.
       async () => await deleteGroup(chatId),
       null,
+      // On successful deletion, trigger onGroupDelete and close any modals/dialogs.
       () => {
         onGroupDelete(chatId);
         handleClose();
       },
-      alert
+      alert // Use default alert for any error messages.
     );
   };
 
   const removeParticipant = async (participantId: string) => {
     requestHandler(
+      // This is the main request function to remove a participant from the group.
       async () => await removeParticipantFromGroup(chatId, participantId),
+      // Null represents an optional loading state callback
       null,
+      // This is the callback after the request is successful.
       () => {
+        // Copy the existing group details.
         const updatedGroupDetails = {
           ...groupDetails,
+          // Update the participants list by filtering out the removed participant.
           participants:
             (groupDetails?.participants &&
               groupDetails?.participants?.filter(
@@ -98,54 +124,78 @@ const GroupChatDetailsModal: React.FC<{
               )) ||
             [],
         };
+        // Update the state with the modified group details.
         setGroupDetails(updatedGroupDetails as ChatListItemInterface);
+        // Inform the user that the participant has been removed.
         alert("Participant removed");
       },
+      // This may be a generic error alert or error handling function if the request fails.
       alert
     );
   };
 
+  // Function to add a participant to a chat group.
   const addParticipant = async () => {
+    // Check if there's a participant selected to be added.
     if (!participantToBeAdded)
       return alert("Please select a participant to add.");
+    // Make a request to add the participant to the group.
     requestHandler(
+      // Actual request to add the participant.
       async () => await addParticipantToGroup(chatId, participantToBeAdded),
+      // No loading callback provided, so passing `null`.
       null,
+      // Callback on success.
       (res) => {
+        // Destructure the response to get the data.
         const { data } = res;
+        // Create an updated group details object.
         const updatedGroupDetails = {
           ...groupDetails,
           participants: data?.participants || [],
         };
+        // Update the group details state with the new details.
         setGroupDetails(updatedGroupDetails as ChatListItemInterface);
+        // Alert the user that the participant was added.
         alert("Participant added");
       },
+      // Use the `alert` function as the fallback error handler.
       alert
     );
   };
 
+  // Function to fetch group information
   const fetchGroupInformation = async () => {
     requestHandler(
+      // Fetching group info for a specific chatId
       async () => await getGroupInfo(chatId),
+      // Placeholder for a loading callback (currently set to null)
       null,
+      // If the request is successful, destructure the response and set group details and the group name
       (res) => {
         const { data } = res;
         setGroupDetails(data);
         setNewGroupName(data?.name || "");
       },
+      // If the request fails, show an alert
       alert
     );
   };
 
+  // Function to handle modal or component closure
   const handleClose = () => {
     onClose();
   };
 
+  // React's effect hook to perform side effects, here to fetch group information and users
   useEffect(() => {
+    // If the modal or component isn't open, exit early
     if (!open) return;
+
+    // Fetch group information and users when the modal or component opens
     fetchGroupInformation();
     getUsers();
-  }, [open]);
+  }, [open]); // The effect is dependent on the 'open' state or prop, so it re-runs whenever 'open' changes
 
   return (
     <Transition.Root show={open} as={Fragment}>

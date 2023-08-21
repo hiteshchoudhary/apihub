@@ -23,13 +23,18 @@ const ChatItem: React.FC<{
   const [openOptions, setOpenOptions] = useState(false);
   const [openGroupInfo, setOpenGroupInfo] = useState(false);
 
+  // Define an asynchronous function named 'deleteChat'.
   const deleteChat = async () => {
     await requestHandler(
+      //  A callback function that performs the deletion of a one-on-one chat by its ID.
       async () => await deleteOneOnOneChat(chat._id),
       null,
+      // A callback function to be executed on success. It will call 'onChatDelete'
+      // function with the chat's ID as its parameter.
       () => {
         onChatDelete(chat._id);
       },
+      // The 'alert' function (likely to display error messages to the user.
       alert
     );
   };
@@ -138,6 +143,7 @@ const ChatItem: React.FC<{
           </p>
           <div className="w-full inline-flex items-center text-left">
             {chat.lastMessage && chat.lastMessage.attachments.length > 0 ? (
+              // If last message is an attachment show paperclip
               <PaperClipIcon className="text-white/50 h-3 w-3 mr-2 flex flex-shrink-0" />
             ) : null}
             <small className="text-white/50 truncate-1 text-sm text-ellipsis inline-flex items-center">
@@ -149,6 +155,8 @@ const ChatItem: React.FC<{
           <small className="mb-2 inline-flex flex-shrink-0 w-max">
             {moment(chat.updatedAt).add("TIME_ZONE", "hours").fromNow(true)}
           </small>
+
+          {/* Unread count will be > 0 when user is on another chat and there is new message in a chat which is not currently active on user's screen */}
           {unreadCount <= 0 ? null : (
             <span className="bg-success h-2 w-2 aspect-square flex-shrink-0 p-2 text-white text-xs rounded-full inline-flex justify-center items-center">
               {unreadCount > 9 ? "9+" : unreadCount}
