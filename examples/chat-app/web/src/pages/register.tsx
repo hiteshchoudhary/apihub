@@ -41,6 +41,12 @@ const Register = () => {
         </h1>
         {/* Input fields for username, password, and email */}
         <Input
+          placeholder="Enter the email..."
+          type="email"
+          value={data.email}
+          onChange={handleDataChange("email")}
+        />
+        <Input
           placeholder="Enter the username..."
           value={data.username}
           onChange={handleDataChange("username")}
@@ -50,12 +56,6 @@ const Register = () => {
           type="password"
           value={data.password}
           onChange={handleDataChange("password")}
-        />
-        <Input
-          placeholder="Enter the email..."
-          type="email"
-          value={data.email}
-          onChange={handleDataChange("email")}
         />
         {/* Register button */}
         <Button
