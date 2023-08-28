@@ -6,7 +6,7 @@ import { LocalStorage } from "../utils";
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URI,
   withCredentials: true,
-  timeout: 10000,
+  timeout: 120000,
 });
 
 // Add an interceptor to set authorization header with user token before requests

@@ -118,9 +118,6 @@ const searchAvailableUsers = asyncHandler(async (req, res) => {
         },
       },
     },
-    {
-      $limit: 50,
-    },
   ]);
 
   return res

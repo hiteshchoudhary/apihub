@@ -97,9 +97,7 @@ const ChatPage = () => {
       setLoadingChats,
       (res) => {
         const { data } = res;
-        if (data?.length) {
-          setChats(data);
-        }
+        setChats(data || []);
       },
       alert
     );
@@ -129,9 +127,7 @@ const ChatPage = () => {
       // After fetching, set the chat messages to the state if available
       (res) => {
         const { data } = res;
-        if (data?.length) {
-          setMessages(data);
-        }
+        setMessages(data || []);
       },
       // Display any error alerts if they occur during the fetch
       alert
