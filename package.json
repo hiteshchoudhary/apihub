@@ -49,6 +49,7 @@
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "razorpay": "^2.8.6",
+    "socket.io": "^4.7.1",
     "swagger-ui-express": "^4.6.3",
     "yaml": "^2.3.1"
   },
