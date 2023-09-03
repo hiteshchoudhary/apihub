@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   createTodo,
+  deleteCompletedTodo,
   deleteTodo,
   getAllTodos,
   getTodoById,
@@ -23,6 +24,8 @@ router
   .post(createTodoValidator(), validate, createTodo)
   .get(getAllTodosQueryValidators(), validate, getAllTodos);
 
+router.route("/completed").delete(deleteCompletedTodo);
+
 router
   .route("/:todoId")
   .get(mongoIdPathVariableValidator("todoId"), validate, getTodoById)
@@ -36,6 +39,10 @@ router
 
 router
   .route("/toggle/status/:todoId")
-  .patch(mongoIdPathVariableValidator("todoId"), validate, toggleTodoDoneStatus);
+  .patch(
+    mongoIdPathVariableValidator("todoId"),
+    validate,
+    toggleTodoDoneStatus
+  );
 
 export default router;

@@ -114,6 +114,23 @@ const deleteTodo = asyncHandler(async (req, res) => {
     );
 });
 
+const deleteCompletedTodo = asyncHandler(async (req, res) => {
+  const todos = await Todo.deleteMany({ isComplete: true });
+
+  if (!todos.deletedCount > 0) {
+    throw new ApiError(404, "No completed todos found to delete");
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { deletedCount: todos.deletedCount },
+        "Completed todos deleted successfully"
+      )
+    );
+});
+
 export {
   getAllTodos,
   getTodoById,
@@ -121,4 +138,5 @@ export {
   updateTodo,
   deleteTodo,
   toggleTodoDoneStatus,
+  deleteCompletedTodo,
 };
