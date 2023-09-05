@@ -3,7 +3,7 @@ name: Build and Run Docker Image using Docker-Compse
 on:
   push:
     branches:
-      - main1
+      - main
 
 env:
   IMAGE_NAME: ${{ github.event.repository.name }}
