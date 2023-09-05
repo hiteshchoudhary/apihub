@@ -18,5 +18,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Build Docker Image every time new PR gets merged
         run: docker build . -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-      - name: Run Docker Image
+      - name: Run Docker Image via Docker Compose
         run: docker-compose up -d
