@@ -1,0 +1,22 @@
+name: Build and Run Docker Image using Docker-Compse
+
+on:
+  push:
+    branches:
+      - main1
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  IMAGE_TAG: ${{ github.run_number }}
+
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Build Docker Image every time new PR gets merged
+        run: docker build . -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      - name: Run Docker Image
+        run: docker-compose up -d
