@@ -83,14 +83,25 @@ Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md
 ## 🏁 Installation
 
 ### 📦 Using Docker (recommended)
-
 To run the FreeAPI project, follow these steps:
 
 1. Install [Docker](https://www.docker.com/) on your machine.
 2. Clone the project repository.
 3. Navigate to the project directory.
 4. Create `.env` file in the root folder and copy paste the content of `.env.sample`, and add necessary credentials.
-5. Run the Docker Compose command:
+5. If MongoDB is not unstalled locally in host system skip to line 7 after reading true best answer for [this stackoverflow question](https://stackoverflow.com/questions/45461017/connect-to-host-mongodb-from-docker-container)
+6. Copy paste the content of `docker-compose-local_mongodb.yml` into `docker-compose.yml`.
+7. For linux system, modify in the newly created `.env` file;
+```
+    MONGODB_URI=mongodb://172.17.0.1:27017
+```
+
+8. For windows and MAC,  modify in the newly created `.env` file and `docker-compose-local_mongodb.yml` file;
+```
+    MONGODB_URI=mongodb://host.docker.internal:2701
+```  
+
+9. Run the Docker Compose command:
 
 ```bash
 docker-compose up --build --attach backend
@@ -99,7 +110,7 @@ docker-compose up --build --attach backend
 # --attach: only show logs of Node app container and not mongodb
 ```
 
-6. Access the project APIs at the specified endpoints.
+10. Access the project APIs at the specified endpoints.
 
 ### 💻 Running locally
 
