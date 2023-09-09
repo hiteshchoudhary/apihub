@@ -106,7 +106,7 @@ docker-compose up --build --attach backend
 # --attach: only show logs of Node app container and not mongodb
 ```
 
-11.  Access the project APIs at the specified endpoints.
+10.  Access the project APIs at the specified endpoints.
 
 ### 💻 Running locally
 
