@@ -94,7 +94,7 @@ To run the FreeAPI project, follow these steps:
 ```
 MONGODB_URI=mongodb://host.docker.internal:27017
 ```
-7. For linux systems, uncomment the `extra_host` var in the new `docker-compose.yml` also modify MongoDB config file and change `bindIp: 127.0.0.1` into `bindIp: 0.0.0.0`. Depending on how mongoDB is installed, ensure mpngoDB now works with new modified config file.
+7. For linux systems, uncomment the `extra_host` var in the new `docker-compose.yml` also modify MongoDB config file and change `bindIp: 127.0.0.1` into `bindIp: 0.0.0.0`. Depending on how mongoDB is installed, ensure MongoDB now works with new modified config file.
 
 8. For windows and MAC,ignore 7
 9.  Run the Docker Compose command:
