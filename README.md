@@ -89,19 +89,15 @@ To run the FreeAPI project, follow these steps:
 2. Clone the project repository.
 3. Navigate to the project directory.
 4. Create `.env` file in the root folder and copy paste the content of `.env.sample`, and add necessary credentials.
-5. If MongoDB is not unstalled locally in host system skip to line 7 after reading true best answer for [this stackoverflow question](https://stackoverflow.com/questions/45461017/connect-to-host-mongodb-from-docker-container)
-6. Copy paste the content of `docker-compose-local_mongodb.yml` into `docker-compose.yml`.
-7. For linux system, modify in the newly created `.env` file;
+5. If MongoDB is not unstalled locally in host system skip to line 9 after reading true best answer for [this stackoverflow question](https://stackoverflow.com/questions/45461017/connect-to-host-mongodb-from-docker-container) and  [this github comment](https://github.com/moby/libnetwork/pull/2348#issuecomment-1177610499).
+6. Modify the MONGODB_URI ine in the new `.env` file in the root folder 
 ```
-    MONGODB_URI=mongodb://172.17.0.1:27017
+MONGODB_URI=mongodb://host.docker.internal:27017
 ```
+7. For linux systems, uncomment the `extra_host` var in the new `docker-compose.yml` also modify MongoDB config file and change `bindIp: 127.0.0.1` into `bindIp: 0.0.0.0`. Depending on how mongoDB is installed, ensure mpngoDB now works with new modified config file.
 
-8. For windows and MAC,  modify in the newly created `.env` file and `docker-compose-local_mongodb.yml` file;
-```
-    MONGODB_URI=mongodb://host.docker.internal:2701
-```  
-
-9. Run the Docker Compose command:
+8. For windows and MAC,ignore 7
+9.  Run the Docker Compose command:
 
 ```bash
 docker-compose up --build --attach backend
@@ -110,7 +106,7 @@ docker-compose up --build --attach backend
 # --attach: only show logs of Node app container and not mongodb
 ```
 
-10. Access the project APIs at the specified endpoints.
+11.  Access the project APIs at the specified endpoints.
 
 ### 💻 Running locally
 
