@@ -11,6 +11,8 @@ services:
       - /usr/src/freeapi/node_modules
     env_file:
       - ./.env
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"  
     depends_on:
       - mongodb
   mongodb:
