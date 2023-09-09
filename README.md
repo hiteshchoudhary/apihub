@@ -89,14 +89,29 @@ To run the FreeAPI project, follow these steps:
 2. Clone the project repository.
 3. Navigate to the project directory.
 4. Create `.env` file in the root folder and copy paste the content of `.env.sample`, and add necessary credentials.
-5. If MongoDB is not unstalled locally in host system skip to line 9 after reading true best answer for [this stackoverflow question](https://stackoverflow.com/questions/45461017/connect-to-host-mongodb-from-docker-container) and  [this github comment](https://github.com/moby/libnetwork/pull/2348#issuecomment-1177610499).
-6. Modify the MONGODB_URI ine in the new `.env` file in the root folder 
+5. For linux systems only , uncomment the code below var in `docker-compose.yml`.
 ```
-MONGODB_URI=mongodb://host.docker.internal:27017
-```
-7. For linux systems, uncomment the `extra_host` var in the new `docker-compose.yml` also modify MongoDB config file and change `bindIp: 127.0.0.1` into `bindIp: 0.0.0.0`. Depending on how mongoDB is installed, ensure MongoDB now works with new modified config file.
+    extra_hosts:
+      - “host.docker.internal:host-gateway”  
+```  
+6. If MongoDB is not installed locally in host system skip to line 9.
 
-8. For windows and MAC,ignore 7
+7. Modify MongoDB config file by changing `bindIp: 127.0.0.1` into `bindIp: 0.0.0.0`. Depending on how mongoDB is installed, ensure MongoDB now works with new modified config file. See [mongoDB documentation](https://www.mongodb.com/docs/manual/reference/configuration-options/)for config file location for your platform.
+
+8. For all platforms comment out code below in `docker-compose.yml` to prevent mongo image download;
+ 
+```
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - data:/data/db
+    ports:
+      - 27017:27017
+``` 
+
 9.  Run the Docker Compose command:
 
 ```bash
