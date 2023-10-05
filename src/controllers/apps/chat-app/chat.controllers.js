@@ -118,6 +118,13 @@ const searchAvailableUsers = asyncHandler(async (req, res) => {
         },
       },
     },
+    {
+      $project: {
+        avatar: 1,
+        username: 1,
+        email: 1,
+      },
+    },
   ]);
 
   return res
