@@ -310,7 +310,7 @@ const ChatPage = () => {
   // This useEffect handles the setting up and tearing down of socket event listeners.
   useEffect(() => {
     // If the socket isn't initialized, we don't set up listeners.
-    if (!socket) return;
+    if (!socket || !user?._id) return;
 
     // Set up event listeners for various socket events:
     // Listener for when the socket connects.
@@ -350,7 +350,7 @@ const ChatPage = () => {
     // This will not cause infinite renders because the functions in the socket are getting mounted and not executed.
     // So, even if some socket callbacks are updating the `chats` state, it's not
     // updating on each `useEffect` call but on each socket call.
-  }, [socket, chats]);
+  }, [socket, chats, user]);
 
   return (
     <>
