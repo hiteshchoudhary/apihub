@@ -208,7 +208,6 @@ initializeSocketIO(io);
 
 // ! 🚫 Danger Zone
 app.delete("/api/v1/reset-db", avoidInProduction, async (req, res) => {
-  console.log(req.clientIp, "////");
   if (dbInstance) {
     // Drop the whole DB
     await dbInstance.connection.db.dropDatabase({
