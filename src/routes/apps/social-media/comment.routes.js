@@ -1,17 +1,10 @@
 import { Router } from "express";
-import {
-  addComment,
-  deleteComment,
-  getPostComments,
-  updateComment,
-} from "../../../controllers/apps/social-media/comment.controllers.js";
+import { commentController } from "../../../controllers/apps/social-media/index.js";
 import {
   getLoggedInUserOrIgnore,
   verifyJWT,
 } from "../../../middlewares/auth.middlewares.js";
-import {
-  commentContentValidator,
-} from "../../../validators/apps/social-media/comment.validators.js";
+import { commentContentValidator } from "../../../validators/apps/social-media/comment.validators.js";
 import { validate } from "../../../validators/validate.js";
 import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
@@ -23,25 +16,30 @@ router
     getLoggedInUserOrIgnore,
     mongoIdPathVariableValidator("postId"),
     validate,
-    getPostComments
+    commentController.getPostComments
   )
   .post(
     verifyJWT,
     mongoIdPathVariableValidator("postId"),
     commentContentValidator(),
     validate,
-    addComment
+    commentController.addComment
   );
 
 router
   .route("/:commentId")
-  .delete(verifyJWT, mongoIdPathVariableValidator("commentId"), validate, deleteComment)
+  .delete(
+    verifyJWT,
+    mongoIdPathVariableValidator("commentId"),
+    validate,
+    commentController.deleteComment
+  )
   .patch(
     verifyJWT,
     mongoIdPathVariableValidator("commentId"),
     commentContentValidator(),
     validate,
-    updateComment
+    commentController.updateComment
   );
 
 export default router;

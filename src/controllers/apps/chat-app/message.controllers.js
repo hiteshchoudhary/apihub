@@ -39,7 +39,7 @@ const chatMessageCommonAggregation = () => {
   ];
 };
 
-const getAllMessages = asyncHandler(async (req, res) => {
+export const getAllMessages = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
   const selectedChat = await Chat.findById(chatId);
@@ -74,7 +74,7 @@ const getAllMessages = asyncHandler(async (req, res) => {
     );
 });
 
-const sendMessage = asyncHandler(async (req, res) => {
+export const sendMessage = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const { content } = req.body;
 
@@ -154,5 +154,3 @@ const sendMessage = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, receivedMessage, "Message saved successfully"));
 });
-
-export { getAllMessages, sendMessage };

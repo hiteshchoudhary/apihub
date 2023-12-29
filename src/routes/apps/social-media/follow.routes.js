@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  followUnFollowUser,
-  getFollowersListByUserName,
-  getFollowingListByUserName,
-} from "../../../controllers/apps/social-media/follow.controllers.js";
+import { followController } from "../../../controllers/apps/social-media/index.js";
 import {
   getLoggedInUserOrIgnore,
   verifyJWT,
@@ -15,14 +11,19 @@ const router = Router();
 
 router
   .route("/:toBeFollowedUserId")
-  .post(verifyJWT, mongoIdPathVariableValidator("toBeFollowedUserId"), validate, followUnFollowUser);
+  .post(
+    verifyJWT,
+    mongoIdPathVariableValidator("toBeFollowedUserId"),
+    validate,
+    followController.followUnFollowUser
+  );
 
 router
   .route("/list/followers/:username")
-  .get(getLoggedInUserOrIgnore, getFollowersListByUserName);
+  .get(getLoggedInUserOrIgnore, followController.getFollowersListByUserName);
 
 router
   .route("/list/following/:username")
-  .get(getLoggedInUserOrIgnore, getFollowingListByUserName);
+  .get(getLoggedInUserOrIgnore, followController.getFollowingListByUserName);
 
 export default router;

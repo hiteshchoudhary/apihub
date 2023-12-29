@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getRandomProducts = asyncHandler(async (req, res) => {
+export const getRandomProducts = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -35,7 +35,7 @@ const getRandomProducts = asyncHandler(async (req, res) => {
     );
 });
 
-const getProductById = asyncHandler(async (req, res) => {
+export const getProductById = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const product = randomProductsJson.find(
     (product) => +product.id === +productId
@@ -48,7 +48,7 @@ const getProductById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, product, "Product fetched successfully"));
 });
 
-const getARandomProduct = asyncHandler(async (req, res) => {
+export const getARandomProduct = asyncHandler(async (req, res) => {
   const randomProductsArray = randomProductsJson;
   const randomIndex = Math.floor(Math.random() * randomProductsArray.length);
 
@@ -62,5 +62,3 @@ const getARandomProduct = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export { getRandomProducts, getARandomProduct, getProductById };

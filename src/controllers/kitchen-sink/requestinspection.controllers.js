@@ -1,7 +1,7 @@
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getRequestHeaders = asyncHandler(async (req, res) => {
+export const getRequestHeaders = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
@@ -9,7 +9,7 @@ const getRequestHeaders = asyncHandler(async (req, res) => {
     );
 });
 
-const getClientIP = asyncHandler(async (req, res) => {
+export const getClientIP = asyncHandler(async (req, res) => {
   return res.status(200).json(
     new ApiResponse(
       200,
@@ -22,7 +22,7 @@ const getClientIP = asyncHandler(async (req, res) => {
   );
 });
 
-const getUserAgent = asyncHandler(async (req, res) => {
+export const getUserAgent = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
@@ -34,7 +34,7 @@ const getUserAgent = asyncHandler(async (req, res) => {
     );
 });
 
-const getPathVariables = asyncHandler(async (req, res) => {
+export const getPathVariables = asyncHandler(async (req, res) => {
   const { pathVariable } = req.params;
   return res
     .status(200)
@@ -47,18 +47,10 @@ const getPathVariables = asyncHandler(async (req, res) => {
     );
 });
 
-const getQueryParameters = asyncHandler(async (req, res) => {
+export const getQueryParameters = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
       new ApiResponse(200, req.query, "Query parameters caught successfully")
     );
 });
-
-export {
-  getClientIP,
-  getRequestHeaders,
-  getUserAgent,
-  getPathVariables,
-  getQueryParameters,
-};

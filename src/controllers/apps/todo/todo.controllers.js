@@ -3,7 +3,7 @@ import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 
-const getAllTodos = asyncHandler(async (req, res) => {
+export const getAllTodos = asyncHandler(async (req, res) => {
   const { query, complete } = req.query;
   const todos = await Todo.aggregate([
     {
@@ -32,7 +32,7 @@ const getAllTodos = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, todos, "Todos fetched successfully"));
 });
 
-const getTodoById = asyncHandler(async (req, res) => {
+export const getTodoById = asyncHandler(async (req, res) => {
   const { todoId } = req.params;
   const todo = await Todo.findById(todoId);
   if (!todo) {
@@ -43,7 +43,7 @@ const getTodoById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, todo, "Todo fetched successfully"));
 });
 
-const createTodo = asyncHandler(async (req, res) => {
+export const createTodo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
   const todo = await Todo.create({
     title,
@@ -55,7 +55,7 @@ const createTodo = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, todo, "Todo created successfully"));
 });
 
-const updateTodo = asyncHandler(async (req, res) => {
+export const updateTodo = asyncHandler(async (req, res) => {
   const { todoId } = req.params;
   const { title, description } = req.body;
   const todo = await Todo.findByIdAndUpdate(
@@ -78,7 +78,7 @@ const updateTodo = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, todo, "Todo updated successfully"));
 });
 
-const toggleTodoDoneStatus = asyncHandler(async (req, res) => {
+export const toggleTodoDoneStatus = asyncHandler(async (req, res) => {
   const { todoId } = req.params;
   const todo = await Todo.findById(todoId);
 
@@ -100,7 +100,7 @@ const toggleTodoDoneStatus = asyncHandler(async (req, res) => {
     );
 });
 
-const deleteTodo = asyncHandler(async (req, res) => {
+export const deleteTodo = asyncHandler(async (req, res) => {
   const { todoId } = req.params;
   const todo = await Todo.findByIdAndDelete(todoId);
 
@@ -113,12 +113,3 @@ const deleteTodo = asyncHandler(async (req, res) => {
       new ApiResponse(200, { deletedTodo: todo }, "Todo deleted successfully")
     );
 });
-
-export {
-  getAllTodos,
-  getTodoById,
-  createTodo,
-  updateTodo,
-  deleteTodo,
-  toggleTodoDoneStatus,
-};

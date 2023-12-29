@@ -13,7 +13,7 @@ import { removeLocalFile } from "../../../utils/helpers.js";
  * @description Utility function which returns the pipeline stages to structure the chat schema with common lookups
  * @returns {mongoose.PipelineStage[]}
  */
-const chatCommonAggregation = () => {
+export const chatCommonAggregation = () => {
   return [
     {
       // lookup for the participants present
@@ -83,7 +83,7 @@ const chatCommonAggregation = () => {
  * @param {string} chatId
  * @description utility function responsible for removing all the messages and file attachments attached to the deleted chat
  */
-const deleteCascadeChatMessages = async (chatId) => {
+export const deleteCascadeChatMessages = async (chatId) => {
   // fetch the messages associated with the chat to remove
   const messages = await ChatMessage.find({
     chat: new mongoose.Types.ObjectId(chatId),
@@ -109,7 +109,7 @@ const deleteCascadeChatMessages = async (chatId) => {
   });
 };
 
-const searchAvailableUsers = asyncHandler(async (req, res) => {
+export const searchAvailableUsers = asyncHandler(async (req, res) => {
   const users = await User.aggregate([
     {
       $match: {
@@ -132,7 +132,7 @@ const searchAvailableUsers = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, users, "Users fetched successfully"));
 });
 
-const createOrGetAOneOnOneChat = asyncHandler(async (req, res) => {
+export const createOrGetAOneOnOneChat = asyncHandler(async (req, res) => {
   const { receiverId } = req.params;
 
   // Check if it's a valid receiver
@@ -215,7 +215,7 @@ const createOrGetAOneOnOneChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, payload, "Chat retrieved successfully"));
 });
 
-const createAGroupChat = asyncHandler(async (req, res) => {
+export const createAGroupChat = asyncHandler(async (req, res) => {
   const { name, participants } = req.body;
 
   // Check if user is not sending himself as a participant. This will be done manually
@@ -278,7 +278,7 @@ const createAGroupChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, payload, "Group chat created successfully"));
 });
 
-const getGroupChatDetails = asyncHandler(async (req, res) => {
+export const getGroupChatDetails = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const groupChat = await Chat.aggregate([
     {
@@ -301,7 +301,7 @@ const getGroupChatDetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, chat, "Group chat fetched successfully"));
 });
 
-const renameGroupChat = asyncHandler(async (req, res) => {
+export const renameGroupChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
   const { name } = req.body;
 
@@ -363,7 +363,7 @@ const renameGroupChat = asyncHandler(async (req, res) => {
     );
 });
 
-const deleteGroupChat = asyncHandler(async (req, res) => {
+export const deleteGroupChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
   // check for the group chat existence
@@ -409,7 +409,7 @@ const deleteGroupChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Group chat deleted successfully"));
 });
 
-const deleteOneOnOneChat = asyncHandler(async (req, res) => {
+export const deleteOneOnOneChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
   // check for chat existence
@@ -449,7 +449,7 @@ const deleteOneOnOneChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Chat deleted successfully"));
 });
 
-const leaveGroupChat = asyncHandler(async (req, res) => {
+export const leaveGroupChat = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
 
   // check if chat is a group
@@ -499,7 +499,7 @@ const leaveGroupChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, payload, "Left a group successfully"));
 });
 
-const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
+export const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
   const { chatId, participantId } = req.params;
 
   // check if chat is a group
@@ -557,7 +557,7 @@ const addNewParticipantInGroupChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, payload, "Participant added successfully"));
 });
 
-const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
+export const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
   const { chatId, participantId } = req.params;
 
   // check if chat is a group
@@ -615,7 +615,7 @@ const removeParticipantFromGroupChat = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, payload, "Participant removed successfully"));
 });
 
-const getAllChats = asyncHandler(async (req, res) => {
+export const getAllChats = asyncHandler(async (req, res) => {
   const chats = await Chat.aggregate([
     {
       $match: {
@@ -636,17 +636,3 @@ const getAllChats = asyncHandler(async (req, res) => {
       new ApiResponse(200, chats || [], "User chats fetched successfully!")
     );
 });
-
-export {
-  addNewParticipantInGroupChat,
-  createAGroupChat,
-  createOrGetAOneOnOneChat,
-  deleteGroupChat,
-  deleteOneOnOneChat,
-  getAllChats,
-  getGroupChatDetails,
-  leaveGroupChat,
-  removeParticipantFromGroupChat,
-  renameGroupChat,
-  searchAvailableUsers,
-};

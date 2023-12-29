@@ -16,34 +16,32 @@ const getRequestMethodPayload = (req) => {
   };
 };
 
-const getRequest = asyncHandler(async (req, res) => {
+export const getRequest = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, getRequestMethodPayload(req), "GET request"));
 });
 
-const postRequest = asyncHandler(async (req, res) => {
+export const postRequest = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, getRequestMethodPayload(req), "POST request"));
 });
 
-const putRequest = asyncHandler(async (req, res) => {
+export const putRequest = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, getRequestMethodPayload(req), "PUT request"));
 });
 
-const patchRequest = asyncHandler(async (req, res) => {
+export const patchRequest = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, getRequestMethodPayload(req), "PATCH request"));
 });
 
-const deleteRequest = asyncHandler(async (req, res) => {
+export const deleteRequest = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, getRequestMethodPayload(req), "DELETE request"));
 });
-
-export { getRequest, postRequest, putRequest, patchRequest, deleteRequest };

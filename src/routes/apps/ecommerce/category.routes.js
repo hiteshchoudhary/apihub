@@ -1,14 +1,6 @@
 import { Router } from "express";
-import {
-  createCategory,
-  deleteCategory,
-  getAllCategories,
-  getCategoryById,
-  updateCategory,
-} from "../../../controllers/apps/ecommerce/category.controllers.js";
-import {
-  categoryRequestBodyValidator,
-} from "../../../validators/apps/ecommerce/category.validators.js";
+import { categoryController } from "../../../controllers/apps/ecommerce/index.js";
+import { categoryRequestBodyValidator } from "../../../validators/apps/ecommerce/category.validators.js";
 import { validate } from "../../../validators/validate.js";
 import {
   verifyPermission,
@@ -26,19 +18,23 @@ router
     verifyPermission([UserRolesEnum.ADMIN]),
     categoryRequestBodyValidator(),
     validate,
-    createCategory
+    categoryController.createCategory
   )
-  .get(getAllCategories);
+  .get(categoryController.getAllCategories);
 
 router
   .route("/:categoryId")
-  .get(mongoIdPathVariableValidator("categoryId"), validate, getCategoryById)
+  .get(
+    mongoIdPathVariableValidator("categoryId"),
+    validate,
+    categoryController.getCategoryById
+  )
   .delete(
     verifyJWT,
     verifyPermission([UserRolesEnum.ADMIN]),
     mongoIdPathVariableValidator("categoryId"),
     validate,
-    deleteCategory
+    categoryController.deleteCategory
   )
   .patch(
     verifyJWT,
@@ -46,7 +42,7 @@ router
     categoryRequestBodyValidator(),
     mongoIdPathVariableValidator("categoryId"),
     validate,
-    updateCategory
+    categoryController.updateCategory
   );
 
 export default router;

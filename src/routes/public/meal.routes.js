@@ -1,14 +1,10 @@
 import { Router } from "express";
-import {
-  getARandomMeal,
-  getMealById,
-  getMeals,
-} from "../../controllers/public/meal.controllers.js";
+import { mealController } from "../../controllers/public/index.js";
 
 const router = Router();
 
-router.route("/").get(getMeals);
-router.route("/:mealId").get(getMealById);
-router.route("/meal/random").get(getARandomMeal);
+router.route("/").get(mealController.getMeals);
+router.route("/:mealId").get(mealController.getMealById);
+router.route("/meal/random").get(mealController.getARandomMeal);
 
 export default router;

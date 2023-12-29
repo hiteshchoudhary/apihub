@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getDogs = asyncHandler(async (req, res) => {
+export const getDogs = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -34,7 +34,7 @@ const getDogs = asyncHandler(async (req, res) => {
     );
 });
 
-const getDogById = asyncHandler(async (req, res) => {
+export const getDogById = asyncHandler(async (req, res) => {
   const { dogId } = req.params;
   const dog = dogsJson.find((dog) => +dog.id === +dogId);
   if (!dog) {
@@ -45,7 +45,7 @@ const getDogById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, dog, "Dog fetched successfully"));
 });
 
-const getARandomDog = asyncHandler(async (req, res) => {
+export const getARandomDog = asyncHandler(async (req, res) => {
   const dogsArray = dogsJson;
   const randomIndex = Math.floor(Math.random() * dogsArray.length);
 
@@ -55,5 +55,3 @@ const getARandomDog = asyncHandler(async (req, res) => {
       new ApiResponse(200, dogsArray[randomIndex], "Dog fetched successfully")
     );
 });
-
-export { getDogs, getARandomDog, getDogById };

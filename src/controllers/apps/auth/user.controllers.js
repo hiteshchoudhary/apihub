@@ -16,7 +16,7 @@ import {
   sendEmail,
 } from "../../../utils/mail.js";
 
-const generateAccessAndRefreshTokens = async (userId) => {
+export const generateAccessAndRefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
 
@@ -36,7 +36,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
   }
 };
 
-const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
   const { email, username, password, role } = req.body;
 
   const existedUser = await User.findOne({
@@ -100,7 +100,7 @@ const registerUser = asyncHandler(async (req, res) => {
     );
 });
 
-const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
 
   if (!username && !email) {
@@ -163,7 +163,7 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-const logoutUser = asyncHandler(async (req, res) => {
+export const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -186,7 +186,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged out"));
 });
 
-const verifyEmail = asyncHandler(async (req, res) => {
+export const verifyEmail = asyncHandler(async (req, res) => {
   const { verificationToken } = req.params;
 
   if (!verificationToken) {
@@ -228,7 +228,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 // This controller is called when user is logged in and he has snackbar that your email is not verified
 // In case he did not get the email or the email verification token is expired
 // he will be able to resend the token while he is logged in
-const resendEmailVerification = asyncHandler(async (req, res) => {
+export const resendEmailVerification = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user?._id);
 
   if (!user) {
@@ -262,7 +262,7 @@ const resendEmailVerification = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Mail has been sent to your mail ID"));
 });
 
-const refreshAccessToken = asyncHandler(async (req, res) => {
+export const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
 
@@ -311,7 +311,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-const forgotPasswordRequest = asyncHandler(async (req, res) => {
+export const forgotPasswordRequest = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   // Get email from the client and check if user exists
@@ -355,7 +355,7 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
     );
 });
 
-const resetForgottenPassword = asyncHandler(async (req, res) => {
+export const resetForgottenPassword = asyncHandler(async (req, res) => {
   const { resetToken } = req.params;
   const { newPassword } = req.body;
 
@@ -392,7 +392,7 @@ const resetForgottenPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Password reset successfully"));
 });
 
-const changeCurrentPassword = asyncHandler(async (req, res) => {
+export const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
   const user = await User.findById(req.user?._id);
@@ -414,7 +414,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
-const assignRole = asyncHandler(async (req, res) => {
+export const assignRole = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   const { role } = req.body;
   const user = await User.findById(userId);
@@ -430,13 +430,13 @@ const assignRole = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Role changed for the user"));
 });
 
-const getCurrentUser = asyncHandler(async (req, res) => {
+export const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
 });
 
-const handleSocialLogin = asyncHandler(async (req, res) => {
+export const handleSocialLogin = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user?._id);
 
   if (!user) {
@@ -462,7 +462,7 @@ const handleSocialLogin = asyncHandler(async (req, res) => {
     );
 });
 
-const updateUserAvatar = asyncHandler(async (req, res) => {
+export const updateUserAvatar = asyncHandler(async (req, res) => {
   // Check if user has uploaded an avatar
   if (!req.file?.filename) {
     throw new ApiError(400, "Avatar image is required");
@@ -498,19 +498,3 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, updatedUser, "Avatar updated successfully"));
 });
-
-export {
-  assignRole,
-  changeCurrentPassword,
-  forgotPasswordRequest,
-  getCurrentUser,
-  handleSocialLogin,
-  loginUser,
-  logoutUser,
-  refreshAccessToken,
-  registerUser,
-  resendEmailVerification,
-  resetForgottenPassword,
-  updateUserAvatar,
-  verifyEmail,
-};

@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getCats = asyncHandler(async (req, res) => {
+export const getCats = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -34,7 +34,7 @@ const getCats = asyncHandler(async (req, res) => {
     );
 });
 
-const getCatById = asyncHandler(async (req, res) => {
+export const getCatById = asyncHandler(async (req, res) => {
   const { catId } = req.params;
   const cat = catsJson.find((cat) => +cat.id === +catId);
   if (!cat) {
@@ -45,7 +45,7 @@ const getCatById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, cat, "Cat fetched successfully"));
 });
 
-const getARandomCat = asyncHandler(async (req, res) => {
+export const getARandomCat = asyncHandler(async (req, res) => {
   const catsArray = catsJson;
   const randomIndex = Math.floor(Math.random() * catsArray.length);
 
@@ -55,5 +55,3 @@ const getARandomCat = asyncHandler(async (req, res) => {
       new ApiResponse(200, catsArray[randomIndex], "Cat fetched successfully")
     );
 });
-
-export { getCats, getARandomCat, getCatById };

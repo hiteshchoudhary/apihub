@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getRandomJokes = asyncHandler(async (req, res) => {
+export const getRandomJokes = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -31,7 +31,7 @@ const getRandomJokes = asyncHandler(async (req, res) => {
     );
 });
 
-const getJokeById = asyncHandler(async (req, res) => {
+export const getJokeById = asyncHandler(async (req, res) => {
   const { jokeId } = req.params;
   const joke = randomJokesJson.find((joke) => +joke.id === +jokeId);
   if (!joke) {
@@ -42,7 +42,7 @@ const getJokeById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, joke, "Joke fetched successfully"));
 });
 
-const getARandomJoke = asyncHandler(async (req, res) => {
+export const getARandomJoke = asyncHandler(async (req, res) => {
   const randomJokesArray = randomJokesJson;
   const randomIndex = Math.floor(Math.random() * randomJokesArray.length);
 
@@ -56,5 +56,3 @@ const getARandomJoke = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export { getRandomJokes, getARandomJoke, getJokeById };

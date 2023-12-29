@@ -1,17 +1,5 @@
 import { Router } from "express";
-import {
-  addNewParticipantInGroupChat,
-  createAGroupChat,
-  createOrGetAOneOnOneChat,
-  deleteGroupChat,
-  deleteOneOnOneChat,
-  getAllChats,
-  getGroupChatDetails,
-  leaveGroupChat,
-  removeParticipantFromGroupChat,
-  renameGroupChat,
-  searchAvailableUsers,
-} from "../../../controllers/apps/chat-app/chat.controllers.js";
+import { chatController } from "../../../controllers/apps/chat-app/index.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
   createAGroupChatValidator,
@@ -24,32 +12,40 @@ const router = Router();
 
 router.use(verifyJWT);
 
-router.route("/").get(getAllChats);
+router.route("/").get(chatController.getAllChats);
 
-router.route("/users").get(searchAvailableUsers);
+router.route("/users").get(chatController.searchAvailableUsers);
 
 router
   .route("/c/:receiverId")
   .post(
     mongoIdPathVariableValidator("receiverId"),
     validate,
-    createOrGetAOneOnOneChat
+    chatController.createOrGetAOneOnOneChat
   );
 
 router
   .route("/group")
-  .post(createAGroupChatValidator(), validate, createAGroupChat);
+  .post(createAGroupChatValidator(), validate, chatController.createAGroupChat);
 
 router
   .route("/group/:chatId")
-  .get(mongoIdPathVariableValidator("chatId"), validate, getGroupChatDetails)
+  .get(
+    mongoIdPathVariableValidator("chatId"),
+    validate,
+    chatController.getGroupChatDetails
+  )
   .patch(
     mongoIdPathVariableValidator("chatId"),
     updateGroupChatNameValidator(),
     validate,
-    renameGroupChat
+    chatController.renameGroupChat
   )
-  .delete(mongoIdPathVariableValidator("chatId"), validate, deleteGroupChat);
+  .delete(
+    mongoIdPathVariableValidator("chatId"),
+    validate,
+    chatController.deleteGroupChat
+  );
 
 router
   .route("/group/:chatId/:participantId")
@@ -57,21 +53,29 @@ router
     mongoIdPathVariableValidator("chatId"),
     mongoIdPathVariableValidator("participantId"),
     validate,
-    addNewParticipantInGroupChat
+    chatController.addNewParticipantInGroupChat
   )
   .delete(
     mongoIdPathVariableValidator("chatId"),
     mongoIdPathVariableValidator("participantId"),
     validate,
-    removeParticipantFromGroupChat
+    chatController.removeParticipantFromGroupChat
   );
 
 router
   .route("/leave/group/:chatId")
-  .delete(mongoIdPathVariableValidator("chatId"), validate, leaveGroupChat);
+  .delete(
+    mongoIdPathVariableValidator("chatId"),
+    validate,
+    chatController.leaveGroupChat
+  );
 
 router
   .route("/remove/:chatId")
-  .delete(mongoIdPathVariableValidator("chatId"), validate, deleteOneOnOneChat);
+  .delete(
+    mongoIdPathVariableValidator("chatId"),
+    validate,
+    chatController.deleteOneOnOneChat
+  );
 
 export default router;

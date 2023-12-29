@@ -1,11 +1,5 @@
 import { Router } from "express";
-import {
-  createAddress,
-  deleteAddress,
-  getAddressById,
-  getAllAddresses,
-  updateAddress,
-} from "../../../controllers/apps/ecommerce/address.controllers.js";
+import { addressController } from "../../../controllers/apps/ecommerce/index.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import {
   createAddressValidator,
@@ -21,18 +15,26 @@ router.use(verifyJWT);
 
 router
   .route("/")
-  .post(createAddressValidator(), validate, createAddress)
-  .get(getAllAddresses);
+  .post(createAddressValidator(), validate, addressController.createAddress)
+  .get(addressController.getAllAddresses);
 
 router
   .route("/:addressId")
-  .get(mongoIdPathVariableValidator("addressId"), validate, getAddressById)
-  .delete(mongoIdPathVariableValidator("addressId"), validate, deleteAddress)
+  .get(
+    mongoIdPathVariableValidator("addressId"),
+    validate,
+    addressController.getAddressById
+  )
+  .delete(
+    mongoIdPathVariableValidator("addressId"),
+    validate,
+    addressController.deleteAddress
+  )
   .patch(
     updateAddressValidator(),
     mongoIdPathVariableValidator("addressId"),
     validate,
-    updateAddress
+    addressController.updateAddress
   );
 
 export default router;

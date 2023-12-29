@@ -1,14 +1,10 @@
 import { Router } from "express";
-import {
-  getARandomUser,
-  getRandomUsers,
-  getUserById,
-} from "../../controllers/public/randomuser.controllers.js";
+import { randomuserController } from "../../controllers/public/index.js";
 
 const router = Router();
 
-router.route("/").get(getRandomUsers);
-router.route("/:userId").get(getUserById);
-router.route("/user/random").get(getARandomUser);
+router.route("/").get(randomuserController.getRandomUsers);
+router.route("/:userId").get(randomuserController.getUserById);
+router.route("/user/random").get(randomuserController.getARandomUser);
 
 export default router;

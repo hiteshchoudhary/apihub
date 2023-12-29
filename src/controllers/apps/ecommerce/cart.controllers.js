@@ -93,7 +93,7 @@ export const getCart = async (userId) => {
   );
 };
 
-const getUserCart = asyncHandler(async (req, res) => {
+export const getUserCart = asyncHandler(async (req, res) => {
   let cart = await getCart(req.user._id);
 
   return res
@@ -101,7 +101,7 @@ const getUserCart = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, cart, "Cart fetched successfully"));
 });
 
-const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
+export const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { quantity = 1 } = req.body;
 
@@ -163,7 +163,7 @@ const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, newCart, "Item added successfully"));
 });
 
-const removeItemFromCart = asyncHandler(async (req, res) => {
+export const removeItemFromCart = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
   const product = await Product.findById(productId);
@@ -206,7 +206,7 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, cart, "Cart item removed successfully"));
 });
 
-const clearCart = asyncHandler(async (req, res) => {
+export const clearCart = asyncHandler(async (req, res) => {
   await Cart.findOneAndUpdate(
     {
       owner: req.user._id,
@@ -225,10 +225,3 @@ const clearCart = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, cart, "Cart has been cleared"));
 });
-
-export {
-  getUserCart,
-  addItemOrUpdateItemQuantity,
-  removeItemFromCart,
-  clearCart,
-};

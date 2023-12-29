@@ -8,7 +8,7 @@ import { getCart } from "./cart.controllers.js";
 import { Cart } from "../../../models/apps/ecommerce/cart.models.js";
 import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 
-const createCoupon = asyncHandler(async (req, res) => {
+export const createCoupon = asyncHandler(async (req, res) => {
   const {
     name,
     couponCode,
@@ -55,7 +55,7 @@ const createCoupon = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, coupon, "Coupon created successfully"));
 });
 
-const applyCoupon = asyncHandler(async (req, res) => {
+export const applyCoupon = asyncHandler(async (req, res) => {
   const { couponCode } = req.body;
 
   // check for coupon code existence
@@ -119,7 +119,7 @@ const applyCoupon = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, newCart, "Coupon applied successfully"));
 });
 
-const removeCouponFromCart = asyncHandler(async (req, res) => {
+export const removeCouponFromCart = asyncHandler(async (req, res) => {
   // Find the user cart and remove the coupon from it
   await Cart.findOneAndUpdate(
     {
@@ -140,7 +140,7 @@ const removeCouponFromCart = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, newCart, "Coupon removed successfully"));
 });
 
-const updateCouponActiveStatus = asyncHandler(async (req, res) => {
+export const updateCouponActiveStatus = asyncHandler(async (req, res) => {
   const { isActive } = req.body;
   const { couponId } = req.params;
 
@@ -169,7 +169,7 @@ const updateCouponActiveStatus = asyncHandler(async (req, res) => {
     );
 });
 
-const getAllCoupons = asyncHandler(async (req, res) => {
+export const getAllCoupons = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const couponAggregate = Coupon.aggregate([{ $match: {} }]);
 
@@ -190,7 +190,7 @@ const getAllCoupons = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, coupons, "Coupons fetched successfully"));
 });
 
-const getValidCouponsForCustomer = asyncHandler(async (req, res) => {
+export const getValidCouponsForCustomer = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
   const userCart = await getCart(req.user._id);
@@ -236,7 +236,7 @@ const getValidCouponsForCustomer = asyncHandler(async (req, res) => {
     );
 });
 
-const getCouponById = asyncHandler(async (req, res) => {
+export const getCouponById = asyncHandler(async (req, res) => {
   const { couponId } = req.params;
 
   const coupon = await Coupon.findById(couponId);
@@ -248,7 +248,7 @@ const getCouponById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, coupon, "Coupon deleted successfully"));
 });
 
-const updateCoupon = asyncHandler(async (req, res) => {
+export const updateCoupon = asyncHandler(async (req, res) => {
   const { couponId } = req.params;
   const {
     name,
@@ -319,7 +319,7 @@ const updateCoupon = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, coupon, "Coupon updated successfully"));
 });
 
-const deleteCoupon = asyncHandler(async (req, res) => {
+export const deleteCoupon = asyncHandler(async (req, res) => {
   const { couponId } = req.params;
 
   const deletedCoupon = await Coupon.findByIdAndDelete(couponId);
@@ -332,15 +332,3 @@ const deleteCoupon = asyncHandler(async (req, res) => {
       new ApiResponse(200, { deletedCoupon }, "Coupon deleted successfully")
     );
 });
-
-export {
-  createCoupon,
-  getAllCoupons,
-  deleteCoupon,
-  getCouponById,
-  updateCoupon,
-  applyCoupon,
-  removeCouponFromCart,
-  updateCouponActiveStatus,
-  getValidCouponsForCustomer,
-};

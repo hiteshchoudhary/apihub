@@ -1,14 +1,10 @@
 import { Router } from "express";
-import {
-  getARandomBook,
-  getBookById,
-  getBooks,
-} from "../../controllers/public/book.controllers.js";
+import { bookController } from "../../controllers/public/index.js";
 
 const router = Router();
 
-router.route("/").get(getBooks);
-router.route("/:bookId").get(getBookById);
-router.route("/book/random").get(getARandomBook);
+router.route("/").get(bookController.getBooks);
+router.route("/:bookId").get(bookController.getBookById);
+router.route("/book/random").get(bookController.getARandomBook);
 
 export default router;

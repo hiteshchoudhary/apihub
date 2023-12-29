@@ -1,10 +1,5 @@
 import { Router } from "express";
-import {
-  addItemOrUpdateItemQuantity,
-  clearCart,
-  getUserCart,
-  removeItemFromCart,
-} from "../../../controllers/apps/ecommerce/cart.controllers.js";
+import { cartController } from "../../../controllers/apps/ecommerce/index.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import { addItemOrUpdateItemQuantityValidator } from "../../../validators/apps/ecommerce/cart.validators.js";
 import { validate } from "../../../validators/validate.js";
@@ -14,9 +9,9 @@ const router = Router();
 
 router.use(verifyJWT);
 
-router.route("/").get(getUserCart);
+router.route("/").get(cartController.getUserCart);
 
-router.route("/clear").delete(clearCart);
+router.route("/clear").delete(cartController.clearCart);
 
 router
   .route("/item/:productId")
@@ -24,8 +19,12 @@ router
     mongoIdPathVariableValidator("productId"),
     addItemOrUpdateItemQuantityValidator(),
     validate,
-    addItemOrUpdateItemQuantity
+    cartController.addItemOrUpdateItemQuantity
   )
-  .delete(mongoIdPathVariableValidator("productId"), validate, removeItemFromCart);
+  .delete(
+    mongoIdPathVariableValidator("productId"),
+    validate,
+    cartController.removeItemFromCart
+  );
 
 export default router;

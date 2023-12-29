@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getMeals = asyncHandler(async (req, res) => {
+export const getMeals = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -34,7 +34,7 @@ const getMeals = asyncHandler(async (req, res) => {
     );
 });
 
-const getMealById = asyncHandler(async (req, res) => {
+export const getMealById = asyncHandler(async (req, res) => {
   const { mealId } = req.params;
   const meal = mealsJson.find((meal) => +meal.id === +mealId);
   if (!meal) {
@@ -45,7 +45,7 @@ const getMealById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, meal, "Meal fetched successfully"));
 });
 
-const getARandomMeal = asyncHandler(async (req, res) => {
+export const getARandomMeal = asyncHandler(async (req, res) => {
   const mealsArray = mealsJson;
   const randomIndex = Math.floor(Math.random() * mealsArray.length);
 
@@ -55,5 +55,3 @@ const getARandomMeal = asyncHandler(async (req, res) => {
       new ApiResponse(200, mealsArray[randomIndex], "Meal fetched successfully")
     );
 });
-
-export { getMeals, getARandomMeal, getMealById };

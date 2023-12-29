@@ -1,15 +1,5 @@
 import { Router } from "express";
-import {
-  applyCoupon,
-  createCoupon,
-  deleteCoupon,
-  getAllCoupons,
-  getCouponById,
-  getValidCouponsForCustomer,
-  removeCouponFromCart,
-  updateCoupon,
-  updateCouponActiveStatus,
-} from "../../../controllers/apps/ecommerce/coupon.controllers.js";
+import { couponController } from "../../../controllers/apps/ecommerce/index.js";
 import {
   verifyPermission,
   verifyJWT,
@@ -31,29 +21,39 @@ router.use(verifyJWT);
 
 router
   .route("/c/apply")
-  .post(applyCouponCodeValidator(), validate, applyCoupon);
-router.route("/c/remove").post(removeCouponFromCart);
+  .post(applyCouponCodeValidator(), validate, couponController.applyCoupon);
+router.route("/c/remove").post(couponController.removeCouponFromCart);
 // get coupons that customer can apply based on coupons active status and customer's cart value
-router.route("/customer/available").get(getValidCouponsForCustomer);
+router
+  .route("/customer/available")
+  .get(couponController.getValidCouponsForCustomer);
 
 // * ADMIN ROUTES
 router.use(verifyPermission([UserRolesEnum.ADMIN]));
 
 router
   .route("/")
-  .get(getAllCoupons)
-  .post(createCouponValidator(), validate, createCoupon);
+  .get(couponController.getAllCoupons)
+  .post(createCouponValidator(), validate, couponController.createCoupon);
 
 router
   .route("/:couponId")
-  .get(mongoIdPathVariableValidator("couponId"), validate, getCouponById)
+  .get(
+    mongoIdPathVariableValidator("couponId"),
+    validate,
+    couponController.getCouponById
+  )
   .patch(
     mongoIdPathVariableValidator("couponId"),
     updateCouponValidator(),
     validate,
-    updateCoupon
+    couponController.updateCoupon
   )
-  .delete(mongoIdPathVariableValidator("couponId"), validate, deleteCoupon);
+  .delete(
+    mongoIdPathVariableValidator("couponId"),
+    validate,
+    couponController.deleteCoupon
+  );
 
 router
   .route("/status/:couponId")
@@ -61,7 +61,7 @@ router
     mongoIdPathVariableValidator("couponId"),
     couponActivityStatusValidator(),
     validate,
-    updateCouponActiveStatus
+    couponController.updateCouponActiveStatus
   );
 
 export default router;

@@ -1,12 +1,5 @@
 import { Router } from "express";
-import {
-  getResponseHeaders,
-  sendBrotliResponse,
-  sendGzipResponse,
-  sendHTMLTemplate,
-  sendXMLData,
-  setCacheControlHeader,
-} from "../../controllers/kitchen-sink/responseinspection.controllers.js";
+import { responseinspectionController } from "../../controllers/kitchen-sink/index.js";
 import { setCacheControlHeaderValidator } from "../../validators/kitchen-sink/responseinspection.validators.js";
 import { validate } from "../../validators/validate.js";
 import compression from "express-compression";
@@ -15,12 +8,19 @@ const router = Router();
 
 router
   .route("/cache/:timeToLive/:cacheResponseDirective")
-  .get(setCacheControlHeaderValidator(), validate, setCacheControlHeader);
-router.route("/headers").get(getResponseHeaders);
-router.route("/html").get(sendHTMLTemplate);
-router.route("/xml").get(sendXMLData);
+  .get(
+    setCacheControlHeaderValidator(),
+    validate,
+    responseinspectionController.setCacheControlHeader
+  );
+router.route("/headers").get(responseinspectionController.getResponseHeaders);
+router.route("/html").get(responseinspectionController.sendHTMLTemplate);
+router.route("/xml").get(responseinspectionController.sendXMLData);
 
-router.use(compression()).route("/gzip").get(sendGzipResponse);
+router
+  .use(compression())
+  .route("/gzip")
+  .get(responseinspectionController.sendGzipResponse);
 
 router
   .use(
@@ -31,5 +31,5 @@ router
       },
     })
   )
-  .get("/brotli", sendBrotliResponse);
+  .get("/brotli", responseinspectionController.sendBrotliResponse);
 export default router;

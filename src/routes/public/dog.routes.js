@@ -1,14 +1,10 @@
 import { Router } from "express";
-import {
-  getARandomDog,
-  getDogById,
-  getDogs,
-} from "../../controllers/public/dog.controllers.js";
+import { dogController } from "../../controllers/public/index.js";
 
 const router = Router();
 
-router.route("/").get(getDogs);
-router.route("/:dogId").get(getDogById);
-router.route("/dog/random").get(getARandomDog);
+router.route("/").get(dogController.getDogs);
+router.route("/:dogId").get(dogController.getDogById);
+router.route("/dog/random").get(dogController.getARandomDog);
 
 export default router;

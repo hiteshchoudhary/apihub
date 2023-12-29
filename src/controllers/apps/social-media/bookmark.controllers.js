@@ -4,7 +4,7 @@ import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 
-const bookmarkUnBookmarkPost = asyncHandler(async (req, res) => {
+export const bookmarkUnBookmarkPost = asyncHandler(async (req, res) => {
   const { postId } = req.params;
 
   const post = await SocialPost.findById(postId);
@@ -52,5 +52,3 @@ const bookmarkUnBookmarkPost = asyncHandler(async (req, res) => {
     );
   }
 });
-
-export { bookmarkUnBookmarkPost };

@@ -1,14 +1,10 @@
 import { Router } from "express";
-import {
-  getARandomProduct,
-  getProductById,
-  getRandomProducts,
-} from "../../controllers/public/randomproduct.controllers.js";
+import { randomproductController } from "../../controllers/public/index.js";
 
 const router = Router();
 
-router.route("/").get(getRandomProducts);
-router.route("/:productId").get(getProductById);
-router.route("/product/random").get(getARandomProduct);
+router.route("/").get(randomproductController.getRandomProducts);
+router.route("/:productId").get(randomproductController.getProductById);
+router.route("/product/random").get(randomproductController.getARandomProduct);
 
 export default router;

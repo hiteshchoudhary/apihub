@@ -1,7 +1,7 @@
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getResponseHeaders = asyncHandler(async (req, res) => {
+export const getResponseHeaders = asyncHandler(async (req, res) => {
   res.set({
     "Content-Type": "application/json; charset=utf-8",
     "Content-Length": "280",
@@ -24,7 +24,7 @@ const getResponseHeaders = asyncHandler(async (req, res) => {
  * For example,
  * - cache-control: max-age=120 means that the returned resource is valid for 120 seconds, after which the browser has to request a newer version.
  */
-const setCacheControlHeader = asyncHandler(async (req, res) => {
+export const setCacheControlHeader = asyncHandler(async (req, res) => {
   const { timeToLive, cacheResponseDirective } = req.params;
   res.set(
     // The `public` (cacheResponseDirective) response directive indicates that a resource can be cached by any cache.
@@ -44,7 +44,7 @@ const setCacheControlHeader = asyncHandler(async (req, res) => {
     );
 });
 
-const sendHTMLTemplate = asyncHandler(async (req, res) => {
+export const sendHTMLTemplate = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .set("content-type", "text/html")
@@ -53,7 +53,7 @@ const sendHTMLTemplate = asyncHandler(async (req, res) => {
     });
 });
 
-const sendXMLData = asyncHandler(async (req, res) => {
+export const sendXMLData = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .set("content-type", "application/xml")
@@ -62,7 +62,7 @@ const sendXMLData = asyncHandler(async (req, res) => {
     });
 });
 
-const sendGzipResponse = asyncHandler(async (req, res) => {
+export const sendGzipResponse = asyncHandler(async (req, res) => {
   // This controller is guarded by compression middleware which compresses the response
   const animal = "elephant";
   // It will repeatedly send the word 'elephant' in a
@@ -79,7 +79,7 @@ const sendGzipResponse = asyncHandler(async (req, res) => {
   );
 });
 
-const sendBrotliResponse = asyncHandler(async (req, res) => {
+export const sendBrotliResponse = asyncHandler(async (req, res) => {
   // This controller is guarded by compression middleware which compresses the response in `br` encoding
   const animal = "elephant";
   res.status(200).send(
@@ -93,12 +93,3 @@ const sendBrotliResponse = asyncHandler(async (req, res) => {
     )
   );
 });
-
-export {
-  getResponseHeaders,
-  setCacheControlHeader,
-  sendHTMLTemplate,
-  sendXMLData,
-  sendGzipResponse,
-  sendBrotliResponse,
-};

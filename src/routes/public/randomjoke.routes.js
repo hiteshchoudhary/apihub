@@ -1,14 +1,10 @@
 import { Router } from "express";
-import {
-  getARandomJoke,
-  getJokeById,
-  getRandomJokes,
-} from "../../controllers/public/randomjoke.controllers.js";
+import { randomjokeController } from "../../controllers/public/index.js";
 
 const router = Router();
 
-router.route("/").get(getRandomJokes);
-router.route("/:jokeId").get(getJokeById);
-router.route("/joke/random").get(getARandomJoke);
+router.route("/").get(randomjokeController.getRandomJokes);
+router.route("/:jokeId").get(randomjokeController.getJokeById);
+router.route("/joke/random").get(randomjokeController.getARandomJoke);
 
 export default router;

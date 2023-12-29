@@ -99,7 +99,7 @@ const getUserSocialProfile = async (userId, req) => {
   return { ...userProfile, isFollowing };
 };
 
-const getMySocialProfile = asyncHandler(async (req, res) => {
+export const getMySocialProfile = asyncHandler(async (req, res) => {
   let profile = await getUserSocialProfile(req.user._id, req);
   return res
     .status(200)
@@ -107,7 +107,7 @@ const getMySocialProfile = asyncHandler(async (req, res) => {
 });
 
 // Public route
-const getProfileByUserName = asyncHandler(async (req, res) => {
+export const getProfileByUserName = asyncHandler(async (req, res) => {
   const { username } = req.params;
 
   const user = await User.findOne({ username });
@@ -125,7 +125,7 @@ const getProfileByUserName = asyncHandler(async (req, res) => {
     );
 });
 
-const updateSocialProfile = asyncHandler(async (req, res) => {
+export const updateSocialProfile = asyncHandler(async (req, res) => {
   const { firstName, lastName, phoneNumber, countryCode, bio, dob, location } =
     req.body;
 
@@ -154,7 +154,7 @@ const updateSocialProfile = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, profile, "User profile updated successfully"));
 });
 
-const updateCoverImage = asyncHandler(async (req, res) => {
+export const updateCoverImage = asyncHandler(async (req, res) => {
   // Check if user has uploaded a cover image
   if (!req.file?.filename) {
     throw new ApiError(400, "Cover image is required");
@@ -194,10 +194,3 @@ const updateCoverImage = asyncHandler(async (req, res) => {
       new ApiResponse(200, updatedProfile, "Cover image updated successfully")
     );
 });
-
-export {
-  getMySocialProfile,
-  getProfileByUserName,
-  updateSocialProfile,
-  updateCoverImage,
-};

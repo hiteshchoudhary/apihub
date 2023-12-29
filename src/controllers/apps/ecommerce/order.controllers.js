@@ -143,7 +143,7 @@ try {
 
 // * CONTROLLERS
 
-const generateRazorpayOrder = asyncHandler(async (req, res) => {
+export const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const { addressId } = req.body;
 
   if (!razorpayInstance) {
@@ -234,7 +234,7 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   );
 });
 
-const verifyRazorpayPayment = asyncHandler(async (req, res) => {
+export const verifyRazorpayPayment = asyncHandler(async (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
     req.body;
 
@@ -255,7 +255,7 @@ const verifyRazorpayPayment = asyncHandler(async (req, res) => {
   }
 });
 
-const generatePaypalOrder = asyncHandler(async (req, res) => {
+export const generatePaypalOrder = asyncHandler(async (req, res) => {
   const { addressId } = req.body;
 
   // Check if address is valid and is of logged in user's
@@ -334,7 +334,7 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   );
 });
 
-const verifyPaypalPayment = asyncHandler(async (req, res) => {
+export const verifyPaypalPayment = asyncHandler(async (req, res) => {
   const { orderId } = req.body;
 
   const response = await paypalApi(`/${orderId}/capture`, {});
@@ -351,7 +351,7 @@ const verifyPaypalPayment = asyncHandler(async (req, res) => {
   }
 });
 
-const updateOrderStatus = asyncHandler(async (req, res) => {
+export const updateOrderStatus = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
   const { status } = req.body;
 
@@ -385,7 +385,7 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
   );
 });
 
-const getOrderById = asyncHandler(async (req, res) => {
+export const getOrderById = asyncHandler(async (req, res) => {
   const { orderId } = req.params;
   const order = await EcomOrder.aggregate([
     {
@@ -506,7 +506,7 @@ const getOrderById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, order[0], "Order fetched successfully"));
 });
 
-const getOrderListAdmin = asyncHandler(async (req, res) => {
+export const getOrderListAdmin = asyncHandler(async (req, res) => {
   const { status, page = 1, limit = 10 } = req.query;
   const orderAggregate = EcomOrder.aggregate([
     {
@@ -590,13 +590,3 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, orders, "Orders fetched successfully"));
 });
-
-export {
-  generateRazorpayOrder,
-  generatePaypalOrder,
-  verifyRazorpayPayment,
-  verifyPaypalPayment,
-  getOrderById,
-  getOrderListAdmin,
-  updateOrderStatus,
-};

@@ -4,7 +4,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 
-const createAddress = asyncHandler(async (req, res) => {
+export const createAddress = asyncHandler(async (req, res) => {
   const { addressLine1, addressLine2, pincode, city, state, country } =
     req.body;
   const owner = req.user._id;
@@ -24,7 +24,7 @@ const createAddress = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, address, "Address created successfully"));
 });
 
-const getAllAddresses = asyncHandler(async (req, res) => {
+export const getAllAddresses = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const addressAggregation = Address.aggregate([
     {
@@ -51,7 +51,7 @@ const getAllAddresses = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, addresses, "Addresses fetched successfully"));
 });
 
-const getAddressById = asyncHandler(async (req, res) => {
+export const getAddressById = asyncHandler(async (req, res) => {
   const { addressId } = req.params;
   const address = await Address.findOne({
     _id: addressId,
@@ -67,7 +67,7 @@ const getAddressById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, address, "Address fetched successfully"));
 });
 
-const updateAddress = asyncHandler(async (req, res) => {
+export const updateAddress = asyncHandler(async (req, res) => {
   const { addressId } = req.params;
   const { addressLine1, addressLine2, pincode, city, state, country } =
     req.body;
@@ -98,7 +98,7 @@ const updateAddress = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, address, "Address updated successfully"));
 });
 
-const deleteAddress = asyncHandler(async (req, res) => {
+export const deleteAddress = asyncHandler(async (req, res) => {
   const { addressId } = req.params;
   const address = await Address.findOneAndDelete({
     _id: addressId,
@@ -119,11 +119,3 @@ const deleteAddress = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export {
-  createAddress,
-  getAllAddresses,
-  getAddressById,
-  updateAddress,
-  deleteAddress,
-};

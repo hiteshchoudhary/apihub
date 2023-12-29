@@ -6,7 +6,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 
-const followUnFollowUser = asyncHandler(async (req, res) => {
+export const followUnFollowUser = asyncHandler(async (req, res) => {
   const { toBeFollowedUserId } = req.params;
 
   // See if user that is being followed exist
@@ -60,7 +60,7 @@ const followUnFollowUser = asyncHandler(async (req, res) => {
   }
 });
 
-const getFollowersListByUserName = asyncHandler(async (req, res) => {
+export const getFollowersListByUserName = asyncHandler(async (req, res) => {
   const { username } = req.params;
   const { page = 1, limit = 10 } = req.query;
 
@@ -234,7 +234,7 @@ const getFollowersListByUserName = asyncHandler(async (req, res) => {
     );
 });
 
-const getFollowingListByUserName = asyncHandler(async (req, res) => {
+export const getFollowingListByUserName = asyncHandler(async (req, res) => {
   const { username } = req.params;
   const { page = 1, limit = 10 } = req.query;
 
@@ -405,9 +405,3 @@ const getFollowingListByUserName = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export {
-  followUnFollowUser,
-  getFollowersListByUserName,
-  getFollowingListByUserName,
-};

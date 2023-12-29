@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getBooks = asyncHandler(async (req, res) => {
+export const getBooks = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -35,7 +35,7 @@ const getBooks = asyncHandler(async (req, res) => {
     );
 });
 
-const getBookById = asyncHandler(async (req, res) => {
+export const getBookById = asyncHandler(async (req, res) => {
   const { bookId } = req.params;
   const book = booksJson.find((book) => +book.id === +bookId);
   if (!book) {
@@ -46,7 +46,7 @@ const getBookById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, book, "Book fetched successfully"));
 });
 
-const getARandomBook = asyncHandler(async (req, res) => {
+export const getARandomBook = asyncHandler(async (req, res) => {
   const booksArray = booksJson;
   const randomIndex = Math.floor(Math.random() * booksArray.length);
 
@@ -56,5 +56,3 @@ const getARandomBook = asyncHandler(async (req, res) => {
       new ApiResponse(200, booksArray[randomIndex], "Book fetched successfully")
     );
 });
-
-export { getBooks, getARandomBook, getBookById };

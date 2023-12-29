@@ -9,7 +9,7 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 
-const getChannelDetails = asyncHandler(async (req, res) => {
+export const getChannelDetails = asyncHandler(async (req, res) => {
   const channelDetails = channelJson.channel;
   return res
     .status(200)
@@ -22,7 +22,7 @@ const getChannelDetails = asyncHandler(async (req, res) => {
     );
 });
 
-const getPlaylists = asyncHandler(async (req, res) => {
+export const getPlaylists = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
 
@@ -39,7 +39,7 @@ const getPlaylists = asyncHandler(async (req, res) => {
     );
 });
 
-const getPlaylistById = asyncHandler(async (req, res) => {
+export const getPlaylistById = asyncHandler(async (req, res) => {
   const { playlistId } = req.params;
 
   // filter out the playlist by id from json array
@@ -76,7 +76,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
   );
 });
 
-const getVideos = asyncHandler(async (req, res) => {
+export const getVideos = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
 
@@ -153,7 +153,7 @@ const getVideos = asyncHandler(async (req, res) => {
     );
 });
 
-const getVideoById = asyncHandler(async (req, res) => {
+export const getVideoById = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
 
   // get filter based on id
@@ -182,7 +182,7 @@ const getVideoById = asyncHandler(async (req, res) => {
   );
 });
 
-const getVideoComments = asyncHandler(async (req, res) => {
+export const getVideoComments = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
 
   const video = videosJson.channelVideos.find(
@@ -202,7 +202,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     );
 });
 
-const getRelatedVideos = asyncHandler(async (req, res) => {
+export const getRelatedVideos = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
@@ -230,13 +230,3 @@ const getRelatedVideos = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export {
-  getChannelDetails,
-  getPlaylistById,
-  getPlaylists,
-  getRelatedVideos,
-  getVideoById,
-  getVideoComments,
-  getVideos,
-};

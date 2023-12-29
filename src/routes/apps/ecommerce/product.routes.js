@@ -1,13 +1,5 @@
 import { Router } from "express";
-import {
-  createProduct,
-  deleteProduct,
-  getAllProducts,
-  getProductById,
-  getProductsByCategory,
-  removeProductSubImage,
-  updateProduct,
-} from "../../../controllers/apps/ecommerce/product.controllers.js";
+import { productController } from "../../../controllers/apps/ecommerce/index.js";
 import {
   verifyPermission,
   verifyJWT,
@@ -25,7 +17,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(getAllProducts)
+  .get(productController.getAllProducts)
   .post(
     verifyJWT,
     verifyPermission([UserRolesEnum.ADMIN]),
@@ -44,12 +36,16 @@ router
     ]),
     createProductValidator(),
     validate,
-    createProduct
+    productController.createProduct
   );
 
 router
   .route("/:productId")
-  .get(mongoIdPathVariableValidator("productId"), validate, getProductById)
+  .get(
+    mongoIdPathVariableValidator("productId"),
+    validate,
+    productController.getProductById
+  )
   .patch(
     verifyJWT,
     verifyPermission([UserRolesEnum.ADMIN]),
@@ -66,19 +62,23 @@ router
     mongoIdPathVariableValidator("productId"),
     updateProductValidator(),
     validate,
-    updateProduct
+    productController.updateProduct
   )
   .delete(
     verifyJWT,
     verifyPermission([UserRolesEnum.ADMIN]),
     mongoIdPathVariableValidator("productId"),
     validate,
-    deleteProduct
+    productController.deleteProduct
   );
 
 router
   .route("/category/:categoryId")
-  .get(mongoIdPathVariableValidator("categoryId"), validate, getProductsByCategory);
+  .get(
+    mongoIdPathVariableValidator("categoryId"),
+    validate,
+    productController.getProductsByCategory
+  );
 
 router
   .route("/remove/subimage/:productId/:subImageId")
@@ -88,7 +88,7 @@ router
     mongoIdPathVariableValidator("productId"),
     mongoIdPathVariableValidator("subImageId"),
     validate,
-    removeProductSubImage
+    productController.removeProductSubImage
   );
 
 export default router;

@@ -1,8 +1,5 @@
 import { Router } from "express";
-import {
-  getAllMessages,
-  sendMessage,
-} from "../../../controllers/apps/chat-app/message.controllers.js";
+import { messageController } from "../../../controllers/apps/chat-app/index.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
 import { sendMessageValidator } from "../../../validators/apps/chat-app/message.validators.js";
@@ -15,13 +12,17 @@ router.use(verifyJWT);
 
 router
   .route("/:chatId")
-  .get(mongoIdPathVariableValidator("chatId"), validate, getAllMessages)
+  .get(
+    mongoIdPathVariableValidator("chatId"),
+    validate,
+    messageController.getAllMessages
+  )
   .post(
     upload.fields([{ name: "attachments", maxCount: 5 }]),
     mongoIdPathVariableValidator("chatId"),
     sendMessageValidator(),
     validate,
-    sendMessage
+    messageController.sendMessage
   );
 
 export default router;

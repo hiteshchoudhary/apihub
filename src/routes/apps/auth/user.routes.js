@@ -1,21 +1,8 @@
 import { Router } from "express";
 import passport from "passport";
 import { UserRolesEnum } from "../../../constants.js";
-import {
-  assignRole,
-  changeCurrentPassword,
-  forgotPasswordRequest,
-  getCurrentUser,
-  handleSocialLogin,
-  loginUser,
-  logoutUser,
-  refreshAccessToken,
-  registerUser,
-  resendEmailVerification,
-  resetForgottenPassword,
-  updateUserAvatar,
-  verifyEmail,
-} from "../../../controllers/apps/auth/user.controllers.js";
+import { userController } from "../../../controllers/apps/auth/index.js";
+
 import {
   verifyJWT,
   verifyPermission,
@@ -36,39 +23,49 @@ import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb
 const router = Router();
 
 // Unsecured route
-router.route("/register").post(userRegisterValidator(), validate, registerUser);
-router.route("/login").post(userLoginValidator(), validate, loginUser);
-router.route("/refresh-token").post(refreshAccessToken);
-router.route("/verify-email/:verificationToken").get(verifyEmail);
+router
+  .route("/register")
+  .post(userRegisterValidator(), validate, userController.registerUser);
+router
+  .route("/login")
+  .post(userLoginValidator(), validate, userController.loginUser);
+router.route("/refresh-token").post(userController.refreshAccessToken);
+router
+  .route("/verify-email/:verificationToken")
+  .get(userController.verifyEmail);
 
 router
   .route("/forgot-password")
-  .post(userForgotPasswordValidator(), validate, forgotPasswordRequest);
+  .post(
+    userForgotPasswordValidator(),
+    validate,
+    userController.forgotPasswordRequest
+  );
 router
   .route("/reset-password/:resetToken")
   .post(
     userResetForgottenPasswordValidator(),
     validate,
-    resetForgottenPassword
+    userController.resetForgottenPassword
   );
 
 // Secured routes
-router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/logout").post(verifyJWT, userController.logoutUser);
 router
   .route("/avatar")
-  .patch(verifyJWT, upload.single("avatar"), updateUserAvatar);
-router.route("/current-user").get(verifyJWT, getCurrentUser);
+  .patch(verifyJWT, upload.single("avatar"), userController.updateUserAvatar);
+router.route("/current-user").get(verifyJWT, userController.getCurrentUser);
 router
   .route("/change-password")
   .post(
     verifyJWT,
     userChangeCurrentPasswordValidator(),
     validate,
-    changeCurrentPassword
+    userController.changeCurrentPassword
   );
 router
   .route("/resend-email-verification")
-  .post(verifyJWT, resendEmailVerification);
+  .post(verifyJWT, userController.resendEmailVerification);
 router
   .route("/assign-role/:userId")
   .post(
@@ -77,7 +74,7 @@ router
     mongoIdPathVariableValidator("userId"),
     userAssignRoleValidator(),
     validate,
-    assignRole
+    userController.assignRole
   );
 
 // SSO routes
@@ -101,10 +98,10 @@ router.route("/github").get(
 
 router
   .route("/google/callback")
-  .get(passport.authenticate("google"), handleSocialLogin);
+  .get(passport.authenticate("google"), userController.handleSocialLogin);
 
 router
   .route("/github/callback")
-  .get(passport.authenticate("github"), handleSocialLogin);
+  .get(passport.authenticate("github"), userController.handleSocialLogin);
 
 export default router;

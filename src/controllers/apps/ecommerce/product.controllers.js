@@ -12,7 +12,7 @@ import {
 import { MAXIMUM_SUB_IMAGE_COUNT } from "../../../constants.js";
 import { Category } from "../../../models/apps/ecommerce/category.models.js";
 
-const getAllProducts = asyncHandler(async (req, res) => {
+export const getAllProducts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const productAggregate = Product.aggregate([{ $match: {} }]);
 
@@ -33,7 +33,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, products, "Products fetched successfully"));
 });
 
-const createProduct = asyncHandler(async (req, res) => {
+export const createProduct = asyncHandler(async (req, res) => {
   const { name, description, category, price, stock } = req.body;
 
   const categoryToBeAdded = await Category.findById(category);
@@ -87,7 +87,7 @@ const createProduct = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, product, "Product created successfully"));
 });
 
-const updateProduct = asyncHandler(async (req, res) => {
+export const updateProduct = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { name, description, category, price, stock } = req.body;
 
@@ -178,7 +178,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedProduct, "Product updated successfully"));
 });
 
-const getProductById = asyncHandler(async (req, res) => {
+export const getProductById = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const product = await Product.findById(productId);
 
@@ -191,7 +191,7 @@ const getProductById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, product, "Product fetched successfully"));
 });
 
-const getProductsByCategory = asyncHandler(async (req, res) => {
+export const getProductsByCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
   const { page = 1, limit = 10 } = req.query;
 
@@ -233,7 +233,7 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
     );
 });
 
-const removeProductSubImage = asyncHandler(async (req, res) => {
+export const removeProductSubImage = asyncHandler(async (req, res) => {
   const { productId, subImageId } = req.params;
 
   const product = await Product.findById(productId);
@@ -273,7 +273,7 @@ const removeProductSubImage = asyncHandler(async (req, res) => {
     );
 });
 
-const deleteProduct = asyncHandler(async (req, res) => {
+export const deleteProduct = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
   const product = await Product.findOneAndDelete({
@@ -301,13 +301,3 @@ const deleteProduct = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export {
-  createProduct,
-  deleteProduct,
-  getAllProducts,
-  getProductById,
-  getProductsByCategory,
-  updateProduct,
-  removeProductSubImage,
-};

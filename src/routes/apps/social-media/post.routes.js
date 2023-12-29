@@ -1,16 +1,6 @@
 import { Router } from "express";
 import { MAXIMUM_SOCIAL_POST_IMAGE_COUNT } from "../../../constants.js";
-import {
-  createPost,
-  deletePost,
-  getAllPosts,
-  getMyPosts,
-  getPostById,
-  getPostsByTag,
-  getPostsByUsername,
-  removePostImage,
-  updatePost,
-} from "../../../controllers/apps/social-media/post.controllers.js";
+import { postController } from "../../../controllers/apps/social-media/index.js";
 import {
   getLoggedInUserOrIgnore,
   verifyJWT,
@@ -29,7 +19,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(getLoggedInUserOrIgnore, getAllPosts)
+  .get(getLoggedInUserOrIgnore, postController.getAllPosts)
   .post(
     verifyJWT,
     upload.fields([
@@ -37,10 +27,10 @@ router
     ]),
     createPostValidator(),
     validate,
-    createPost
+    postController.createPost
   );
 
-router.route("/get/my").get(verifyJWT, getMyPosts);
+router.route("/get/my").get(verifyJWT, postController.getMyPosts);
 
 router
   .route("/get/u/:username")
@@ -48,7 +38,7 @@ router
     getLoggedInUserOrIgnore,
     usernamePathVariableValidator(),
     validate,
-    getPostsByUsername
+    postController.getPostsByUsername
   );
 
 router
@@ -57,7 +47,7 @@ router
     getLoggedInUserOrIgnore,
     tagPathVariableValidator(),
     validate,
-    getPostsByTag
+    postController.getPostsByTag
   );
 
 router
@@ -66,7 +56,7 @@ router
     getLoggedInUserOrIgnore,
     mongoIdPathVariableValidator("postId"),
     validate,
-    getPostById
+    postController.getPostById
   )
   .patch(
     verifyJWT,
@@ -76,9 +66,14 @@ router
     mongoIdPathVariableValidator("postId"),
     updatePostValidator(),
     validate,
-    updatePost
+    postController.updatePost
   )
-  .delete(verifyJWT, mongoIdPathVariableValidator("postId"), validate, deletePost);
+  .delete(
+    verifyJWT,
+    mongoIdPathVariableValidator("postId"),
+    validate,
+    postController.deletePost
+  );
 
 router
   .route("/remove/image/:postId/:imageId")
@@ -87,7 +82,7 @@ router
     mongoIdPathVariableValidator("postId"),
     mongoIdPathVariableValidator("imageId"),
     validate,
-    removePostImage
+    postController.removePostImage
   );
 
 export default router;

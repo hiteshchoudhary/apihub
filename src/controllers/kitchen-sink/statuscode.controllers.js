@@ -8,7 +8,7 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
  */
 const CONFLICTING_STATUS_CODES = [100, 102, 103, 204, 205, 304];
 
-const getStatusCode = asyncHandler(async (req, res) => {
+export const getStatusCode = asyncHandler(async (req, res) => {
   const { statusCode } = req.params;
 
   /** @type {{statusCode: number, statusMessage: string, description: string, category: string}} */
@@ -34,10 +34,8 @@ const getStatusCode = asyncHandler(async (req, res) => {
     );
 });
 
-const getAllStatusCodes = asyncHandler(async (req, res) => {
+export const getAllStatusCodes = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, statusCodesJson, "Status codes fetched"));
 });
-
-export { getStatusCode, getAllStatusCodes };

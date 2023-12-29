@@ -5,7 +5,7 @@ import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 
-const likeDislikePost = asyncHandler(async (req, res) => {
+export const likeDislikePost = asyncHandler(async (req, res) => {
   const { postId } = req.params;
 
   const post = await SocialPost.findById(postId);
@@ -54,7 +54,7 @@ const likeDislikePost = asyncHandler(async (req, res) => {
   }
 });
 
-const likeDislikeComment = asyncHandler(async (req, res) => {
+export const likeDislikeComment = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
 
   const comment = await SocialComment.findById(commentId);
@@ -102,5 +102,3 @@ const likeDislikeComment = asyncHandler(async (req, res) => {
     );
   }
 });
-
-export { likeDislikePost, likeDislikeComment };

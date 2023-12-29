@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getQuotes = asyncHandler(async (req, res) => {
+export const getQuotes = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -34,7 +34,7 @@ const getQuotes = asyncHandler(async (req, res) => {
     );
 });
 
-const getQuoteById = asyncHandler(async (req, res) => {
+export const getQuoteById = asyncHandler(async (req, res) => {
   const { quoteId } = req.params;
   const quote = quotesJson.find((quote) => +quote.id === +quoteId);
   if (!quote) {
@@ -45,7 +45,7 @@ const getQuoteById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, quote, "Quote fetched successfully"));
 });
 
-const getARandomQuote = asyncHandler(async (req, res) => {
+export const getARandomQuote = asyncHandler(async (req, res) => {
   const quotesArray = quotesJson;
   const randomIndex = Math.floor(Math.random() * quotesArray.length);
 
@@ -59,5 +59,3 @@ const getARandomQuote = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export { getQuotes, getARandomQuote, getQuoteById };

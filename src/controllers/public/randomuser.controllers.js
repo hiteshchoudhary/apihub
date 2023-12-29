@@ -4,7 +4,7 @@ import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
-const getRandomUsers = asyncHandler(async (req, res) => {
+export const getRandomUsers = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
@@ -36,7 +36,7 @@ const getRandomUsers = asyncHandler(async (req, res) => {
     );
 });
 
-const getUserById = asyncHandler(async (req, res) => {
+export const getUserById = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   const user = randomUsersJson.find((user) => +user.id === +userId);
   if (!user) {
@@ -47,7 +47,7 @@ const getUserById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "User fetched successfully"));
 });
 
-const getARandomUser = asyncHandler(async (req, res) => {
+export const getARandomUser = asyncHandler(async (req, res) => {
   const randomUsersArray = randomUsersJson;
   const randomIndex = Math.floor(Math.random() * randomUsersArray.length);
 
@@ -61,5 +61,3 @@ const getARandomUser = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export { getRandomUsers, getARandomUser, getUserById };

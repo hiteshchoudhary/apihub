@@ -1,14 +1,10 @@
 import { Router } from "express";
-import {
-  getARandomCat,
-  getCatById,
-  getCats,
-} from "../../controllers/public/cat.controllers.js";
+import { catController } from "../../controllers/public/index.js";
 
 const router = Router();
 
-router.route("/").get(getCats);
-router.route("/:catId").get(getCatById);
-router.route("/cat/random").get(getARandomCat);
+router.route("/").get(catController.getCats);
+router.route("/:catId").get(catController.getCatById);
+router.route("/cat/random").get(catController.getARandomCat);
 
 export default router;

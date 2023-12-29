@@ -1,13 +1,6 @@
 import { Router } from "express";
 
-import {
-  createTodo,
-  deleteTodo,
-  getAllTodos,
-  getTodoById,
-  toggleTodoDoneStatus,
-  updateTodo,
-} from "../../../controllers/apps/todo/todo.controllers.js";
+import { todoController } from "../../../controllers/apps/todo/index.js";
 import {
   createTodoValidator,
   getAllTodosQueryValidators,
@@ -20,26 +13,34 @@ const router = Router();
 
 router
   .route("/")
-  .post(createTodoValidator(), validate, createTodo)
-  .get(getAllTodosQueryValidators(), validate, getAllTodos);
+  .post(createTodoValidator(), validate, todoController.createTodo)
+  .get(getAllTodosQueryValidators(), validate, todoController.getAllTodos);
 
 router
   .route("/:todoId")
-  .get(mongoIdPathVariableValidator("todoId"), validate, getTodoById)
+  .get(
+    mongoIdPathVariableValidator("todoId"),
+    validate,
+    todoController.getTodoById
+  )
   .patch(
     mongoIdPathVariableValidator("todoId"),
     updateTodoValidator(),
     validate,
-    updateTodo
+    todoController.updateTodo
   )
-  .delete(mongoIdPathVariableValidator("todoId"), validate, deleteTodo);
+  .delete(
+    mongoIdPathVariableValidator("todoId"),
+    validate,
+    todoController.deleteTodo
+  );
 
 router
   .route("/toggle/status/:todoId")
   .patch(
     mongoIdPathVariableValidator("todoId"),
     validate,
-    toggleTodoDoneStatus
+    todoController.toggleTodoDoneStatus
   );
 
 export default router;

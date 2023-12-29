@@ -4,7 +4,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 
-const createCategory = asyncHandler(async (req, res) => {
+export const createCategory = asyncHandler(async (req, res) => {
   const { name } = req.body;
 
   const category = await Category.create({ name, owner: req.user._id });
@@ -14,7 +14,7 @@ const createCategory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, category, "Category created successfully"));
 });
 
-const getAllCategories = asyncHandler(async (req, res) => {
+export const getAllCategories = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const categoryAggregate = Category.aggregate([{ $match: {} }]);
 
@@ -34,7 +34,7 @@ const getAllCategories = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, categories, "Categories fetched successfully"));
 });
 
-const getCategoryById = asyncHandler(async (req, res) => {
+export const getCategoryById = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
   const category = await Category.findById(categoryId);
   if (!category) {
@@ -45,7 +45,7 @@ const getCategoryById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, category, "Category fetched successfully"));
 });
 
-const updateCategory = asyncHandler(async (req, res) => {
+export const updateCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
   const { name } = req.body;
   const category = await Category.findByIdAndUpdate(
@@ -66,7 +66,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, category, "Category updated successfully"));
 });
 
-const deleteCategory = asyncHandler(async (req, res) => {
+export const deleteCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
   const category = await Category.findByIdAndDelete(categoryId);
 
@@ -84,11 +84,3 @@ const deleteCategory = asyncHandler(async (req, res) => {
       )
     );
 });
-
-export {
-  createCategory,
-  getAllCategories,
-  getCategoryById,
-  updateCategory,
-  deleteCategory,
-};

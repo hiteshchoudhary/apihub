@@ -1,10 +1,5 @@
 import { Router } from "express";
-import {
-  getMySocialProfile,
-  getProfileByUserName,
-  updateCoverImage,
-  updateSocialProfile,
-} from "../../../controllers/apps/social-media/profile.controllers.js";
+import { profileController } from "../../../controllers/apps/social-media/index.js";
 import {
   getLoggedInUserOrIgnore,
   verifyJWT,
@@ -23,18 +18,22 @@ router.route("/u/:username").get(
   getLoggedInUserOrIgnore, // hover over the middleware to know more
   getProfileByUserNameValidator(),
   validate,
-  getProfileByUserName
+  profileController.getProfileByUserName
 );
 
 router.use(verifyJWT);
 
 router
   .route("/")
-  .get(getMySocialProfile)
-  .patch(updateSocialProfileValidator(), validate, updateSocialProfile);
+  .get(profileController.getMySocialProfile)
+  .patch(
+    updateSocialProfileValidator(),
+    validate,
+    profileController.updateSocialProfile
+  );
 
 router
   .route("/cover-image")
-  .patch(upload.single("coverImage"), updateCoverImage);
+  .patch(upload.single("coverImage"), profileController.updateCoverImage);
 
 export default router;

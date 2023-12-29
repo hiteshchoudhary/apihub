@@ -4,7 +4,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 
-const getMyEcomProfile = asyncHandler(async (req, res) => {
+export const getMyEcomProfile = asyncHandler(async (req, res) => {
   let profile = await EcomProfile.findOne({
     owner: req.user._id,
   });
@@ -14,7 +14,7 @@ const getMyEcomProfile = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, profile, "User profile fetched successfully"));
 });
 
-const updateEcomProfile = asyncHandler(async (req, res) => {
+export const updateEcomProfile = asyncHandler(async (req, res) => {
   const { firstName, lastName, phoneNumber, countryCode } = req.body;
   const profile = await EcomProfile.findOneAndUpdate(
     {
@@ -35,7 +35,7 @@ const updateEcomProfile = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, profile, "User profile updated successfully"));
 });
 
-const getMyOrders = asyncHandler(async (req, res) => {
+export const getMyOrders = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const orderAggregate = EcomOrder.aggregate([
     {
@@ -118,5 +118,3 @@ const getMyOrders = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, orders, "Orders fetched successfully"));
 });
-
-export { getMyEcomProfile, updateEcomProfile, getMyOrders };

@@ -5,7 +5,7 @@ import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { getMongoosePaginationOptions } from "../../../utils/helpers.js";
 import { ApiError } from "../../../utils/ApiError.js";
 
-const addComment = asyncHandler(async (req, res) => {
+export const addComment = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
 
@@ -20,7 +20,7 @@ const addComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, comment, "Comment added successfully"));
 });
 
-const getPostComments = asyncHandler(async (req, res) => {
+export const getPostComments = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const { page = 1, limit = 10 } = req.query;
   const commentAggregation = SocialComment.aggregate([
@@ -130,7 +130,7 @@ const getPostComments = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, comments, "Post comments fetched successfully"));
 });
 
-const deleteComment = asyncHandler(async (req, res) => {
+export const deleteComment = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
   const deletedComment = await SocialComment.findOneAndDelete({
     _id: new mongoose.Types.ObjectId(commentId),
@@ -151,7 +151,7 @@ const deleteComment = asyncHandler(async (req, res) => {
     );
 });
 
-const updateComment = asyncHandler(async (req, res) => {
+export const updateComment = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
   const { content } = req.body;
 
@@ -177,5 +177,3 @@ const updateComment = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, updatedComment, "Comment updated successfully"));
 });
-
-export { addComment, getPostComments, deleteComment, updateComment };

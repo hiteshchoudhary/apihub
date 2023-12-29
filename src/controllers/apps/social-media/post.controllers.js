@@ -134,7 +134,7 @@ const postCommonAggregation = (req) => {
   ];
 };
 
-const createPost = asyncHandler(async (req, res) => {
+export const createPost = asyncHandler(async (req, res) => {
   const { content, tags } = req.body;
   // Check if user has uploaded any images if yes then extract the file path
   // else assign an empty array
@@ -177,7 +177,7 @@ const createPost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, createdPost[0], "Post created successfully"));
 });
 
-const updatePost = asyncHandler(async (req, res) => {
+export const updatePost = asyncHandler(async (req, res) => {
   const { content, tags } = req.body;
   const { postId } = req.params;
   const post = await SocialPost.findOne({
@@ -256,7 +256,7 @@ const updatePost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, aggregatedPost[0], "Post updated successfully"));
 });
 
-const removePostImage = asyncHandler(async (req, res) => {
+export const removePostImage = asyncHandler(async (req, res) => {
   const { postId, imageId } = req.params;
 
   const post = await SocialPost.findOne({
@@ -308,7 +308,7 @@ const removePostImage = asyncHandler(async (req, res) => {
     );
 });
 
-const getAllPosts = asyncHandler(async (req, res) => {
+export const getAllPosts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const postAggregation = SocialPost.aggregate([...postCommonAggregation(req)]);
 
@@ -329,7 +329,7 @@ const getAllPosts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "Posts fetched successfully"));
 });
 
-const getPostsByUsername = asyncHandler(async (req, res) => {
+export const getPostsByUsername = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const { username } = req.params;
 
@@ -372,7 +372,7 @@ const getPostsByUsername = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "User's posts fetched successfully"));
 });
 
-const getMyPosts = asyncHandler(async (req, res) => {
+export const getMyPosts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
   const postAggregation = SocialPost.aggregate([
@@ -401,7 +401,7 @@ const getMyPosts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "My posts fetched successfully"));
 });
 
-const getBookMarkedPosts = asyncHandler(async (req, res) => {
+export const getBookMarkedPosts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
   const postAggregation = SocialBookmark.aggregate([
@@ -454,7 +454,7 @@ const getBookMarkedPosts = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, posts, "Bookmarked posts fetched successfully"));
 });
 
-const getPostById = asyncHandler(async (req, res) => {
+export const getPostById = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const post = await SocialPost.aggregate([
     {
@@ -474,7 +474,7 @@ const getPostById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, post[0], "Post fetched successfully"));
 });
 
-const deletePost = asyncHandler(async (req, res) => {
+export const deletePost = asyncHandler(async (req, res) => {
   const { postId } = req.params;
 
   const post = await SocialPost.findOneAndDelete({
@@ -498,7 +498,7 @@ const deletePost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Post deleted successfully"));
 });
 
-const getPostsByTag = asyncHandler(async (req, res) => {
+export const getPostsByTag = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const { tag } = req.params;
 
@@ -535,16 +535,3 @@ const getPostsByTag = asyncHandler(async (req, res) => {
       new ApiResponse(200, posts, `Posts with tag #${tag} fetched successfully`)
     );
 });
-
-export {
-  createPost,
-  deletePost,
-  getAllPosts,
-  getBookMarkedPosts,
-  getMyPosts,
-  getPostById,
-  getPostsByUsername,
-  removePostImage,
-  updatePost,
-  getPostsByTag,
-};
