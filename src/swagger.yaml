@@ -5510,7 +5510,7 @@ paths:
                     message: Stocks fetched successfully
                     statusCode: 200
                     success: true
-  /public/stocks/{stockId}:
+  /public/stocks/{stockSymbol}:
     get:
       tags:
         - 📢 Public APIs
@@ -5637,7 +5637,7 @@ paths:
                     statusCode: 200
                     success: true
     parameters:
-      - name: stockId
+      - name: stockSymbol
         in: path
         required: true
         schema:

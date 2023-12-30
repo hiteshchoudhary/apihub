@@ -35,9 +35,9 @@ const getStocks = asyncHandler(async (req, res) => {
 });
 
 const getStockById = asyncHandler(async (req, res) => {
-  const { stockId } = req.params;
+  const { stockSymbol } = req.params;
   const stock = nseStocksJson.find(
-    (stock) => stock.Symbol.toLowerCase() === stockId.toLowerCase()
+    (stock) => stock.Symbol.toLowerCase() === stockSymbol.toLowerCase()
   );
   if (!stock) {
     throw new ApiError(404, "Stock does not exist.");
