@@ -5515,7 +5515,7 @@ paths:
       tags:
         - 📢 Public APIs
         
-      summary: Get stock by id
+      summary: Get stock by symbol id
       description: >-
         The API endpoint retrieves a stock based on the Symbol as ID provided as a
         path variable.
@@ -5526,7 +5526,7 @@ paths:
       operationId: getStockById
       responses:
         '200':
-          description: Get stock by id
+          description: Get stock by symbol id
           headers:
             Access-Control-Allow-Credentials:
               schema:
@@ -5617,7 +5617,7 @@ paths:
                     type: boolean
                     example: true
               examples:
-                Get stock by id:
+                Get stock by symbol id:
                   value:
                     data:
                         Name: Tata Chemicals Limited
