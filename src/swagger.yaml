@@ -5287,6 +5287,487 @@ paths:
                     message: Book fetched successfully
                     statusCode: 200
                     success: true
+  /public/stocks:
+    get:
+      tags:
+        - 📢 Public APIs
+        
+      summary: Get stocks
+      description: >-
+        The API endpoint allows you to retrieve a list of stocks listed on NSE [National Stock Exchange of India].
+        The data you get is a snapshot taken on 28th Dec 2023 & not live from stock exchange. 
+
+        Upon accessing this endpoint, you will receive a response containing a
+        collection of randomly selected stocks.
+      operationId: getStocks
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: string
+            example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: string
+            example: '2'
+        - name: inc
+          in: query
+          schema:
+            type: string
+            example: Symbol,Name,MarketCap,CurrentPrice
+        - name: query
+          in: query
+          schema:
+            type: string
+            example: tata
+      responses:
+        '200':
+          description: Get stocks
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '27925'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:47:47 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"6d15-0KcGCMfWHfOKgogQFckT/3DtmQw"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      currentPageItems:
+                        type: number
+                        example: 10
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            Name:
+                              type: string
+                              example: Tata Chemicals Limited
+                            Symbol:
+                              type: string
+                              example: TATACHEM
+                            ListingDate:
+                              type: string
+                              example: 01-Apr-99
+                            ISIN:
+                              type: string
+                              example: INE092A01019  
+                            MarketCap:
+                              type: string
+                              example: ₹ 28,355 Cr.  
+                            CurrentPrice:
+                              type: string
+                              example: ₹ 1,113  
+                            HighLow:
+                              type: string
+                              example: ₹ 1,123 / 912  
+                            StockPE:
+                              type: string
+                              example:  14.4 
+                            BookValue:
+                              type: string
+                              example: ₹ 840  
+                            DividendYield:
+                              type: string
+                              example: 1.54 %  
+                            ROCE:
+                              type: string
+                              example: 11.6 %  
+                            ROE:
+                              type: string
+                              example: 12.0 %  
+                            FaceValue:
+                              type: string
+                              example: ₹ 10.0  
+                            
+                        example:
+                          - Name: Tata Chemicals Limited
+                            Symbol: TATACHEM
+                            ListingDate: 01-Apr-99
+                            ISIN: INE092A01019
+                            MarketCap: ₹ 28,355 Cr.
+                            CurrentPrice: ₹ 1,113
+                            HighLow: ₹ 1,123 / 912
+                            StockPE: 14.4
+                            BookValue: ₹ 840
+                            DividendYield: 1.54 %
+                            ROCE: 11.6 %
+                            ROE: 12.0 %
+                            FaceValue: ₹ 10.0
+
+                          - Name: Tata Coffee Limited
+                            Symbol: TATACOFFEE
+                            ListingDate: 16-Feb-00
+                            ISIN: INE493A01027
+                            MarketCap: ₹ 5,993 Cr.
+                            CurrentPrice: ₹ 321
+                            HighLow: ₹ 322 / 199
+                            StockPE: 33.4
+                            BookValue: ₹ 99.3
+                            DividendYield: 0.93 %
+                            ROCE: 9.78 %
+                            ROE: 10.1 %
+                            FaceValue: ₹ 1.0      
+                      limit:
+                        type: number
+                        example: 10
+                      nextPage:
+                        type: boolean
+                        example: false
+                      page:
+                        type: number
+                        example: 1
+                      previousPage:
+                        type: boolean
+                        example: false
+                      totalItems:
+                        type: number
+                        example: 20
+                      totalPages:
+                        type: number
+                        example: 2
+                  message:
+                    type: string
+                    example: Books fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get Stocks:
+                  value:
+                    data:
+                      limit: 2
+                      nextPage: true
+                      page: 1
+                      previousPage: false
+                      totalItems: 14
+                      totalPages: 7
+                      currentPageItems: 2
+                      data:
+                        - Name: Tata Chemicals Limited
+                          Symbol: TATACHEM
+                          ListingDate: 01-Apr-99
+                          ISIN: INE092A01019
+                          MarketCap: ₹ 28,355 Cr.
+                          CurrentPrice: ₹ 1,113
+                          HighLow: ₹ 1,123 / 912
+                          StockPE: 14.4
+                          BookValue: ₹ 840
+                          DividendYield: 1.54 %
+                          ROCE: 11.6 %
+                          ROE: 12.0 %
+                          FaceValue: ₹ 10.0
+
+                        - Name: Tata Coffee Limited
+                          Symbol: TATACOFFEE
+                          ListingDate: 16-Feb-00
+                          ISIN: INE493A01027
+                          MarketCap: ₹ 5,993 Cr.
+                          CurrentPrice: ₹ 321
+                          HighLow: ₹ 322 / 199
+                          StockPE: 33.4
+                          BookValue: ₹ 99.3
+                          DividendYield: 0.93 %
+                          ROCE: 9.78 %
+                          ROE: 10.1 %
+                          FaceValue: ₹ 1.0
+                    message: Stocks fetched successfully
+                    statusCode: 200
+                    success: true
+  /public/stocks/{stockSymbol}:
+    get:
+      tags:
+        - 📢 Public APIs
+        
+      summary: Get stock by symbol id
+      description: >-
+        The API endpoint retrieves a stock based on the Symbol as ID provided as a
+        path variable.
+
+
+        By accessing this endpoint and specifying a valid stock symbol, you will
+        receive a response containing the details of the corresponding stock.
+      operationId: getStockById
+      responses:
+        '200':
+          description: Get stock by symbol id
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '3361'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:47:57 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"d21-VOx6nGLbPBZU6wWmXZSPV7oDdm8"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      Name:
+                        type: string
+                        example: Tata Chemicals Limited
+                      Symbol:
+                        type: string
+                        example: TATACHEM
+                      ListingDate:
+                        type: string
+                        example: 01-Apr-99
+                      ISIN:
+                        type: string
+                        example: INE092A01019  
+                      MarketCap:
+                        type: string
+                        example: ₹ 28,355 Cr.  
+                      CurrentPrice:
+                        type: string
+                        example: ₹ 1,113  
+                      HighLow:
+                        type: string
+                        example: ₹ 1,123 / 912  
+                      StockPE:
+                        type: string
+                        example:  14.4 
+                      BookValue:
+                        type: string
+                        example: ₹ 840  
+                      DividendYield:
+                        type: string
+                        example: 1.54 %  
+                      ROCE:
+                        type: string
+                        example: 11.6 %  
+                      ROE:
+                        type: string
+                        example: 12.0 %  
+                      FaceValue:
+                        type: string
+                        example: ₹ 10.0          
+                  message:
+                    type: string
+                    example: Book fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get stock by symbol id:
+                  value:
+                    data:
+                        Name: Tata Chemicals Limited
+                        Symbol: TATACHEM
+                        ListingDate: 01-Apr-99
+                        ISIN: INE092A01019
+                        MarketCap: ₹ 28,355 Cr.
+                        CurrentPrice: ₹ 1,113
+                        HighLow: ₹ 1,123 / 912
+                        StockPE: 14.4
+                        BookValue: ₹ 840
+                        DividendYield: 1.54 %
+                        ROCE: 11.6 %
+                        ROE: 12.0 %
+                        FaceValue: ₹ 10.0
+                    message: Stock fetched successfully
+                    statusCode: 200
+                    success: true
+    parameters:
+      - name: stockSymbol
+        in: path
+        required: true
+        schema:
+          type: string
+          example: 'INFY'
+  /public/stocks/stock/random:
+    get:
+      tags:
+        - 📢 Public APIs
+        
+      summary: Get a random stock
+      description: >-
+        The API endpoint returns a single random stock from a list of stocks.
+
+
+        Upon accessing this endpoint, you will receive a response containing the
+        details of a randomly selected stock.
+      operationId: getARandomStock
+      responses:
+        '200':
+          description: Get a random stock
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '2803'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:48:01 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"af3-tgo13Cikj+pozPOzr/EHgQRwOsk"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      Name:
+                        type: string
+                        example: Tata Chemicals Limited
+                      Symbol:
+                        type: string
+                        example: TATACHEM
+                      ListingDate:
+                        type: string
+                        example: 01-Apr-99
+                      ISIN:
+                        type: string
+                        example: INE092A01019  
+                      MarketCap:
+                        type: string
+                        example: ₹ 28,355 Cr.  
+                      CurrentPrice:
+                        type: string
+                        example: ₹ 1,113  
+                      HighLow:
+                        type: string
+                        example: ₹ 1,123 / 912  
+                      StockPE:
+                        type: string
+                        example:  14.4 
+                      BookValue:
+                        type: string
+                        example: ₹ 840  
+                      DividendYield:
+                        type: string
+                        example: 1.54 %  
+                      ROCE:
+                        type: string
+                        example: 11.6 %  
+                      ROE:
+                        type: string
+                        example: 12.0 %  
+                      FaceValue:
+                        type: string
+                        example: ₹ 10.0  
+                  message:
+                    type: string
+                    example: Book fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get a random stock:
+                  value:
+                    data:
+                        Name: Tata Chemicals Limited
+                        Symbol: TATACHEM
+                        ListingDate: 01-Apr-99
+                        ISIN: INE092A01019
+                        MarketCap: ₹ 28,355 Cr.
+                        CurrentPrice: ₹ 1,113
+                        HighLow: ₹ 1,123 / 912
+                        StockPE: 14.4
+                        BookValue: ₹ 840
+                        DividendYield: 1.54 %
+                        ROCE: 11.6 %
+                        ROE: 12.0 %
+                        FaceValue: ₹ 10.0
+                    message: Stock fetched successfully
+                    statusCode: 200
+                    success: true
   /public/quotes:
     get:
       tags:
@@ -8369,7 +8850,6 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        - YouTube API
       summary: Get channel details
       description: "This Channel Details API is your gateway to access comprehensive information about a specific YouTube channel.\n\nBy leveraging a static JSON file, you can effortlessly retrieve and explore vital details, statistics, and metadata associated with the channel to build stunning YouTube like channel page UI.\n\n**Disclaimer:**\n\nData provided by the API is static and not real-time.\n\nThis simplifies the process of developing a\_**YouTube clone**, allowing developers to solely focus on UI design and creativity, without worrying about complex API key configuration."
       operationId: getChannelDetails
@@ -8809,7 +9289,6 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        - YouTube API
       summary: Get youtube videos
       description: >-
         This API endpoint enables you to retrieve all YouTube videos from a JSON
@@ -11219,7 +11698,6 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        - YouTube API
       summary: Get video by id
       description: >-
         This API endpoint allows you to retrieve a YouTube video's complete
@@ -11936,7 +12414,6 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        - YouTube API
       summary: Get video comments
       description: >-
         The API endpoint allows you to retrieve YouTube video comments based on
@@ -12391,7 +12868,6 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        - YouTube API
       summary: Get related videos
       description: >-
         The API endpoint returns a list of recommended YouTube videos based on
@@ -13770,7 +14246,6 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        - YouTube API
       summary: Get playlists
       description: "This API endpoint allows users to retrieve playlists associated with the channel.\n\nBy accessing this endpoint, users can obtain a collection of playlists that belong to the channel.\n\nThis functionality is particularly useful for implementing a \"Playlists\" tab in the channel page UI design, where users can view the playlists conveniently.\n\n**Disclaimer:**\n\nData provided by the API is static and not real-time.\n\nThis simplifies the process of developing a\_**YouTube clone**, allowing developers to solely focus on UI design and creativity, without worrying about complex API key configuration."
       operationId: getPlaylists
@@ -14467,7 +14942,6 @@ paths:
     get:
       tags:
         - 📢 Public APIs
-        - YouTube API
       summary: Get playlist details and items
       description: >-
         This API endpoint provides the details of a playlist, including playlist

@@ -7,6 +7,7 @@ import fs from "fs";
 import { createServer } from "http";
 import passport from "passport";
 import path from "path";
+import requestIp from "request-ip";
 import { Server } from "socket.io";
 import swaggerUi from "swagger-ui-express";
 import { fileURLToPath } from "url";
@@ -45,12 +46,17 @@ app.use(
   })
 );
 
+app.use(requestIp.mw());
+
 // Rate limiter to avoid misuse of the service and avoid cost spikes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 500, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
+  max: 5000, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  keyGenerator: (req, res) => {
+    return req.clientIp; // IP address from requestIp.mw(), as opposed to req.ip
+  },
   handler: (_, __, ___, options) => {
     throw new ApiError(
       options.statusCode || 500,
@@ -94,6 +100,7 @@ import randomjokeRouter from "./routes/public/randomjoke.routes.js";
 import randomproductRouter from "./routes/public/randomproduct.routes.js";
 import randomuserRouter from "./routes/public/randomuser.routes.js";
 import youtubeRouter from "./routes/public/youtube.routes.js";
+import stockRouter from "./routes/public/stock.routes.js";
 
 // * App routes
 import userRouter from "./routes/apps/auth/user.routes.js";
@@ -128,6 +135,7 @@ import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.r
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 
 // * Seeding handlers
+import { avoidInProduction } from "./middlewares/auth.middlewares.js";
 import { seedChatApp } from "./seeds/chat-app.seeds.js";
 import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
@@ -148,6 +156,7 @@ app.use("/api/v1/public/meals", mealRouter);
 app.use("/api/v1/public/dogs", dogRouter);
 app.use("/api/v1/public/cats", catRouter);
 app.use("/api/v1/public/youtube", youtubeRouter);
+app.use("/api/v1/public/stocks", stockRouter);
 
 // * App apis
 app.use("/api/v1/users", userRouter);
@@ -182,16 +191,25 @@ app.use("/api/v1/kitchen-sink/redirect", redirectRouter);
 app.use("/api/v1/kitchen-sink/image", imageRouter);
 
 // * Seeding
-app.get("/api/v1/seed/generated-credentials", getGeneratedCredentials);
-app.post("/api/v1/seed/todos", seedTodos);
-app.post("/api/v1/seed/ecommerce", seedUsers, seedEcommerce);
-app.post("/api/v1/seed/social-media", seedUsers, seedSocialMedia);
-app.post("/api/v1/seed/chat-app", seedUsers, seedChatApp);
+app.get(
+  "/api/v1/seed/generated-credentials",
+  avoidInProduction,
+  getGeneratedCredentials
+);
+app.post("/api/v1/seed/todos", avoidInProduction, seedTodos);
+app.post("/api/v1/seed/ecommerce", avoidInProduction, seedUsers, seedEcommerce);
+app.post(
+  "/api/v1/seed/social-media",
+  avoidInProduction,
+  seedUsers,
+  seedSocialMedia
+);
+app.post("/api/v1/seed/chat-app", avoidInProduction, seedUsers, seedChatApp);
 
 initializeSocketIO(io);
 
 // ! 🚫 Danger Zone
-app.delete("/api/v1/reset-db", async (req, res) => {
+app.delete("/api/v1/reset-db", avoidInProduction, async (req, res) => {
   if (dbInstance) {
     // Drop the whole DB
     await dbInstance.connection.db.dropDatabase({
