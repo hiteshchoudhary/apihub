@@ -25,9 +25,7 @@ const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
 const swaggerDocument = YAML.parse(file);
 
 const app = express();
-
 const httpServer = createServer(app);
-
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
@@ -36,15 +34,52 @@ const io = new Server(httpServer, {
   },
 });
 
-app.set("io", io); // using set method to mount the `io` instance on the app to avoid usage of `global`
+app.set("io", io);
+app.use(requestIp.mw());
 
-// global middlewares
+// Rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req, res) => req.clientIp,
+  handler: (_, __, ___, options) => {
+    throw new ApiError(
+      options.statusCode || 500,
+      `There are too many requests. You are only allowed ${
+        options.max
+      } requests per ${options.windowMs / 60000} minutes`
+    );
+  },
+});
+
+app.use(limiter);
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.static("public"));
+app.use(cookieParser());
+
+// Session middleware
+app.use(
+  session({
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// CORS middleware
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
+
 
 app.use(requestIp.mw());
 
