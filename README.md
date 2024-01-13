@@ -50,7 +50,34 @@ Highlights:
 
 By combining open source principles, accessibility, and a focus on learning, our API hub project paves the way for developers to thrive in the world of API integration. Join our vibrant community and embark on an exciting journey of discovery, growth, and innovation.
 
-### How to contribute - Guidelines
+# ⚠️ Important Note: Avoiding Data Loss and Self-Hosting
+
+# Background:
+
+Our open-source project is currently hosted on a remote server, where we are forced to reset the entire server, **including the file system and MongoDB database**, every **2 hours** to avoid incurring additional costs.
+
+This process results in the **deletion of all image/static files and a reset of the entire database on the server.**
+
+## What does this mean for you?
+
+**Data Loss:**
+Any changes made during the 2-hour interval (on the remote server), including uploaded images and user data, will be lost and unrecoverable.
+
+**Service Interruption:**
+The server reset might disrupt your development and testing processes for a certain duration while the server is rebooting (for 1-2 minutes).
+
+## Recommended Solutions:
+
+**Local API Usage:**
+For development and testing purposes, we strongly recommend using the API locally on your machine by **cloning the project**.
+
+This ensures that your work is not affected by the server resets and allows you to maintain a stable development environment on your local machine.
+
+**Self-Hosting on Railway _(recommended for personal projects)_:**
+To self-host the FreeAPI.app application, you can take advantage of a pre-built template that is readily available.
+[Click here for detailed docs](https://github.com/hiteshchoudhary/apihub/#-using-railway-one-click-deploy)
+
+# How to contribute - Guidelines
 
 We welcome your interest in contributing to our open source project!
 
@@ -144,7 +171,7 @@ To self-host the FreeAPI.app application, you can take advantage of a pre-built 
 
    - `PORT`: Do not change the value, let it be set to 8080 to view the swagger docs after deployment.
    - `MONGODB_URI`: Provide the MongoDB Atlas database URL. An example is prefilled for you, edit/update it to continue.
-   - `NODE_ENV`: Default set to 'development' to view the logs. You may choose to change it to any other value such as 'prod' to hide them.
+   - `NODE_ENV`: Default set to 'development' to view the logs. You may choose to change it to 'production' (make sure to add exact same word) to hide them.
    - `EXPRESS_SESSION_SECRET`: It is advised to change the default value to your own secret value.
    - `ACCESS_TOKEN_SECRET`: It is advised to change the default value to your own secret value.
    - `ACCESS_TOKEN_EXPIRY`: Set to 1 day as default.
