@@ -5,6 +5,7 @@ import Input from "../Input";
 import { FaCirclePlus } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { useTodo } from "../../context/TodoContext";
+import toast from "react-hot-toast";
 
 const CreateTodoModal: React.FC<{
   onClose: () => void;
@@ -14,8 +15,18 @@ const CreateTodoModal: React.FC<{
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (title.length < 1) {
+      toast.error("Please Enter Valid Title !");
+      return;
+    }
+
+    if (description.length < 1) {
+      toast.error("Please Enter Valid Description !");
+      return;
+    }
 
     await createTodo(title, description);
 
@@ -37,17 +48,22 @@ const CreateTodoModal: React.FC<{
         <form onSubmit={onSubmit} className="flex flex-col gap-4 w-full">
           <Input
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setTitle(e.target.value)
+            }
             placeholder="Enter a task..."
           />
           <textarea
             className="bg-transparent rounded-xl focus:border-purple-500 outline-none border-[1px] px-5 py-3 text-base md:text-lg border-white"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setDescription(e.target.value)
+            }
             placeholder="Enter its Description..."
             rows={6}
           />
           <Button
+            type="submit"
             className="mt-10 mx-auto max-w-[400px]"
             fullWidth={true}
             severity="primary"

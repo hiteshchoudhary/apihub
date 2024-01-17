@@ -7,7 +7,7 @@ const Options = ({
   onClick,
 }: {
   title: string;
-  count: number;
+  count: number | null;
   isActive: boolean;
   onClick: () => void;
 }) => {
@@ -19,7 +19,7 @@ const Options = ({
         isActive ? "bg-zinc-700" : ""
       )}
     >
-      {title} ({count})
+      {title} {count && `(${count})`}
     </div>
   );
 };

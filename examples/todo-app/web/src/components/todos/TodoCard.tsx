@@ -2,7 +2,7 @@ import { FaCheck, FaSpinner } from "react-icons/fa6";
 import { TodoInterface } from "../../interfaces/todo";
 import { MdDelete, MdEdit } from "react-icons/md";
 import moment from "moment";
-import { LocalStorage, classNames, requestHandler } from "../../utils";
+import { classNames, requestHandler } from "../../utils";
 import { useState } from "react";
 import { deleteTodoApi, toggleTodoStatusApi } from "../../api";
 import { useTodo } from "../../context/TodoContext";
@@ -15,22 +15,29 @@ const TodoCard = ({ todo }: { todo: TodoInterface }) => {
 
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
 
-  const toggleTodoStatus = async (e: any) => {
+  const toggleTodoStatus = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
+    const result = todos.map((_todo) =>
+      _todo._id === todo._id
+        ? { ..._todo, isComplete: !_todo.isComplete }
+        : _todo
+    );
+
+    changeTodo(result);
+
     await requestHandler(
       async () => await toggleTodoStatusApi(todo._id),
       null,
       (res) => {
         const { data } = res;
-
-        const result = todos.map((todo) =>
-          todo._id === data._id
-            ? { ...todo, isComplete: data.isComplete }
-            : todo
+        const result = todos.map((_todo) =>
+          data._id === _todo._id
+            ? { ...data, isComplete: data.isComplete }
+            : _todo
         );
 
         changeTodo(result);
-        LocalStorage.set("todos", result);
       },
       (error) => {
         toast.error(error);
@@ -38,7 +45,7 @@ const TodoCard = ({ todo }: { todo: TodoInterface }) => {
     );
   };
 
-  const deleteTodoHandler = async (e: any) => {
+  const deleteTodoHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     await requestHandler(
       async () => await deleteTodoApi(todo._id),
@@ -51,8 +58,6 @@ const TodoCard = ({ todo }: { todo: TodoInterface }) => {
         );
 
         changeTodo(result);
-
-        LocalStorage.set("todos", result);
 
         toast.success(res.message);
       },

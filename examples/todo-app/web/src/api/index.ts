@@ -1,7 +1,5 @@
 // Import necessary modules and utilities
 import axios from "axios";
-import { TodoInterface } from "../interfaces/todo";
-// import { LocalStorage } from "../utils";
 
 // Create an Axios instance for API requests
 const apiClient = axios.create({
@@ -40,10 +38,19 @@ const editTodo = (
   });
 };
 
+const getFilteredTodoApi = (query: string, isComplete: boolean | null) => {
+  return apiClient.get(
+    `/todos?query=${query}${
+      isComplete === null ? "" : `&complete=${isComplete}`
+    }`
+  );
+};
+
 export {
   createTodoApi,
   getAllTodos,
   toggleTodoStatusApi,
   deleteTodoApi,
   editTodo,
+  getFilteredTodoApi,
 };

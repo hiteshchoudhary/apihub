@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import Input from "../Input";
 import Button from "../Button";
 import { MdEdit } from "react-icons/md";
-import { LocalStorage, requestHandler } from "../../utils";
+import { requestHandler } from "../../utils";
 import { TodoInterface } from "../../interfaces/todo";
 import { editTodo } from "../../api";
 import toast from "react-hot-toast";
@@ -22,9 +22,20 @@ const DetailAndEditModal: React.FC<{
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.stopPropagation();
     e.preventDefault();
+
+    if (title.length < 1) {
+      toast.error("Please Enter Valid Title !");
+      return;
+    }
+
+    if (description.length < 1) {
+      toast.error("Please Enter Valid Description !");
+      return;
+    }
+
     await requestHandler(
       async () => await editTodo(todo._id, { title, description }),
       setEditLoading,
@@ -34,12 +45,8 @@ const DetailAndEditModal: React.FC<{
         const result = todos.map((todo) =>
           todo._id === data._id ? { ...data } : todo
         );
-
         changeTodo(result);
-        LocalStorage.set("todos", result);
-
         toast.success(res.message);
-
         onClose();
       },
       (error) => {
@@ -76,20 +83,24 @@ const DetailAndEditModal: React.FC<{
             <Input
               ref={inputRef}
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setTitle(e.target.value)
+              }
               placeholder="Enter a Todo..."
             />
             <textarea
               className="bg-transparent rounded-xl focus:border-purple-500 outline-none border-[1px] px-5 py-3 text-base md:text-lg border-white"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setDescription(e.target.value)
+              }
               placeholder="Enter its Description..."
               rows={6}
             />
 
             <div className="mt-10 flex justify-around gap-4">
               <Button
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                   e.preventDefault();
                   onClose();
                 }}
@@ -110,12 +121,12 @@ const DetailAndEditModal: React.FC<{
             </div>
           </form>
         ) : (
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-4 w-full max-h-[75vh]">
             <h1 className="rounded-xl outline-none border-[1px] px-5 py-3 text-base md:text-lg border-white">
               {todo.title}
             </h1>
 
-            <p className="rounded-xl outline-none border-[1px] px-5 py-3 text-base md:text-lg border-white">
+            <p className="rounded-xl overflow-auto outline-none border-[1px] px-5 py-3 text-base md:text-lg border-white">
               {todo.description}
             </p>
 
