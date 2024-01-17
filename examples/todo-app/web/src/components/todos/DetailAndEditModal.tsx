@@ -31,7 +31,7 @@ const DetailAndEditModal: React.FC<{
       (res) => {
         const { data } = res;
 
-        const result = todos.map((todo) =>
+        const result = todos?.map((todo) =>
           todo._id === data._id ? { ...data } : todo
         );
 

@@ -1,13 +1,13 @@
-import Button from "./components/Button";
 import { FaCirclePlus } from "react-icons/fa6";
 import { SlDrawer } from "react-icons/sl";
+import Button from "./components/Button";
 import Header from "./components/Header";
 
-import { useTodo } from "./context/TodoContext";
 import { useState } from "react";
-import CreateTodoModal from "./components/todos/CreateTodoModal";
 import Options from "./components/Options";
+import CreateTodoModal from "./components/todos/CreateTodoModal";
 import TodoCard from "./components/todos/TodoCard";
+import { useTodo } from "./context/TodoContext";
 import { classNames } from "./utils";
 
 function App() {
@@ -27,17 +27,17 @@ function App() {
     {
       title: "All Todos",
       slug: "all",
-      count: todos.length,
+      count: todos?.length,
     },
     {
       title: "Pending",
       slug: "pending",
-      count: todos.filter((todo) => !todo.isComplete).length,
+      count: todos?.filter((todo) => !todo.isComplete).length,
     },
     {
       title: "Completed",
       slug: "completed",
-      count: todos.filter((todo) => todo.isComplete).length,
+      count: todos?.filter((todo) => todo.isComplete).length,
     },
   ];
 
@@ -47,7 +47,7 @@ function App() {
 
       {createTodoModal && <CreateTodoModal onClose={closeCreateTodoModal} />}
 
-      {todos.length > 0 ? (
+      {todos && todos.length > 0 ? (
         <div className={classNames("flex flex-col items-center p-3 ")}>
           <div className=" w-full px-3 mt-10">
             <Button

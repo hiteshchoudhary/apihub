@@ -1,11 +1,9 @@
 // Import necessary modules and utilities
 import axios from "axios";
-import { TodoInterface } from "../interfaces/todo";
-// import { LocalStorage } from "../utils";
 
 // Create an Axios instance for API requests
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_URI,
+  baseURL: import.meta.env.VITE_SERVER_URL,
   withCredentials: true,
   timeout: 120000,
 });
@@ -42,8 +40,8 @@ const editTodo = (
 
 export {
   createTodoApi,
-  getAllTodos,
-  toggleTodoStatusApi,
   deleteTodoApi,
   editTodo,
+  getAllTodos,
+  toggleTodoStatusApi,
 };

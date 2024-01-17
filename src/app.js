@@ -41,7 +41,10 @@ app.set("io", io); // using set method to mount the `io` instance on the app to 
 // global middlewares
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin:
+      process.env.CORS_ORIGIN === "*"
+        ? "*" // This might give CORS error for some origins due to credentials set to true
+        : process.env.CORS_ORIGIN?.split(","), // For multiple cors origin for production. Refer https://github.com/hiteshchoudhary/apihub/blob/a846abd7a0795054f48c7eb3e71f3af36478fa96/.env.sample#L12C1-L12C12
     credentials: true,
   })
 );
