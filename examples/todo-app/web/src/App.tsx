@@ -1,12 +1,12 @@
-import Button from "./components/Button";
 import { FaCirclePlus } from "react-icons/fa6";
 import { SlDrawer } from "react-icons/sl";
+import Button from "./components/Button";
 import Header from "./components/Header";
 
-import { useTodo } from "./context/TodoContext";
 import { useState } from "react";
 import CreateTodoModal from "./components/todos/CreateTodoModal";
 import TodoCard from "./components/todos/TodoCard";
+import { useTodo } from "./context/TodoContext";
 import { classNames } from "./utils";
 import Loader from "./components/Loader";
 import TabsHeader from "./components/todos/TabsHeader";
@@ -31,7 +31,7 @@ function App() {
 
       {createTodoModal && <CreateTodoModal onClose={closeCreateTodoModal} />}
 
-      {todos?.length > 0 ? (
+      {todos && todos.length > 0 ? (
         <div className={classNames("flex flex-col items-center p-3 ")}>
           <TabsHeader
             openCreateTodoModal={openCreateTodoModal}

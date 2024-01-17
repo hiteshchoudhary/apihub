@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Create an Axios instance for API requests
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_URI,
+  baseURL: import.meta.env.VITE_SERVER_URL,
   withCredentials: true,
   timeout: 120000,
 });
@@ -48,9 +48,9 @@ const getFilteredTodoApi = (query: string, isComplete: boolean | null) => {
 
 export {
   createTodoApi,
-  getAllTodos,
-  toggleTodoStatusApi,
   deleteTodoApi,
   editTodo,
+  getAllTodos,
   getFilteredTodoApi,
+  toggleTodoStatusApi,
 };

@@ -25,6 +25,11 @@ const getAllTodos = asyncHandler(async (req, res) => {
           }
         : {},
     },
+    {
+      $sort: {
+        updatedAt: -1,
+      },
+    },
   ]);
 
   return res

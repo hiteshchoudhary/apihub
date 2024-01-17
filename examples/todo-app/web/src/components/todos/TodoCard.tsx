@@ -1,12 +1,12 @@
-import { FaCheck, FaSpinner } from "react-icons/fa6";
-import { TodoInterface } from "../../interfaces/todo";
-import { MdDelete, MdEdit } from "react-icons/md";
 import moment from "moment";
-import { classNames, requestHandler } from "../../utils";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { FaCheck, FaSpinner } from "react-icons/fa6";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { deleteTodoApi, toggleTodoStatusApi } from "../../api";
 import { useTodo } from "../../context/TodoContext";
-import toast from "react-hot-toast";
+import { TodoInterface } from "../../interfaces/todo";
+import { classNames, requestHandler } from "../../utils";
 import DetailAndEditModal from "./DetailAndEditModal";
 
 const TodoCard = ({ todo }: { todo: TodoInterface }) => {
@@ -31,9 +31,10 @@ const TodoCard = ({ todo }: { todo: TodoInterface }) => {
       null,
       (res) => {
         const { data } = res;
-        const result = todos.map((_todo) =>
-          data._id === _todo._id
-            ? { ...data, isComplete: data.isComplete }
+
+        const result = todos?.map((_todo) =>
+          _todo._id === data._id
+            ? { ..._todo, isComplete: data.isComplete }
             : _todo
         );
 
@@ -53,7 +54,7 @@ const TodoCard = ({ todo }: { todo: TodoInterface }) => {
       (res) => {
         const { data } = res;
 
-        const result = todos.filter(
+        const result = todos?.filter(
           (todo) => todo._id !== data.deletedTodo._id
         );
 
