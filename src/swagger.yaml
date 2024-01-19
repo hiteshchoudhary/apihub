@@ -34,7 +34,7 @@ info:
     ## 🐞 Reporting issues
 
     If you find API issues or bugs when testing, please create an [issue](https://github.com/hiteshchoudhary/apihub/issues/new) and assign it to a member of the development team.
-  version: 1.0.0
+  version: 1.2.0
   contact: {}
 servers:
   - url: 'http://localhost:8080/api/v1'
