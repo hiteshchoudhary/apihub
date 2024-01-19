@@ -187,4 +187,4 @@ Note: Once the application is deployed, please wait for 3-5 minutes for the swag
 
 # 📜 Swagger Docs
 
-[Swagger Docs](http://localhost:8080): http://localhost:8080
+[Swagger Docs](https://api.freeapi.app): https://api.freeapi.app
