@@ -16,6 +16,7 @@ function App() {
 
   const [createTodoModal, setCreateTodoModal] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("all");
+  // TODO: Implement todo search with debouncing
   const [query, setQuery] = useState(""); // for searching (coming soon)
 
   const closeCreateTodoModal = () => {
