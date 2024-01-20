@@ -6,7 +6,7 @@ Thank you for your interest in contributing to the FreeAPI project by creating f
 
 1. [Getting Started](#getting-started)
 2. [Choosing a Module](#choosing-a-module)
-3. [Folder Structure](#folder-structure)
+3. [Folder Structure](#folder-structure-main)
 4. [Coding Standards](#coding-standards)
 5. [Dependency Management](#dependency-management)
 6. [Testing](#testing)
@@ -38,7 +38,7 @@ Follow this [README.md section](https://github.com/hiteshchoudhary/apihub/blob/m
 
 Decide which module you want to contribute to. Browse the `/apps`, `/public`, or `/kitchen-sink` modules to explore the available modules and APIs. Read the following section carefully to understand the folder structure you need to follow to increase chances to get your PR approved.
 
-## Folder Structure <a name="folder-structure"></a>
+## Folder Structure <a name="folder-structure-main"></a>
 
 Follow the specified folder structure for your frontend application (**The folder names must not follow the camel casing to keep things consistent.** _Your actual project code folders may have camel casing_):
 
