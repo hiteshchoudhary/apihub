@@ -22,8 +22,8 @@ This ensures coordination and prevents duplicated efforts.
 5. [📝 Dependency Management](#dependency-management)
 6. [🧪 Testing (optional)](#testing)
 7. [📨 Submitting Your Contribution](#submitting-your-contribution)
-8. [🌟 Featured Projects Opportunity on FreeAPI](featured-projects)
-9. [🌟 How To Get Featured](get-featured)
+8. [🌟 Featured Projects Opportunity on FreeAPI](#featured-projects)
+9. [🌟 How To Get Featured](#get-featured)
 
 ## Getting Started <a name="getting-started"></a>
 
