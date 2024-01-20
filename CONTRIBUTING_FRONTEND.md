@@ -62,7 +62,7 @@ See the following examples with context for above structure:
 
 ## Example 1: Social Media Web App
 
-Imagine you want to create a web application for the `social-media` project within the `/apps` module of the FreeAPI project. You've decided to use React.js for the frontend, manage state with Redux, and style the app with Tailwind CSS. Your project code will be a unique identifier for your application.
+Imagine you want to create a web application for the `social-media` project within the `/apps` module of the FreeAPI project. You've decided to use React.js for the frontend, manage state with Redux, and style the app with Tailwind CSS. Your project folder name will be a unique identifier for your application because we are not allowing same application to be built using same tech stack.
 
 ### Folder Structure:
 
@@ -72,7 +72,7 @@ $ROOT_FOLDER/examples/apps/social-media/web/react-redux-tailwind/<your_project_f
 
 ## Example 2: YouTube Mobile App
 
-Suppose you are interested in building a mobile application that consumes the YouTube API from the `/public` folder of the FreeAPI project. For this, you've chosen Flutter as your framework, and you'll be using Riverpod for state management. Again, your project code will be a unique identifier for your application.
+Suppose you are interested in building a mobile application that consumes the YouTube API from the `/public` folder of the FreeAPI project. For this, you've chosen Flutter as your framework, and you'll be using Riverpod for state management. Again, your project folder name will be a unique identifier for your application because we are not allowing same application to be built using same tech stack.
 
 ### Folder Structure:
 
@@ -93,11 +93,17 @@ $ROOT_FOLDER/examples/kitchen-sink/statuscodes/web/react-tailwind/<your_project_
 ## Explanation for the examples:
 
 - `ROOT_FOLDER:` Refers to the root directory of the FreeAPI project.
+
 - `examples:` This directory is designated for frontend examples.
+
 - `{module} - apps or public or kitchen-sink:` Denotes the chosen module (`/apps` for complex apps, `/public` for public APIs, `/kitchen-sink` for backend-related static APIs. These folders are already created officially).
+
 - `{app_name} - social-media or youtube or statuscode:` Specifies the name of the chosen app or API within the selected module. This folder is also created by default officially.
+
 - `{platform} - web or mobile or desktop:` Defines the platform for which the frontend is developed (web or mobile or desktop etc).
+
 - `{frontend-tech-used} - react-redux-tailwind or flutter-provider:` Indicates the frontend technology stack used, including the framework, UI-lib and state management tool (at least one tech tool name must be there).
+
 - `<your_project_folders>:` Represents the actual project folders that will be coding.
 
 By following this standardized folder structure, contributors can easily organize their frontend projects, making it convenient for others to explore, understand, and replicate the implementation.
@@ -109,7 +115,7 @@ Adhere to the coding standards of the chosen frontend technology and framework. 
 - Use clear and descriptive variable and function names.
 - Follow best practices for state management, component structure, and code organization.
 - Ensure your code is well-documented by comments wherever necessary.
-- Make sure to use type safe languages like TypeScript over javascript to code teh frontend
+- Try to use type safe languages like TypeScript over JavaScript to code the frontend
 - **Include comprehensive README.md file for each project on how to do installation and setup for the respective apps**
 
 ## Dependency Management <a name="dependency-management"></a>
@@ -124,7 +130,7 @@ Write tests for your frontend application to ensure its functionality. Include i
 
 Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md) for detailed contribution guide on submitting a PR.
 
-Thank you for your contribution to FreeAPI! Your dedication helps make our APIs more accessible and valuable to the community. If you have any questions or need assistance, feel free to reach out to our [community forum](https://exampleforum.com).
+Thank you for your contribution to FreeAPI! Your dedication helps make our APIs more accessible and valuable to the community. If you have any questions or need assistance, feel free to reach out to our [Discord](https://discord.gg/uuGBkhX8Yp).
 
 ## 🌟 Featured Projects Opportunity on FreeAPI <a name="featured-projects"></a>
 
