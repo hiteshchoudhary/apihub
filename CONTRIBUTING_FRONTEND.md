@@ -1,15 +1,17 @@
 # FreeAPI Frontend Contribution Guide
 
-> ⚠️ Important Note: Before starting your contribution
->
-> - create an issue stating the app you will be working on
-> - the technology stack you plan to use
-> - the platform you intend to target.
-> - describe your application in detail
->
-> This ensures coordination and prevents duplicated efforts.
-
 Thank you for your interest in contributing to the FreeAPI project by creating frontend applications! Your efforts play a crucial role in enhancing the user experience and expanding the reach of our APIs. Please follow this guide to ensure a smooth and collaborative contribution process.
+
+## ⚠️ Important Note:
+
+### Before starting your contribution
+
+- create an issue stating the app you will be working on
+- the technology stack you plan to use
+- the platform you intend to target.
+- describe your application in detail
+
+This ensures coordination and prevents duplicated efforts.
 
 ## Table of Contents
 
