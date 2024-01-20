@@ -10,7 +10,7 @@ By contributing, you can help make FreeAPI a more valuable resource for develope
 2. [Commit Message Format](#commit-message-format)
 3. [Guidelines for Contribution](#contribution-guidelines)
 
-## How to Contribute <a href="how-to-contribute"></a>
+## How to Contribute <a name="how-to-contribute"></a>
 
 To contribute to FreeAPI, please follow these guidelines:
 
@@ -21,7 +21,7 @@ To contribute to FreeAPI, please follow these guidelines:
 5. Push your changes to your forked repository: `git push origin feat/your-feature-name`.
 6. Submit a pull request to the main repository.
 
-## Commit Message Format <a href="commit-message-format"></a>
+## Commit Message Format <a name="commit-message-format"></a>
 
 We follow the conventional commit message format to provide a clear and standardized history of our project's changes. Each commit message should consist of a type and a descriptive message.
 
@@ -49,7 +49,7 @@ Example:
 
 Please adhere to this format when making commits. This will help us maintain a clean and organized commit history.
 
-## Guidelines for Contribution <a href="contribution-guidelines"></a>
+## Guidelines for Contribution <a name="contribution-guidelines"></a>
 
 Here's a guide on how you can effectively contribute to our API hub:
 
