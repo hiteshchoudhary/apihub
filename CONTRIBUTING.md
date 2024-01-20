@@ -6,10 +6,10 @@ By contributing, you can help make FreeAPI a more valuable resource for develope
 
 ## Table of Contents
 
-1. [How to Contribute](#how-to-contribute)
-2. [Commit Message Format](#commit-message-format)
-3. [Guidelines for Contribution](#contribution-guidelines)
-4. [Contribute as a frontend developer](#frontend-contributor)
+1. [📙 How to Contribute](#how-to-contribute)
+2. [䷫ Commit Message Format](#commit-message-format)
+3. [👨🏻‍⚖️ Guidelines for Contribution](#contribution-guidelines)
+4. [🚀 Contribute as a frontend developer](#frontend-contributor)
 
 ## How to Contribute <a name="how-to-contribute"></a>
 
