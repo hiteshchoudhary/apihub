@@ -9,6 +9,7 @@ By contributing, you can help make FreeAPI a more valuable resource for develope
 1. [How to Contribute](#how-to-contribute)
 2. [Commit Message Format](#commit-message-format)
 3. [Guidelines for Contribution](#contribution-guidelines)
+4. [Contribute as a frontend developer](#frontend-contributor)
 
 ## How to Contribute <a name="how-to-contribute"></a>
 
@@ -67,4 +68,6 @@ We appreciate your enthusiasm and look forward to your valuable contributions to
 
 Together, we can foster a collaborative environment and make a significant impact in the API integration landscape.
 
-> **Are you a Frontend developer looking to create elegant mobile/web apps which consumes FreeAPIs? Then follow this [Frontend Contribution guide](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING_FRONTEND.md) and contribute as a frontend developer**
+## Contribute as a frontend developer <a name="frontend-contributor"></a>
+
+Are you a Frontend developer looking to create elegant mobile/web apps which consumes FreeAPIs? Then follow this [Frontend Contribution guide](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING_FRONTEND.md) and contribute as a frontend developer
