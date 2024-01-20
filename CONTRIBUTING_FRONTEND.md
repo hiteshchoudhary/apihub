@@ -134,7 +134,7 @@ We value the contributions of our community members, and we want to showcase you
 
 1. **Self-Host the FreeAPI Backend:**
 
-   - Ensure that you have set up and are self-hosting the FreeAPI backend on your server. Detailed instructions can be found in the [README.md Railway one click deploy section](https://github.com/hiteshchoudhary/apihub/blob/main/README.md#-using-railway-one-click-deploy). _(NOTE: You can deploy this app on server that you are comfortable wil just make sure it is deployed and your deployed frontend can consume it's apis)_
+   - Ensure that you have set up and are self-hosting the FreeAPI backend on your server. Detailed instructions can be found in the [README.md Railway one click deploy section](https://github.com/hiteshchoudhary/apihub/blob/main/README.md#-using-railway-one-click-deploy). _(NOTE: You can deploy this app on server that you are comfortable with. Just make sure it is deployed and your deployed frontend can consume it's apis)_
 
 2. **Consume FreeAPI Backend APIs in Your Frontend:**
 
