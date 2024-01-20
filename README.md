@@ -79,6 +79,8 @@ To self-host the FreeAPI.app application, you can take advantage of a pre-built 
 
 # How to contribute - Guidelines
 
+## Contribute in core FreeAPI codebase:
+
 We welcome your interest in contributing to our open source project!
 
 To contribute to FreeAPI, please follow these steps:
@@ -107,7 +109,13 @@ Together, we can foster a collaborative environment and make a significant impac
 
 Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md) for detailed contribution guide.
 
-## 🏁 Installation
+## Contribute by creating frontend application:
+
+Thank you for your interest in contributing to the FreeAPI project by creating frontend applications consuming FreeAPIs! Your efforts play a crucial role in enhancing the user experience and expanding the reach of our APIs. Please follow this guide to ensure a smooth and collaborative contribution process.
+
+Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING_FRONTEND.md) for detailed contribution guide for Frontend Developers 🚀!
+
+# 🏁 Installation
 
 ### 📦 Using Docker (recommended)
 
