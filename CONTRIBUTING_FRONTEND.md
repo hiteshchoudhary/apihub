@@ -79,13 +79,13 @@ $ROOT_FOLDER/examples/kitchen-sink/statuscodes/web/react-tailwind/<your_project_
 
 ## Explanation for the examples:
 
-- **ROOT_FOLDER:** Refers to the root directory of the FreeAPI project.
-- **examples:** This directory is designated for frontend examples.
-- **{module} - apps or public or kitchen-sink:** Denotes the chosen module (`/apps` for complex apps, `/public` for public APIs, `/kitchen-sink` for backend-related static APIs. These folders are already created officially).
-- **{app_name} - social-media or youtube or statuscode:** Specifies the name of the chosen app or API within the selected module. This folder is also created by default officially.
-- **{platform} - web or mobile or desktop:** Defines the platform for which the frontend is developed (web or mobile or desktop etc).
-- **{frontend-tech-used} - react-redux-tailwind or flutter-provider:** Indicates the frontend technology stack used, including the framework, UI-lib and state management tool (at least one tech tool name must be there).
-- **<your_project_folders>:** Represents the actual project folders that will be coding.
+- `ROOT_FOLDER:` Refers to the root directory of the FreeAPI project.
+- `examples:` This directory is designated for frontend examples.
+- `{module} - apps or public or kitchen-sink:` Denotes the chosen module (`/apps` for complex apps, `/public` for public APIs, `/kitchen-sink` for backend-related static APIs. These folders are already created officially).
+- `{app_name} - social-media or youtube or statuscode:` Specifies the name of the chosen app or API within the selected module. This folder is also created by default officially.
+- `{platform} - web or mobile or desktop:` Defines the platform for which the frontend is developed (web or mobile or desktop etc).
+- `{frontend-tech-used} - react-redux-tailwind or flutter-provider:` Indicates the frontend technology stack used, including the framework, UI-lib and state management tool (at least one tech tool name must be there).
+- `<your_project_folders>:` Represents the actual project folders that will be coding.
 
 By following this standardized folder structure, contributors can easily organize their frontend projects, making it convenient for others to explore, understand, and replicate the implementation.
 
