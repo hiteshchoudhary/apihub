@@ -1,4 +1,5 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
   - name: FreeAPI Discord Server
     url: https://discord.gg/uuGBkhX8Yp
+    about: Please ask and answer questions related to FreeAPI here.
