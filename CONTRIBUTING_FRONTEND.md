@@ -11,7 +11,7 @@ Thank you for your interest in contributing to the FreeAPI project by creating f
 - the platform you intend to target.
 - describe your application in detail
 
-**IMPORTANT: Contributor must create an issue with [Frontend Contribution](https://github.com/hiteshchoudhary/apihub/blob/main/.github/ISSUE_TEMPLATE/frontend_contribution.yaml) issue template.**
+**IMPORTANT: Contributor must create an issue with [Frontend Contribution](https://github.com/hiteshchoudhary/apihub/issues/new?assignees=&labels=frontend%2Cenhancement&projects=&template=frontend_contribution.yaml&title=FRONTEND%3A+%3Ctitle%3E) issue template.**
 
 This ensures coordination and prevents duplicated efforts.
 

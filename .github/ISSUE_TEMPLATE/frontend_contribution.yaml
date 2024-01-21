@@ -54,6 +54,6 @@ body:
     attributes:
       label: Project Path
       description: Provide the path to your project within the FreeAPI project's `examples` folder.
-      placeholder: E.g. $ROOT_FOLDER/examples/public/social-media/web/react-redux-tailwind/<your_project_folders>
+      placeholder: E.g. $ROOT_FOLDER/examples/apps/social-media/web/react-redux-tailwind/<your_project_folders>
     validations:
       required: true
