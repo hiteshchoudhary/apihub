@@ -13,7 +13,7 @@ const NonAuthRoute = ({ children }: { children: ReactNode }) => {
     return <Loading />;
   }
 
-  if (token && user) {
+  if (token && user?._id) {
     return <Navigate to="/" />;
   }
 

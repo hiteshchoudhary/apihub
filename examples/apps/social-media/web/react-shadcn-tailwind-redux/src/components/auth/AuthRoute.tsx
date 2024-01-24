@@ -14,7 +14,7 @@ const AuthRoute = ({ children }: { children: ReactNode }) => {
   }
 
   // check user and token both are available, else redirect to login
-  if (!token || !user) {
+  if (!token || !user?._id) {
     return <Navigate to={"/login"} />;
   }
 

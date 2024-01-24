@@ -9,13 +9,14 @@ import Register from "./pages/auth/register";
 import AuthRoute from "./components/auth/AuthRoute";
 import NonAuthRoute from "./components/auth/NonAuthRoute";
 import Home from "./pages/home";
+import Sidebar from "./components/sidebar";
 
 function App() {
   const { user, token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user || !token) {
+    if (!user?._id || !token) {
       dispatch(loadUser());
     }
   }, []);
@@ -23,6 +24,11 @@ function App() {
   return (
     <>
       <Navbar />
+
+      <AuthRoute>
+        <Sidebar />
+      </AuthRoute>
+
       <Routes>
         <Route
           path="/"
@@ -32,8 +38,7 @@ function App() {
             </AuthRoute>
           }
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+
         <Route
           path="/login"
           element={

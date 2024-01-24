@@ -1,7 +1,7 @@
-import React from "react";
+import MainContainer from "@/components/MainContainer";
 
 const Home = () => {
-  return <div>Home</div>;
+  return <MainContainer>Home</MainContainer>;
 };
 
 export default Home;

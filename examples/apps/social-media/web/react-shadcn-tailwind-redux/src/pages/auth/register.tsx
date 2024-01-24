@@ -63,7 +63,7 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-card w-full h-[calc(100vh-80px)]">
+    <div className="bg-card w-full h-[calc(100vh-70px)]">
       <div className="max-w-[600px] mx-auto flex flex-col pt-20 items-center">
         <h2 className="text-2xl sm:text-3xl my-5">Create your Account</h2>
         <Separator className="w-[20%] mx-auto font-mono  bg-accent/55" />

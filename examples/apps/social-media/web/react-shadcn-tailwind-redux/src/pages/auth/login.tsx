@@ -44,7 +44,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="bg-card h-[calc(100vh-80px)]">
+      <div className="bg-card h-[calc(100vh-70px)]">
         <div className="pt-20  flex flex-col max-w-[600px] mx-auto items-center">
           <h2 className="text-2xl sm:text-3xl my-5">Login to ApiGram</h2>
           <Separator className="w-[20%] mx-auto font-mono  bg-accent/55" />
