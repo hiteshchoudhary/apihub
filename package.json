@@ -8,7 +8,9 @@
     "start": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
     "pre-commit": "lint-staged",
     "prepare": "node prepare.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "start:test-server": "node -r dotenv/config --experimental-json-modules e2e/test-server.js",
+    "test:playwright": "set NODE_OPTIONS=--experimental-vm-modules && npx playwright test"
   },
   "repository": {
     "type": "git",
@@ -41,6 +43,7 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "mailgen": "^2.0.27",
+    "mongodb-memory-server": "^9.1.6",
     "mongoose": "^7.4.0",
     "mongoose-aggregate-paginate-v2": "^1.0.6",
     "multer": "^1.4.5-lts.1",
