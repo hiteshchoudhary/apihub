@@ -31,7 +31,12 @@ export const postsSlice = createSlice({
       }>
     ) => {
       // Concatenate the new posts to the existing posts in the state
-      state.posts = [...state.posts, ...action.payload.posts];
+
+      if (action.payload.nextPage === 2) {
+        state.posts = action.payload.posts;
+      } else {
+        state.posts = [...state.posts, ...action.payload.posts];
+      }
 
       // Update hasNextPage and nextPage based on the action payload
       state.hasNextPage = action.payload.hasNextPage;
