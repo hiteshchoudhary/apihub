@@ -1,3 +1,5 @@
+// required imports
+
 import { RootState } from "@/redux/store";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
@@ -9,6 +11,7 @@ const AuthRoute = ({ children }: { children: ReactNode }) => {
     (state: RootState) => state.auth
   );
 
+  // loading state if the data is requested
   if (loadingUser) {
     return <Loading />;
   }

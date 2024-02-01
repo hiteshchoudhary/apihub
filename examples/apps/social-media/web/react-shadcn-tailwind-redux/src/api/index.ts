@@ -1,9 +1,9 @@
 import { LocalStorage } from "@/utils";
 import axios from "axios";
 
-// axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 axios.defaults.withCredentials = true;
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 100000;
 
 // Add an interceptor to set authorization header with user token before requests
 axios.interceptors.request.use(
@@ -18,6 +18,8 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+// functions that returns axios instance to make api request
 
 const loginApi = (email: string, password: string) => {
   return axios.post(
@@ -41,4 +43,8 @@ const registerApi = (email: string, password: string, username: string) => {
   );
 };
 
-export { loginApi, registerApi };
+const getOthersPostApi = ({ page = 1 }: { page: number }) => {
+  return axios.get(`/api/v1/social-media/posts?page=${page}`);
+};
+
+export { loginApi, registerApi, getOthersPostApi };

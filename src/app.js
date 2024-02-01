@@ -145,7 +145,7 @@ import { seedSocialMedia } from "./seeds/social-media.seeds.js";
 import { seedTodos } from "./seeds/todo.seeds.js";
 import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
 
-// * healthcheck
+// * healthcclearnpmheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
 // * Public apis

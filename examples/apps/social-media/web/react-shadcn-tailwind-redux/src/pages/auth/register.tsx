@@ -4,10 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { requestHandler } from "@/utils";
-import { EyeIcon, EyeOff, Lock, Mail, User } from "lucide-react";
+import { CircleDashed, EyeIcon, EyeOff, Lock, Mail, User } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -52,6 +51,8 @@ const Register = () => {
         setLoading,
         (res) => {
           toast.success(res.message);
+
+          // redirecting to login page in if registered success
           navigate("/login");
         },
         (error) => {
@@ -171,7 +172,17 @@ const Register = () => {
               <span className="text-primary">Login Here</span>
             </Link>
 
-            <Button type="submit" size={"lg"} className="rounded-xl">
+            <Button
+              disabled={loading}
+              type="submit"
+              size={"lg"}
+              className="rounded-xl"
+            >
+              {loading ? (
+                <CircleDashed className="animate-spin" />
+              ) : (
+                "Create Account"
+              )}
               Create Account
             </Button>
           </div>
