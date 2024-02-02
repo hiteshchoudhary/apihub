@@ -8,7 +8,6 @@
     "start": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
     "pre-commit": "lint-staged",
     "prepare": "node prepare.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "start:test-server": "node -r dotenv/config --experimental-json-modules e2e/test-server.js",
     "test:playwright": "set NODE_OPTIONS=--experimental-vm-modules && npx playwright test"
   },

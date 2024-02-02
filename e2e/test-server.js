@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import { httpServer } from "../src/app.js";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { httpServer } from "../src/app.js";
 
 dotenv.config({
   path: "../.env",
@@ -18,7 +18,7 @@ const connectDB = async () => {
     dbInstance = await mongoose.connect(`${mongoServer.getUri()}`);
     await clearDB();
   } catch (error) {
-    console.log("MongoDB connection error: ", error);
+    console.log("Mongo db connect error: ", error);
     process.exit(1);
   }
 };
