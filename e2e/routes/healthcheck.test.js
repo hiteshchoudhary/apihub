@@ -3,7 +3,7 @@ import { getApiContext } from "../common.js";
 
 let apiContext;
 
-test.describe("Heanthcheck", () => {
+test.describe("Healthcheck", () => {
   test.beforeAll(async ({ playwright }) => {
     apiContext = await getApiContext(playwright);
   });
