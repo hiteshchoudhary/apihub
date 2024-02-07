@@ -12,7 +12,7 @@ const skip = () => {
 };
 
 const morganMiddleware = morgan(
-  ":remote-addr :method :url :status - :response-time ms\t",
+  ":remote-addr :method :url :status - :response-time ms",
   { stream, skip }
 );
 
