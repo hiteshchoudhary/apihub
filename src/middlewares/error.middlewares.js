@@ -39,7 +39,7 @@ const errorHandler = (err, req, res, next) => {
     ...(process.env.NODE_ENV === "development" ? { stack: error.stack } : {}), // Error stack traces should be visible in development for debugging
   };
 
-  logger.error(`An error occurred: ${error.message}`, { stack: error.stack });
+  logger.error(`${error.message}`);
 
   removeUnusedMulterImageFilesOnError(req);
   // Send error response
