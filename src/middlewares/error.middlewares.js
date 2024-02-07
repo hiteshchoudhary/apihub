@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
+import logger from "../logger/winston.logger.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { removeUnusedMulterImageFilesOnError } from "../utils/helpers.js";
-import logger from "../logger/winston/index.js";
 
 /**
  *
