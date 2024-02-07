@@ -51,7 +51,7 @@ app.use(
 
 app.use(requestIp.mw());
 
-// app.use(morganMiddleWare);
+app.use(morganMiddleWare);
 
 // Rate limiter to avoid misuse of the service and avoid cost spikes
 const limiter = rateLimit({

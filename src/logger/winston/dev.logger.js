@@ -3,7 +3,7 @@ import { createLogger, format, transports } from "winston";
 const { combine, timestamp, simple, errors, align, printf } = format;
 const devLogger = () => {
   return createLogger({
-    level: process.env.LOG_LEVEL || "info",
+    level: process.env.LOG_LEVEL || "debug",
     format: combine(
       timestamp({
         format: "YYYY-MM-DD hh:mm:ss.SSS A",
