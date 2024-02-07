@@ -51,6 +51,8 @@ app.use(
 
 app.use(requestIp.mw());
 
+// app.use(morganMiddleWare);
+
 // Rate limiter to avoid misuse of the service and avoid cost spikes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -144,6 +146,7 @@ import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
 import { seedTodos } from "./seeds/todo.seeds.js";
 import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
+import morganMiddleWare from "./logger/morgan/morgon.logger.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
