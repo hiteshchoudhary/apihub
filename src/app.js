@@ -14,7 +14,7 @@ import { fileURLToPath } from "url";
 import YAML from "yaml";
 import { DB_NAME } from "./constants.js";
 import { dbInstance } from "./db/index.js";
-import morganMiddleware from "./logger/morgon.logger.js";
+import morganMiddleware from "./logger/morgan.logger.js";
 import { initializeSocketIO } from "./socket/index.js";
 import { ApiError } from "./utils/ApiError.js";
 import { ApiResponse } from "./utils/ApiResponse.js";
