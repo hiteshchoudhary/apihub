@@ -91,7 +91,6 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 app.use(morganMiddleware);
-
 // api routes
 import { errorHandler } from "./middlewares/error.middlewares.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
