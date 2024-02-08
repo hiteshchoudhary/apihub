@@ -52,8 +52,6 @@ app.use(
 
 app.use(requestIp.mw());
 
-app.use(morganMiddleware);
-
 // Rate limiter to avoid misuse of the service and avoid cost spikes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -106,8 +104,8 @@ import quoteRouter from "./routes/public/quote.routes.js";
 import randomjokeRouter from "./routes/public/randomjoke.routes.js";
 import randomproductRouter from "./routes/public/randomproduct.routes.js";
 import randomuserRouter from "./routes/public/randomuser.routes.js";
-import youtubeRouter from "./routes/public/youtube.routes.js";
 import stockRouter from "./routes/public/stock.routes.js";
+import youtubeRouter from "./routes/public/youtube.routes.js";
 
 // * App routes
 import userRouter from "./routes/apps/auth/user.routes.js";
