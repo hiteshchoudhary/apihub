@@ -23,6 +23,6 @@
     /* Testing */
     "types": ["vitest/globals"]
   },
-  "include": ["src", ".src/test/setup.ts"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
