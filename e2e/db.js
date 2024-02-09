@@ -1,17 +1,18 @@
 import mongoose, { mongo } from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
+const MONGO_MEMORY_SERVER_PORT = process.env.MONGO_MEMORY_SERVER_PORT || 10000;
+const MONGODB_URL = `mongodb://127.0.0.1:${MONGO_MEMORY_SERVER_PORT}/`;
+
 let mongoServer = null;
 let dbInstance = undefined;
-let MONGODB_PORT = process.env.MONGODB_PORT || 10000;
-let MONGODB_URL = `mongodb://127.0.0.1:${MONGODB_PORT}/`;
 
 const connectDB = async () => {
   try {
     await mongoose.disconnect();
     mongoServer = await MongoMemoryServer.create({
       instance: {
-        port: +MONGODB_PORT,
+        port: +MONGO_MEMORY_SERVER_PORT,
       },
     });
     dbInstance = await mongoose.connect(MONGODB_URL);
