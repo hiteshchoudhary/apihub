@@ -16,7 +16,7 @@ test.describe("Get credentials", () => {
     test("should return public/temp/seed-credentials.json content", async ({
       page,
     }) => {
-      const res = await apiContext.get(`/api/v1/seed/generated-credentials`);
+      const res = await apiContext.get("/api/v1/seed/generated-credentials");
       const json = await res.json();
       expect(res.status()).toEqual(200);
       expect(json.data).toMatchObject(seedCredentials);

@@ -29,9 +29,6 @@ test.describe("Todo App", () => {
         title: "test-todo-title",
         description: "test-todo-description",
       };
-      const _res = await apiContext.post(`/api/v1/todos`, {
-        data: todo,
-      });
       const res = await apiContext.post(`/api/v1/todos`, {
         data: todo,
       });

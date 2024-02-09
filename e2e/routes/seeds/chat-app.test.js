@@ -15,7 +15,7 @@ test.describe("Seed Chat App", () => {
 
   test.describe("POST:/api/v1/seed/chat-app - Seed Chat", async () => {
     test("should seed Chat App DB", async ({ page }) => {
-      const res = await apiContext.post(`/api/v1/seed/chat-app`);
+      const res = await apiContext.post("/api/v1/seed/chat-app");
       expect(res.status()).toEqual(201);
     });
   });

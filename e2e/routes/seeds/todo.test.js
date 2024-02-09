@@ -16,19 +16,19 @@ test.describe("Seed Todo App", () => {
 
   test.describe("POST:/api/v1/seed/todos - Seed Todos", async () => {
     test("should return 0 todos before seed", async ({ page }) => {
-      const res = await apiContext.get(`/api/v1/todos`);
+      const res = await apiContext.get("/api/v1/todos");
       const json = await res.json();
       expect(res.status()).toEqual(200);
       expect(json.data.length).toEqual(0);
     });
 
     test("should seed todo DB", async ({ page }) => {
-      const res = await apiContext.post(`/api/v1/seed/todos`);
+      const res = await apiContext.post("/api/v1/seed/todos");
       expect(res.status()).toEqual(201);
     });
 
     test(`should return ${TODOS_COUNT} todos after seed`, async ({ page }) => {
-      const res = await apiContext.get(`/api/v1/todos`);
+      const res = await apiContext.get("/api/v1/todos");
       const json = await res.json();
       expect(res.status()).toEqual(200);
       expect(json.data.length).toEqual(TODOS_COUNT);

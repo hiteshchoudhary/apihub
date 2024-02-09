@@ -17,21 +17,21 @@ test.describe("Seed social-media App", () => {
   test.describe("POST:/api/v1/seed/social-media - Seed social-media", async () => {
     test("should return 0 posts before seed", async ({ page }) => {
       const res = await apiContext.get(
-        `/api/v1/social-media/posts?page=1&limit=1`
+        "/api/v1/social-media/posts?page=1&limit=1"
       );
       const json = await res.json();
       expect(res.status()).toEqual(200);
       expect(json.data.totalPosts).toEqual(0);
     });
     test("should seed social-media DB", async ({ page }) => {
-      const res = await apiContext.post(`/api/v1/seed/social-media`);
+      const res = await apiContext.post("/api/v1/seed/social-media");
       expect(res.status()).toEqual(201);
     });
     test(`should return ${SOCIAL_POSTS_COUNT} post after seed`, async ({
       page,
     }) => {
       const res = await apiContext.get(
-        `/api/v1/social-media/posts?page=1&limit=1`
+        "/api/v1/social-media/posts?page=1&limit=1"
       );
       const json = await res.json();
       expect(res.status()).toEqual(200);

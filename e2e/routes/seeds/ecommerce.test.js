@@ -20,7 +20,7 @@ test.describe("Seed Ecommerce App", () => {
   test.describe("POST:/api/v1/seed/ecommerce - Seed Ecommerce", async () => {
     test("should return 0 products before seed", async ({ page }) => {
       const res = await apiContext.get(
-        `/api/v1/ecommerce/products?page=1&limit=1`
+        "/api/v1/ecommerce/products?page=1&limit=1"
       );
       const json = await res.json();
       expect(res.status()).toEqual(200);
@@ -28,21 +28,21 @@ test.describe("Seed Ecommerce App", () => {
     });
     test("should return 0 categories before seed", async ({ page }) => {
       const res = await apiContext.get(
-        `/api/v1/ecommerce/categories?page=1&limit=1`
+        "/api/v1/ecommerce/categories?page=1&limit=1"
       );
       const json = await res.json();
       expect(res.status()).toEqual(200);
       expect(json.data.totalCategories).toEqual(0);
     });
     test("should seed ecommerce DB", async ({ page }) => {
-      const res = await apiContext.post(`/api/v1/seed/ecommerce`);
+      const res = await apiContext.post("/api/v1/seed/ecommerce");
       expect(res.status()).toEqual(201);
     });
     test(`should return ${PRODUCTS_COUNT} products after seed`, async ({
       page,
     }) => {
       const res = await apiContext.get(
-        `/api/v1/ecommerce/products?page=1&limit=1`
+        "/api/v1/ecommerce/products?page=1&limit=1"
       );
       const json = await res.json();
       expect(res.status()).toEqual(200);
@@ -52,7 +52,7 @@ test.describe("Seed Ecommerce App", () => {
       page,
     }) => {
       const res = await apiContext.get(
-        `/api/v1/ecommerce/categories?page=1&limit=1`
+        "/api/v1/ecommerce/categories?page=1&limit=1"
       );
       const json = await res.json();
       expect(res.status()).toEqual(200);
