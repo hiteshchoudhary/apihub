@@ -46,6 +46,7 @@
     "multer": "^1.4.5-lts.1",
     "nanoid": "^4.0.2",
     "nodemailer": "^6.9.3",
+    "outers": "^6.3.2",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",

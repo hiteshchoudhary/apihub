@@ -18,6 +18,7 @@ import morganMiddleware from "./logger/morgan.logger.js";
 import { initializeSocketIO } from "./socket/index.js";
 import { ApiError } from "./utils/ApiError.js";
 import { ApiResponse } from "./utils/ApiResponse.js";
+import { Middleware } from "outers";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,6 +41,10 @@ const io = new Server(httpServer, {
 app.set("io", io); // using set method to mount the `io` instance on the app to avoid usage of `global`
 
 // global middlewares
+
+// Access Controller (This Middleware can allow these URLs)
+app.use(Middleware.AccessController([process.env.CORS_ORIGIN])); // Customize as your need (Custom Status Code: 2nd Parameter)
+
 app.use(
   cors({
     origin:
