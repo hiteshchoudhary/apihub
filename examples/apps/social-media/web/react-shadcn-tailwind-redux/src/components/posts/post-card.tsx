@@ -3,15 +3,65 @@ import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import moment from "moment";
 import { Button } from "../ui/button";
-import { Bookmark, Heart, MessageCircleMore } from "lucide-react";
+import { Bookmark, Heart, LucideIcon, MessageCircleMore } from "lucide-react";
 import clsx from "clsx";
 import { ImageCarousel } from "../image-carousel";
 import { Skeleton } from "../ui/skeleton";
+import { useDispatch } from "react-redux";
 
-const PostCard = ({ post }: { post: PostsInterface }) => {
+import { useNavigate } from "react-router-dom";
+
+const PostCard = ({
+  post,
+  onLike,
+}: {
+  post: PostsInterface;
+  onLike: (postId: string) => Promise<void>;
+}) => {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const likePostHandler = () => {
+    onLike(post._id);
+  };
+
+  const visitUserProfile = () => {
+    navigate(`/user/${post.author.account.username}`);
+  };
+
+  const commentPostHandler = () => {
+    console.log("comment");
+  };
+
+  const bookmarkPostHandler = () => {
+    console.log("bookmark");
+  };
+
+  const footerOptions = [
+    {
+      icon: Heart,
+      number: post.likes,
+      isActive: post.isLiked,
+      action: likePostHandler,
+    },
+    {
+      icon: MessageCircleMore,
+      number: post.comments,
+      isActive: false,
+      action: commentPostHandler,
+    },
+    {
+      icon: Bookmark,
+      number: null,
+      isActive: post.isBookmarked,
+      action: bookmarkPostHandler,
+    },
+  ];
+
   return (
     <Card>
-      <CardHeader className="p-3 ">
+      <CardHeader onClick={visitUserProfile} className="p-3 cursor-pointer ">
         <div className="flex items-center gap-3">
           <Avatar>
             <AvatarImage src={post.author?.account.avatar.url} />
@@ -34,41 +84,15 @@ const PostCard = ({ post }: { post: PostsInterface }) => {
         ) : null}
       </CardContent>
       <CardFooter className="flex justify-start gap-4">
-        <div className="flex items-center">
-          <Button
-            variant={"icon"}
-            className={clsx(
-              {
-                "text-primary": post.isLiked,
-              },
-              ""
-            )}
-            size={"icon"}
-          >
-            <Heart />
-          </Button>
-          <span className="pl-1">{post.likes}</span>
-        </div>
-        <div className="flex items-center">
-          <Button variant={"icon"} size={"icon"}>
-            <MessageCircleMore />
-          </Button>
-          <span className="pl-1">{post.comments}</span>
-        </div>
-        <div className="flex items-center">
-          <Button
-            variant={"icon"}
-            className={clsx(
-              {
-                "text-primary": post.isBookmarked,
-              },
-              ""
-            )}
-            size={"icon"}
-          >
-            <Bookmark />
-          </Button>
-        </div>
+        {footerOptions.map((option, i) => (
+          <FooterButtons
+            key={i}
+            Icon={option.icon}
+            isActive={option.isActive}
+            number={option.number}
+            action={option.action}
+          />
+        ))}
       </CardFooter>
     </Card>
   );
@@ -100,6 +124,32 @@ PostCard.Skeleton = () => {
         </CardFooter>
       </Card>
     </>
+  );
+};
+
+const FooterButtons = ({
+  Icon,
+  isActive,
+  number,
+  action,
+}: {
+  Icon: LucideIcon;
+  isActive: boolean;
+  number: number | null;
+  action: () => void;
+}) => {
+  return (
+    <div className="flex items-center">
+      <Button onClick={action} variant={"icon"} size={"icon"}>
+        <Icon
+          className={clsx({
+            "text-primary": isActive,
+          })}
+          fill={isActive ? "#7c3aed" : "transparent"}
+        />
+      </Button>
+      {number && <span className="pl-1">{number}</span>}
+    </div>
   );
 };
 

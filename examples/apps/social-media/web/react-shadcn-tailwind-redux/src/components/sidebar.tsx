@@ -25,7 +25,7 @@ const menuItems = [
     Icon: Bookmark,
   },
   {
-    location: "/find-users",
+    location: "/users/find-users",
     title: "users",
     Icon: Users,
   },

@@ -12,11 +12,13 @@ export const requestHandler = async (
   // Show loading state if setLoading function is provided
   setLoading && setLoading(true);
   console.log("start of request");
+  // setTimeout(async () => {
   try {
     // Make the API request
     const response = await api();
 
     const { data } = response;
+
     if (data?.success) {
       // Call the onSuccess callback with the response data
       onSuccess(data);
@@ -33,6 +35,7 @@ export const requestHandler = async (
     // Hide loading state if setLoading function is provided
     setLoading && setLoading(false);
   }
+  // }, 3000);
 };
 
 // Check if the code is running in a browser environment

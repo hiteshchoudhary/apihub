@@ -10,6 +10,7 @@ import AuthRoute from "./components/auth/AuthRoute";
 import NonAuthRoute from "./components/auth/NonAuthRoute";
 import Home from "./pages/home";
 import Sidebar from "./components/sidebar";
+import UserProfilePage from "./pages/profile/user-profile-page";
 
 function App() {
   const { user, token } = useSelector((state: RootState) => state.auth);
@@ -25,20 +26,15 @@ function App() {
     <>
       <Navbar />
 
-      <AuthRoute>
-        <Sidebar />
-      </AuthRoute>
-
       <Routes>
         <Route
-          path="/"
+          path="/register"
           element={
-            <AuthRoute>
-              <Home />
-            </AuthRoute>
+            <NonAuthRoute>
+              <Register />
+            </NonAuthRoute>
           }
         />
-
         <Route
           path="/login"
           element={
@@ -47,12 +43,24 @@ function App() {
             </NonAuthRoute>
           }
         />
+
         <Route
-          path="/register"
+          path="/user/:username"
           element={
-            <NonAuthRoute>
-              <Register />
-            </NonAuthRoute>
+            <AuthRoute>
+              <Sidebar />
+              <UserProfilePage />
+            </AuthRoute>
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <AuthRoute>
+              <Sidebar />
+              <Home />
+            </AuthRoute>
           }
         />
       </Routes>

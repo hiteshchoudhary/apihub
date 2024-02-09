@@ -47,4 +47,41 @@ const getOthersPostApi = ({ page = 1 }: { page: number }) => {
   return axios.get(`/api/v1/social-media/posts?page=${page}`);
 };
 
-export { loginApi, registerApi, getOthersPostApi };
+const getUserPostsApi = ({
+  page = 1,
+  username,
+}: {
+  page: number;
+  username: string;
+}) => {
+  return axios.get(`/api/v1/social-media/posts/get/u/${username}?page=${page}`);
+};
+
+const likeDislikePostApi = (postId: string) => {
+  return axios.post(`/api/v1/social-media/like/post/${postId}`);
+};
+
+const getUserProfileApi = (username: string) => {
+  return axios.get(`/api/v1/social-media/profile/u/${username}`);
+};
+
+const followUnfollowApi = (toBeFollowedUserId: string) => {
+  return axios.post(`/api/v1/social-media/follow/${toBeFollowedUserId}`);
+};
+
+const getUserFollowersApi = (username: string, page: number) => {
+  return axios.get(
+    `/api/v1/social-media/follow/list/followers/${username}?page=${page}`
+  );
+};
+
+export {
+  loginApi,
+  registerApi,
+  getOthersPostApi,
+  likeDislikePostApi,
+  getUserProfileApi,
+  getUserPostsApi,
+  followUnfollowApi,
+  getUserFollowersApi,
+};

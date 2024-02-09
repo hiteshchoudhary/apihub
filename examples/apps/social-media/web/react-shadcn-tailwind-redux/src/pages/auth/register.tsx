@@ -183,7 +183,6 @@ const Register = () => {
               ) : (
                 "Create Account"
               )}
-              Create Account
             </Button>
           </div>
         </form>

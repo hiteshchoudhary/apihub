@@ -6,13 +6,13 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 interface PostSliceInterface {
   posts: PostsInterface[];
   hasNextPage: boolean;
-  nextPage: number;
+  nextPage: number | null;
 }
 
 // Initial state for the post slice
 const initialState: PostSliceInterface = {
   posts: [],
-  hasNextPage: false,
+  hasNextPage: true,
   nextPage: 1,
 };
 
@@ -42,11 +42,49 @@ export const postsSlice = createSlice({
       state.hasNextPage = action.payload.hasNextPage;
       state.nextPage = action.payload.nextPage;
     },
+
+    likeDislikePostBeforeRequest: (
+      state,
+      action: PayloadAction<{
+        postId: string;
+      }>
+    ) => {
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload.postId
+          ? {
+              ...post,
+              isLiked: !post.isLiked,
+              likes: !post.isLiked ? post.likes + 1 : post.likes - 1,
+            }
+          : post
+      );
+    },
+
+    likeDislikePostAfterRequest: (
+      state,
+      action: PayloadAction<{
+        postId: string;
+        isLiked: boolean;
+      }>
+    ) => {
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload.postId
+          ? {
+              ...post,
+              isLiked: action.payload.isLiked,
+            }
+          : post
+      );
+    },
   },
 });
 
 // Export action creators
-export const { getPosts } = postsSlice.actions;
+export const {
+  getPosts,
+  likeDislikePostBeforeRequest,
+  likeDislikePostAfterRequest,
+} = postsSlice.actions;
 
 // Export the post reducer
 export default postsSlice.reducer;
