@@ -1,5 +1,5 @@
+import fs from "fs";
 import { test, expect } from "@playwright/test";
-import seedCredentials from "../../../public/temp/seed-credentials.json" assert { type: "json" };
 import { getApiContext } from "../../common.js";
 
 let apiContext;
@@ -16,6 +16,11 @@ test.describe("Get credentials", () => {
     test("should return public/temp/seed-credentials.json content", async ({
       page,
     }) => {
+      const seedCredentialsText = fs.readFileSync(
+        "./public/temp/seed-credentials.json",
+        "utf8"
+      );
+      const seedCredentials = JSON.parse(seedCredentialsText);
       const res = await apiContext.get("/api/v1/seed/generated-credentials");
       const json = await res.json();
       expect(res.status()).toEqual(200);
