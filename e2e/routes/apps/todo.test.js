@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { getApiContext } from "../../common.js";
+import { clearDB } from "../../db.js";
 let apiContext;
 
 let todoId = null;
@@ -7,6 +8,7 @@ let todoId = null;
 test.describe("Todo App", () => {
   test.beforeAll(async ({ playwright }) => {
     apiContext = await getApiContext(playwright);
+    await clearDB();
   });
   test.afterAll(async ({}) => {
     await apiContext.dispose();
