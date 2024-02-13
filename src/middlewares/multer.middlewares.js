@@ -32,4 +32,7 @@ const storage = multer.diskStorage({
 // Middleware responsible to read form data and upload the File object to the mentioned path
 export const upload = multer({
   storage,
+  limits: {
+    fileSize: 1 * 1000 * 1000,
+  },
 });

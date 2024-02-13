@@ -1,0 +1,59 @@
+name: 🚀 Frontend Contribution
+description: Share details about your frontend application for contribution to FreeAPI.
+title: "FRONTEND: <title>"
+
+labels:
+  - frontend
+  - enhancement
+
+body:
+  - type: input
+    id: app_title
+    attributes:
+      label: Frontend App Title
+      description: Provide a title for your frontend application.
+    validations:
+      required: true
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: Overview
+      description: Briefly describe your frontend application.
+    validations:
+      required: true
+
+  - type: textarea
+    id: detailed_features
+    attributes:
+      label: Detailed Features
+      description: List the features of your frontend application in detail.
+    validations:
+      required: true
+
+  - type: input
+    id: tech_stack
+    attributes:
+      label: Tech Stack Used
+      description: Specify the technologies used in your frontend application (comma-separated).
+      placeholder: "ReactJs, redux, tailwindCSS..."
+    validations:
+      required: true
+
+  - type: input
+    id: platform
+    attributes:
+      label: Built For Platform
+      description: Specify the platform on which this application will run.
+      placeholder: "web, mobile, desktop..."
+    validations:
+      required: true
+
+  - type: input
+    id: project_path
+    attributes:
+      label: Project Path
+      description: Provide the path to your project within the FreeAPI project's `examples` folder.
+      placeholder: E.g. $ROOT_FOLDER/examples/apps/social-media/web/react-redux-tailwind/<your_project_folders>
+    validations:
+      required: true

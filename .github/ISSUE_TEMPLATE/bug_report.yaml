@@ -1,0 +1,73 @@
+name: 🐞 Bug report
+description: Create a report to help us improve
+title: "BUG: <title>"
+
+labels:
+  - bug
+
+body:
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce_steps
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior.
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+
+  - type: input
+    id: os_info
+    attributes:
+      label: OS
+      description: Operating System information (e.g., iOS).
+      placeholder: MacOS
+    validations:
+      required: false
+      
+  - type: input
+    id: version_info
+    attributes:
+      label: OS Version
+      description: OS Version information.
+      placeholder: "13.1"
+    validations:
+      required: false
+
+  - type: input
+    id: client_info
+    attributes:
+      label: Client
+      description: Client information (e.g., postman, thunder client, chrome, safari).
+      placeholder: Postman
+    validations:
+      required: false
+
+
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context or Information
+      description: Add any other context or any other information about the problem here.
+

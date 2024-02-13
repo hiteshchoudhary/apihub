@@ -7,12 +7,14 @@ import fs from "fs";
 import { createServer } from "http";
 import passport from "passport";
 import path from "path";
+import requestIp from "request-ip";
 import { Server } from "socket.io";
 import swaggerUi from "swagger-ui-express";
 import { fileURLToPath } from "url";
 import YAML from "yaml";
 import { DB_NAME } from "./constants.js";
 import { dbInstance } from "./db/index.js";
+import morganMiddleware from "./logger/morgan.logger.js";
 import { initializeSocketIO } from "./socket/index.js";
 import { ApiError } from "./utils/ApiError.js";
 import { ApiResponse } from "./utils/ApiResponse.js";
@@ -40,17 +42,25 @@ app.set("io", io); // using set method to mount the `io` instance on the app to 
 // global middlewares
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin:
+      process.env.CORS_ORIGIN === "*"
+        ? "*" // This might give CORS error for some origins due to credentials set to true
+        : process.env.CORS_ORIGIN?.split(","), // For multiple cors origin for production. Refer https://github.com/hiteshchoudhary/apihub/blob/a846abd7a0795054f48c7eb3e71f3af36478fa96/.env.sample#L12C1-L12C12
     credentials: true,
   })
 );
 
+app.use(requestIp.mw());
+
 // Rate limiter to avoid misuse of the service and avoid cost spikes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 500, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
+  max: 5000, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  keyGenerator: (req, res) => {
+    return req.clientIp; // IP address from requestIp.mw(), as opposed to req.ip
+  },
   handler: (_, __, ___, options) => {
     throw new ApiError(
       options.statusCode || 500,
@@ -80,6 +90,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+app.use(morganMiddleware);
 // api routes
 import { errorHandler } from "./middlewares/error.middlewares.js";
 import healthcheckRouter from "./routes/healthcheck.routes.js";
@@ -93,6 +104,7 @@ import quoteRouter from "./routes/public/quote.routes.js";
 import randomjokeRouter from "./routes/public/randomjoke.routes.js";
 import randomproductRouter from "./routes/public/randomproduct.routes.js";
 import randomuserRouter from "./routes/public/randomuser.routes.js";
+import stockRouter from "./routes/public/stock.routes.js";
 import youtubeRouter from "./routes/public/youtube.routes.js";
 
 // * App routes
@@ -128,6 +140,7 @@ import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.r
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 
 // * Seeding handlers
+import { avoidInProduction } from "./middlewares/auth.middlewares.js";
 import { seedChatApp } from "./seeds/chat-app.seeds.js";
 import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
@@ -148,6 +161,7 @@ app.use("/api/v1/public/meals", mealRouter);
 app.use("/api/v1/public/dogs", dogRouter);
 app.use("/api/v1/public/cats", catRouter);
 app.use("/api/v1/public/youtube", youtubeRouter);
+app.use("/api/v1/public/stocks", stockRouter);
 
 // * App apis
 app.use("/api/v1/users", userRouter);
@@ -182,16 +196,25 @@ app.use("/api/v1/kitchen-sink/redirect", redirectRouter);
 app.use("/api/v1/kitchen-sink/image", imageRouter);
 
 // * Seeding
-app.get("/api/v1/seed/generated-credentials", getGeneratedCredentials);
-app.post("/api/v1/seed/todos", seedTodos);
-app.post("/api/v1/seed/ecommerce", seedUsers, seedEcommerce);
-app.post("/api/v1/seed/social-media", seedUsers, seedSocialMedia);
-app.post("/api/v1/seed/chat-app", seedUsers, seedChatApp);
+app.get(
+  "/api/v1/seed/generated-credentials",
+  avoidInProduction,
+  getGeneratedCredentials
+);
+app.post("/api/v1/seed/todos", avoidInProduction, seedTodos);
+app.post("/api/v1/seed/ecommerce", avoidInProduction, seedUsers, seedEcommerce);
+app.post(
+  "/api/v1/seed/social-media",
+  avoidInProduction,
+  seedUsers,
+  seedSocialMedia
+);
+app.post("/api/v1/seed/chat-app", avoidInProduction, seedUsers, seedChatApp);
 
 initializeSocketIO(io);
 
 // ! 🚫 Danger Zone
-app.delete("/api/v1/reset-db", async (req, res) => {
+app.delete("/api/v1/reset-db", avoidInProduction, async (req, res) => {
   if (dbInstance) {
     // Drop the whole DB
     await dbInstance.connection.db.dropDatabase({
