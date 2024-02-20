@@ -19,6 +19,22 @@ const createCoupon = asyncHandler(async (req, res) => {
     expiryDate,
   } = req.body;
 
+  // Convert the provided start and expiry dates to JavaScript Date objects
+  const start = new Date(startDate);
+  const expiry = new Date(expiryDate);
+
+  // Check if the start date is in the future
+  // If the start date is in the past (i.e., before the current date and time), throw an error
+  if (start < new Date()) {
+    throw new ApiError(400, "Start date must be in the future");
+  }
+
+  // Check if the expiry date is in the future
+  // If the expiry date is in the past (i.e., before the current date and time), throw an error
+  if (expiry < new Date()) {
+    throw new ApiError(400, "Expiry date must be in the future");
+  }
+
   const duplicateCoupon = await Coupon.findOne({
     couponCode: couponCode.trim().toUpperCase(),
   });
@@ -284,6 +300,22 @@ const updateCoupon = asyncHandler(async (req, res) => {
       409,
       "Coupon with code " + duplicateCoupon[0].couponCode + " already exists"
     );
+  }
+
+  // Convert the provided start and expiry dates to JavaScript Date objects
+  const start = new Date(startDate);
+  const expiry = new Date(expiryDate);
+
+  // Check if the start date is in the future
+  // If the start date is in the past (i.e., before the current date and time), throw an error
+  if (start < new Date()) {
+    throw new ApiError(400, "Start date must be in the future");
+  }
+
+  // Check if the expiry date is in the future
+  // If the expiry date is in the past (i.e., before the current date and time), throw an error
+  if (expiry < new Date()) {
+    throw new ApiError(400, "Expiry date must be in the future");
   }
 
   // Variable to check if min cart value is greater than discount value
