@@ -1,7 +1,7 @@
 import { Header } from "@/layout";
 import { hero_illustrator, wave_vector } from "./assets";
 import { Button } from "@/components/ui/button";
-
+import "./home.css";
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-start h-screen">
@@ -30,7 +30,7 @@ export default function Home() {
       <img
         src={wave_vector}
         alt="wave_vector"
-        className="absolute bottom-0 w-full"
+        className="absolute bottom-0 w-full wave -left-4 right-0 z-[-1] min-w-[105vw]"
       />
     </div>
   );
