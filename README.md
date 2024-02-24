@@ -115,6 +115,12 @@ Thank you for your interest in contributing to the FreeAPI project by creating f
 
 Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING_FRONTEND.md) for detailed contribution guide for Frontend Developers 🚀!
 
+## Contribute in testing suite
+
+Thank you for your interest in contributing to the FreeAPI project to increase code coverage of our API service that helps us to ship robust endpoints that are battlefield tested. Please follow this guide to ensure a smooth and collaborative contribution process.
+
+Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING_CODE_COVERAGE.md) for detailed contribution guide for increasing code coverage.
+
 # 🏁 Installation
 
 ### 📦 Using Docker (recommended)
