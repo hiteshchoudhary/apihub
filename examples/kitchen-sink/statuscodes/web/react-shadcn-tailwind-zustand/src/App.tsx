@@ -1,14 +1,8 @@
-
-import './App.css'
-import { Button } from "@/components/ui/button"
-
+import "./App.css";
+import { Home } from "./pages";
 
 function App() {
-  return (
-    <div className='flex justify-center items-center h-screen'>
-      <Button>Click me</Button>
-    </div>
-  )
+  return <Home />;
 }
 
-export default App
+export default App;
