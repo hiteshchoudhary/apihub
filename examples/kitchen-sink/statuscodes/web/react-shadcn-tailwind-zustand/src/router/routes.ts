@@ -1,16 +1,32 @@
-import { Home } from "@/pages";
+import { LazyExoticComponent } from "react";
+import { LazyCodesList, LazyFindCode, LazyHome, LazyQuiz } from "../pages";
 
 interface AppRouteType {
     path: string;
-    component: () => React.ReactNode;
+    component: LazyExoticComponent<() => JSX.Element>;
     name: string;
 }
 const AppRoutes: AppRouteType[] = [
     {
         path: '/',
-        component: Home,
+        component: LazyHome,
         name: 'Home',
     },
+    {
+        path: '/codes-list',
+        component: LazyCodesList,
+        name: 'Codes List',
+    },
+    {
+        path: '/find-code',
+        component: LazyFindCode,
+        name: 'Find Code',
+    },
+    {
+        path: "/quiz",
+        component: LazyQuiz,
+        name: "Quiz",
+    }
 
 ];
 
