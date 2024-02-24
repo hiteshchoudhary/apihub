@@ -1,3 +1,4 @@
 import Header from "./header";
+import PageContainer from "./pageContainer";
 
-export { Header }
+export { Header, PageContainer }
