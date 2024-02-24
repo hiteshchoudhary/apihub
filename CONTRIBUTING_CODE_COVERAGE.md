@@ -1,20 +1,18 @@
 # FreeAPI Testing Contribution Guide
 
-Thank you for your interest in contributing to the FreeAPI project to help us deliver our APIs that are battlefield tested. To ensure reliability & stablility for our end users, we utilize Playwright, a powerful testing framework to automate testing across all endpoints.
+Thank you for your interest in contributing to the FreeAPI project to help us deliver our APIs that are battlefield tested. To ensure reliability & stability for our end users, we utilize Playwright, a powerful testing framework to automate testing across all endpoints.
 
 ### Why Playwright?
 
-After exploring our opensource community options such as Jest, Jasmine & Playwright. We decided to move forward with playwright as it facilitates automated testing, offers cross-browser support, rich enough API with familar syntax.
+After exploring our open-source community options such as Jest, Jasmine & Playwright. We decided to move forward with the playwright as it facilitates automated testing, offers cross-browser support, rich enough API with familiar syntax.
 
 ## ⚠️ Important Note:
 
 ### Before starting your contribution
 
 - create an issue stating which module you will be working on
-- in a given module if tests exists, we do not welcome as long as it is a logical fix
+- in a given module if tests exist, we do not welcome them as long as it is a logical fix
 - test coverage for example frontend apps are not our top priority
-
-<!-- TODO -->
 
 **IMPORTANT: Contributor must create an issue with [Testing Contribution](https://github.com/hiteshchoudhary/apihub/issues/new?assignees=&labels=testing&projects=&template=code_coverage.yaml&title=TESTING%3A+%3Ctitle%3E) issue template.**
 
@@ -52,7 +50,7 @@ Follow this [README.md section](https://github.com/hiteshchoudhary/apihub/blob/m
 
 ## Choosing a Module <a name="choosing-a-module"></a>
 
-Decide which module you want to contribute to. Browse the `/apps`, `/public`, or `/kitchen-sink` modules to explore the available modules and APIs. Read the following section carefully to understand the folder structure you need to follow to increase chances to get your PR approved.
+Decide which module you want to contribute to. Browse the `/apps`, `/public`, or `/kitchen-sink` modules to explore the available modules and APIs. Read the following section carefully to understand the folder structure you need to follow to increase your chances of getting your PR approved.
 
 ## Folder Structure <a name="folder-structure-main"></a>
 
@@ -62,11 +60,11 @@ Follow the specified folder structure for your frontend application (**The folde
 ROOT_FOLDER/e2e/{module}/
 ```
 
-See the following examples with context for above structure:
+See the following examples with context for the above structure:
 
 ## Example: Todo endpoint testing
 
-Imagine you want to test todo endpoint that is part of `/apps` module of the FreeAPI project. To keep consistent folder structure for backtracking name your files with name identifier, but with an extension of `.test.js`.
+Imagine you want to test the todo endpoint that is part of `/apps` module of the FreeAPI project. To keep a consistent folder structure for backtracking name your files with name identifier, but with an extension of `.test.js`.
 
 ### Folder Structure:
 
@@ -86,11 +84,11 @@ $ROOT_FOLDER/e2e/{package}/{module}/{file-indicator}.test.js
 
 - `{file-indicator}`: This is the actual file name indicator that helps to identify for which file you are writing test cases for example: `todo.test.js`
 
-By following this standardized folder structure, contributors can easily organize their frontend projects, making it convenient for others to explore, understand, and replicate the implementation.
+By following this standardized folder structure, contributors can easily organize their front-end projects, making it convenient for others to explore, understand, and replicate the implementation.
 
 ## Coding Standards <a name="coding-standards"></a>
 
-Adhere to the coding standards of playwright framework. Additionally, consider the following guidelines:
+Adhere to the coding standards of the playwright framework. Additionally, consider the following guidelines:
 
 - Use clear descriptive test suite & block names
 - Follow best practices for unit, integration & end-to-end testing
@@ -99,11 +97,11 @@ Adhere to the coding standards of playwright framework. Additionally, consider t
 
 ## Dependency Management <a name="dependency-management"></a>
 
-Ideally we do not encourage you to include new package. Confine your code practices within the available dependencies to avoid overheads. Please state with clear explanation with examples if you add anything new.
+Ideally, we do not encourage you to include a new package. Confine your code practices within the available dependencies to avoid overheads. Please state with a clear explanation with examples if you add anything new.
 
 ## Submitting Your Contribution <a name="submitting-your-contribution"></a>
 
-Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md) for detailed contribution guide on submitting a PR.
+Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md) for a detailed contribution guide on submitting a PR.
 
 Thank you for your contribution to FreeAPI! Your dedication helps make our APIs more accessible and valuable to the community. If you have any questions or need assistance, feel free to reach out to our [Discord](https://discord.gg/uuGBkhX8Yp).
 
