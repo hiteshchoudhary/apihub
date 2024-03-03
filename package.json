@@ -7,7 +7,9 @@
   "scripts": {
     "start": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
     "pre-commit": "lint-staged",
-    "prepare": "node prepare.js"
+    "prepare": "node prepare.js",
+    "start:test-server": "node -r dotenv/config --experimental-json-modules e2e/test-server.js",
+    "test:playwright": "set NODE_OPTIONS=--experimental-vm-modules -r dotenv/config --experimental-json-modules && npx playwright test"
   },
   "repository": {
     "type": "git",
@@ -57,11 +59,22 @@
     "yaml": "^2.3.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-syntax-import-assertions": "^7.23.3",
+    "@babel/preset-env": "^7.23.8",
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.5",
+    "@playwright/test": "^1.41.1",
+    "@shelf/jest-mongodb": "^4.2.0",
+    "@types/node": "^20.11.5",
+    "babel-jest": "^29.7.0",
     "husky": "^8.0.3",
+    "jest": "^29.7.0",
     "lint-staged": "^13.2.2",
+    "mongodb-memory-server": "^9.1.6",
     "nodemon": "^2.0.22",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "supertest": "^6.3.4",
+    "supertest-session": "^5.0.1"
   }
 }

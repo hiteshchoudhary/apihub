@@ -14,7 +14,8 @@
         "refactor",
         "revert",
         "style",
-        "assets"
+        "assets",
+        "test"
       ]
     ]
   }
