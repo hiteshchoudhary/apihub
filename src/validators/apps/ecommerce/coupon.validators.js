@@ -46,7 +46,9 @@ const createCouponValidator = () => {
       .notEmpty()
       .withMessage("Expiry date is required")
       .isISO8601()
-      .withMessage("Invalid expiry date. Date must be in ISO8601 format"),
+      .withMessage("Invalid expiry date. Date must be in ISO8601 format")
+      .isAfter(new Date().toISOString())
+      .withMessage("Expiry date must be a future date"),
   ];
 };
 
@@ -101,7 +103,9 @@ const updateCouponValidator = () => {
       .notEmpty()
       .withMessage("Expiry date is required")
       .isISO8601()
-      .withMessage("Invalid expiry date. Date must be in ISO8601 format"),
+      .withMessage("Invalid expiry date. Date must be in ISO8601 format")
+      .isAfter(new Date().toISOString())
+      .withMessage("Expiry date must be a future date"),
   ];
 };
 
