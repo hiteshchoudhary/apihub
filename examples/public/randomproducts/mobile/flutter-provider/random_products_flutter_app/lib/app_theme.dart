@@ -14,29 +14,30 @@ class AppTheme {
   static final ThemeData appTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.greyWhiteColor,
     textTheme: const TextTheme(
-        labelLarge: TextStyle(
-          color: AppColors.blackColor,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-        displaySmall: TextStyle(
-          color: AppColors.blackColor,
-          fontWeight: FontWeight.bold,
-          fontSize: 15,
-        ),
-        displayMedium: TextStyle(
-          color: AppColors.blackColor,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-        labelMedium: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-        displayLarge: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 30,
-        )),
+      labelLarge: TextStyle(
+        color: AppColors.blackColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+      ),
+      displaySmall: TextStyle(
+        color: AppColors.blackColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 15,
+      ),
+      displayMedium: TextStyle(
+        color: AppColors.blackColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
+      labelMedium: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
+      displayLarge: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 30,
+      ),
+    ),
     iconTheme: const IconThemeData(
       color: Colors.black,
     ),
@@ -53,7 +54,7 @@ class AppTheme {
       elevation: 2,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.primary,
       splashColor: Colors.white,
       foregroundColor: Colors.white,
     ),
