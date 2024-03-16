@@ -6,8 +6,8 @@ import './app_colors.dart';
 class AppTheme {
   // System UI Overlay Style
   static SystemUiOverlayStyle kSystemOverlayStyle = const SystemUiOverlayStyle(
-    statusBarColor: Colors.white,
-    statusBarIconBrightness: Brightness.dark,
+    statusBarColor: AppColors.primary,
+    statusBarBrightness: Brightness.light,
   );
 
   // App Theme

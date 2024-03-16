@@ -1,10 +1,12 @@
 import "package:dio/dio.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import "package:fluttertoast/fluttertoast.dart";
 
 import "package:random_products_flutter_app/Infrastructure/Exceptions/api_exception.dart";
 
-var kdioBaseOptions = BaseOptions(
-  baseUrl: "http://10.0.2.2:8080",
+final String? _baseUrl = dotenv.env['BACKEND_URL'];
+final kdioBaseOptions = BaseOptions(
+  baseUrl: _baseUrl!,
   contentType: Headers.jsonContentType,
   responseType: ResponseType.json,
 );
@@ -15,22 +17,20 @@ class ApiService {
   static Future request({
     required String method,
     required String url,
-    dynamic queryParameters = const {},
     Map? body,
     showToast = true,
-    String toastMessage = "Something went wrong! Please try again later.",
+    String toastMessage = "Something went wrong! Please try again later",
   }) async {
-    print("Requesting to $url");
-    print("Method: $method");
-
     try {
-      final Response response = await _dio.get(
+      final Response response = await _dio.request(
         url,
-        queryParameters: queryParameters,
+        data: body,
+        options: Options(method: method),
       );
-      print(response.data);
+
+      return response.data;
     } on DioException catch (e) {
-      // Fluttertoast.showToast(msg: toastMessage);
+      Fluttertoast.showToast(msg: toastMessage);
 
       return ApiException(
         e.response!.statusCode!,
@@ -38,7 +38,6 @@ class ApiService {
         stackTrace: e.stackTrace,
       );
     } catch (e) {
-      print(e.toString());
       return ApiException(500, e.toString());
     }
   }

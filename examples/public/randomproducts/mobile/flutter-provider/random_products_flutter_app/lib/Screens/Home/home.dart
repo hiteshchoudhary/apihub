@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:random_products_flutter_app/Screens/Home/home.actions.dart';
 
+import 'package:random_products_flutter_app/Screens/Home/home.actions.dart';
 import 'package:random_products_flutter_app/Widgets/organisms/index.dart';
+import 'package:random_products_flutter_app/Widgets/organisms/render_future_builder.dart';
 import 'package:random_products_flutter_app/app_colors.dart';
 import 'package:random_products_flutter_app/app_routes.dart';
-import 'package:random_products_flutter_app/constants.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,8 +18,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
-    getProducts();
   }
 
   @override
@@ -35,18 +33,23 @@ class _HomeState extends State<Home> {
         ),
       ),
       backgroundColor: AppColors.greyWhiteColor,
-      body: renderGridViewBuilder(
-        context: context,
-        itemBuilder: (context, index) {
-          return ProductCard(
-            id: kSampleProduct["_id"] as String,
-            imageUrl:
-                (kSampleProduct["mainImage"] as Map<String, dynamic>)["url"],
-            name: kSampleProduct["name"] as String,
-            price: 7890,
+      body: renderFuturebuilder(
+        future: getProducts(),
+        builder: (context, snapshot) {
+          return renderGridViewBuilder(
+            context: context,
+            itemCount: snapshot.length,
+            itemBuilder: (context, index) {
+              final product = snapshot[index];
+              return ProductCard(
+                id: product!["_id"],
+                imageUrl: product["mainImage"]["url"],
+                name: product["name"],
+                price: product["price"],
+              );
+            },
           );
         },
-        itemCount: 10,
       ),
     );
   }
