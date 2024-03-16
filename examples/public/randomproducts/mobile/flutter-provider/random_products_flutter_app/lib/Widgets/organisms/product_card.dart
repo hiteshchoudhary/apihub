@@ -50,6 +50,8 @@ class ProductCard extends StatelessWidget {
                   Text(
                     name,
                     style: ThemeData().textTheme.displayMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     "$kCurrencySymbol$price",
