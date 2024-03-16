@@ -6,7 +6,7 @@ TextStyle kTextStyle = const TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-AppBar getAppBar({
+AppBar renderAppBar({
   required String title,
   bool automaticallyImplyLeading = true,
 }) {

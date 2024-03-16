@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:random_products_flutter_app/Widgets/organisms/get_app_bar.dart';
+import 'package:random_products_flutter_app/Widgets/organisms/render_app_bar.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -12,7 +12,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(
+      appBar: renderAppBar(
         title: "Search",
         automaticallyImplyLeading: false,
       ),

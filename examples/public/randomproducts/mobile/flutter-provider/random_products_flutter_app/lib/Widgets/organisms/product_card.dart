@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:random_products_flutter_app/Widgets/atom/render_network_image.dart';
 import 'package:random_products_flutter_app/app_routes.dart';
 
 import 'package:random_products_flutter_app/constants.dart';
@@ -36,20 +37,7 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              imageUrl,
-              fit: BoxFit.contain,
-              frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                if (wasSynchronouslyLoaded) return child;
-
-                return AnimatedOpacity(
-                  opacity: frame == null ? 0 : 1,
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.easeOut,
-                  child: child,
-                );
-              },
-            ),
+            renderNetworkImage(imageUrl),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,
