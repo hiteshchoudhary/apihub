@@ -11,7 +11,7 @@ export default function PageContainer(props: PageContainerProps) {
     <div className="flex flex-col items-center justify-start w-full h-screen">
       <Header />
       <main
-        className={`flex max-w-screen-lg py-10 px-4 w-full ${mainClassNames}`}
+        className={`flex max-w-screen-lg py-10 px-4 w-full mt-[56px] ${mainClassNames}`}
       >
         {children}
       </main>

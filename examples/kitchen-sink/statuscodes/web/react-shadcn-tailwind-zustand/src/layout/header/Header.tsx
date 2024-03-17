@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 export default function Header() {
   const { pathname } = window.location;
   return (
-    <div className="flex justify-center w-full border-b-4 border-white">
+    <div className="fixed top-0 flex justify-center w-full border-b-4 border-white min-h-[56px] bg-[#333333]">
       <div className="flex items-center justify-between w-full max-w-screen-lg p-4">
         <Link className="font-bold no-underline cursor-pointer" to="/">
           HTTP Status Insight
