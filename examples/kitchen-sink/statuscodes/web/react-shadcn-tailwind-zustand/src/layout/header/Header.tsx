@@ -12,7 +12,13 @@ export default function Header() {
   return (
     <div className="fixed top-0 flex justify-center w-full border-b-4 border-white min-h-[56px] bg-[#333333]">
       <div className="flex items-center justify-between w-full max-w-screen-lg p-4">
-        <Link className="font-bold no-underline cursor-pointer" to="/">
+        <Link
+          className={`font-bold no-underline cursor-pointer 
+          ${pathname === "/" ? "text-blue-500" : "text-white"}
+          hover:text-blue-500
+        `}
+          to="/"
+        >
           HTTP Status Insight
         </Link>
         <NavigationMenu>
