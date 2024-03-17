@@ -29,6 +29,7 @@
   "homepage": "https://github.com/hiteshchoudhary/apihub#readme",
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -50,6 +51,7 @@
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "razorpay": "^2.8.6",
+    "react-router-dom": "^6.22.3",
     "request-ip": "^3.3.0",
     "socket.io": "^4.7.1",
     "swagger-ui-express": "^4.6.3",

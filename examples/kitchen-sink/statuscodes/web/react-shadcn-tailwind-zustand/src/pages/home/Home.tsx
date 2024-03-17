@@ -5,6 +5,7 @@ import "./home.css";
 export default function Home() {
   return (
     <PageContainer
+      mainClassNames="pt-[8%]"
       footer={
         <img
           src={wave_vector}

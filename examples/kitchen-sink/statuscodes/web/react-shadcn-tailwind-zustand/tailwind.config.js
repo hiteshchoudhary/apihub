@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-export default{
+import tailwindcssAnimate from "tailwindcss-animate";
+
+export default {
+  mode: "jit",
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
+  purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -33,5 +37,5 @@ export default{
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-}
+  plugins: [tailwindcssAnimate],
+};
