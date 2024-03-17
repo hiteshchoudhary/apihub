@@ -1,0 +1,23 @@
+name: 🧪 Testing Contribution
+description: Share details about your test coverage for contribution to FreeAPI.
+title: "TESTING: <title>"
+
+labels:
+  - testing
+
+body:
+  - type: textarea
+    id: test_description
+    attributes:
+      label: Describe the test
+      description: A clear and concise description of the proposed testing suite.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: Additional Information
+      description: Add any extra details or considerations that might be relevant such as screenshots.
+    validations:
+      required: false

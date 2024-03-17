@@ -134,6 +134,7 @@ logs
 
 /tmp
 /.vscode
+/.idea
 
 # ignore the image files uploaded in the public/images folder
 /public/images/*
@@ -145,3 +146,9 @@ logs
 
 NOTES.md
 .DS_Store
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
