@@ -2,6 +2,7 @@ import { PageContainer } from "@/layout";
 import { hero_illustrator, wave_vector } from "./assets";
 import { Button } from "@/components/ui/button";
 import "./home.css";
+import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <PageContainer
@@ -24,12 +25,16 @@ export default function Home() {
           and seasoned professionals in web development.
         </p>
         <div className="flex items-center w-full mt-8 space-x-8">
-          <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
-            Play Quiz
-          </Button>
-          <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
-            Check Codes
-          </Button>
+          <Link to="/quiz">
+            <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
+              Play Quiz
+            </Button>
+          </Link>
+          <Link to="/codes-list">
+            <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
+              Check Codes
+            </Button>
+          </Link>
         </div>
       </div>
       <img src={hero_illustrator} alt="hero_illustrator" />
