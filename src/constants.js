@@ -68,7 +68,7 @@ export const USER_TEMPORARY_TOKEN_EXPIRY = 20 * 60 * 1000; // 20 minutes
 export const MAXIMUM_SUB_IMAGE_COUNT = 4;
 export const MAXIMUM_SOCIAL_POST_IMAGE_COUNT = 6;
 
-export const DB_NAME = "freeapi";
+export const DB_NAME = "freeapi-3"; //"freeapi";
 
 export const paypalBaseUrl = {
   sandbox: "https://api-m.sandbox.paypal.com",
@@ -98,6 +98,8 @@ export const ChatEventEnum = Object.freeze({
   STOP_TYPING_EVENT: "stopTyping",
   // ? when participant starts typing
   TYPING_EVENT: "typing",
+  // ? when message is deleted
+  MESSAGE_DELETE_EVENT: "messageDeleted",
 });
 
 export const AvailableChatEvents = Object.values(ChatEventEnum);

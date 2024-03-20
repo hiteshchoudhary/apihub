@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deleteMessage,
   getAllMessages,
   sendMessage,
 } from "../../../controllers/apps/chat-app/message.controllers.js";
@@ -23,5 +24,20 @@ router
     validate,
     sendMessage
   );
+
+//attachment id is optional for multiple attachments in a single message
+
+router.route("/:chatId/:messageId/:attachmentId?").delete(
+  mongoIdPathVariableValidator("chatId"),
+  mongoIdPathVariableValidator("messageId"),
+  (req, res, next) => {
+    if (!req.params.attachmentId) {
+      return next();
+    }
+    mongoIdPathVariableValidator("attachmentId")[0](req, res, next);
+  },
+  validate,
+  deleteMessage
+);
 
 export default router;
