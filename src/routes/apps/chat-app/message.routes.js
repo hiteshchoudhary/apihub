@@ -24,13 +24,14 @@ router
     validate,
     sendMessage
   );
-router.route("/:chatId/:messageId/:attachmentId").delete(
-  mongoIdPathVariableValidator("chatId"),
-  mongoIdPathVariableValidator("messageId"),
-  mongoIdPathVariableValidator("attachmentId"),
-
-  validate,
-  deleteMessage
-);
+router
+  .route("/:chatId/:messageId/:attachmentId")
+  .delete(
+    mongoIdPathVariableValidator("chatId"),
+    mongoIdPathVariableValidator("messageId"),
+    mongoIdPathVariableValidator("attachmentId"),
+    validate,
+    deleteMessage
+  );
 
 export default router;
