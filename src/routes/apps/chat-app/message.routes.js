@@ -25,19 +25,15 @@ router
     sendMessage
   );
 
-//attachment id is optional for multiple attachments in a single message
+//Delete message route based on Message id
 
-router.route("/:chatId/:messageId/:attachmentId?").delete(
-  mongoIdPathVariableValidator("chatId"),
-  mongoIdPathVariableValidator("messageId"),
-  (req, res, next) => {
-    if (!req.params.attachmentId) {
-      return next();
-    }
-    mongoIdPathVariableValidator("attachmentId")[0](req, res, next);
-  },
-  validate,
-  deleteMessage
-);
+router
+  .route("/:chatId/:messageId")
+  .delete(
+    mongoIdPathVariableValidator("chatId"),
+    mongoIdPathVariableValidator("messageId"),
+    validate,
+    deleteMessage
+  );
 
 export default router;
