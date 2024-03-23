@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import mongoose, { Schema } from "mongoose";
