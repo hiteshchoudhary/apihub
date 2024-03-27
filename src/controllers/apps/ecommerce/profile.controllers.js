@@ -44,14 +44,6 @@ const getMyOrders = asyncHandler(async (req, res) => {
         customer: req.user._id,
       },
     },
-    {
-      $lookup: {
-        from: "addresses",
-        localField: "address",
-        foreignField: "_id",
-        as: "address",
-      },
-    },
     // lookup for a customer associated with the order
     {
       $lookup: {
@@ -90,7 +82,6 @@ const getMyOrders = asyncHandler(async (req, res) => {
     {
       $addFields: {
         customer: { $first: "$customer" },
-        address: { $first: "$address" },
         coupon: { $ifNull: [{ $first: "$coupon" }, null] },
         totalOrderItems: { $size: "$items" },
       },
