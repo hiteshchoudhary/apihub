@@ -155,6 +155,7 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
   const address = await Address.findOne({
     _id: addressId,
     owner: req.user._id,
+    isDeleted: false,
   });
 
   if (!address) {
@@ -262,6 +263,7 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   const address = await Address.findOne({
     _id: addressId,
     owner: req.user._id,
+    isDeleted: false,
   });
 
   if (!address) {

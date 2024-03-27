@@ -30,6 +30,7 @@ const getAllAddresses = asyncHandler(async (req, res) => {
     {
       $match: {
         owner: req.user._id,
+        isDeleted: false,
       },
     },
   ]);
@@ -56,6 +57,7 @@ const getAddressById = asyncHandler(async (req, res) => {
   const address = await Address.findOne({
     _id: addressId,
     owner: req.user._id,
+    isDeleted: false,
   });
 
   if (!address) {
@@ -75,6 +77,7 @@ const updateAddress = asyncHandler(async (req, res) => {
     {
       _id: addressId,
       owner: req.user._id,
+      isDeleted: false,
     },
     {
       $set: {
@@ -100,10 +103,18 @@ const updateAddress = asyncHandler(async (req, res) => {
 
 const deleteAddress = asyncHandler(async (req, res) => {
   const { addressId } = req.params;
-  const address = await Address.findOneAndDelete({
-    _id: addressId,
-    owner: req.user._id,
-  });
+  const address = await Address.findOneAndUpdate(
+    {
+      _id: addressId,
+      owner: req.user._id,
+    },
+    {
+      $set: {
+        isDeleted: true,
+      },
+    },
+    { new: true }
+  );
 
   if (!address) {
     throw new ApiError(404, "Address does not exist");
