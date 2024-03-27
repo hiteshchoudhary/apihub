@@ -203,7 +203,14 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
       // In case payment is done and there is some network issue in the payment verification api
       // We will at least have a record of the order
       const unpaidOrder = await EcomOrder.create({
-        address: addressId,
+        address: {
+          addressLine1: address.addressLine1,
+          addressLine2: address.addressLine2,
+          city: address.city,
+          country: address.country,
+          pincode: address.pincode,
+          state: address.state,
+        },
         customer: req.user._id,
         items: orderItems,
         orderPrice: totalPrice ?? 0,
