@@ -412,15 +412,6 @@ const getOrderById = asyncHandler(async (req, res) => {
         _id: new mongoose.Types.ObjectId(orderId),
       },
     },
-    // lookup for an address associated with the order
-    {
-      $lookup: {
-        from: "addresses",
-        localField: "address",
-        foreignField: "_id",
-        as: "address",
-      },
-    },
     // lookup for a customer associated with the order
     {
       $lookup: {
@@ -460,7 +451,6 @@ const getOrderById = asyncHandler(async (req, res) => {
     {
       $addFields: {
         customer: { $first: "$customer" },
-        address: { $first: "$address" },
         coupon: { $ifNull: [{ $first: "$coupon" }, null] },
       },
     },
@@ -536,14 +526,6 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
             }
           : {},
     },
-    {
-      $lookup: {
-        from: "addresses",
-        localField: "address",
-        foreignField: "_id",
-        as: "address",
-      },
-    },
     // lookup for a customer associated with the order
     {
       $lookup: {
@@ -581,7 +563,6 @@ const getOrderListAdmin = asyncHandler(async (req, res) => {
     {
       $addFields: {
         customer: { $first: "$customer" },
-        address: { $first: "$address" },
         coupon: { $ifNull: [{ $first: "$coupon" }, null] },
         totalOrderItems: { $size: "$items" },
       },
