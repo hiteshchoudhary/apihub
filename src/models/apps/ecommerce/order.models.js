@@ -48,8 +48,6 @@ const orderSchema = new Schema(
       default: [],
     },
     address: {
-      type: Schema.Types.ObjectId,
-      ref: "Address",
       street: String,
       city: String,
       state: String,
