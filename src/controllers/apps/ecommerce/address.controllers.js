@@ -33,6 +33,11 @@ const getAllAddresses = asyncHandler(async (req, res) => {
         isDeleted: false,
       },
     },
+    {
+      $project: {
+        isDeleted: 0,
+      },
+    },
   ]);
 
   const addresses = await Address.aggregatePaginate(
@@ -58,7 +63,7 @@ const getAddressById = asyncHandler(async (req, res) => {
     _id: addressId,
     owner: req.user._id,
     isDeleted: false,
-  });
+  }).select("-isDeleted");
 
   if (!address) {
     throw new ApiError(404, "Address does not exist");
@@ -107,6 +112,7 @@ const deleteAddress = asyncHandler(async (req, res) => {
     {
       _id: addressId,
       owner: req.user._id,
+      isDeleted: false,
     },
     {
       $set: {
