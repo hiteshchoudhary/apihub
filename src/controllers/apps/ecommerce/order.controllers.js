@@ -208,7 +208,7 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
       const unpaidOrder = await EcomOrder.create({
         address: {
           addressLine1,
-          ...(addressLine2 && { addressLine2 }),
+          addressLine2,
           city,
           country,
           pincode,
@@ -316,7 +316,7 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
     const unpaidOrder = await EcomOrder.create({
       address: {
         addressLine1,
-        ...(addressLine2 && { addressLine2 }),
+        addressLine2,
         city,
         country,
         pincode,
