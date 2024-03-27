@@ -1,9 +1,17 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes";
 import { Route, Routes } from "react-router-dom";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useStatusCodeStore } from "@/store/statusCodes.store";
+import { processCodes } from "@/services/codesList";
 
 const Router = () => {
+  const { setHTTPStatusCodesList } = useStatusCodeStore((state) => state);
+  useEffect(() => {
+    processCodes().then((HTTPStatusCodesList) => {
+      setHTTPStatusCodesList(HTTPStatusCodesList);
+    });
+  }, []);
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
