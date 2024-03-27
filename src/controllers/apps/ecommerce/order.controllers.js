@@ -199,11 +199,21 @@ const generateRazorpayOrder = asyncHandler(async (req, res) => {
           );
       }
 
+      const { addressLine1, addressLine2, city, country, pincode, state } =
+        address;
+
       // Create an order while we generate razorpay session
       // In case payment is done and there is some network issue in the payment verification api
       // We will at least have a record of the order
       const unpaidOrder = await EcomOrder.create({
-        address: addressId,
+        address: {
+          addressLine1,
+          ...(addressLine2 && { addressLine2 }),
+          city,
+          country,
+          pincode,
+          state,
+        },
         customer: req.user._id,
         items: orderItems,
         orderPrice: totalPrice ?? 0,
@@ -298,11 +308,20 @@ const generatePaypalOrder = asyncHandler(async (req, res) => {
   const paypalOrder = await response.json();
 
   if (paypalOrder?.id) {
+    const { addressLine1, addressLine2, city, country, pincode, state } =
+      address;
     // Create an order while we generate paypal session
     // In case payment is done and there is some network issue in the payment verification api
     // We will at least have a record of the order
     const unpaidOrder = await EcomOrder.create({
-      address: addressId,
+      address: {
+        addressLine1,
+        ...(addressLine2 && { addressLine2 }),
+        city,
+        country,
+        pincode,
+        state,
+      },
       customer: req.user._id,
       items: orderItems,
       orderPrice: totalPrice ?? 0,
