@@ -1,0 +1,12 @@
+.wave {
+  animation: wave 2s infinite linear alternate;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-20px);
+  }
+}
