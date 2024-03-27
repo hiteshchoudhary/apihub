@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deleteMessage,
   getAllMessages,
   sendMessage,
 } from "../../../controllers/apps/chat-app/message.controllers.js";
@@ -22,6 +23,17 @@ router
     sendMessageValidator(),
     validate,
     sendMessage
+  );
+
+//Delete message route based on Message id
+
+router
+  .route("/:chatId/:messageId")
+  .delete(
+    mongoIdPathVariableValidator("chatId"),
+    mongoIdPathVariableValidator("messageId"),
+    validate,
+    deleteMessage
   );
 
 export default router;
