@@ -120,7 +120,7 @@ const deleteAddress = asyncHandler(async (req, res) => {
       },
     },
     { new: true }
-  );
+  ).select("-isDeleted");
 
   if (!address) {
     throw new ApiError(404, "Address does not exist");
