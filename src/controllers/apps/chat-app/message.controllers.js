@@ -163,10 +163,11 @@ const deleteMessage = asyncHandler(async (req, res) => {
 
   const { chatId, messageId } = req.params;
 
-  //Find the chat based on chatId
+  //Find the chat based on chatId and checking if user is a participant of the chat
 
   const chat = await Chat.findOne({
     _id: new mongoose.Types.ObjectId(chatId),
+    participants: req.user?._id,
   });
 
   if (!chat) {
@@ -187,17 +188,6 @@ const deleteMessage = asyncHandler(async (req, res) => {
     throw new ApiError(
       401,
       "You are not authorised to delete the message ,you are not the sender"
-    );
-  }
-
-  if (
-    !chat.participants.some(
-      (user) => user?.toString() === req.user?._id.toString()
-    )
-  ) {
-    throw new ApiError(
-      401,
-      "You are not part of this group you cannot delete this message"
     );
   }
   if (message.attachments.length > 0) {
@@ -240,7 +230,9 @@ const deleteMessage = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, {}, "Message deleted succesfully"));
+    .json(
+      new ApiResponse(200, { _id: message._id }, "Message deleted succesfully")
+    );
 });
 
 export { getAllMessages, sendMessage, deleteMessage };
