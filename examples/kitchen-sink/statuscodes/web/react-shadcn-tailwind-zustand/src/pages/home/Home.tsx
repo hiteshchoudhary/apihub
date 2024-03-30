@@ -26,14 +26,14 @@ export default function Home() {
             beginners and seasoned professionals in web development.
           </p>
           <div className="flex items-center w-full mt-8 space-x-8">
-            <Link to="/quiz">
-              <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
-                Play Quiz
-              </Button>
-            </Link>
             <Link to="/codes-list">
               <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
                 Check Codes
+              </Button>
+            </Link>
+            <Link to="/find-code">
+              <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
+                Find Codes
               </Button>
             </Link>
           </div>
