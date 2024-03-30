@@ -18,6 +18,7 @@ import {
 import { useStatusCodeStore } from "@/store/statusCodes.store";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { CommandList } from "cmdk";
 
 export default function FindCode() {
   const { HTTPStatusCodesList } = useStatusCodeStore((state) => state);
@@ -56,22 +57,24 @@ export default function FindCode() {
               <CommandInput placeholder="Search framework..." />
               <CommandEmpty>No framework found.</CommandEmpty>
               <CommandGroup>
-                {allCodes.map((code) => (
-                  <CommandItem
-                    key={code.label}
-                    onClick={() => {
-                      setValue(code.code);
-                      setOpen(false);
-                    }}
-                    className={cn(
-                      "flex items-center justify-between px-4 py-2",
-                      value === code.code && "bg-gray-100"
-                    )}
-                  >
-                    <span>{code.label}</span>
-                    {value === code.code && <Check />}
-                  </CommandItem>
-                ))}
+                <CommandList>
+                  {allCodes.map((code) => (
+                    <CommandItem
+                      key={code.label}
+                      onClick={() => {
+                        setValue(code.code);
+                        setOpen(false);
+                      }}
+                      className={cn(
+                        "flex items-center justify-between px-4 py-2",
+                        value === code.code && "bg-gray-100"
+                      )}
+                    >
+                      <span>{code.label}</span>
+                      {value === code.code && <Check />}
+                    </CommandItem>
+                  ))}
+                </CommandList>
               </CommandGroup>
             </Command>
           </PopoverContent>
