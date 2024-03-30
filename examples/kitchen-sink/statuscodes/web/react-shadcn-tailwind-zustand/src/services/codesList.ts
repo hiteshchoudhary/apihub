@@ -38,7 +38,6 @@ async function processCodes(): Promise<StatusListType> {
         };
       }
     }
-    console.log({ HTTPStatusCodesList });
     return HTTPStatusCodesList;
   } catch (error) {
     console.error({ error });
