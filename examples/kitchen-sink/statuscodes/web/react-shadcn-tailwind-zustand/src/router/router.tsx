@@ -2,15 +2,21 @@ import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes";
 import { Route, Routes } from "react-router-dom";
 import { Suspense, useEffect } from "react";
-import { useStatusCodeStore } from "@/store/statusCodes.store";
+import { useAppStore } from "@/store/store";
 import { processCodes } from "@/services/codesList";
 
 const Router = () => {
-  const { setHTTPStatusCodesList } = useStatusCodeStore((state) => state);
+  const { setHTTPStatusCodesList, setLoading } = useAppStore((state) => state);
+
   useEffect(() => {
-    processCodes().then((HTTPStatusCodesList) => {
-      setHTTPStatusCodesList(HTTPStatusCodesList);
-    });
+    setLoading(true);
+    processCodes()
+      .then((HTTPStatusCodesList) => {
+        setHTTPStatusCodesList(HTTPStatusCodesList);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
   return (
     <BrowserRouter>

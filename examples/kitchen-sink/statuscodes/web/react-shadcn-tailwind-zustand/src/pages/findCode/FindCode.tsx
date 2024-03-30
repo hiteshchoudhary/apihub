@@ -1,5 +1,5 @@
 import { PageContainer } from "@/layout";
-import { useStatusCodeStore } from "@/store/statusCodes.store";
+import { useAppStore } from "@/store/store";
 import { useEffect, useState } from "react";
 
 import ComboBox, { optionsTypes } from "./components/ComboBox";
@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { colorCodeMapping } from "@/constants";
 
 export default function FindCode() {
-  const { HTTPStatusCodesList } = useStatusCodeStore((state) => state);
+  const { HTTPStatusCodesList } = useAppStore((state) => state);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [selectedOption, setSelectedOption] = useState<{

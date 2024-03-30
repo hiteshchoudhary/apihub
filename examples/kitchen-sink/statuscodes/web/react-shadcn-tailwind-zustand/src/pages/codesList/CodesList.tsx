@@ -1,10 +1,9 @@
 import { PageContainer } from "@/layout";
 import { StatusAccordian } from "./components";
-import { useStatusCodeStore } from "@/store/statusCodes.store";
-
+import { useAppStore } from "@/store/store";
 
 export default function CodesList() {
-  const {HTTPStatusCodesList} = useStatusCodeStore((state) => state);
+  const { HTTPStatusCodesList } = useAppStore((state) => state);
   return (
     <PageContainer>
       <div className="flex flex-col items-center justify-center w-full gap-8">
