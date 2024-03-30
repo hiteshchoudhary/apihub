@@ -30,9 +30,11 @@ interface ComboBoxProps {
   setValue: (value: string) => void;
   options: optionsTypes;
   emptyMessage: string;
+  placeholder: string;
 }
 export default function ComboBox(props: ComboBoxProps) {
-  const { open, setOpen, value, setValue, options } = props;
+  const { open, setOpen, value, setValue, options, emptyMessage, placeholder } =
+    props;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -42,14 +44,14 @@ export default function ComboBox(props: ComboBoxProps) {
           aria-expanded={open}
           className="w-[200px] justify-between text-black"
         >
-          {value ? value : "Select Code.."}
+          {value ? value : placeholder}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search Code..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandInput placeholder={placeholder} />
+          <CommandEmpty>{emptyMessage}</CommandEmpty>
           {Object.keys(options)?.map((codeGroup) => {
             const codes = options[codeGroup]?.groupList;
             return (

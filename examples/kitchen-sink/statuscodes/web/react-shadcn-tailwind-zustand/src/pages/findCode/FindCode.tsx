@@ -57,6 +57,7 @@ export default function FindCode() {
           value={value}
           setValue={setValue}
           emptyMessage="No code selected.."
+          placeholder="Search Code.."
         />
         {!!value && (
           <Card className="w-full p-4 mt-8" style={{ backgroundColor: color }}>
