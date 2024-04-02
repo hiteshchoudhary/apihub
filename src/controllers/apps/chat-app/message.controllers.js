@@ -158,13 +158,13 @@ const sendMessage = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, receivedMessage, "Message saved successfully"));
 });
+
 const deleteMessage = asyncHandler(async (req, res) => {
   //controller to delete chat messages and attachments
 
   const { chatId, messageId } = req.params;
 
   //Find the chat based on chatId and checking if user is a participant of the chat
-
   const chat = await Chat.findOne({
     _id: new mongoose.Types.ObjectId(chatId),
     participants: req.user?._id,
@@ -173,8 +173,8 @@ const deleteMessage = asyncHandler(async (req, res) => {
   if (!chat) {
     throw new ApiError(404, "Chat does not exist");
   }
-  //Find the message based on message id
 
+  //Find the message based on message id
   const message = await ChatMessage.findOne({
     _id: new mongoose.Types.ObjectId(messageId),
   });
@@ -231,7 +231,7 @@ const deleteMessage = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { _id: message._id }, "Message deleted succesfully")
+      new ApiResponse(200, { _id: message._id }, "Message deleted successfully")
     );
 });
 
