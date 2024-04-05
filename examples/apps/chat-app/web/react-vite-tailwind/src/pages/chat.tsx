@@ -4,7 +4,12 @@ import {
   XCircleIcon,
 } from "@heroicons/react/20/solid";
 import { useEffect, useRef, useState } from "react";
-import { getChatMessages, getUserChats, sendMessage } from "../api";
+import {
+  deleteMessage,
+  getChatMessages,
+  getUserChats,
+  sendMessage,
+} from "../api";
 import AddChatModal from "../components/chat/AddChatModal";
 import ChatItem from "../components/chat/ChatItem";
 import MessageItem from "../components/chat/MessageItem";
@@ -32,6 +37,7 @@ const STOP_TYPING_EVENT = "stopTyping";
 const MESSAGE_RECEIVED_EVENT = "messageReceived";
 const LEAVE_CHAT_EVENT = "leaveChat";
 const UPDATE_GROUP_NAME_EVENT = "updateGroupName";
+const MESSAGE_DELETE_EVENT = "messageDeleted";
 // const SOCKET_ERROR_EVENT = "socketError";
 
 const ChatPage = () => {
@@ -73,22 +79,27 @@ const ChatPage = () => {
    */
   const updateChatLastMessage = (
     chatToUpdateId: string,
-    message: ChatMessageInterface // The new message to be set as the last message
+    message: ChatMessageInterface, // The new message to be set as the last message
+    ismessageDeleted?: true | undefined
   ) => {
     // Search for the chat with the given ID in the chats array
     const chatToUpdate = chats.find((chat) => chat._id === chatToUpdateId)!;
 
-    // Update the 'lastMessage' field of the found chat with the new message
-    chatToUpdate.lastMessage = message;
+    if (ismessageDeleted) {
+      chatToUpdate.lastMessage = message;
+    } else {
+      // Update the 'lastMessage' field of the found chat with the new message
+      chatToUpdate.lastMessage = message;
 
-    // Update the 'updatedAt' field of the chat with the 'updatedAt' field from the message
-    chatToUpdate.updatedAt = message?.updatedAt;
+      // Update the 'updatedAt' field of the chat with the 'updatedAt' field from the message
+      chatToUpdate.updatedAt = message?.updatedAt;
 
-    // Update the state of chats, placing the updated chat at the beginning of the array
-    setChats([
-      chatToUpdate, // Place the updated chat first
-      ...chats.filter((chat) => chat._id !== chatToUpdateId), // Include all other chats except the updated one
-    ]);
+      // Update the state of chats, placing the updated chat at the beginning of the array
+      setChats([
+        chatToUpdate, // Place the updated chat first
+        ...chats.filter((chat) => chat._id !== chatToUpdateId), // Include all other chats except the updated one
+      ]);
+    }
   };
 
   const getChats = async () => {
@@ -164,6 +175,28 @@ const ChatPage = () => {
       alert
     );
   };
+  const deleteChatMessage = async (message: ChatMessageInterface) => {
+    //ONClick delete the message and reload the chat when deleteMessage socket gives any response in chat.tsx
+    //use request handler to prevent any errors
+
+    await requestHandler(
+      async () => await deleteMessage(message.chat, message._id),
+      null,
+      (res) => {
+        setMessages((prev) => prev.filter((msg) => msg._id !== res.data._id));
+        const deletedMessageIndex = messages.findIndex(
+          (msg) => msg._id === res.data._id
+        );
+        if (deletedMessageIndex > -1) {
+          if (deletedMessageIndex === messages.length - 1) {
+            const newLastMessage = messages[deletedMessageIndex - 1];
+            updateChatLastMessage(message.chat, newLastMessage, true);
+          }
+        }
+      },
+      alert
+    );
+  };
 
   const handleOnMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Update the message state with the current input value
@@ -227,6 +260,18 @@ const ChatPage = () => {
 
     // Set the typing state to false for the current chat.
     setIsTyping(false);
+  };
+
+  const onMessageDelete = (message: ChatMessageInterface) => {
+    console.log(message);
+    if (message?.chat !== currentChat.current?._id) {
+      setUnreadMessages((prev) =>
+        prev.filter((msg) => msg._id !== message._id)
+      );
+    } else {
+      setMessages((prev) => prev.filter((msg) => msg._id !== message._id));
+    }
+    updateChatLastMessage(message.chat, message, true);
   };
 
   /**
@@ -329,7 +374,8 @@ const ChatPage = () => {
     socket.on(LEAVE_CHAT_EVENT, onChatLeave);
     // Listener for when a group's name is updated.
     socket.on(UPDATE_GROUP_NAME_EVENT, onGroupNameChange);
-
+    //Listener for when a message is deleted
+    socket.on(MESSAGE_DELETE_EVENT, onMessageDelete);
     // When the component using this hook unmounts or if `socket` or `chats` change:
     return () => {
       // Remove all the event listeners we set up to avoid memory leaks and unintended behaviors.
@@ -341,6 +387,7 @@ const ChatPage = () => {
       socket.off(NEW_CHAT_EVENT, onNewChat);
       socket.off(LEAVE_CHAT_EVENT, onChatLeave);
       socket.off(UPDATE_GROUP_NAME_EVENT, onGroupNameChange);
+      socket.off(MESSAGE_DELETE_EVENT, onMessageDelete);
     };
 
     // Note:
@@ -504,6 +551,7 @@ const ChatPage = () => {
                           isOwnMessage={msg.sender?._id === user?._id}
                           isGroupChatMessage={currentChat.current?.isGroupChat}
                           message={msg}
+                          deleteChatMessage={deleteChatMessage}
                         />
                       );
                     })}

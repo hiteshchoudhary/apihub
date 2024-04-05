@@ -1,20 +1,24 @@
 import {
   ArrowDownTrayIcon,
+  EllipsisVerticalIcon,
   MagnifyingGlassPlusIcon,
   PaperClipIcon,
+  TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import moment from "moment";
 import { useState } from "react";
 import { ChatMessageInterface } from "../../interfaces/chat";
 import { classNames } from "../../utils";
-
 const MessageItem: React.FC<{
   isOwnMessage?: boolean;
   isGroupChatMessage?: boolean;
   message: ChatMessageInterface;
-}> = ({ message, isOwnMessage, isGroupChatMessage }) => {
+  deleteChatMessage: (message: ChatMessageInterface) => void;
+}> = ({ message, isOwnMessage, isGroupChatMessage, deleteChatMessage }) => {
   const [resizedImage, setResizedImage] = useState<string | null>(null);
+  const [openOptions, setopenOptions] = useState<boolean>(false);
+
   return (
     <>
       {resizedImage ? (
@@ -43,14 +47,49 @@ const MessageItem: React.FC<{
             isOwnMessage ? "order-2" : "order-1"
           )}
         />
+        {/* message box have to add the icon onhover here */}
         <div
+          onMouseLeave={() => setopenOptions(false)}
           className={classNames(
-            "p-4 rounded-3xl flex flex-col",
+            "p-4 rounded-3xl flex flex-col cursor-pointer group hover:bg-secondary",
             isOwnMessage
               ? "order-1 rounded-br-none bg-primary"
               : "order-2 rounded-bl-none bg-secondary"
           )}
         >
+          <button
+            className="self-center p-1 relative"
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteChatMessage(message);
+            }}
+          >
+            <EllipsisVerticalIcon className="h-6 group-hover:w-6 group-hover:opacity-100 w-0 opacity-0 transition-all ease-in-out duration-100 text-zinc-300" />
+            <div
+              className={classNames(
+                "z-20 text-left absolute botom-0 translate-y-full text-sm w-24 bg-dark rounded-2xl p-2 shadow-md border-[1px] border-secondary",
+                openOptions ? "block" : "hidden"
+              )}
+            >
+              <p
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const ok = confirm(
+                    "Are you sure you want to delete this message"
+                  );
+                  if (ok) {
+                    deleteChatMessage(message);
+                  }
+                }}
+                role="button"
+                className="p-4 text-danger rounded-lg w-auto inline-flex items-center hover:bg-secondary"
+              >
+                <TrashIcon className="h-4 w-4 mr-2" />
+                Delete Message
+              </p>
+            </div>
+          </button>
+
           {isGroupChatMessage && !isOwnMessage ? (
             <p
               className={classNames(
@@ -63,7 +102,6 @@ const MessageItem: React.FC<{
               {message.sender?.username}
             </p>
           ) : null}
-
           {message?.attachments?.length > 0 ? (
             <div
               className={classNames(
@@ -106,7 +144,6 @@ const MessageItem: React.FC<{
               })}
             </div>
           ) : null}
-
           {message.content ? (
             <p className="text-sm">{message.content}</p>
           ) : null}

@@ -40,7 +40,6 @@ const ChatItem: React.FC<{
   };
 
   if (!chat) return;
-
   return (
     <>
       <GroupChatDetailsModal
@@ -117,7 +116,7 @@ const ChatItem: React.FC<{
                     key={participant._id}
                     src={participant.avatar.url}
                     className={classNames(
-                      "w-7 h-7 border-[1px] border-white rounded-full absolute outline outline-4 outline-dark group-hover:outline-secondary",
+                      "w-8 h-8 border-[1px] border-white rounded-full absolute outline outline-4 outline-dark group-hover:outline-secondary",
                       i === 0
                         ? "left-0 z-[3]"
                         : i === 1
