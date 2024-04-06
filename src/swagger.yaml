@@ -34,7 +34,7 @@ info:
     ## 🐞 Reporting issues
 
     If you find API issues or bugs when testing, please create an [issue](https://github.com/hiteshchoudhary/apihub/issues/new) and assign it to a member of the development team.
-  version: 1.2.0
+  version: 1.3.1
   contact: {}
 servers:
   - url: 'http://localhost:8080/api/v1'
@@ -47290,6 +47290,114 @@ paths:
         schema:
           type: string
           example: 64d6722a5bda3332e4f368a9
+  /chat-app/messages/{chatId}/{messageId}:
+    delete:
+      tags:
+        - 💬 Chat App
+      summary: Delete chat message
+      description: >-
+        This API endpoint empowers logged-in users to seamlessly delete a
+        message in the chat that is sent by them.
+
+
+        By sending a `DELETE` request to this endpoint with the relevant
+        `chatId` and `messageId`, users can effectively remove the specified message,
+        thereby enhancing their control over their chat interactions and
+        facilitating a streamlined and personalized messaging experience.
+      operationId: deleteMessage
+      responses:
+        '200':
+          description: Delete chat message
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: http://localhost:3000
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '87'
+            Date:
+              schema:
+                type: string
+                example: Wed, 02 Aug 2023 18:21:12 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"57-W8eeMdgPYpDebp4OQ6EuykCDvU0"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            RateLimit-Limit:
+              schema:
+                type: string
+                example: '500'
+            RateLimit-Remaining:
+              schema:
+                type: string
+                example: '488'
+            RateLimit-Reset:
+              schema:
+                type: string
+                example: '30'
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties: 
+                      _id:
+                        type: string
+                        example: 648e0746aeefd0cfa40adddf
+                  message:
+                    type: string
+                    example: Message deleted successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Delete chat message:
+                  value:
+                    data:
+                      _id: 648e0746aeefd0cfa40adddf
+                    message: Message deleted successfully
+                    statusCode: 200
+                    success: true
+    parameters:
+      - name: chatId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: 64ce7766307617f3a412b803
+      - name: messageId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: 660c01cef9b076f062b161a8
   /seed/generated-credentials:
     get:
       tags:
