@@ -12,7 +12,7 @@ export interface ProfileInterface {
   dob: string;
   location: string;
   countryCode: string;
-  phoneNumber: string | number;
+  phoneNumber: string;
   owner: string;
   createdAt: string;
   updatedAt: string;

@@ -2,7 +2,7 @@
 import { Followerinterface, ProfileInterface } from "@/interfaces/profile";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { PostsInterface } from "@/interfaces/posts";
-import { arch } from "os";
+import { UserInterface } from "@/interfaces/authInterface";
 
 // Interface defining the shape of the profile slice state
 
@@ -14,6 +14,10 @@ const initialState: {
   hasMoreFollowers: boolean;
   totalPosts: number;
   followers: Followerinterface[];
+  followings: Followerinterface[];
+  hasMoreFollowings: boolean;
+  initialFollowerFetch: boolean;
+  initialFollowingFetch: boolean;
 } = {
   userProfile: null,
   posts: [],
@@ -21,6 +25,10 @@ const initialState: {
   totalPosts: 0,
   hasMoreFollowers: true,
   followers: [],
+  followings: [],
+  hasMoreFollowings: true,
+  initialFollowerFetch: true,
+  initialFollowingFetch: true,
 };
 
 // Create the profile slice using createSlice from Redux Toolkit
@@ -35,6 +43,10 @@ export const profileSlice = createSlice({
       }>
     ) => {
       state.userProfile = action.payload.userProfile;
+      state.followers = [];
+      state.followings = [];
+      state.initialFollowerFetch = true;
+      state.initialFollowingFetch = true;
     },
 
     getUserPosts: (
@@ -131,6 +143,97 @@ export const profileSlice = createSlice({
         state.followers = [...state.followers, ...action.payload.followers];
       }
       state.hasMoreFollowers = action.payload.hasNextPage;
+      state.initialFollowerFetch = false;
+    },
+
+    getUserFollowings: (
+      state,
+      action: PayloadAction<{
+        followings: Followerinterface[];
+        hasNextPage: boolean;
+        page: number | null;
+      }>
+    ) => {
+      if (action.payload.page === 1) {
+        state.followings = action.payload.followings;
+      } else {
+        state.followings = [...state.followings, ...action.payload.followings];
+      }
+      state.hasMoreFollowings = action.payload.hasNextPage;
+      state.initialFollowingFetch = false;
+    },
+
+    FollowUnFollowFollwerBeforeRequest: (
+      state,
+      action: PayloadAction<{ userId: string; action: "follow" | "unfollow" }>
+    ) => {
+      state.followers = state.followers.map((follower) =>
+        follower._id === action.payload.userId
+          ? {
+              ...follower,
+              isFollowing: action.payload.action === "follow" ? true : false,
+            }
+          : follower
+      );
+    },
+
+    FollowUnFollowFollwerAfterRequest: (
+      state,
+      action: PayloadAction<{ userId: string; following: boolean }>
+    ) => {
+      state.followers = state.followers.map((follower) =>
+        follower._id === action.payload.userId
+          ? {
+              ...follower,
+              isFollowing: action.payload.following,
+            }
+          : follower
+      );
+    },
+
+    FollowUnFollowFollwingBeforeRequest: (
+      state,
+      action: PayloadAction<{ userId: string; action: "follow" | "unfollow" }>
+    ) => {
+      state.followings = state.followings.map((following) =>
+        following._id === action.payload.userId
+          ? {
+              ...following,
+              isFollowing: action.payload.action === "follow" ? true : false,
+            }
+          : following
+      );
+    },
+
+    FollowUnFollowFollwingAfterRequest: (
+      state,
+      action: PayloadAction<{ userId: string; following: boolean }>
+    ) => {
+      state.followings = state.followings.map((following) =>
+        following._id === action.payload.userId
+          ? {
+              ...following,
+              isFollowing: action.payload.following,
+            }
+          : following
+      );
+    },
+
+    updateCoverImageSlice: (
+      state,
+      action: PayloadAction<{ updatedProfile: ProfileInterface }>
+    ) => {
+      state.userProfile = action.payload.updatedProfile;
+    },
+
+    updateUserProfileAvatar: (
+      state,
+      action: PayloadAction<{ updatedUser: UserInterface }>
+    ) => {
+      state.userProfile = {
+        ...state.userProfile!,
+        account: action.payload.updatedUser,
+      };
     },
   },
 });
@@ -144,6 +247,13 @@ export const {
   followUnfollowBeforeRequest,
   followUnfollowAfterRequest,
   getUserFollowers,
+  getUserFollowings,
+  FollowUnFollowFollwerAfterRequest,
+  FollowUnFollowFollwerBeforeRequest,
+  FollowUnFollowFollwingAfterRequest,
+  FollowUnFollowFollwingBeforeRequest,
+  updateCoverImageSlice,
+  updateUserProfileAvatar,
 } = profileSlice.actions;
 
 // Export the post reducer

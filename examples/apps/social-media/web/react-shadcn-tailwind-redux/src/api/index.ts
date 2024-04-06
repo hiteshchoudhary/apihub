@@ -43,6 +43,10 @@ const registerApi = (email: string, password: string, username: string) => {
   );
 };
 
+const logoutApi = () => {
+  return axios.post("/api/v1/users/logout");
+};
+
 const getOthersPostApi = ({ page = 1 }: { page: number }) => {
   return axios.get(`/api/v1/social-media/posts?page=${page}`);
 };
@@ -75,13 +79,56 @@ const getUserFollowersApi = (username: string, page: number) => {
   );
 };
 
+const getUserFollowingsApi = (username: string, page: number) => {
+  return axios.get(
+    `/api/v1/social-media/follow/list/following/${username}?page=${page}`
+  );
+};
+
+const updateCoverImageApi = (formData: FormData) => {
+  return axios.patch("/api/v1/social-media/profile/cover-image", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const updateAvatarApi = (formData: FormData) => {
+  return axios.patch("/api/v1/users/avatar", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const updateProfileApi = (data: {
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  dob?: Date | string;
+  countryCode?: string;
+  phoneNumber?: string;
+  location?: string;
+}) => {
+  return axios.patch("/api/v1/social-media/profile", data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 export {
   loginApi,
   registerApi,
+  logoutApi,
   getOthersPostApi,
   likeDislikePostApi,
   getUserProfileApi,
   getUserPostsApi,
   followUnfollowApi,
   getUserFollowersApi,
+  getUserFollowingsApi,
+  updateCoverImageApi,
+  updateAvatarApi,
+  updateProfileApi,
 };

@@ -10,7 +10,7 @@ import { EyeIcon, EyeOff, Lock, Mail } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -18,6 +18,7 @@ const Login = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // login handler to make api call
   const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -36,6 +37,8 @@ const Login = () => {
         LocalStorage.set("user", res.data.user);
         LocalStorage.set("token", res.data.accessToken);
         dispatch(login({ user: res.data.user, token: res.data.accessToken }));
+        toast.success(res.message);
+        navigate(`/user/${res.data.user.username}`);
       },
       (error) => {
         toast.error(error);

@@ -54,11 +54,19 @@ export const authSlice = createSlice({
       LocalStorage.remove("token");
       LocalStorage.remove("user");
     },
+
+    updateUserAvatar: (
+      state,
+      action: PayloadAction<{ updatedUser: UserInterface }>
+    ) => {
+      state.user = action.payload.updatedUser;
+      LocalStorage.set("user", action.payload.updatedUser);
+    },
   },
 });
 
 // Export action creators
-export const { loadUser, login, logout } = authSlice.actions;
+export const { loadUser, login, logout, updateUserAvatar } = authSlice.actions;
 
 // Export the auth reducer
 export default authSlice.reducer;

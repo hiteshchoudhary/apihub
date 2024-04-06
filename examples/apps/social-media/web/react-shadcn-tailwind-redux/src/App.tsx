@@ -10,7 +10,8 @@ import AuthRoute from "./components/auth/AuthRoute";
 import NonAuthRoute from "./components/auth/NonAuthRoute";
 import Home from "./pages/home";
 import Sidebar from "./components/sidebar";
-import UserProfilePage from "./pages/profile/user-profile-page";
+import UserProfilePage from "@/pages/profile/user-profile-page";
+import EditProfilePage from "./pages/profile/edit-profile-page";
 
 function App() {
   const { user, token } = useSelector((state: RootState) => state.auth);
@@ -60,6 +61,16 @@ function App() {
             <AuthRoute>
               <Sidebar />
               <Home />
+            </AuthRoute>
+          }
+        />
+
+        <Route
+          path="/profile/edit"
+          element={
+            <AuthRoute>
+              <Sidebar />
+              <EditProfilePage />
             </AuthRoute>
           }
         />

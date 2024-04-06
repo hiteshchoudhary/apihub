@@ -35,6 +35,8 @@ export const requestHandler = async (
     // Hide loading state if setLoading function is provided
     setLoading && setLoading(false);
   }
+  console.log("end of requestS");
+  
   // }, 3000);
 };
 

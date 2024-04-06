@@ -1,6 +1,7 @@
 import {
   followUnfollowApi,
   getUserFollowersApi,
+  getUserFollowingsApi,
   getUserPostsApi,
   getUserProfileApi,
   likeDislikePostApi,
@@ -15,6 +16,11 @@ import {
   followUnfollowBeforeRequest,
   followUnfollowAfterRequest,
   getUserFollowers,
+  getUserFollowings,
+  FollowUnFollowFollwerBeforeRequest,
+  FollowUnFollowFollwingBeforeRequest,
+  FollowUnFollowFollwerAfterRequest,
+  FollowUnFollowFollwingAfterRequest,
 } from "@/redux/slices/profileSlice";
 
 import { RootState } from "@/redux/store";
@@ -26,10 +32,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import PostCard from "@/components/posts/post-card";
 import ScrollContainer from "@/components/containers/ScrollContainer";
-import FollowerFollowingCard from "@/components/users/FollowerFollowingCard";
+import { FollowerFollowingCard } from "@/components/users/FollowerFollowingCard";
+import MainPageContainer from "@/components/containers/MainPageContainer";
 
 const UserProfilePage = () => {
-  const { username } = useParams();
+  const { username: paramsUsername } = useParams();
   const dispatch = useDispatch();
   const {
     userProfile,
@@ -38,6 +45,10 @@ const UserProfilePage = () => {
     totalPosts,
     hasMoreFollowers,
     followers,
+    followings,
+    hasMoreFollowings,
+    initialFollowerFetch,
+    initialFollowingFetch,
   } = useSelector((state: RootState) => state.profile);
   const [gettingPosts, setGettingPosts] = useState<boolean>(false);
 
@@ -45,7 +56,8 @@ const UserProfilePage = () => {
   const currentTab = searchParams.get("tab") || "Posts";
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [gettingFollowers, setGettingFollowers] = useState<boolean>(false);
+  const [gettingFollowersOrFollowings, setGettingFollowersOrFollowings] =
+    useState<boolean>(false);
 
   const changeCurrentTab = (tab: string) => {
     setSearchParams({ tab });
@@ -55,11 +67,25 @@ const UserProfilePage = () => {
 
   const followUnFollowHandler = async (
     toBeFollowedUserId: string,
-    action: "follow" | "unfollow"
+    action: "follow" | "unfollow",
+    targetList: "user" | "follower" | "following"
   ) => {
+    const dispatchBeforeRequest = {
+      user: followUnfollowBeforeRequest,
+      follower: FollowUnFollowFollwerBeforeRequest,
+      following: FollowUnFollowFollwingBeforeRequest,
+    }[targetList];
+
+    const dispatchAfterRequest = {
+      user: followUnfollowAfterRequest,
+      follower: FollowUnFollowFollwerAfterRequest,
+      following: FollowUnFollowFollwingAfterRequest,
+    }[targetList];
+
     dispatch(
-      followUnfollowBeforeRequest({
+      dispatchBeforeRequest({
         action: action,
+        userId: toBeFollowedUserId,
       })
     );
 
@@ -68,7 +94,8 @@ const UserProfilePage = () => {
       null,
       (res) => {
         dispatch(
-          followUnfollowAfterRequest({
+          dispatchAfterRequest({
+            userId: toBeFollowedUserId,
             following: res.data.following,
           })
         );
@@ -88,11 +115,9 @@ const UserProfilePage = () => {
     } else {
       await requestHandler(
         async () =>
-          await getUserPostsApi({ page: nextPage, username: username! }),
+          await getUserPostsApi({ page: nextPage, username: paramsUsername! }),
         setGettingPosts,
         (res) => {
-          console.log(res.data);
-
           dispatch(
             getUserPosts({
               posts: res.data.posts,
@@ -137,18 +162,18 @@ const UserProfilePage = () => {
     isFirstPage: boolean = false,
     nextPage: number
   ) => {
-    console.log("getting followers");
-    if (!username) {
+    if (!paramsUsername) {
       return;
     }
 
-    if (!isFirstPage && (gettingFollowers || !hasMoreFollowers)) {
+    if (!isFirstPage && (gettingFollowersOrFollowings || !hasMoreFollowers)) {
       return;
     } else {
       await requestHandler(
-        async () => await getUserFollowersApi(username, nextPage),
-        setGettingFollowers,
+        async () => await getUserFollowersApi(paramsUsername, nextPage),
+        setGettingFollowersOrFollowings,
         (res) => {
+          console.log(res.data);
           dispatch(
             getUserFollowers({
               followers: res.data.followers,
@@ -164,9 +189,39 @@ const UserProfilePage = () => {
     }
   };
 
+  const getUserFollowingsHandler = async (
+    isFirstPage: boolean = false,
+    nextPage: number
+  ) => {
+    if (!paramsUsername) {
+      return;
+    }
+
+    if (!isFirstPage && (gettingFollowersOrFollowings || !hasMoreFollowings)) {
+      return;
+    } else {
+      await requestHandler(
+        async () => await getUserFollowingsApi(paramsUsername, nextPage),
+        setGettingFollowersOrFollowings,
+        (res) => {
+          dispatch(
+            getUserFollowings({
+              followings: res.data.following,
+              hasNextPage: res.data.hasNextPage,
+              page: res.data.page,
+            })
+          );
+        },
+        (error) => {
+          toast.error(error);
+        }
+      );
+    }
+  };
+
   const getUserProfilehandler = async () => {
     await requestHandler(
-      async () => await getUserProfileApi(username!),
+      async () => await getUserProfileApi(paramsUsername!),
       setLoading,
       (res) => {
         dispatch(
@@ -185,72 +240,87 @@ const UserProfilePage = () => {
   useEffect(() => {
     setSearchParams({ tab: "Posts" });
 
-    if (!username) {
+    if (!paramsUsername) {
       navigate("/");
       return;
     }
-    if (userProfile && userProfile.account.username === username) {
+    if (userProfile && userProfile.account.username === paramsUsername) {
       return;
     } else {
       getUserProfilehandler();
+      getUserPostsHandler(true, 1);
     }
-  }, []);
-
-  // UseEffect to set up IntersectionObserver for infinite scrolling
+  }, [paramsUsername]);
 
   return (
-    <div className=" md:container flex justify-start overflow-y-auto md:absolute md:top-[70px] md:left-[150px] lg:left-[200px] max-h-[calc(100vh-70px)] md:max-w-[calc(100vw-150px)] lg:max-w-[calc(100vw-200px)]  p-2 pt-3 md:p-3">
-      <div className="self-start  lg:container p-0 md:ml-0 ">
-        <div className="max-h-[100vh-70px] overflow-y-auto">
-          {/* USER INFO */}
-          {loading ? <ProfileCard.Skeleton /> : null}
-          {userProfile && !loading && (
-            <ProfileCard
-              currentTab={currentTab}
-              changeCurrentTab={changeCurrentTab}
-              followUnFollowHandler={followUnFollowHandler}
-              profile={userProfile}
-              totalPosts={totalPosts}
-            />
-          )}
+    <MainPageContainer>
+      <div className="relative max-h-[100vh-70px] overflow-y-auto">
+        {/* USER INFO */}
+        {loading ? <ProfileCard.Skeleton /> : null}
+        {userProfile && !loading && (
+          <ProfileCard
+            currentTab={currentTab}
+            changeCurrentTab={changeCurrentTab}
+            followUnFollowHandler={followUnFollowHandler}
+            profile={userProfile}
+            totalPosts={totalPosts}
+          />
+        )}
 
-          {currentTab === "Posts" && (
-            <ScrollContainer
-              hasNextPage={hasNextPage}
-              Loader={PostCard.Skeleton}
-              fetchData={getUserPostsHandler}
-              loading={gettingPosts}
-              initialFetch={
-                !userProfile || userProfile.account.username !== username
-              }
-            >
-              {posts.map((post) => (
-                <PostCard key={post._id} post={post} onLike={likePostHandler} />
-              ))}
-            </ScrollContainer>
-          )}
+        {currentTab === "Posts" && (
+          <ScrollContainer
+            hasNextPage={hasNextPage}
+            Loader={PostCard.Skeleton}
+            fetchData={getUserPostsHandler}
+            loading={gettingPosts}
+            initialFetch={
+              !userProfile || userProfile.account.username !== paramsUsername
+            }
+          >
+            {posts.map((post) => (
+              <PostCard key={post._id} post={post} onLike={likePostHandler} />
+            ))}
+          </ScrollContainer>
+        )}
 
-          {currentTab === "Followers" && (
-            <ScrollContainer
-              hasNextPage={hasMoreFollowers}
-              Loader={PostCard.Skeleton}
-              fetchData={getUserFollowerHandler}
-              loading={gettingFollowers}
-              initialFetch={
-                !userProfile || userProfile.account.username !== username
-              }
-            >
-              {followers.map((follower) => (
-                <FollowerFollowingCard
-                  userDetails={follower}
-                  key={follower._id}
-                />
-              ))}
-            </ScrollContainer>
-          )}
-        </div>
+        {currentTab === "Followers" && (
+          <ScrollContainer
+            hasNextPage={hasMoreFollowers}
+            Loader={FollowerFollowingCard.Skeleton}
+            fetchData={getUserFollowerHandler}
+            loading={gettingFollowersOrFollowings}
+            initialFetch={initialFollowerFetch}
+          >
+            {followers.map((follower) => (
+              <FollowerFollowingCard
+                type="follower"
+                followUnFollowHandler={followUnFollowHandler}
+                userDetails={follower}
+                key={follower._id}
+              />
+            ))}
+          </ScrollContainer>
+        )}
+        {currentTab === "Following" && (
+          <ScrollContainer
+            hasNextPage={hasMoreFollowings}
+            Loader={FollowerFollowingCard.Skeleton}
+            fetchData={getUserFollowingsHandler}
+            loading={gettingFollowersOrFollowings}
+            initialFetch={initialFollowingFetch}
+          >
+            {followings.map((following) => (
+              <FollowerFollowingCard
+                type="following"
+                followUnFollowHandler={followUnFollowHandler}
+                userDetails={following}
+                key={following._id}
+              />
+            ))}
+          </ScrollContainer>
+        )}
       </div>
-    </div>
+    </MainPageContainer>
   );
 };
 

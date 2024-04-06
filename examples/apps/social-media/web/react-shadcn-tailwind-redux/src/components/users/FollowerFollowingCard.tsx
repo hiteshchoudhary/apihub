@@ -1,5 +1,5 @@
 import { Followerinterface } from "@/interfaces/profile";
-import { Card, CardContent } from "../ui/card";
+import { Card } from "../ui/card";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
@@ -12,11 +12,21 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Check, UserPlus } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Skeleton } from "../ui/skeleton";
 
 const FollowerFollowingCard = ({
   userDetails,
+  type,
+  followUnFollowHandler,
 }: {
   userDetails: Followerinterface;
+  type: "follower" | "following";
+  followUnFollowHandler: (
+    toBeFollowedUserId: string,
+    action: "follow" | "unfollow",
+    targetList: "user" | "follower" | "following"
+  ) => void;
 }) => {
   return (
     <Card className="w-full p-3 flex items-center justify-between">
@@ -26,10 +36,12 @@ const FollowerFollowingCard = ({
         </Avatar>
 
         <div className="flex flex-col justify-start">
-          <p>
+          <Link to={`/user/${userDetails.username}`}>
             {userDetails.profile.firstName} {userDetails.profile.lastName}
-          </p>
-          <p>{userDetails.username}</p>
+          </Link>
+          <Link to={`/user/${userDetails.username}`}>
+            {userDetails.username}
+          </Link>
         </div>
       </div>
 
@@ -58,9 +70,12 @@ const FollowerFollowingCard = ({
             <DialogFooter>
               <DialogClose asChild>
                 <Button
-                  onClick={() => {}}
-                  // followUnFollowHandler(_id, "unfollow")
-
+                  onClick={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => {
+                    e.stopPropagation();
+                    followUnFollowHandler(userDetails._id, "unfollow", type);
+                  }}
                   variant={"destructive"}
                 >
                   Unfollow
@@ -71,7 +86,10 @@ const FollowerFollowingCard = ({
         </Dialog>
       ) : (
         <Button
-          // onClick={() => followUnFollowHandler(_id, "follow")}
+          onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.stopPropagation();
+            followUnFollowHandler(userDetails._id, "follow", type);
+          }}
           className="text-sm gap-2"
         >
           <UserPlus className="w-5 h-5" /> Follow
@@ -81,4 +99,21 @@ const FollowerFollowingCard = ({
   );
 };
 
-export default FollowerFollowingCard;
+FollowerFollowingCard.Skeleton = () => {
+  return (
+    <Card className="w-full p-3 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <Skeleton className="w-10 h-10 md:w-20 md:h-20 rounded-full" />
+
+        <div className="flex flex-col gap-3 justify-start">
+          <Skeleton className="h-5 w-32" />
+
+          <Skeleton className="h-5 w-16" />
+        </div>
+      </div>
+      <Skeleton className="w-28 h-10" />
+    </Card>
+  );
+};
+
+export { FollowerFollowingCard };

@@ -7,7 +7,6 @@ import { Bookmark, Heart, LucideIcon, MessageCircleMore } from "lucide-react";
 import clsx from "clsx";
 import { ImageCarousel } from "../image-carousel";
 import { Skeleton } from "../ui/skeleton";
-import { useDispatch } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 
@@ -18,8 +17,6 @@ const PostCard = ({
   post: PostsInterface;
   onLike: (postId: string) => Promise<void>;
 }) => {
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const likePostHandler = () => {

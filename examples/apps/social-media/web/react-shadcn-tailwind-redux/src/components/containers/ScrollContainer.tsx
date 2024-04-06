@@ -8,7 +8,7 @@ interface ScrollContainerProps {
   hasNextPage: boolean;
   initialFetch: boolean;
 }
-
+//  TODO: Try getting page from query params
 const ScrollContainer = ({
   fetchData,
   Loader,
@@ -23,21 +23,27 @@ const ScrollContainer = ({
   const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
+    console.log("3");
+    console.log("useEffect page", page);
     if (hasNextPage || initialFetch) {
+      console.log("4");
       fetchData(page === 1, initialFetch ? 1 : page);
     }
   }, [page]);
 
   useEffect(() => {
+    console.log(observerTarget);
     const observer = new IntersectionObserver(
       (entries) => {
         // If the target element is intersecting, increment the page number
         if (entries[0].isIntersecting) {
           setPage((prev) => prev + 1);
+          console.log("2");
         }
       },
       { threshold: 1 }
     );
+
     // Start observing the target element
     if (observerTarget.current) {
       observer.observe(observerTarget.current);
@@ -63,7 +69,7 @@ const ScrollContainer = ({
           </>
         )}
 
-        <div ref={observerTarget} className="w-full h-[70px] md:h-0 " />
+        <div ref={observerTarget} className=" " />
       </div>
     </div>
   );
