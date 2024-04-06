@@ -23,7 +23,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
-const swaggerDocument = YAML.parse(file);
+const swaggerDocument = YAML.parse(
+  file?.replace(
+    "- url: ${{server}}",
+    `- url: ${process.env.FREEAPI_HOST_URL}/api/v1`
+  )
+);
 
 const app = express();
 
