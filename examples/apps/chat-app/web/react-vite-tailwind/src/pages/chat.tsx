@@ -79,29 +79,49 @@ const ChatPage = () => {
    */
   const updateChatLastMessage = (
     chatToUpdateId: string,
-    message: ChatMessageInterface, // The new message to be set as the last message
-    ismessageDeleted?: true | undefined
+    message: ChatMessageInterface // The new message to be set as the last message
   ) => {
     // Search for the chat with the given ID in the chats array
     const chatToUpdate = chats.find((chat) => chat._id === chatToUpdateId)!;
 
-    if (ismessageDeleted) {
-      chatToUpdate.lastMessage = message;
-    } else {
-      // Update the 'lastMessage' field of the found chat with the new message
-      chatToUpdate.lastMessage = message;
+    // Update the 'lastMessage' field of the found chat with the new message
+    chatToUpdate.lastMessage = message;
 
-      // Update the 'updatedAt' field of the chat with the 'updatedAt' field from the message
-      chatToUpdate.updatedAt = message?.updatedAt;
+    // Update the 'updatedAt' field of the chat with the 'updatedAt' field from the message
+    chatToUpdate.updatedAt = message?.updatedAt;
 
-      // Update the state of chats, placing the updated chat at the beginning of the array
-      setChats([
-        chatToUpdate, // Place the updated chat first
-        ...chats.filter((chat) => chat._id !== chatToUpdateId), // Include all other chats except the updated one
-      ]);
+    // Update the state of chats, placing the updated chat at the beginning of the array
+    setChats([
+      chatToUpdate, // Place the updated chat first
+      ...chats.filter((chat) => chat._id !== chatToUpdateId), // Include all other chats except the updated one
+    ]);
+  };
+  /**
+   *A function to update the chats last message specifically in case of deletion of message *
+   **/
+
+  const updateChatLastMessageOnDeletion = (
+    chatToUpdateId: string, //ChatId to find the chat
+    message: ChatMessageInterface //The deleted message
+  ) => {
+    // Search for the chat with the given ID in the chats array
+    const chatToUpdate = chats.find((chat) => chat._id === chatToUpdateId)!;
+
+    //Updating the last message of chat only in case of deleted message and chats last message is same
+    if (chatToUpdate.lastMessage?._id === message._id) {
+      requestHandler(
+        async () => getChatMessages(chatToUpdateId),
+        null,
+        (req) => {
+          const { data } = req;
+
+          chatToUpdate.lastMessage = data[0];
+          setChats([...chats]);
+        },
+        alert
+      );
     }
   };
-
   const getChats = async () => {
     requestHandler(
       async () => await getUserChats(),
@@ -184,15 +204,7 @@ const ChatPage = () => {
       null,
       (res) => {
         setMessages((prev) => prev.filter((msg) => msg._id !== res.data._id));
-        const deletedMessageIndex = messages.findIndex(
-          (msg) => msg._id === res.data._id
-        );
-        if (deletedMessageIndex > -1) {
-          if (deletedMessageIndex === messages.length - 1) {
-            const newLastMessage = messages[deletedMessageIndex - 1];
-            updateChatLastMessage(message.chat, newLastMessage, true);
-          }
-        }
+        updateChatLastMessageOnDeletion(message.chat, message);
       },
       alert
     );
@@ -263,7 +275,6 @@ const ChatPage = () => {
   };
 
   const onMessageDelete = (message: ChatMessageInterface) => {
-    console.log(message);
     if (message?.chat !== currentChat.current?._id) {
       setUnreadMessages((prev) =>
         prev.filter((msg) => msg._id !== message._id)
@@ -271,7 +282,8 @@ const ChatPage = () => {
     } else {
       setMessages((prev) => prev.filter((msg) => msg._id !== message._id));
     }
-    updateChatLastMessage(message.chat, message, true);
+
+    updateChatLastMessageOnDeletion(message.chat, message);
   };
 
   /**
