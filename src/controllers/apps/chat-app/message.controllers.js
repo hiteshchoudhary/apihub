@@ -218,7 +218,6 @@ const deleteMessage = asyncHandler(async (req, res) => {
     // here the chat is the raw instance of the chat in which participants is the array of object ids of users
     // avoid emitting event to the user who is deleting the message
     if (participantObjectId.toString() === req.user._id.toString()) return;
-    console.log(req.user._id, "emit deletemsg event");
     // emit the delete message event to the other participants frontend with delete messageId as the payload
     emitSocketEvent(
       req,
