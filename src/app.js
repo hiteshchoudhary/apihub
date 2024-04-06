@@ -26,7 +26,7 @@ const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
 const swaggerDocument = YAML.parse(
   file?.replace(
     "- url: ${{server}}",
-    `- url: ${process.env.FREEAPI_HOST_URL}/api/v1`
+    `- url: ${process.env.FREEAPI_HOST_URL || "http://localhost:8080"}/api/v1`
   )
 );
 
