@@ -19,19 +19,20 @@ const getCats = asyncHandler(async (req, res) => {
       })
     : structuredClone(catsJson);
 
-  if (inc && inc[0]?.trim()) {
-    catsArray = filterObjectKeys(inc, catsArray);
-  }
-
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        getPaginatedPayload(catsArray, page, limit),
-        "Cats fetched successfully"
-      )
-    );
+  const paginatedCats = getPaginatedPayload(catsArray, page, limit);
+  const updatedCats = inc
+    ? filterObjectKeys(inc, paginatedCats.data)
+    : paginatedCats.data;
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        ...paginatedCats,
+        data: updatedCats,
+      },
+      "Cats fetched successfully"
+    )
+  );
 });
 
 const getCatById = asyncHandler(async (req, res) => {

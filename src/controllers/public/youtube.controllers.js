@@ -101,9 +101,9 @@ const getVideos = asyncHandler(async (req, res) => {
       })
     : structuredClone(videos);
 
-  if (inc && inc[0]?.trim()) {
-    videosArray = filterObjectKeys(inc, videosArray);
-  }
+  // if (inc && inc[0]?.trim()) {
+  //   videosArray = filterObjectKeys(inc, videosArray);
+  // }
 
   switch (sortBy) {
     case YouTubeFilterEnum.LATEST:
@@ -141,16 +141,22 @@ const getVideos = asyncHandler(async (req, res) => {
       );
       break;
   }
+  const paginatedVideos = getPaginatedPayload(videosArray, page, limit);
+  const updatedVideos =
+    inc && inc[0]?.trim()
+      ? filterObjectKeys(inc, paginatedVideos.data)
+      : paginatedVideos.data;
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        getPaginatedPayload(videosArray, page, limit),
-        "Videos fetched successfully"
-      )
-    );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        ...paginatedVideos,
+        data: updatedVideos,
+      },
+      "Videos fetched successfully"
+    )
+  );
 });
 
 const getVideoById = asyncHandler(async (req, res) => {
