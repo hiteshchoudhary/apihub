@@ -16,21 +16,19 @@ const getRandomJokes = asyncHandler(async (req, res) => {
       })
     : structuredClone(randomJokesJson);
 
-  const paginatedJokes = getPaginatedPayload(randomJokesArray, page, limit);
-  const updatedJokes = inc
-    ? filterObjectKeys(inc, paginatedJokes.data)
-    : paginatedJokes.data;
+  if (inc && inc[0]?.trim()) {
+    randomJokesArray = filterObjectKeys(inc, randomJokesArray);
+  }
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        ...paginatedJokes,
-        data: updatedJokes,
-      },
-      "Random jokes fetched successfully"
-    )
-  );
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        getPaginatedPayload(randomJokesArray, page, limit),
+        "Random jokes fetched successfully"
+      )
+    );
 });
 
 const getJokeById = asyncHandler(async (req, res) => {

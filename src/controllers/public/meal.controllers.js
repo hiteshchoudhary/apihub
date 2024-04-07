@@ -19,20 +19,19 @@ const getMeals = asyncHandler(async (req, res) => {
       })
     : structuredClone(mealsJson);
 
-  const paginatedMeals = getPaginatedPayload(mealsArray, page, limit);
-  const updatedMeals = inc
-    ? filterObjectKeys(inc, paginatedMeals.data)
-    : paginatedMeals.data;
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        ...paginatedMeals,
-        data: updatedMeals,
-      },
-      "Meals fetched successfully"
-    )
-  );
+  if (inc && inc[0]?.trim()) {
+    mealsArray = filterObjectKeys(inc, mealsArray);
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        getPaginatedPayload(mealsArray, page, limit),
+        "Meals fetched successfully"
+      )
+    );
 });
 
 const getMealById = asyncHandler(async (req, res) => {

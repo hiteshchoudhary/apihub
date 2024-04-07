@@ -19,21 +19,19 @@ const getStocks = asyncHandler(async (req, res) => {
       })
     : structuredClone(nseStocksJson);
 
-  const paginatedStocks = getPaginatedPayload(stocksArray, page, limit);
-  const updatedStocks = inc
-    ? filterObjectKeys(inc, paginatedStocks.data)
-    : paginatedStocks.data;
+  if (inc && inc[0]?.trim()) {
+    stocksArray = filterObjectKeys(inc, stocksArray);
+  }
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        ...paginatedStocks,
-        data: updatedStocks,
-      },
-      "Stocks fetched successfully"
-    )
-  );
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        getPaginatedPayload(stocksArray, page, limit),
+        "Stocks fetched successfully"
+      )
+    );
 });
 
 const getStockById = asyncHandler(async (req, res) => {

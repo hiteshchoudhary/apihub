@@ -21,20 +21,19 @@ const getRandomUsers = asyncHandler(async (req, res) => {
       })
     : structuredClone(randomUsersJson);
 
-  const paginatedUsers = getPaginatedPayload(randomUsersArray, page, limit);
-  const updatedUsers = inc
-    ? filterObjectKeys(inc, paginatedUsers.data)
-    : paginatedUsers.data;
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        ...paginatedUsers,
-        data: updatedUsers,
-      },
-      "Random users fetched successfully"
-    )
-  );
+  if (inc && inc[0]?.trim()) {
+    randomUsersArray = filterObjectKeys(inc, randomUsersArray);
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        getPaginatedPayload(randomUsersArray, page, limit),
+        "Random users fetched successfully"
+      )
+    );
 });
 
 const getUserById = asyncHandler(async (req, res) => {

@@ -19,21 +19,19 @@ const getQuotes = asyncHandler(async (req, res) => {
       })
     : structuredClone(quotesJson);
 
-  const paginatedQuotes = getPaginatedPayload(quotesArray, page, limit);
-  const updatedQuotes = inc
-    ? filterObjectKeys(inc, paginatedQuotes.data)
-    : paginatedQuotes.data;
+  if (inc && inc[0]?.trim()) {
+    quotesArray = filterObjectKeys(inc, quotesArray);
+  }
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        ...paginatedQuotes,
-        data: updatedQuotes,
-      },
-      "Quotes fetched successfully"
-    )
-  );
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        getPaginatedPayload(quotesArray, page, limit),
+        "Quotes fetched successfully"
+      )
+    );
 });
 
 const getQuoteById = asyncHandler(async (req, res) => {
