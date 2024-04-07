@@ -19,20 +19,20 @@ const getBooks = asyncHandler(async (req, res) => {
         );
       })
     : structuredClone(booksJson);
-
-  if (inc && inc[0]?.trim()) {
-    booksArray = filterObjectKeys(inc, booksArray);
-  }
-
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        getPaginatedPayload(booksArray, page, limit),
-        "Books fetched successfully"
-      )
-    );
+  const paginatedBooks = getPaginatedPayload(booksArray, page, limit);
+  const updatedBooks = inc
+    ? filterObjectKeys(inc, paginatedBooks.data)
+    : paginatedBooks.data;
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        ...paginatedBooks,
+        data: updatedBooks,
+      },
+      "Books fetched successfully"
+    )
+  );
 });
 
 const getBookById = asyncHandler(async (req, res) => {
