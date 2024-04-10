@@ -24,8 +24,27 @@ const userSchema = new Schema(
         url: `https://via.placeholder.com/200x200.png`,
         localPath: "",
       },
+      require: true,
+    },
+    coverImage: {
+      type: {
+        url: String,
+        localPath: String,
+      },
+      default: {
+        url: `https://via.placeholder.com/200x200.png`,
+        localPath: "",
+      },
     },
     username: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
+    fullname: {
       type: String,
       required: true,
       unique: true,
@@ -55,6 +74,12 @@ const userSchema = new Schema(
       enum: AvailableSocialLogins,
       default: UserLoginType.EMAIL_PASSWORD,
     },
+    watchHistory: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Video",
+      },
+    ],
     isEmailVerified: {
       type: Boolean,
       default: false,

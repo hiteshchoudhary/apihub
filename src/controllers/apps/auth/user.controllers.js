@@ -5,11 +5,8 @@ import { User } from "../../../models/apps/auth/user.models.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
-import {
-  getLocalPath,
-  getStaticFilePath,
-  removeLocalFile,
-} from "../../../utils/helpers.js";
+import { uploadOnCloudinary } from "../../../utils/Cloudinary.js";
+import { getLocalPath, removeLocalFile } from "../../../utils/helpers.js";
 import {
   emailVerificationMailgenContent,
   forgotPasswordMailgenContent,
@@ -37,7 +34,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, username, password, role } = req.body;
+  const { email, username, fullname, password, role } = req.body;
 
   const existedUser = await User.findOne({
     $or: [{ username }, { email }],
@@ -50,6 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     username,
+    fullname,
     isEmailVerified: false,
     role: role || UserRolesEnum.USER,
   });
@@ -469,10 +467,13 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   }
 
   // get avatar file system url and local path
-  const avatarUrl = getStaticFilePath(req, req.file?.filename);
   const avatarLocalPath = getLocalPath(req.file?.filename);
 
   const user = await User.findById(req.user._id);
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+
+  const avatarUrl = avatar.url;
 
   let updatedUser = await User.findByIdAndUpdate(
     req.user._id,
@@ -499,6 +500,189 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedUser, "Avatar updated successfully"));
 });
 
+const updateCoverImage = asyncHandler(async (req, res) => {
+  try {
+    if (!req.file) {
+      throw new ApiError(400, "please attach your cover image file");
+    }
+
+    const coverImageLocalPath = getLocalPath(req.file?.filename);
+
+    const cover = await uploadOnCloudinary(coverImageLocalPath);
+
+    if (!cover.url) {
+      throw new ApiError(
+        400,
+        "error while uploading cover image on cloudinary "
+      );
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $set: {
+          // set the newly uploaded coverImage
+          coverImage: {
+            url: cover.url,
+            localPath: coverImageLocalPath,
+          },
+        },
+      },
+      { new: true }
+    ).select("-password -refreshToken");
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Cover Image Updated SuccessFully", user));
+  } catch (error) {
+    throw new ApiError(500, error?.message);
+  }
+});
+
+const getWatchHistory = asyncHandler(async (req, res) => {
+  try {
+    const watchHistory = await User.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(req.user._id),
+        },
+      },
+      {
+        $lookup: {
+          from: "videos",
+          localField: "watchHistory",
+          foreignField: "_id",
+          as: "watchHistory",
+          pipeline: [
+            {
+              $sort: {
+                createdAt: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner",
+                pipeline: [
+                  {
+                    //* video owner info get
+                    $project: {
+                      fullname: 1,
+                      username: 1,
+                      avatar: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $addFields: {
+                owner: {
+                  $first: "$owner",
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          password: 0,
+          refreshToken: 0,
+        },
+      },
+    ]);
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          "watch history is fetched successfully",
+          watchHistory[0]
+        )
+      );
+  } catch (error) {
+    throw new ApiError(500, error?.message);
+  }
+});
+
+const getUserChannelProfile = asyncHandler(async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    if (!username?.trim()) {
+      throw new ApiError(400, "Username must be provided");
+    }
+
+    const channel = await User.aggregate([
+      {
+        $match: {
+          userName: username.toLowerCase(),
+        },
+      },
+      {
+        $lookup: {
+          from: "subscriptions",
+          localField: "_id",
+          foreignField: "subscriber",
+          as: "Subscribers",
+        },
+      },
+      {
+        $lookup: {
+          from: "subscriptions",
+          localField: "_id",
+          foreignField: "channel",
+          as: "SubscribedTo",
+        },
+      },
+      {
+        $addFields: {
+          subscribersCount: {
+            $size: "$Subscribers",
+          },
+          channelsSubscribedToCount: {
+            $size: "$SubscribedTo",
+          },
+          isSubscribe: {
+            $cond: {
+              if: { $in: [req.user._id, "$Subscribers.subscriber"] },
+              then: true,
+              else: false,
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          fullname: 1,
+          username: 1,
+          subscribersCount: 1,
+          channelsSubscribedToCount: 1,
+          isSubscribed: 1,
+          avatar: 1,
+          coverImage: 1,
+          email: 1,
+        },
+      },
+    ]);
+
+    if (!channel?.length) {
+      throw new ApiError(400, "channel is not exits");
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, "channel is fetched successfully", channel[0])
+      );
+  } catch (error) {
+    throw new ApiError(500, error?.message);
+  }
+});
+
 export {
   assignRole,
   changeCurrentPassword,
@@ -513,4 +697,7 @@ export {
   resetForgottenPassword,
   updateUserAvatar,
   verifyEmail,
+  updateCoverImage,
+  getWatchHistory,
+  getUserChannelProfile,
 };

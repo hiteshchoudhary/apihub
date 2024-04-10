@@ -130,6 +130,14 @@ import socialLikeRouter from "./routes/apps/social-media/like.routes.js";
 import socialPostRouter from "./routes/apps/social-media/post.routes.js";
 import socialProfileRouter from "./routes/apps/social-media/profile.routes.js";
 
+import videoRouter from "./routes/apps/video-app/video.routes.js";
+import commentRouter from "./routes/apps/video-app/comment.routes.js";
+import tweetRouter from "./routes/apps/video-app/tweet.routes.js";
+import likeRouter from "./routes/apps/video-app/like.routes.js";
+import playlistRouter from "./routes/apps/video-app/playlist.routes.js";
+import subscriptionRouter from "./routes/apps/video-app/subscription.routes.js";
+import dashboardRouter from "./routes/apps/video-app/dashboard.routes.js";
+
 import chatRouter from "./routes/apps/chat-app/chat.routes.js";
 import messageRouter from "./routes/apps/chat-app/message.routes.js";
 
@@ -185,6 +193,14 @@ app.use("/api/v1/social-media/posts", socialPostRouter);
 app.use("/api/v1/social-media/like", socialLikeRouter);
 app.use("/api/v1/social-media/bookmarks", socialBookmarkRouter);
 app.use("/api/v1/social-media/comments", socialCommentRouter);
+
+app.use("/api/v1/video-tube/videos", videoRouter);
+app.use("/api/v1/video-tube/comments", commentRouter);
+app.use("/api/v1/video-tube/tweets", tweetRouter);
+app.use("/api/v1/video-tube/likes", likeRouter);
+app.use("/api/v1/video-tube/playlist", playlistRouter);
+app.use("/api/v1/video-tube/subscriptions", subscriptionRouter);
+app.use("/api/v1/video-tube/dashboard", dashboardRouter);
 
 app.use("/api/v1/chat-app/chats", chatRouter);
 app.use("/api/v1/chat-app/messages", messageRouter);
