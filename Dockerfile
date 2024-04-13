@@ -1,4 +1,7 @@
-FROM node
+# NODE alpine to decrease the size of the conatiner 
+FROM node:alpine3.18
+# FROM node
+
 
 RUN mkdir -p /usr/src/freeapi && chown -R node:node /usr/src/freeapi
 

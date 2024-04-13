@@ -1,2 +1,4 @@
 /.vscode
 /node_modules
+# Do not copy examples folder in the docker not needed in backend container 
+examples
