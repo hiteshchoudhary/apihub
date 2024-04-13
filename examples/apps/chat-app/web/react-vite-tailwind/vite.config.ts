@@ -8,7 +8,7 @@ dns.setDefaultResultOrder("verbatim");
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: "localhost",
+    host: "0.0.0.0", // added 0000 to access the appplication outside the localhost
     port: 3000,
   },
 });
