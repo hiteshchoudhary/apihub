@@ -54,4 +54,4 @@ networks:
   freeapi-internal:
 
 volumes:
-  data:
+  db-data:
