@@ -116,8 +116,6 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   if (user.loginType !== UserLoginType.EMAIL_PASSWORD) {
-    // If user is registered with some other method, we will ask him/her to use the same method as registered.
-    // This shows that if user is registered with methods other than email password, he/she will not be able to login with password. Which makes password field redundant for the SSO
     throw new ApiError(
       400,
       "You have previously registered using " +
@@ -128,7 +126,6 @@ const loginUser = asyncHandler(async (req, res) => {
     );
   }
 
-  // Compare the incoming password with hashed password
   const isPasswordValid = await user.isPasswordCorrect(password);
 
   if (!isPasswordValid) {
@@ -139,12 +136,14 @@ const loginUser = asyncHandler(async (req, res) => {
     user._id
   );
 
-  // get the user document ignoring the password and refreshToken field
+  // Push the new refresh token to the user's refreshToken array
+  user.refreshToken.push(refreshToken);
+  await user.save();
+
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken -emailVerificationToken -emailVerificationExpiry"
   );
 
-  // TODO: Add more options to make cookie more secure and reliable
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -152,23 +151,27 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken, options) // set the access token in the cookie
-    .cookie("refreshToken", refreshToken, options) // set the refresh token in the cookie
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(
       new ApiResponse(
         200,
-        { user: loggedInUser, accessToken, refreshToken }, // send access and refresh token in response if client decides to save them by themselves
+        { user: loggedInUser, accessToken, refreshToken },
         "User logged in successfully"
       )
     );
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
+  // Get the refresh token from the request cookies
+  const { refreshToken } = req.cookies;
+
+  // Pull the refresh token from the user's refreshToken array
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
+      $pull: {
+        refreshToken: refreshToken,
       },
     },
     { new: true }
@@ -280,13 +283,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       throw new ApiError(401, "Invalid refresh token");
     }
 
-    // check if incoming refresh token is same as the refresh token attached in the user document
-    // This shows that the refresh token is used or not
-    // Once it is used, we are replacing it with new refresh token below
-    if (incomingRefreshToken !== user?.refreshToken) {
-      // If token is valid but is used already
+    // Check if incoming refresh token is in the user's refreshToken array
+    if (!user.refreshToken.includes(incomingRefreshToken)) {
       throw new ApiError(401, "Refresh token is expired or used");
     }
+
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -294,6 +295,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken: newRefreshToken } =
       await generateAccessAndRefreshTokens(user._id);
+
+    // Replace the old refresh token with the new one in the user's refreshToken array
+    user.refreshToken.pull(incomingRefreshToken);
+    user.refreshToken.push(newRefreshToken);
+    await user.save();
 
     return res
       .status(200)

@@ -60,7 +60,7 @@ const userSchema = new Schema(
       default: false,
     },
     refreshToken: {
-      type: String,
+      type: [String],
     },
     forgotPasswordToken: {
       type: String,
