@@ -152,7 +152,3 @@ NOTES.md
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-
-
-.env
-/node_modules
