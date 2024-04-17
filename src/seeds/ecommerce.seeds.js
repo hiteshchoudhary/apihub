@@ -233,7 +233,7 @@ const seedEcomOrders = async () => {
           // In rare cases if it does not exist. Select a random one
           addresses.find(
             (add) => add.owner?.toString() === customer?._id.toString()
-          )?._id ?? addresses[getRandomNumber(addresses.length)],
+          ) || addresses[getRandomNumber(addresses.length)],
         items: orderInstance.orderItems, // set order items
         coupon: orderInstance.coupon,
         orderPrice: orderInstance.orderPrice,
