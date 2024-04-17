@@ -1,11 +1,11 @@
 import React, { ReactNode } from "react";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { useAppSelector } from "../../redux/app/hook";
 
 const PrivateRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { user, token } = useSelector((appStore) => appStore.authReducer);
+  const data = useAppSelector((appStore) => appStore.authReducer);
 
-  if (!token || !user?._id) return <Navigate to="/login" replace />;
+  if (!data.token || !data.user?._id) return <Navigate to="/login" replace />;
 
   //If authenticated ,render the child component
   return children;

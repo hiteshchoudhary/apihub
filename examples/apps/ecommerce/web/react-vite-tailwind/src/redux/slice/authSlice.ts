@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserInterface } from "../../interfaces/user";
+import { RootState } from "../appStore";
 
-interface AuthState {
+export interface AuthState {
   user: UserInterface | null;
   token: string | null;
   isLoading: boolean;
@@ -35,4 +36,4 @@ const authSlice = createSlice({
   },
 });
 export const { setUser, setLoading, clearUser } = authSlice.actions;
-export default authSlice;
+export default authSlice.reducer;
