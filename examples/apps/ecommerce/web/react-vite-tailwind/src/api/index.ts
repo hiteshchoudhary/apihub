@@ -6,6 +6,8 @@ import { LocalStorage } from "../utils";
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URI,
+  withCredentials: true,
+  timeout: 120000,
 });
 
 //Add an interceptor to set authorization header with user token before requests
@@ -48,7 +50,12 @@ const userProfile = () => {
   return apiClient.get("/ecommerce/profile");
 };
 
-const updateUserProfile = (data: any) => {
+const updateUserProfile = (data: {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  countryCode: string;
+}) => {
   return apiClient.patch("/ecommerce/profile", data); //has to re write
 };
 
