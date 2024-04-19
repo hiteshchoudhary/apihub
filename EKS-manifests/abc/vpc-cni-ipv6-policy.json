@@ -1,0 +1,26 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AssignIpv6Addresses",
+                "ec2:DescribeInstances",
+                "ec2:DescribeTags",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeInstanceTypes"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*:*:network-interface/*"
+            ]
+        }
+    ]
+}
+

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatdock-frontend-service
+spec:
+  selector:
+    app: chatdock-frontend  # Ensure this matches the labels in the Pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31000  # Specify your desired static NodePort here
+  type: NodePort
+
