@@ -1,20 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: freeapi-deployment
+  name: chat-app-backend-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: freeapi
+      app: chat-app
+      tier: backend
   template:
     metadata:
       labels:
-        app: freeapi
+      app: chat-app
+      tier: backend
     spec:
       containers:
-      - name: freeapi
-        image: noscopev6/chatapi:v1
+      - name: chat-app-backend
+        image: <image-name:tag>  # update the backend image from dockerhub
         ports:
         - containerPort: 8080
         env:
@@ -37,7 +39,7 @@ spec:
         - name: REFRESH_TOKEN_EXPIRY
           value: "10d"
         - name: CORS_ORIGIN
-          value: "https://chatnet"
+          value: "https://<frontend-FQDN>"   # update the frontend url as http or https to resolve the cors issue
         - name: FREEAPI_HOST_URL
-          value: "https://chatnet"
+          value: "https://<backend-FQDN>"  # update the backend url as http or https 
 

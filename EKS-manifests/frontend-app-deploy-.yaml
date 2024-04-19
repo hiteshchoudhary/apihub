@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-app-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-app-frontend
+  template:
+    metadata:
+      labels:
+        app: chat-app-frontend
+    spec:
+      containers:
+      - name: chat-app-frontend
+        image: <image-name:tag>  # Replace with your Dockerhub image name and tag with frontend image
+        ports:
+        - containerPort: 3000
+        env:
+        - name: VITE_SERVER_URI
+          value: "https://<backend-FQDN>/api/v1"   # Update the Backend URL to connect to backend server 
+        - name: VITE_SOCKET_URI
+          value: "https://<backend-FQDN>"       # Update the Backend URL to connect to backend server 
+
