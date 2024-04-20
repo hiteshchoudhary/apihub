@@ -6,18 +6,25 @@ import { useAppStore } from "@/store/store";
 import { processCodes } from "@/services/codesList";
 
 const Router = () => {
-  const { setHTTPStatusCodesList, setLoading } = useAppStore((state) => state);
+  const { setHTTPStatusCodesList, setLoading, HTTPStatusCodesList } =
+    useAppStore((state) => state);
 
   useEffect(() => {
-    setLoading(true);
-    processCodes()
-      .then((HTTPStatusCodesList) => {
-        setHTTPStatusCodesList(HTTPStatusCodesList);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    if (!HTTPStatusCodesList) {
+      return;
+    } else if (Object.keys(HTTPStatusCodesList).length > 0) {
+      return;
+    } else {
+      setLoading(true);
+      processCodes()
+        .then((HTTPStatusCodesList) => {
+          setHTTPStatusCodesList(HTTPStatusCodesList);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [HTTPStatusCodesList, setHTTPStatusCodesList, setLoading]);
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
