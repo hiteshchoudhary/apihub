@@ -1,4 +1,12 @@
+
+
+
 # HOW TO Deploy APP on `EKS-Cluster`
+
+### Architecture Diagram
+
+![alt text](ChatAPP-EKS.png)
+
 
 >> STEP 1: Containerize
 - Update the environment variable in .env and yaml files
