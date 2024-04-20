@@ -31,9 +31,9 @@ export default function Home() {
                 Check Codes
               </Button>
             </Link>
-            <Link to="/find-code">
+            <Link to="/quiz">
               <Button className="text-black bg-white hover:bg-blue-500 hover:text-white">
-                Find Codes
+                Quiz
               </Button>
             </Link>
           </div>
