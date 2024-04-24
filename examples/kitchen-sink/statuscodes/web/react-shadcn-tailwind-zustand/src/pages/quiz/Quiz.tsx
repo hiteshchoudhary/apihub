@@ -132,12 +132,18 @@ export default function Quiz() {
                 totalQuestions={quizQuestions.length}
                 onSubmit={onSubmit}
                 value={userAnswers[currentQuestionIndex]}
-                onOptionClick={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  setUserAnswers((prev) => ({
-                    ...prev,
-                    [currentQuestionIndex]: target.value,
-                  }));
+                onOptionClick={(option) => {
+                  setUserAnswers((prev) => {
+                    const _prev = { ...prev };
+                    if (_prev[currentQuestionIndex] === option) {
+                      delete _prev[currentQuestionIndex];
+                      return _prev;
+                    }
+                    return {
+                      ...prev,
+                      [currentQuestionIndex]: option,
+                    };
+                  });
                 }}
               />
             )}
