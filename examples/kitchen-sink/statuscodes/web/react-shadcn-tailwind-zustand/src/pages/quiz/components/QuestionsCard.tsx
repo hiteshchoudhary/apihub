@@ -41,7 +41,7 @@ export default function QuestionsCard(props: QuizQuestion) {
             return (
               <div
                 key={optionIndex}
-                className="flex items-center gap-2"
+                className="flex items-center w-full gap-2 p-2 transition-colors rounded-md cursor-pointer hover:bg-gray-100"
                 onClick={() => onOptionClick(option)}
               >
                 <RadioGroupItem
