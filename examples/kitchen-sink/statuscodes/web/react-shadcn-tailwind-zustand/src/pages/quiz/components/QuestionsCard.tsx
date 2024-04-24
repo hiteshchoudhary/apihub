@@ -16,7 +16,8 @@ interface QuizQuestion {
   totalQuestions: number;
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
   onSubmit: () => void;
-  onOptionClick: (event: React.MouseEvent<HTMLInputElement>) => void;
+  onOptionClick: React.FormEventHandler<HTMLButtonElement>;
+  value: string;
 }
 export default function QuestionsCard(props: QuizQuestion) {
   const {
@@ -27,6 +28,7 @@ export default function QuestionsCard(props: QuizQuestion) {
     setCurrentQuestionIndex,
     onSubmit,
     onOptionClick,
+    value,
   } = props;
   return (
     <Card className="lg:w-[700px] lg:min-h-[350px] justify-between flex flex-col">
@@ -34,11 +36,16 @@ export default function QuestionsCard(props: QuizQuestion) {
         <p className="text-lg font-semibold">{`${questionIndex + 1}. ${description}`}</p>
       </CardHeader>
       <CardContent>
-        <RadioGroup name={`question-${questionIndex}`} onClick={onOptionClick}>
+        <RadioGroup name={`question-${questionIndex}`}>
           {options.map((option, optionIndex) => {
             return (
               <div key={optionIndex} className="flex items-center gap-2">
-                <RadioGroupItem value={option} />
+                <RadioGroupItem
+                  value={option}
+                  key={optionIndex}
+                  checked={`${value}` === `${option}`}
+                  onClick={onOptionClick}
+                />
                 <Label htmlFor="option" className="text-sm">
                   {option}
                 </Label>
