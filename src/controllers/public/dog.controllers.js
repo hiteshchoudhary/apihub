@@ -19,19 +19,20 @@ const getDogs = asyncHandler(async (req, res) => {
       })
     : structuredClone(dogsJson);
 
-  if (inc && inc[0]?.trim()) {
-    dogsArray = filterObjectKeys(inc, dogsArray);
-  }
-
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        getPaginatedPayload(dogsArray, page, limit),
-        "Dogs fetched successfully"
-      )
-    );
+  const paginatedDogs = getPaginatedPayload(dogsArray, page, limit);
+  const updatedDogs = inc
+    ? filterObjectKeys(inc, paginatedDogs.data)
+    : paginatedDogs.data;
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        ...paginatedDogs,
+        data: updatedDogs,
+      },
+      "Dogs fetched successfully"
+    )
+  );
 });
 
 const getDogById = asyncHandler(async (req, res) => {
