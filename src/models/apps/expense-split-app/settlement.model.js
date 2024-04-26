@@ -26,4 +26,4 @@ const settlementSchema = mongoose.Schema({
   },
 });
 
-export const settlement = mongoose.model("Settlement", settlementSchema);
+export const Settlement = mongoose.model("Settlement", settlementSchema);

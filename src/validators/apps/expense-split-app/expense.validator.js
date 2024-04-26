@@ -6,4 +6,5 @@ const addAExpenseValidator = () => {
     body("Amount").trim().notEmpty().withMessage("Expense Amount is reuired"),
   ];
 };
+
 export { addAExpenseValidator };

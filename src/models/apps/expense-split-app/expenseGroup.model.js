@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import {
   AvailableExpenseGroupTypes,
   ExpenseGroupTypes,
-} from "../../../constants";
+} from "../../../constants.js";
 
 const expenseGroupSchema = new mongoose.Schema(
   {
@@ -36,4 +36,4 @@ const expenseGroupSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const expenseGroup = mongoose.model("ExpenseGroup", expenseGroupSchema);
+export const ExpenseGroup = mongoose.model("ExpenseGroup", expenseGroupSchema);

@@ -4,7 +4,7 @@ import {
   AvailablePaymentMethods,
   ExpenseTypes,
   PaymentMethods,
-} from "../../../constants";
+} from "../../../constants.js";
 
 const expenseSchema = mongoose.Schema(
   {
@@ -55,4 +55,4 @@ const expenseSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-export const expense = mongoose.model("Expense", expenseSchema);
+export const Expense = mongoose.model("Expense", expenseSchema);

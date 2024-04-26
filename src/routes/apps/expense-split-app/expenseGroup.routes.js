@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   createAExpenseGroupValidator,
   updateExpenseGroupNameValidator,
-} from "../../../validators/apps/expense-split-app/expenseGroup.validator";
+} from "../../../validators/apps/expense-split-app/expenseGroup.validator.js";
 import { validate } from "../../../validators/validate.js";
 import {
   addMembersInExpenseGroup,
@@ -61,3 +61,5 @@ router
   .post(mongoIdPathVariableValidator("groupId"), validate, leaveExpenseGroup);
 
 router.route("/group").get(getUserExpenseGroups);
+
+export default router;

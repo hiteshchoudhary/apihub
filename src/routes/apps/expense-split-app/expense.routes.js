@@ -13,14 +13,14 @@ import {
   viewExpense,
   viewGroupExpense,
   viewUserExpense,
-} from "../../../controllers/apps/expense-split-app/expense.controller";
-import { addAExpenseValidator } from "../../../validators/apps/expense-split-app/expense.validator";
-import { validate } from "../../../validators/validate";
+} from "../../../controllers/apps/expense-split-app/expense.controller.js";
+import { addAExpenseValidator } from "../../../validators/apps/expense-split-app/expense.validator.js";
+import { validate } from "../../../validators/validate.js";
 import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
-import { verifyJwt } from "../../../middlewares/auth.middlewares.js";
+import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 const router = Router();
 //all routes are secured routes
-router.use(verifyJwt);
+router.use(verifyJWT);
 router
   .route("/addExpense/:groupId")
   .post(
@@ -57,3 +57,5 @@ router
 router
   .route("/categoryExpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense);
+
+export default router;
