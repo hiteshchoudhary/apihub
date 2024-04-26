@@ -95,6 +95,10 @@ const sendMessage = (chatId: string, content: string, attachments: File[]) => {
   return apiClient.post(`/chat-app/messages/${chatId}`, formData);
 };
 
+const deleteMessage = (chatId: string, messageId: string) => {
+  return apiClient.delete(`/chat-app/messages/${chatId}/${messageId}`);
+};
+
 // Export all the API functions
 export {
   addParticipantToGroup,
@@ -112,4 +116,5 @@ export {
   removeParticipantFromGroup,
   sendMessage,
   updateGroupName,
+  deleteMessage,
 };
