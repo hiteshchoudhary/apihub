@@ -9,6 +9,7 @@ This is an ecommerce client app which is made by consuming freeapi: https://gith
         * MAILTRAP credentials for emails. (Used in forgot password feature)
         * Paypal Client ID and Client Secret.
         * Google SSO Credentials for logging in with google.
+        * In .env, Set CLIENT_SSO_REDIRECT_URL to <FRONT_END_ENDPOINT>/ for redirects after logging in from google. example http://localhost:3000/
     * Update the following in the freeapi project:
         * Add an environment variable in .env file for forgot password redirection, and point it to the <FRONT_END_ENDPOINT>/forgot-password, as follows: 
           ```FORGOT_PASSWORD_REDIRECT_URL=http://localhost:3000/forgot-password```
