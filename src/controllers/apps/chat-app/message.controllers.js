@@ -187,7 +187,7 @@ const deleteMessage = asyncHandler(async (req, res) => {
   if (message.sender.toString() !== req.user._id.toString()) {
     throw new ApiError(
       403,
-      "You are not the authorised to delete the message ,you are not the sender"
+      "You are not the authorised to delete the message, you are not the sender"
     );
   }
   if (message.attachments.length > 0) {
