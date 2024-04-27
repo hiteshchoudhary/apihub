@@ -3,10 +3,13 @@ import { Expense } from "../../../models/apps/expense-split-app/expense.model.js
 import { ApiError } from "../../../utils/ApiError.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
-import { group } from "console";
 import { ExpenseGroup } from "../../../models/apps/expense-split-app/expenseGroup.model.js";
 import { addSplit, clearSplit } from "./group.controller.js";
 import mongoose from "mongoose";
+const commonExpenseAggregations = () => {
+  return [{}];
+};
+
 const addExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   const {
@@ -77,6 +80,7 @@ const addExpense = asyncHandler(async (req, res) => {
       )
     );
 });
+
 const editExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
 
@@ -96,6 +100,14 @@ const editExpense = asyncHandler(async (req, res) => {
   if (!oldExpense) {
     throw new ApiError(404, "Expense not found, Invalid expense Id");
   }
+
+  //Clearing the split in group for the old expense
+  await clearSplit(
+    oldExpense.groupId,
+    oldExpense.Amount,
+    oldExpense.Owner,
+    oldExpense.participants
+  );
 
   if (name) {
     oldExpense.name = name;
@@ -126,17 +138,11 @@ const editExpense = asyncHandler(async (req, res) => {
 
   //Have to update the split values once again
 
-  await clearSplit(
-    oldExpense.groupId,
-    oldExpense.Amount,
-    oldExpense.Owner,
-    oldExpense.participants
-  );
-
   //Saving the new expense
   await oldExpense.save();
 
   //Adding the new split in group
+  //Old expense is updated with new values
   await addSplit(
     oldExpense.groupId,
     oldExpense.Amount,
@@ -183,8 +189,6 @@ const viewExpense = asyncHandler(async (req, res) => {
   if (!expense) {
     throw new ApiError(404, "Expense not found, invalid expense Id");
   }
-
-  //Aggregations to be done
 
   return res
     .status(200)

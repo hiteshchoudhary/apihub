@@ -22,6 +22,8 @@ import { upload } from "../../../middlewares/multer.middlewares.js";
 const router = Router();
 //all routes are secured routes
 router.use(verifyJWT);
+
+//Creates a new expense accepts bill photos also
 router
   .route("/addExpense/:groupId")
   .post(
@@ -33,31 +35,31 @@ router
   );
 router
   .route("/:expenseId")
-  .get(mongoIdPathVariableValidator("expenseId"), validate, viewExpense)
-  .patch(mongoIdPathVariableValidator("expenseId"), validate, editExpense)
-  .delete(mongoIdPathVariableValidator("expenseId"), validate, deleteExpense);
+  .get(mongoIdPathVariableValidator("expenseId"), validate, viewExpense) // gets expense details
+  .patch(mongoIdPathVariableValidator("expenseId"), validate, editExpense) //edit expense details not the bills
+  .delete(mongoIdPathVariableValidator("expenseId"), validate, deleteExpense); //Deletes expenses
 
 router
   .route("/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, viewGroupExpense);
+  .get(mongoIdPathVariableValidator("groupId"), validate, viewGroupExpense); //shows all the expense in a group
 
-router.route("/user/expense").get(viewUserExpense);
+router.route("/user/expense").get(viewUserExpense); //View all the expense of the user
 
-router.route("/user/recentExpense").get(recentUserExpense);
-router.route("monthlyExpense/user").get(userMonthlyExpense);
+router.route("/user/recentExpense").get(recentUserExpense); //Gives top 5 recent user expenses
+router.route("monthlyExpense/user").get(userMonthlyExpense); //Sorts all the expenses of user month wise and displays recent first
 
-router.route("/categoryExp/user").get(userCategoryExpense);
-router.route("/dailyExpense/user").get(userDailyExpense);
+router.route("/categoryExp/user").get(userCategoryExpense); //shows all user expenses category wise
+router.route("/dailyExpense/user").get(userDailyExpense); //Shows the daily expense of user of that day
 
 router
   .route("/monthlyExpense/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, groupMonthlyExpense);
+  .get(mongoIdPathVariableValidator("groupId"), validate, groupMonthlyExpense); //Shows all the expense in a group month wise
 
 router
   .route("/dailyExpense/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, groupDailyExpense);
+  .get(mongoIdPathVariableValidator("groupId"), validate, groupDailyExpense); //Shows all the expense in a group daily
 router
   .route("/categoryExpense/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense);
+  .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense); //Shows all the expense in a group category wise
 
 export default router;

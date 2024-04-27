@@ -12,8 +12,4 @@ const createAExpenseGroupValidator = () => {
   ];
 };
 
-const updateExpenseGroupNameValidator = () => {
-  return [body("name").trim().notEmpty().withMessage("Group name is required")];
-};
-
-export { createAExpenseGroupValidator, updateExpenseGroupNameValidator };
+export { createAExpenseGroupValidator };

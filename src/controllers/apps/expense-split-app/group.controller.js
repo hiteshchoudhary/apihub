@@ -4,6 +4,7 @@ import { ExpenseGroup } from "../../../models/apps/expense-split-app/expenseGrou
 import { Expense } from "../../../models/apps/expense-split-app/expense.model.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { ExpenseGroupTypes } from "../../../constants.js";
+import { ApiError } from "../../../utils/ApiError.js";
 
 const commonGroupAggregation = () => {
   //This is the common aggregation for Response structure of group
@@ -52,8 +53,12 @@ const commonGroupAggregation = () => {
   ];
 };
 
-const deleteCascadeExpenses = () => {
-  // Responsible for deleting the expenses on Group Deletion
+const deleteCascadeExpenses = async (groupId) => {
+  // Helper function to delete the expenses when a group is deleted along with its settlements
+
+  const expenses = await Expense.find({
+    groupId: groupId,
+  });
 };
 
 const createExpenseGroup = asyncHandler(async (req, res) => {
@@ -87,18 +92,60 @@ const createExpenseGroup = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, { newGroup }, "Group created succesfully"));
 });
-const viewExpenseGroup = asyncHandler(async (req, res) => {});
-const getUserExpenseGroups = asyncHandler(async (req, res) => {});
+const viewExpenseGroup = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+
+  const group = await ExpenseGroup.findById(groupId);
+
+  if (!group) {
+    throw new ApiError(404, "Group not found, Invalid group id");
+  }
+
+  //Doing the common aggregations
+
+  const Group = await ExpenseGroup.aggregate([
+    {
+      $match: {
+        _id: group._id,
+      },
+    },
+    ...commonGroupAggregation(),
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { Group }, "Group fetched succesfully"));
+});
+const getUserExpenseGroups = asyncHandler(async (req, res) => {
+  const userGroups = await ExpenseGroup.find({
+    participants: req.user._id,
+  }); //Will have to sort with aggregations for newer first
+  //And also have to give every group common group aggregations
+
+  if (userGroups.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "User is not part of any expense groups"));
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, { userGroups }, "User groups fetched succesfully")
+    );
+});
 const groupBalaceSheet = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
 
   //Validations
 
   //Work in progress
+
+  //This will return all the balances accumulate din a group who owes whom and how much by analyzing the group split and expenses
 });
 const makeSettlement = asyncHandler(async (req, res) => {});
 const deleteExpenseGroup = asyncHandler(async (req, res) => {});
-const changeExpenseGroupName = asyncHandler(async (req, res) => {});
+const editExpenseGroup = asyncHandler(async (req, res) => {});
 const addMembersInExpenseGroup = asyncHandler(async (req, res) => {});
 const removeMembersFromExpenseGroups = asyncHandler(async (req, res) => {});
 const leaveExpenseGroup = asyncHandler(async (req, res) => {});
@@ -181,7 +228,82 @@ export const clearSplit = async (groupId, Amount, Owner, participants) => {
     group
   );
 };
+//Responsible for finding out group balances
+const groupBalanceCalculator = (split) => {
+  var splits = new Array();
+  var transaction_map = new Map(Object.entries(split)); //converting JSON to map object
+  function settleSimilarFigures() {
+    let vis = new Map();
+    for (let transaction1 of transaction_map.keys()) {
+      vis.set(transaction1, 1);
+      for (let transaction2 of transaction_map.keys()) {
+        if (!vis.has(transaction2) && transaction1 != transaction2) {
+          if (
+            transaction_map.get(transaction2) ==
+            -transaction_map.get(transaction1)
+          ) {
+            if (
+              transaction_map.get(transaction2) >
+              transaction_map.get(transaction1)
+            ) {
+              splits.push([
+                transaction1,
+                transaction2,
+                transaction_map.get(transaction2),
+              ]);
+            } else {
+              splits.push([
+                transaction2,
+                transaction1,
+                transaction_map.get(transaction1),
+              ]);
+            }
+            transaction_map.set(transaction2, 0);
+            transaction_map.set(transaction1, 0);
+          }
+        }
+      }
+    }
+  }
 
+  function getMaxMinCredit() {
+    let max_ob,
+      min_ob,
+      max = Number.MIN_VALUE,
+      min = Number.MAX_VALUE;
+    for (let transaction of transaction_map.keys()) {
+      if (transaction_map.get(transaction) < min) {
+        min = transaction_map.get(transaction);
+        min_ob = transaction;
+      }
+      if (transaction_map.get(transaction) > max) {
+        max = transaction_map.get(transaction);
+        max_ob = transaction;
+      }
+    }
+    return [min_ob, max_ob];
+  }
+
+  function helper() {
+    let minMax = getMaxMinCredit();
+    if (minMax[0] == undefined || minMax[1] == undefined) return;
+    let min_value = Math.min(
+      -transaction_map.get(minMax[0]),
+      transaction_map.get(minMax[1])
+    );
+    transaction_map.set(minMax[0], transaction_map.get(minMax[0]) + min_value);
+    transaction_map.set(minMax[1], transaction_map.get(minMax[1]) - min_value);
+    min_value = Math.round((min_value + Number.EPSILON) * 100) / 100;
+    let res = [minMax[0], minMax[1], min_value];
+    splits.push(res);
+    helper();
+  }
+
+  settleSimilarFigures();
+  helper();
+  console.log(splits);
+  return splits;
+};
 export {
   createExpenseGroup,
   viewExpenseGroup,
@@ -189,7 +311,7 @@ export {
   groupBalaceSheet,
   makeSettlement,
   deleteExpenseGroup,
-  changeExpenseGroupName,
+  editExpenseGroup,
   addMembersInExpenseGroup,
   removeMembersFromExpenseGroups,
   leaveExpenseGroup,
