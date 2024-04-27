@@ -5,6 +5,7 @@ import { Expense } from "../../../models/apps/expense-split-app/expense.model.js
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { ExpenseGroupTypes } from "../../../constants.js";
 import { ApiError } from "../../../utils/ApiError.js";
+import { Settlement } from "../../../models/apps/expense-split-app/settlement.model.js";
 
 const commonGroupAggregation = () => {
   //This is the common aggregation for Response structure of group
@@ -143,7 +144,40 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
 
   //This will return all the balances accumulate din a group who owes whom and how much by analyzing the group split and expenses
 });
-const makeSettlement = asyncHandler(async (req, res) => {});
+const makeSettlement = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+
+  const { settleTo, settleFrom, settleAmount, settleDate } = req.body;
+
+  if (!settleTo || !settleFrom || !settleAmount || !settleDate) {
+    throw new ApiError(400, "All the fields are required");
+  }
+
+  const group = await ExpenseGroup.findById(groupId);
+  if (!group) {
+    throw new ApiError(404, "Group not found, Invalid group Id");
+  }
+
+  group.split[0][settleFrom] += settleAmount;
+  group.split[0][settleTo] -= settleAmount;
+
+  const settlement = await Settlement.create({
+    settleTo,
+    settleFrom,
+    SettlementDate: settleDate || Date.now(),
+    settleAmount,
+    groupId,
+  });
+
+  const updateGroup = await ExpenseGroup.updateOne(
+    {
+      _id: groupId,
+    },
+    { $set: { split: group.split } }
+  );
+
+  res.status(200).json(new ApiResponse(200, {}, "Settlement done succesfully"));
+});
 const deleteExpenseGroup = asyncHandler(async (req, res) => {});
 const editExpenseGroup = asyncHandler(async (req, res) => {});
 const addMembersInExpenseGroup = asyncHandler(async (req, res) => {});
@@ -232,6 +266,9 @@ export const clearSplit = async (groupId, Amount, Owner, participants) => {
 const groupBalanceCalculator = (split) => {
   var splits = new Array();
   var transaction_map = new Map(Object.entries(split)); //converting JSON to map object
+
+  //This function finds simialr +ve -ve figures and matches them if present
+
   function settleSimilarFigures() {
     let vis = new Map();
     for (let transaction1 of transaction_map.keys()) {
@@ -266,6 +303,11 @@ const groupBalanceCalculator = (split) => {
     }
   }
 
+  /**
+   *
+   * This is a helper function for founction helper that returns maximum and minimum values in the split
+   */
+
   function getMaxMinCredit() {
     let max_ob,
       min_ob,
@@ -284,6 +326,8 @@ const groupBalanceCalculator = (split) => {
     return [min_ob, max_ob];
   }
 
+  //This function creates the settlement figures between uneven +ve and -ve values to create the balances of users in the group
+
   function helper() {
     let minMax = getMaxMinCredit();
     if (minMax[0] == undefined || minMax[1] == undefined) return;
@@ -301,7 +345,6 @@ const groupBalanceCalculator = (split) => {
 
   settleSimilarFigures();
   helper();
-  console.log(splits);
   return splits;
 };
 export {
