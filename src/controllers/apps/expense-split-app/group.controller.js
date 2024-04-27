@@ -2,27 +2,90 @@ import { model } from "mongoose";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { ExpenseGroup } from "../../../models/apps/expense-split-app/expenseGroup.model.js";
 import { Expense } from "../../../models/apps/expense-split-app/expense.model.js";
+import { ApiResponse } from "../../../utils/ApiResponse.js";
+import { ExpenseGroupTypes } from "../../../constants.js";
+
+const commonGroupAggregation = () => {
+  //This is the common aggregation for Response structure of group
+  // ! Have to figure out the split lookup [work in progress]
+  return [
+    {
+      $lookup: {
+        from: "users",
+        foreignField: "_id",
+        localField: "participants",
+        as: "participants",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "groupOwner",
+        foreignField: "_id",
+        as: "groupOwner",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+  ];
+};
+
+const deleteCascadeExpenses = () => {
+  // Responsible for deleting the expenses on Group Deletion
+};
 
 const createExpenseGroup = asyncHandler(async (req, res) => {
-  const { name, description, groupOwner, participants, groupCategory } =
-    req.body;
-
+  const { name, description, participants, groupCategory } = req.body;
   const members = [...new Set([...participants])]; //Prevents duplications
-
-  for (user of members) {
+  let splitJson = {}; // Initializing the split of the group
+  for (let user of members) {
     splitJson[user] = 0;
   }
-
   let split = splitJson;
 
   var group = await ExpenseGroup.create({
     name,
     description,
-    groupOwner,
+    groupOwner: req.user._id,
     participants: members,
-    groupCategory: groupCategory,
+    groupCategory: groupCategory ? groupCategory : ExpenseGroupTypes.OTHERS,
     split: split,
   });
+
+  const newGroup = await ExpenseGroup.aggregate([
+    {
+      $match: {
+        _id: group._id,
+      },
+    },
+    ...commonGroupAggregation(),
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { newGroup }, "Group created succesfully"));
 });
 const viewExpenseGroup = asyncHandler(async (req, res) => {});
 const getUserExpenseGroups = asyncHandler(async (req, res) => {});
@@ -31,7 +94,7 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
 
   //Validations
 
-  //Invalid
+  //Work in progress
 });
 const makeSettlement = asyncHandler(async (req, res) => {});
 const deleteExpenseGroup = asyncHandler(async (req, res) => {});

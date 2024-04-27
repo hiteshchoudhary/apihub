@@ -6,6 +6,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { group } from "console";
 import { ExpenseGroup } from "../../../models/apps/expense-split-app/expenseGroup.model.js";
 import { addSplit, clearSplit } from "./group.controller.js";
+import mongoose from "mongoose";
 const addExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   const {
@@ -32,6 +33,17 @@ const addExpense = asyncHandler(async (req, res) => {
 
   const members = [...new Set([...participants])]; //Checking for duplicate id's and removing them if present
 
+  const billFiles = [];
+
+  if (req.files && req.files.billAttachments?.length > 0) {
+    req.files.billAttachments?.map((attachment) => {
+      billFiles.push({
+        url: getStaticFilePath(req, attachment.filename),
+        localPath: getLocalPath(attachment.filename),
+      });
+    });
+  }
+
   const expensePerMember = Amount / members.length;
   const newExpense = await Expense.create({
     name,
@@ -40,10 +52,11 @@ const addExpense = asyncHandler(async (req, res) => {
     Category,
     expenseDate,
     expenseMethod,
-    Owner,
+    Owner: new mongoose.Types.ObjectId(ownerUser._id),
     participants: members,
     expensePerMember,
-    groupId,
+    groupId: new mongoose.Types.ObjectId(groupId),
+    billAttachments: billFiles,
   });
 
   if (!newExpense) {

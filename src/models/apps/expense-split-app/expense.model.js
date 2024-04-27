@@ -25,8 +25,8 @@ const expenseSchema = mongoose.Schema(
     },
     Category: {
       type: String,
-      enum: ExpenseTypes,
-      default: AvailableExpenseTypes.OTHERS,
+      enum: AvailableExpenseTypes,
+      default: ExpenseTypes.OTHERS,
     },
     expenseDate: {
       type: Date,
@@ -48,8 +48,17 @@ const expenseSchema = mongoose.Schema(
     },
     expenseMethod: {
       type: String,
-      enum: PaymentMethods,
-      default: AvailablePaymentMethods.CASH,
+      enum: AvailablePaymentMethods,
+      default: PaymentMethods.CASH,
+    },
+    billAttachments: {
+      type: [
+        {
+          url: String,
+          localPath: String,
+        },
+      ],
+      default: [],
     },
   },
   { timestamps: true }

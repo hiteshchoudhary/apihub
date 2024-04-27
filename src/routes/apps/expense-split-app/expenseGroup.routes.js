@@ -17,12 +17,14 @@ import {
   viewExpenseGroup,
 } from "../../../controllers/apps/expense-split-app/group.controller.js";
 import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
-
+import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 const router = Router();
+
+router.use(verifyJWT);
 
 router
   .route("/createGroup")
-  .post(createAExpenseGroupValidator, validate, createExpenseGroup);
+  .post(createAExpenseGroupValidator(), validate, createExpenseGroup);
 
 router
   .route("/:groupId")
@@ -55,7 +57,7 @@ router
   );
 
 router.route("/group-settlements").post(groupBalaceSheet);
-router.route("/makeSettlement", makeSettlement);
+router.route("/makeSettlement").post(makeSettlement);
 router
   .route("/leave/group/:groupId")
   .post(mongoIdPathVariableValidator("groupId"), validate, leaveExpenseGroup);

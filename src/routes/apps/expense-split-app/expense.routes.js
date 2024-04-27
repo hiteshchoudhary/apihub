@@ -18,14 +18,16 @@ import { addAExpenseValidator } from "../../../validators/apps/expense-split-app
 import { validate } from "../../../validators/validate.js";
 import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
+import { upload } from "../../../middlewares/multer.middlewares.js";
 const router = Router();
 //all routes are secured routes
 router.use(verifyJWT);
 router
   .route("/addExpense/:groupId")
   .post(
+    upload.fields([{ name: "billAttachments", maxCount: 5 }]),
     mongoIdPathVariableValidator("groupId"),
-    addAExpenseValidator,
+    addAExpenseValidator(),
     validate,
     addExpense
   );

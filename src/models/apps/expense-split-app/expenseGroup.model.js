@@ -24,11 +24,11 @@ const expenseGroupSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-
     groupCategory: {
       type: String,
-      enum: ExpenseGroupTypes,
-      default: AvailableExpenseGroupTypes.OTHERS,
+      enum: AvailableExpenseGroupTypes.OTHERS,
+      default: ExpenseGroupTypes.OTHERS,
+      required: true,
     },
     groupTotal: { type: Number, default: 0 },
     split: { type: Array },
