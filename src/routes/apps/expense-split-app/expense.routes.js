@@ -20,16 +20,21 @@ import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
 const router = Router();
+
 //all routes are secured routes
+
 router.use(verifyJWT);
 
 //Creates a new expense accepts bill photos also
+
+//! Validated
+
 router
   .route("/addexpense/:groupId")
   .post(
     upload.fields([{ name: "billAttachments", maxCount: 5 }]),
-    mongoIdPathVariableValidator("groupId"),
     addAExpenseValidator(),
+    mongoIdPathVariableValidator("groupId"),
     validate,
     addExpense
   );

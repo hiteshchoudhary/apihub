@@ -106,7 +106,10 @@ const searchAvailableUsers = asyncHandler(async (req, res) => {
 
 const createExpenseGroup = asyncHandler(async (req, res) => {
   const { name, description, participants, groupCategory } = req.body;
+
+  //Name and Participants is already checke din validator no need to check here
   const members = [...new Set([...participants])]; //Prevents duplications
+
   let splitJson = {}; // Initializing the split of the group
   for (let user of members) {
     splitJson[user] = 0;
@@ -131,9 +134,10 @@ const createExpenseGroup = asyncHandler(async (req, res) => {
     ...commonGroupAggregation(),
   ]);
 
+  const payload = newGroup[0];
   return res
     .status(200)
-    .json(new ApiResponse(200, { newGroup }, "Group created succesfully"));
+    .json(new ApiResponse(200, { payload }, "Group created succesfully"));
 });
 const viewExpenseGroup = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
@@ -171,11 +175,23 @@ const getUserExpenseGroups = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, {}, "User is not part of any expense groups"));
   }
 
+  const aggregatedGroups = userGroups.map(async (group) => {
+    const aggregatedGroup = await ExpenseGroup.aggregate([
+      {
+        $match: {
+          _id: group._id,
+        },
+      },
+      ...commonGroupAggregation(),
+    ]);
+    return aggregatedGroup[0];
+  });
+
+  const groups = await Promise.all(aggregatedGroups);
+
   return res
     .status(200)
-    .json(
-      new ApiResponse(200, { userGroups }, "User groups fetched succesfully")
-    );
+    .json(new ApiResponse(200, { groups }, "User groups fetched succesfully"));
 });
 const groupBalaceSheet = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
@@ -212,8 +228,8 @@ const makeSettlement = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, Invalid group Id");
   }
 
-  group.split[0][settleFrom] += settleAmount;
-  group.split[0][settleTo] -= settleAmount;
+  group.split[settleFrom] += settleAmount;
+  group.split[settleTo] -= settleAmount;
 
   const settlement = await Settlement.create({
     settleTo,
@@ -258,33 +274,32 @@ const editExpenseGroup = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Enter something that needs to be updated");
   }
 
-  const update = {};
+  if (group.groupOwner.toString() !== req.user?._id.toString()) {
+    throw new ApiError(403, "You are not authorised to perform this action");
+  }
+
   if (name) {
-    update.name = name;
+    group.name = name;
   }
 
   if (description) {
-    update.description = description;
+    group.description = description;
   }
 
-  const updateExpenseGroup = await ExpenseGroup.findByIdAndUpdate(
-    groupId,
-    { $set: { update } },
-    { new: true }
-  );
+  await group.save();
 
   const updatedGroup = await ExpenseGroup.aggregate([
     {
       $match: {
-        _id: updateExpenseGroup._id,
+        _id: group._id,
       },
     },
     ...commonGroupAggregation(),
   ]);
-
+  const payload = updatedGroup[0];
   return res
     .status(200)
-    .json(new ApiResponse(200, { updatedGroup }, "Group updated succesfully"));
+    .json(new ApiResponse(200, { payload }, "Group updated succesfully"));
 });
 
 const addMembersInExpenseGroup = asyncHandler(async (req, res) => {
@@ -298,35 +313,35 @@ const addMembersInExpenseGroup = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(404, "User not found ,Invalid user id");
   }
+  if (group.groupOwner.toString() !== req.user?._id.toString()) {
+    throw new ApiError(403, "You are not authorised to perform this action");
+  }
 
   const existingParticipants = group.participants;
 
   if (existingParticipants?.includes(userId)) {
     throw new ApiError(409, "Participants already in group chat");
   }
+  //Updating the split of group with new member
+  group.set(`split.${userId.toString()}`, 0);
+  //Updating the participant id
+  group.participants.push(userId);
 
-  const updatedGroup = await ExpenseGroup.findByIdAndUpdate(
-    groupId,
-    {
-      $push: {
-        participants: participantId, //add new participant id
-      },
-    },
-    { new: true }
-  );
+  await group.save();
 
   const edittedGroup = await ExpenseGroup.aggregate([
     {
       $match: {
-        _id: updatedGroup._id,
+        _id: group._id,
       },
     },
     ...commonGroupAggregation(),
   ]);
+  const payload = edittedGroup[0];
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { edittedGroup }, "Memeber added succesfully"));
+    .json(new ApiResponse(200, { payload }, "Memeber added succesfully"));
 });
 
 const groupSettlementRecords = asyncHandler(async (req, res) => {});
@@ -335,73 +350,66 @@ const userSettlementRecords = asyncHandler(async (req, res) => {});
 //Supporting function
 
 export const addSplit = async (groupId, Amount, Owner, members) => {
-  /*
-  
-  *+ve = Amount for recieveables
-  *-ve = Amount for payables
-  
-  */
-
   const group = await ExpenseGroup.findById(groupId);
-  //Adding the expense amount in group total
 
+  // Adding the expense amount in group total
   group.groupTotal += Amount;
 
-  //Adding positive value to owner of the expense
+  // Initialize split if it doesn't exist
+  if (!group.split || !(group.split instanceof Map)) {
+    group.split = new Map();
+  }
 
-  group.split[0][Owner] += Amount;
+  // Adding positive value to owner of the expense
+  if (!group.split.has(Owner)) {
+    group.split.set(Owner, 0);
+  }
+  group.split.set(Owner, group.split.get(Owner) + Amount);
 
+  // Calculate expense per person
   let expensePerPerson = Amount / members.length;
 
-  expensePerPerson = expensePerPerson.toFixed(2);
+  // Updating the split values payable per user
+  members.forEach((user) => {
+    if (!group.split.has(user)) {
+      group.split.set(user, 0);
+    }
+    group.split.set(user, group.split.get(user) - expensePerPerson);
+  });
 
-  //Updating the split values payable per user
-
-  for (let user of members) {
-    group.split[0][user] -= expensePerPerson;
-  }
-
-  //Nullyfing split -check if the group balance is zero else added the diff to owner
-  //Total sum of values both negative and postive has to be zero
-
+  // Update group split for the owner
   let bal = 0;
+  group.split.forEach((val) => {
+    bal += val;
+  });
+  group.split.set(Owner, group.split.get(Owner) - bal);
 
-  for (val of Object.entries(group.split[0])) {
-    bal += val[1];
-  }
-  group.split[0][Owner] -= bal;
-  group.split[0][Owner] = group.split[0][Owner].toFixed(2);
-
-  await ExpenseGroup.updateOne(
-    {
-      _id: groupId,
-    },
-    group
-  );
+  // Save the updated group
+  await group.save();
 };
 
 //This works reverse of add split used for editting or clearing expense
 export const clearSplit = async (groupId, Amount, Owner, participants) => {
   let group = await ExpenseGroup.findById({ groupId });
   group.groupTotal -= Amount;
-  group.split[0][Owner] -= Amount;
+  group.split[Owner] -= Amount;
   let expensePerPerson = expenseAmount / participants.length;
   expensePerPerson = expensePerPerson.toFixed(2);
 
   for (var user of participants) {
-    group.split[0][user] += expensePerPerson;
+    group.split[user] += expensePerPerson;
   }
 
   //Nullyfying split -check if the group balance is zero else add the diff to owner
 
   let bal = 0;
 
-  for (val of Object.entries(group.split[0])) {
+  for (val of Object.entries(group.split)) {
     bal += val[1];
   }
 
-  group.split[0] -= bal;
-  group.split[0] = group.split[0].toFixed(2);
+  group.split[Owner] -= bal;
+  group.split[Owner] = group.split[0].toFixed(2);
 
   return await ExpenseGroup.updateOne(
     {

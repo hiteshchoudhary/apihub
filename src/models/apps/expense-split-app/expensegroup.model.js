@@ -31,7 +31,7 @@ const expenseGroupSchema = new mongoose.Schema(
       required: true,
     },
     groupTotal: { type: Number, default: 0 },
-    split: { type: Array },
+    split: { type: Map, of: Number, default: {} },
   },
   { timestamps: true }
 );

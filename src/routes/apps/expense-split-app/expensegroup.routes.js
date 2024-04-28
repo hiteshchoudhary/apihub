@@ -16,21 +16,38 @@ import {
 import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 const router = Router();
+
 //All routes are secured routes
+
 router.use(verifyJWT);
 
 //Create a new group
+
+// ! validated
+
 router
   .route("/creategroup")
   .post(createAExpenseGroupValidator(), validate, createExpenseGroup);
 
 router
   .route("/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, viewExpenseGroup) //Get all expenses in a group
+
+  //Get all expenses in a group
+
+  // ! not validated
+
+  .get(mongoIdPathVariableValidator("groupId"), validate, viewExpenseGroup)
 
   //Route to edit group name and description only
+
+  // ! validated
+
   .patch(mongoIdPathVariableValidator("groupId"), validate, editExpenseGroup)
+
   //Route to delete the whole group
+
+  // ! Not yet validated
+
   .delete(
     mongoIdPathVariableValidator("groupId"),
     validate,
@@ -38,21 +55,39 @@ router
   );
 
 //Returns a group balance sheet who owes whom how much
+
+// ! Not yet validated
+
 router
   .route("/group-settlements/:groupId")
   .post(mongoIdPathVariableValidator("groupId"), validate, groupBalaceSheet);
 
 //Makes settlement of owes in the group and creates a settlement transaction
+
+// ! Not yet validated
+
 router
   .route("/makeSettlement/:groupId")
   .post(mongoIdPathVariableValidator("groupId"), validate, makeSettlement);
 
-router.route("/group").get(getUserExpenseGroups); //Gets all the expense group that user is a part of
+//Gets all the expense group that user is a part of
 
-router.route("/settlements").get(userSettlementRecords); //Get all user settlements
-router.route("/settlements/:groupId").get(groupSettlementRecords); //Get all group settlements
+//!validated
+
+router.route("/").get(getUserExpenseGroups);
+
+//Get all user settlements
+
+router.route("/settlements").get(userSettlementRecords);
+
+//Get all group settlements
+
+router.route("/settlements/:groupId").get(groupSettlementRecords);
 
 //Responsible for adding members in group
+
+// ! Validated
+
 router
   .route("/group/:groupId/:userId")
   .post(

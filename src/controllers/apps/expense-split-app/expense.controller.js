@@ -6,6 +6,7 @@ import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { ExpenseGroup } from "../../../models/apps/expense-split-app/expensegroup.model.js";
 import { addSplit, clearSplit } from "./group.controller.js";
 import mongoose from "mongoose";
+import { getLocalPath, getStaticFilePath } from "../../../utils/helpers.js";
 const commonExpenseAggregations = () => {
   return [{}];
 };
@@ -22,8 +23,11 @@ const addExpense = asyncHandler(async (req, res) => {
     expenseMethod,
     Owner,
   } = req.body;
+  const ownerUser = await User.findOne({
+    _id: new mongoose.Types.ObjectId(Owner),
+  });
 
-  const ownerUser = await User.findById({ Owner });
+  //! have to check if expense participants are present in the group or not
   if (!ownerUser) {
     throw new ApiError(404, "Owner not found");
   }
@@ -35,8 +39,8 @@ const addExpense = asyncHandler(async (req, res) => {
   }
 
   const members = [...new Set([...participants])]; //Checking for duplicate id's and removing them if present
-
   const billFiles = [];
+  console.log(req.files);
 
   if (req.files && req.files.billAttachments?.length > 0) {
     req.files.billAttachments?.map((attachment) => {
@@ -56,7 +60,7 @@ const addExpense = asyncHandler(async (req, res) => {
     expenseDate,
     expenseMethod,
     Owner: new mongoose.Types.ObjectId(ownerUser._id),
-    participants: members,
+    participants,
     expensePerMember,
     groupId: new mongoose.Types.ObjectId(groupId),
     billAttachments: billFiles,
