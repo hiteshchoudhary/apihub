@@ -1,12 +1,10 @@
-import { useTranslation } from "react-i18next";
-import Banner from "../presentation/Banner";
 import { useEffect, useState } from "react";
-import { getCurrentUTCTime } from "../../../../utils/dateTimeHelper";
 import { DATE_TIME_FORMATS } from "../../../../constants";
 import { BANNER_PROMOTION_END_DATE } from "../../../../data/applicationData";
+import { getCurrentUTCTime } from "../../../../utils/dateTimeHelper";
+import Banner from "../presentation/Banner";
 
 const BannerContainer = () => {
-  const { t } = useTranslation();
 
   /* Current time in UTC formatted as YYYY-MM-DDTHH:mm:ss */
   const [startTime, setStartTime] = useState(

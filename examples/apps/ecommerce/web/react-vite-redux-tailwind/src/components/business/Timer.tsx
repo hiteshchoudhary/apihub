@@ -56,7 +56,7 @@ const Timer = (props: TimerProps) => {
         <div
           className={`flex flex-col justify-center items-center rounded-full bg-white text-black p-4 w-20 h-20 ${timerContainerClassName}`}
         >
-          <span className="font-bold">{zeroFormattedNumber(duration.days)}</span>
+          <span className="font-semibold">{zeroFormattedNumber(duration.days)}</span>
           <span className="capitalize">{t("days")}</span>
         </div>
       )}
@@ -64,7 +64,7 @@ const Timer = (props: TimerProps) => {
         <div
           className={`flex flex-col justify-center items-center rounded-full bg-white text-black p-4 w-20 h-20 ${timerContainerClassName}`}
         >
-          <span className="font-bold">{zeroFormattedNumber(duration.hours)}</span>
+          <span className="font-semibold">{zeroFormattedNumber(duration.hours)}</span>
           <span className="capitalize">{t("hours")}</span>
         </div>
       )}
@@ -72,7 +72,7 @@ const Timer = (props: TimerProps) => {
         <div
           className={`flex flex-col justify-center items-center rounded-full bg-white text-black p-4 w-20 h-20 ${timerContainerClassName}`}
         >
-          <span className="font-bold">{zeroFormattedNumber(duration.minutes)}</span>
+          <span className="font-semibold">{zeroFormattedNumber(duration.minutes)}</span>
           <span className="capitalize">{t("minutes")}</span>
         </div>
       )}
@@ -80,7 +80,7 @@ const Timer = (props: TimerProps) => {
         <div
           className={`flex flex-col justify-center items-center rounded-full bg-white text-black p-4 w-20 h-20 ${timerContainerClassName}`}
         >
-          <span className="font-bold">{zeroFormattedNumber(duration.seconds)}</span>
+          <span className="font-semibold">{zeroFormattedNumber(duration.seconds)}</span>
           <span className="capitalize">{t("seconds")}</span>
         </div>
       )}

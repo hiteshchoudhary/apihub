@@ -30,7 +30,7 @@ const NavItem = (props: NavItemProps) => {
           ${
             /* Underline styles */
             isActive
-              ? "lg:hover:before:w-0 font-bold lg:font-normal lg:underline lg:underline-offset-[7.4px] lg:decoration-1"
+              ? "lg:hover:before:w-0 font-semibold lg:font-normal lg:underline lg:underline-offset-[7.4px] lg:decoration-1"
               : ""
           }
         `}

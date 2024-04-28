@@ -46,7 +46,7 @@ const OrderCard = (props: OrderCardProps) => {
       >
         <div className={`flex justify-between items-center`}>
           <span className="text-sm">{displayedOrderDate}</span>
-          <span className="font-bold">{t(order.status.toLowerCase())}</span>
+          <span className="font-semibold">{t(order.status.toLowerCase())}</span>
         </div>
         <span className=" text-ellipsis line-clamp-1 text-start">
           {displayedOrderAddress}

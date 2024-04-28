@@ -338,7 +338,6 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
       user.username,
       // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
       // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoint
-      // * Ideally take the url from the .env file which should be teh url of the frontend
       `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`
     ),
   });

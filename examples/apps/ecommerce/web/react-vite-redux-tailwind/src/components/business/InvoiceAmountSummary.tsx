@@ -27,8 +27,8 @@ const InvoiceAmountSummary = (props: InvoiceAmountSummaryProps) => {
         </div>
       )}
       <div className={`flex justify-between mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <span className="capitalize font-bold">{t("total")}</span>
-        <span className="font-bold">{formatAmount(discountedTotal, currency)}</span>
+        <span className="capitalize font-semibold">{t("total")}</span>
+        <span className="font-semibold">{formatAmount(discountedTotal, currency)}</span>
       </div>
     </div>
   );
