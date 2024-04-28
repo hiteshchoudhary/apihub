@@ -1,11 +1,12 @@
-import { model } from "mongoose";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
-import { ExpenseGroup } from "../../../models/apps/expense-split-app/expenseGroup.model.js";
+import { ExpenseGroup } from "../../../models/apps/expense-split-app/expensegroup.model.js";
 import { Expense } from "../../../models/apps/expense-split-app/expense.model.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { ExpenseGroupTypes } from "../../../constants.js";
 import { ApiError } from "../../../utils/ApiError.js";
 import { Settlement } from "../../../models/apps/expense-split-app/settlement.model.js";
+import { User } from "../../../models/apps/auth/user.models.js";
+import { removeLocalFile } from "../../../utils/helpers.js";
 
 const commonGroupAggregation = () => {
   //This is the common aggregation for Response structure of group
@@ -60,7 +61,48 @@ const deleteCascadeExpenses = async (groupId) => {
   const expenses = await Expense.find({
     groupId: groupId,
   });
+
+  let attachments = [];
+
+  attachments = attachments.concat(
+    ...expenses.map((expense) => expense.billAttachments)
+  );
+
+  attachments.forEach((attachment) => {
+    removeLocalFile(attachment.localPath);
+  });
+
+  await Expense.deleteMany({
+    groupId: new mongoose.Types.ObjectId(chatId),
+  });
+
+  await Settlement.deleteMany({
+    groupId: new mongoose.Types.ObjectId(chatId),
+  });
 };
+
+const searchAvailableUsers = asyncHandler(async (req, res) => {
+  const users = await User.aggregate([
+    {
+      $match: {
+        _id: {
+          $ne: req.user._id, // avoid logged in user
+        },
+      },
+    },
+    {
+      $project: {
+        avatar: 1,
+        username: 1,
+        email: 1,
+      },
+    },
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, users, "Users fetched successfully"));
+});
 
 const createExpenseGroup = asyncHandler(async (req, res) => {
   const { name, description, participants, groupCategory } = req.body;
@@ -138,7 +180,19 @@ const getUserExpenseGroups = asyncHandler(async (req, res) => {
 const groupBalaceSheet = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
 
-  //Validations
+  const expenseGroup = await ExpenseGroup.findById(groupId);
+
+  if (!group) {
+    throw new ApiError(404, "Group not found, Invalid group ID");
+  }
+
+  const balanceData = groupBalanceCalculator(expenseGroup.split[0]);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, { balanceData }, "Group balance fetched succesfully")
+    );
 
   //Work in progress
 
@@ -178,11 +232,105 @@ const makeSettlement = asyncHandler(async (req, res) => {
 
   res.status(200).json(new ApiResponse(200, {}, "Settlement done succesfully"));
 });
-const deleteExpenseGroup = asyncHandler(async (req, res) => {});
-const editExpenseGroup = asyncHandler(async (req, res) => {});
-const addMembersInExpenseGroup = asyncHandler(async (req, res) => {});
-const removeMembersFromExpenseGroups = asyncHandler(async (req, res) => {});
-const leaveExpenseGroup = asyncHandler(async (req, res) => {});
+const deleteExpenseGroup = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+  const expenseGroup = await ExpenseGroup.findById(groupId);
+  if (!expenseGroup) {
+    throw new ApiError(404, "Group not found, Invalid group id");
+  }
+
+  await ExpenseGroup.findByIdAndDelete(groupId);
+  await deleteCascadeExpenses(groupId);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Expense Group deleted succesfully"));
+});
+const editExpenseGroup = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+  const group = await ExpenseGroup.findById(groupId);
+  const { name, description } = req.body;
+  if (!group) {
+    throw new ApiError(404, "Group not found, Invalid group Id");
+  }
+
+  if (!name && !description) {
+    throw new ApiError(400, "Enter something that needs to be updated");
+  }
+
+  const update = {};
+  if (name) {
+    update.name = name;
+  }
+
+  if (description) {
+    update.description = description;
+  }
+
+  const updateExpenseGroup = await ExpenseGroup.findByIdAndUpdate(
+    groupId,
+    { $set: { update } },
+    { new: true }
+  );
+
+  const updatedGroup = await ExpenseGroup.aggregate([
+    {
+      $match: {
+        _id: updateExpenseGroup._id,
+      },
+    },
+    ...commonGroupAggregation(),
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { updatedGroup }, "Group updated succesfully"));
+});
+
+const addMembersInExpenseGroup = asyncHandler(async (req, res) => {
+  const { groupId, userId } = req.params;
+  const group = await ExpenseGroup.findById(groupId);
+  if (!group) {
+    throw new ApiError(404, "Group not found , Invalid group Id");
+  }
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found ,Invalid user id");
+  }
+
+  const existingParticipants = group.participants;
+
+  if (existingParticipants?.includes(userId)) {
+    throw new ApiError(409, "Participants already in group chat");
+  }
+
+  const updatedGroup = await ExpenseGroup.findByIdAndUpdate(
+    groupId,
+    {
+      $push: {
+        participants: participantId, //add new participant id
+      },
+    },
+    { new: true }
+  );
+
+  const edittedGroup = await ExpenseGroup.aggregate([
+    {
+      $match: {
+        _id: updatedGroup._id,
+      },
+    },
+    ...commonGroupAggregation(),
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { edittedGroup }, "Memeber added succesfully"));
+});
+
+const groupSettlementRecords = asyncHandler(async (req, res) => {});
+const userSettlementRecords = asyncHandler(async (req, res) => {});
 
 //Supporting function
 
@@ -356,6 +504,6 @@ export {
   deleteExpenseGroup,
   editExpenseGroup,
   addMembersInExpenseGroup,
-  removeMembersFromExpenseGroups,
-  leaveExpenseGroup,
+  groupSettlementRecords,
+  userSettlementRecords,
 };

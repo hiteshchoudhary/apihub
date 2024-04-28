@@ -143,7 +143,7 @@ import redirectRouter from "./routes/kitchen-sink/redirect.routes.js";
 import requestinspectionRouter from "./routes/kitchen-sink/requestinspection.routes.js";
 import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.routes.js";
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
-import expenseGroupRouter from "./routes/apps/expense-split-app/expenseGroup.routes.js";
+import expenseGroupRouter from "./routes/apps/expense-split-app/expensegroup.routes.js";
 import expenseRouter from "./routes/apps/expense-split-app/expense.routes.js";
 
 // * Seeding handlers

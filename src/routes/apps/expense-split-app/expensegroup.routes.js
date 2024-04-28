@@ -1,8 +1,5 @@
 import { Router } from "express";
-import {
-  createAExpenseGroupValidator,
-  updateExpenseGroupNameValidator,
-} from "../../../validators/apps/expense-split-app/expenseGroup.validator.js";
+import { createAExpenseGroupValidator } from "../../../validators/apps/expense-split-app/expenseGroup.validator.js";
 import { validate } from "../../../validators/validate.js";
 import {
   editExpenseGroup,
@@ -14,6 +11,7 @@ import {
   viewExpenseGroup,
   userSettlementRecords,
   groupSettlementRecords,
+  addMembersInExpenseGroup,
 } from "../../../controllers/apps/expense-split-app/group.controller.js";
 import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
@@ -23,7 +21,7 @@ router.use(verifyJWT);
 
 //Create a new group
 router
-  .route("/createGroup")
+  .route("/creategroup")
   .post(createAExpenseGroupValidator(), validate, createExpenseGroup);
 
 router
@@ -54,4 +52,13 @@ router.route("/group").get(getUserExpenseGroups); //Gets all the expense group t
 router.route("/settlements").get(userSettlementRecords); //Get all user settlements
 router.route("/settlements/:groupId").get(groupSettlementRecords); //Get all group settlements
 
+//Responsible for adding members in group
+router
+  .route("/group/:groupId/:userId")
+  .post(
+    mongoIdPathVariableValidator("groupId"),
+    mongoIdPathVariableValidator("userId"),
+    validate,
+    addMembersInExpenseGroup
+  );
 export default router;

@@ -3,7 +3,7 @@ import { Expense } from "../../../models/apps/expense-split-app/expense.model.js
 import { ApiError } from "../../../utils/ApiError.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
-import { ExpenseGroup } from "../../../models/apps/expense-split-app/expenseGroup.model.js";
+import { ExpenseGroup } from "../../../models/apps/expense-split-app/expensegroup.model.js";
 import { addSplit, clearSplit } from "./group.controller.js";
 import mongoose from "mongoose";
 const commonExpenseAggregations = () => {
@@ -233,6 +233,7 @@ const groupDailyExpense = asyncHandler(async (req, res) => {});
 const userMonthlyExpense = asyncHandler(async (req, res) => {});
 const userDailyExpense = asyncHandler(async (req, res) => {});
 const viewUserExpense = asyncHandler(async (req, res) => {});
+
 export {
   addExpense,
   editExpense,

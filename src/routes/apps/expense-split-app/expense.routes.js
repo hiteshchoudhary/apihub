@@ -25,7 +25,7 @@ router.use(verifyJWT);
 
 //Creates a new expense accepts bill photos also
 router
-  .route("/addExpense/:groupId")
+  .route("/addexpense/:groupId")
   .post(
     upload.fields([{ name: "billAttachments", maxCount: 5 }]),
     mongoIdPathVariableValidator("groupId"),
@@ -45,21 +45,21 @@ router
 
 router.route("/user/expense").get(viewUserExpense); //View all the expense of the user
 
-router.route("/user/recentExpense").get(recentUserExpense); //Gives top 5 recent user expenses
-router.route("monthlyExpense/user").get(userMonthlyExpense); //Sorts all the expenses of user month wise and displays recent first
+router.route("/user/recentexpense").get(recentUserExpense); //Gives top 5 recent user expenses
+router.route("monthlyexpense/user").get(userMonthlyExpense); //Sorts all the expenses of user month wise and displays recent first
 
-router.route("/categoryExp/user").get(userCategoryExpense); //shows all user expenses category wise
-router.route("/dailyExpense/user").get(userDailyExpense); //Shows the daily expense of user of that day
+router.route("/categoryexp/user").get(userCategoryExpense); //shows all user expenses category wise
+router.route("/dailyexpense/user").get(userDailyExpense); //Shows the daily expense of user of that day
 
 router
-  .route("/monthlyExpense/group/:groupId")
+  .route("/monthlyexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupMonthlyExpense); //Shows all the expense in a group month wise
 
 router
-  .route("/dailyExpense/group/:groupId")
+  .route("/dailyexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupDailyExpense); //Shows all the expense in a group daily
 router
-  .route("/categoryExpense/group/:groupId")
+  .route("/categoryexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense); //Shows all the expense in a group category wise
 
 export default router;
