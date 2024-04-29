@@ -204,10 +204,31 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
 
   const balanceData = groupBalanceCalculator(expenseGroup.split);
   //! has to aggregate the group balaces for user ids
+
+  const agrregatedData = balanceData.map(async (data) => {
+    let array = [];
+    for (let i = 0; i <= 1; i++) {
+      const user = await User.findById(data[0]).select(
+        " -password -refreshToken -forgotPasswordToken -forgotPasswordExpiry -emailVerificationToken -emailVerificationExpiry"
+      );
+      if (i === 0) {
+        array.push({ settleTo: user });
+      } else {
+        array.push({ settleFrom: user });
+      }
+    }
+
+    array.push({ value: data[2] });
+
+    return array;
+  });
+
+  const payload = await Promise.all(agrregatedData);
+
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { balanceData }, "Group balance fetched succesfully")
+      new ApiResponse(200, { payload }, "Group balance fetched succesfully")
     );
 
   //Work in progress
@@ -228,8 +249,14 @@ const makeSettlement = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, Invalid group Id");
   }
 
-  group.split[settleFrom] += settleAmount;
-  group.split[settleTo] -= settleAmount;
+  group.split.set(
+    settleFrom,
+    Number(group.split.get(settleFrom) || 0) + Number(Amount)
+  );
+  group.split.set(
+    settleTo,
+    Number(group.split.get(settleTo) || 0) - Number(Amount)
+  );
 
   const settlement = await Settlement.create({
     settleTo,
@@ -239,12 +266,7 @@ const makeSettlement = asyncHandler(async (req, res) => {
     groupId,
   });
 
-  const updateGroup = await ExpenseGroup.updateOne(
-    {
-      _id: groupId,
-    },
-    { $set: { split: group.split } }
-  );
+  await group.save();
 
   res.status(200).json(new ApiResponse(200, {}, "Settlement done succesfully"));
 });

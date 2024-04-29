@@ -78,9 +78,13 @@ router.route("/").get(getUserExpenseGroups);
 
 //Get all user settlements
 
+//!Not yet validated
+
 router.route("/settlements").get(userSettlementRecords);
 
 //Get all group settlements
+
+//Not yet validated
 
 router.route("/settlements/:groupId").get(groupSettlementRecords);
 

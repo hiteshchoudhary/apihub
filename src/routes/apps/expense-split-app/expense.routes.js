@@ -69,23 +69,46 @@ router
 
   .get(mongoIdPathVariableValidator("groupId"), validate, viewGroupExpense);
 
-router.route("/user/expense").get(viewUserExpense); //View all the expense of the user
+//View all the expense of the user
 
-router.route("/user/recentexpense").get(recentUserExpense); //Gives top 5 recent user expenses
-router.route("monthlyexpense/user").get(userMonthlyExpense); //Sorts all the expenses of user month wise and displays recent first
+//!validated
 
-router.route("/categoryexp/user").get(userCategoryExpense); //shows all user expenses category wise
-router.route("/dailyexpense/user").get(userDailyExpense); //Shows the daily expense of user of that day
+router.route("/user/expense").get(viewUserExpense);
+
+//Gives top 5 recent user expenses
+
+router.route("/user/recentexpense").get(recentUserExpense);
+
+//Sorts all the expenses of user month wise and displays recent first
+
+router.route("monthlyexpense/user").get(userMonthlyExpense);
+
+//shows all user expenses category wise
+
+//!validated aggregations left
+
+router.route("/categoryexpense/user").get(userCategoryExpense);
+
+//Shows the daily expense of user of that day
+
+router.route("/dailyexpense/user").get(userDailyExpense);
+
+//Shows all the expense in a group month wise
 
 router
   .route("/monthlyexpense/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, groupMonthlyExpense); //Shows all the expense in a group month wise
+  .get(mongoIdPathVariableValidator("groupId"), validate, groupMonthlyExpense);
+
+//Shows all the expense in a group daily
 
 router
   .route("/dailyexpense/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, groupDailyExpense); //Shows all the expense in a group daily
+  .get(mongoIdPathVariableValidator("groupId"), validate, groupDailyExpense);
+
+//Shows all the expense in a group category wise
+//! validated aggregation left
 router
   .route("/categoryexpense/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense); //Shows all the expense in a group category wise
+  .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense);
 
 export default router;

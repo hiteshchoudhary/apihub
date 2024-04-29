@@ -346,7 +346,7 @@ const viewGroupExpense = asyncHandler(async (req, res) => {
   const groupExpenses = await Expense.find({
     groupId: groupId,
   }).sort({
-    expenseDate: -1,
+    updatedAt: -1,
   });
 
   if (groupExpenses.length === 0) {
@@ -385,13 +385,246 @@ const viewGroupExpense = asyncHandler(async (req, res) => {
     )
   );
 });
-const recentUserExpense = asyncHandler(async (req, res) => {});
-const groupCategoryExpense = asyncHandler(async (req, res) => {});
-const userCategoryExpense = asyncHandler(async (req, res) => {});
-const groupMonthlyExpense = asyncHandler(async (req, res) => {});
-const groupDailyExpense = asyncHandler(async (req, res) => {});
-const userMonthlyExpense = asyncHandler(async (req, res) => {});
-const userDailyExpense = asyncHandler(async (req, res) => {});
+const recentUserExpense = asyncHandler(async (req, res) => {
+  //Top 5 recent user expense
+
+  const recentExpense = await Expense.find({
+    participants: req.user._id,
+  })
+    .sort({
+      updatedAt: -1,
+    })
+    .limit(5);
+
+  if (recentExpense.length === 0) {
+    return res.status(200).json(new ApiResponse(200, {}, "No recent expenses"));
+  }
+  //! aggregations left
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Recent Expenses fetched succesfully"));
+});
+const groupCategoryExpense = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+  //Some validations left
+  const categoryWiseExpense = await Expense.aggregate([
+    {
+      $match: {
+        groupId: new mongoose.Types.ObjectId(groupId), // Replace this ObjectId with your actual groupId
+      },
+    },
+    {
+      $group: {
+        _id: "$Category",
+        expenses: {
+          $push: "$$ROOT",
+        },
+        total: {
+          $sum: "$Amount",
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        expenses: 1,
+        total: 1,
+      },
+    },
+  ]);
+  //! aggregations left
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { categoryWiseExpense },
+        "Category wise group expense fetched succesfully"
+      )
+    );
+});
+const userCategoryExpense = asyncHandler(async (req, res) => {
+  const categoryWiseExpense = await Expense.aggregate([
+    {
+      $match: {
+        participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
+      },
+    },
+    {
+      $group: {
+        _id: "$Category",
+        expenses: {
+          $push: "$$ROOT",
+        },
+        total: {
+          $sum: "$Amount",
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        expenses: 1,
+        total: 1,
+      },
+    },
+  ]);
+  //! Aggregations left
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { categoryWiseExpense },
+        "User category expenses fetched succesfully"
+      )
+    );
+});
+const groupMonthlyExpense = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+  //validations left
+
+  const monthlyExpenses = await Expense.aggregate([
+    {
+      $match: {
+        groupId: new mongoose.Types.ObjectId(groupId), // Replace this ObjectId with your actual groupId
+      },
+    },
+    {
+      $group: {
+        _id: {
+          month: { $month: "$expenseDate" },
+          year: { $year: "$expenseDate" },
+        },
+        amount: { $sum: "$Amount" },
+        expenses: { $push: "$$ROOT" },
+      },
+    },
+    {
+      $sort: { "_id.month": 1 },
+    },
+  ]);
+
+  //Null validation left
+  //! aggregations left
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { monthlyExpenses },
+        "Monthly expenses fetched succesfully"
+      )
+    );
+});
+const groupDailyExpense = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+
+  const dailyExpenses = await Expense.aggregate([
+    {
+      $match: {
+        groupId: new mongoose.Types.ObjectId(groupId), // Replace this ObjectId with your actual groupId
+      },
+    },
+    {
+      $group: {
+        _id: {
+          day: { $dayOfMonth: "$expenseDate" },
+          month: { $month: "$expenseDate" },
+          year: { $year: "$expenseDate" },
+        },
+        amount: { $sum: "$Amount" },
+        expenses: { $push: "$$ROOT" },
+      },
+    },
+    {
+      $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 },
+    },
+  ]);
+
+  //Null validation left
+  //! aggregations left
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { dailyExpenses },
+        "Monthly expenses fetched succesfully"
+      )
+    );
+});
+const userMonthlyExpense = asyncHandler(async (req, res) => {
+  const monthlyExpenses = await Expense.aggregate([
+    {
+      $match: {
+        participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
+      },
+    },
+    {
+      $group: {
+        _id: {
+          month: { $month: "$expenseDate" },
+          year: { $year: "$expenseDate" },
+        },
+        amount: { $sum: "$Amount" },
+        expenses: { $push: "$$ROOT" },
+      },
+    },
+    {
+      $sort: { "_id.month": 1 },
+    },
+  ]);
+
+  //! aggregations left
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { monthlyExpenses },
+        "User monthly expense fetched succesfully"
+      )
+    );
+});
+const userDailyExpense = asyncHandler(async (req, res) => {
+  const dailyExpense = await Expense.aggregate([
+    {
+      $match: {
+        participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
+      },
+    },
+    {
+      $group: {
+        _id: {
+          day: { $dayOfMonth: "$expenseDate" },
+          month: { $month: "$expenseDate" },
+          year: { $year: "$expenseDate" },
+        },
+        amount: { $sum: "$Amount" },
+        expenses: { $push: "$$ROOT" },
+      },
+    },
+    {
+      $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 },
+    },
+  ]);
+  //! aggregations left
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { dailyExpense },
+        "User daily expense fetched succesfully"
+      )
+    );
+});
 const viewUserExpense = asyncHandler(async (req, res) => {
   const userExpenses = await Expense.find({
     participants: req.user?._id,
