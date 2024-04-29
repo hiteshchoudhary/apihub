@@ -198,12 +198,12 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
 
   const expenseGroup = await ExpenseGroup.findById(groupId);
 
-  if (!group) {
+  if (!expenseGroup) {
     throw new ApiError(404, "Group not found, Invalid group ID");
   }
 
-  const balanceData = groupBalanceCalculator(expenseGroup.split[0]);
-
+  const balanceData = groupBalanceCalculator(expenseGroup.split);
+  //! has to aggregate the group balaces for user ids
   return res
     .status(200)
     .json(
@@ -353,7 +353,7 @@ export const addSplit = async (groupId, Amount, Owner, members) => {
   const group = await ExpenseGroup.findById(groupId);
 
   // Adding the expense amount in group total
-  group.groupTotal += Amount;
+  group.groupTotal = Number(group.groupTotal) + Number(Amount);
 
   // Initialize split if it doesn't exist
   if (!group.split || !(group.split instanceof Map)) {
@@ -390,111 +390,96 @@ export const addSplit = async (groupId, Amount, Owner, members) => {
 
 //This works reverse of add split used for editting or clearing expense
 export const clearSplit = async (groupId, Amount, Owner, participants) => {
-  let group = await ExpenseGroup.findById({ groupId });
+  let group = await ExpenseGroup.findById(groupId);
+
+  // Subtract the expense amount from group total
   group.groupTotal -= Amount;
-  group.split[Owner] -= Amount;
-  let expensePerPerson = expenseAmount / participants.length;
+
+  // Subtract the expense amount from owner's split
+  group.split.set(Owner, (group.split.get(Owner) || 0) - Amount);
+
+  // Calculate expense per person
+  let expensePerPerson = Amount / participants.length;
   expensePerPerson = expensePerPerson.toFixed(2);
 
-  for (var user of participants) {
-    group.split[user] += expensePerPerson;
-  }
+  // Update split values for each participant
+  participants.forEach((user) => {
+    group.split.set(
+      user,
+      (group.split.get(user) || 0) + parseFloat(expensePerPerson)
+    );
+  });
 
-  //Nullyfying split -check if the group balance is zero else add the diff to owner
-
+  // Recalculate balance
   let bal = 0;
+  group.split.forEach((val) => {
+    bal += val;
+  });
 
-  for (val of Object.entries(group.split)) {
-    bal += val[1];
-  }
+  // Adjust owner's split to make the total balance zero
+  group.split.set(Owner, (group.split.get(Owner) || 0) - bal);
+  group.split.set(Owner, group.split.get(Owner).toFixed(2));
 
-  group.split[Owner] -= bal;
-  group.split[Owner] = group.split[0].toFixed(2);
-
-  return await ExpenseGroup.updateOne(
-    {
-      _id: groupId,
-    },
-    group
-  );
+  // Save the updated group
+  await group.save();
 };
+
 //Responsible for finding out group balances
 const groupBalanceCalculator = (split) => {
-  var splits = new Array();
-  var transaction_map = new Map(Object.entries(split)); //converting JSON to map object
+  const splits = [];
+  const transactionMap = split;
 
-  //This function finds simialr +ve -ve figures and matches them if present
-
+  // Function to settle similar figures
   function settleSimilarFigures() {
-    let vis = new Map();
-    for (let transaction1 of transaction_map.keys()) {
+    const vis = new Map();
+    for (let [transaction1, value1] of transactionMap.entries()) {
       vis.set(transaction1, 1);
-      for (let transaction2 of transaction_map.keys()) {
-        if (!vis.has(transaction2) && transaction1 != transaction2) {
-          if (
-            transaction_map.get(transaction2) ==
-            -transaction_map.get(transaction1)
-          ) {
-            if (
-              transaction_map.get(transaction2) >
-              transaction_map.get(transaction1)
-            ) {
-              splits.push([
-                transaction1,
-                transaction2,
-                transaction_map.get(transaction2),
-              ]);
+      for (let [transaction2, value2] of transactionMap.entries()) {
+        if (!vis.has(transaction2) && transaction1 !== transaction2) {
+          if (value2 === -value1) {
+            if (value2 > value1) {
+              splits.push([transaction1, transaction2, value2]);
             } else {
-              splits.push([
-                transaction2,
-                transaction1,
-                transaction_map.get(transaction1),
-              ]);
+              splits.push([transaction2, transaction1, value1]);
             }
-            transaction_map.set(transaction2, 0);
-            transaction_map.set(transaction1, 0);
+            transactionMap.set(transaction2, 0);
+            transactionMap.set(transaction1, 0);
           }
         }
       }
     }
   }
 
-  /**
-   *
-   * This is a helper function for founction helper that returns maximum and minimum values in the split
-   */
-
+  // Helper function to find maximum and minimum values in the split
   function getMaxMinCredit() {
-    let max_ob,
-      min_ob,
-      max = Number.MIN_VALUE,
-      min = Number.MAX_VALUE;
-    for (let transaction of transaction_map.keys()) {
-      if (transaction_map.get(transaction) < min) {
-        min = transaction_map.get(transaction);
-        min_ob = transaction;
+    let maxKey, minKey;
+    let max = Number.MIN_VALUE;
+    let min = Number.MAX_VALUE;
+    for (let [key, value] of transactionMap.entries()) {
+      if (value < min) {
+        min = value;
+        minKey = key;
       }
-      if (transaction_map.get(transaction) > max) {
-        max = transaction_map.get(transaction);
-        max_ob = transaction;
+      if (value > max) {
+        max = value;
+        maxKey = key;
       }
     }
-    return [min_ob, max_ob];
+    return [minKey, maxKey];
   }
 
-  //This function creates the settlement figures between uneven +ve and -ve values to create the balances of users in the group
-
+  // Function to create settlement figures between uneven +ve and -ve values
   function helper() {
-    let minMax = getMaxMinCredit();
-    if (minMax[0] == undefined || minMax[1] == undefined) return;
-    let min_value = Math.min(
-      -transaction_map.get(minMax[0]),
-      transaction_map.get(minMax[1])
+    const [minKey, maxKey] = getMaxMinCredit();
+    if (!minKey || !maxKey) return;
+    const minValue = Math.min(
+      -transactionMap.get(minKey),
+      transactionMap.get(maxKey)
     );
-    transaction_map.set(minMax[0], transaction_map.get(minMax[0]) + min_value);
-    transaction_map.set(minMax[1], transaction_map.get(minMax[1]) - min_value);
-    min_value = Math.round((min_value + Number.EPSILON) * 100) / 100;
-    let res = [minMax[0], minMax[1], min_value];
+    transactionMap.set(minKey, transactionMap.get(minKey) + minValue);
+    transactionMap.set(maxKey, transactionMap.get(maxKey) - minValue);
+    const roundedMinValue = Math.round((minValue + Number.EPSILON) * 100) / 100;
+    const res = [minKey, maxKey, roundedMinValue];
     splits.push(res);
     helper();
   }
@@ -503,6 +488,7 @@ const groupBalanceCalculator = (split) => {
   helper();
   return splits;
 };
+
 export {
   createExpenseGroup,
   viewExpenseGroup,

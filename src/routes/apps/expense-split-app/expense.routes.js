@@ -38,15 +38,36 @@ router
     validate,
     addExpense
   );
+
 router
   .route("/:expenseId")
-  .get(mongoIdPathVariableValidator("expenseId"), validate, viewExpense) // gets expense details
-  .patch(mongoIdPathVariableValidator("expenseId"), validate, editExpense) //edit expense details not the bills
-  .delete(mongoIdPathVariableValidator("expenseId"), validate, deleteExpense); //Deletes expenses
+
+  // gets expense details
+
+  //! Validated
+
+  .get(mongoIdPathVariableValidator("expenseId"), validate, viewExpense)
+
+  //edit expense details not the bills attachments
+
+  //!Validated
+
+  .patch(mongoIdPathVariableValidator("expenseId"), validate, editExpense)
+
+  //Deletes expenses
+
+  //! Validated
+
+  .delete(mongoIdPathVariableValidator("expenseId"), validate, deleteExpense);
 
 router
   .route("/group/:groupId")
-  .get(mongoIdPathVariableValidator("groupId"), validate, viewGroupExpense); //shows all the expense in a group
+
+  //shows all the expense in a group
+
+  //! validated
+
+  .get(mongoIdPathVariableValidator("groupId"), validate, viewGroupExpense);
 
 router.route("/user/expense").get(viewUserExpense); //View all the expense of the user
 

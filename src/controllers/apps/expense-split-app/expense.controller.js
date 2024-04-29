@@ -8,7 +8,98 @@ import { addSplit, clearSplit } from "./group.controller.js";
 import mongoose from "mongoose";
 import { getLocalPath, getStaticFilePath } from "../../../utils/helpers.js";
 const commonExpenseAggregations = () => {
-  return [{}];
+  return [
+    {
+      $lookup: {
+        from: "users",
+        localField: "Owner",
+        foreignField: "_id",
+        as: "Owner",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        foreignField: "_id",
+        localField: "participants",
+        as: "participants",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "expensegroups",
+        foreignField: "_id",
+        localField: "groupId",
+        as: "groupId",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              foreignField: "_id",
+              localField: "participants",
+              as: "participants",
+              pipeline: [
+                {
+                  $project: {
+                    password: 0,
+                    refreshToken: 0,
+                    forgotPasswordToken: 0,
+                    forgotPasswordExpiry: 0,
+                    emailVerificationToken: 0,
+                    emailVerificationExpiry: 0,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "groupOwner",
+              foreignField: "_id",
+              as: "groupOwner",
+              pipeline: [
+                {
+                  $project: {
+                    password: 0,
+                    refreshToken: 0,
+                    forgotPasswordToken: 0,
+                    forgotPasswordExpiry: 0,
+                    emailVerificationToken: 0,
+                    emailVerificationExpiry: 0,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ];
 };
 
 const addExpense = asyncHandler(async (req, res) => {
@@ -27,7 +118,6 @@ const addExpense = asyncHandler(async (req, res) => {
     _id: new mongoose.Types.ObjectId(Owner),
   });
 
-  //! have to check if expense participants are present in the group or not
   if (!ownerUser) {
     throw new ApiError(404, "Owner not found");
   }
@@ -38,7 +128,18 @@ const addExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found");
   }
 
+  if (!group.participants.includes(Owner)) {
+    throw new ApiError(400, "Owner must be part of the group");
+  }
+
   const members = [...new Set([...participants])]; //Checking for duplicate id's and removing them if present
+  const invalidParticipants = participants.filter(
+    (participant) => !group.participants.includes(participant)
+  ); //Check if participant are present in the group
+  if (invalidParticipants.length > 0) {
+    throw new ApiError(400, "All participants must be part of the group");
+  }
+
   const billFiles = [];
   console.log(req.files);
 
@@ -74,15 +175,18 @@ const addExpense = asyncHandler(async (req, res) => {
 
   addSplit(groupId, Amount, Owner, members);
 
+  const aggregatedExpense = await Expense.aggregate([
+    {
+      $match: {
+        _id: newExpense._id,
+      },
+    },
+    ...commonExpenseAggregations(),
+  ]);
+  const payload = aggregatedExpense[0];
   return res
     .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { expense: newExpense },
-        "new Expense created succesfully"
-      )
-    );
+    .json(new ApiResponse(200, { payload }, "new Expense created succesfully"));
 });
 
 const editExpense = asyncHandler(async (req, res) => {
@@ -99,10 +203,14 @@ const editExpense = asyncHandler(async (req, res) => {
     Owner,
   } = req.body;
 
-  const oldExpense = Expense.findById(expenseId);
+  const oldExpense = await Expense.findById(expenseId);
 
   if (!oldExpense) {
     throw new ApiError(404, "Expense not found, Invalid expense Id");
+  }
+
+  if (oldExpense.Owner.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "You are not authorised to perform this action");
   }
 
   //Clearing the split in group for the old expense
@@ -130,8 +238,6 @@ const editExpense = asyncHandler(async (req, res) => {
   }
   if (participants) {
     oldExpense.participants = participants;
-    const expensePerMember = Amount / participants.length;
-    oldExpense.expensePerMember = expensePerMember;
   }
   if (expenseMethod) {
     oldExpense.expenseMethod = expenseMethod;
@@ -139,6 +245,12 @@ const editExpense = asyncHandler(async (req, res) => {
   if (Owner) {
     oldExpense.Owner = Owner;
   }
+
+  const expensePerMember = (
+    oldExpense.Amount / oldExpense.participants.length
+  ).toFixed(2);
+
+  oldExpense.expensePerMember = expensePerMember;
 
   //Have to update the split values once again
 
@@ -154,15 +266,20 @@ const editExpense = asyncHandler(async (req, res) => {
     oldExpense.participants
   );
 
+  const aggregatedExpense = await Expense.aggregate([
+    {
+      $match: {
+        _id: oldExpense._id,
+      },
+    },
+    ...commonExpenseAggregations(),
+  ]);
+
+  const payload = aggregatedExpense[0];
+
   return res
     .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        { expense: oldExpense },
-        "Expense updated succesfully"
-      )
-    );
+    .json(new ApiResponse(200, { payload }, "Expense updated succesfully"));
 });
 const deleteExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
@@ -170,6 +287,11 @@ const deleteExpense = asyncHandler(async (req, res) => {
   const expense = await Expense.findById(expenseId);
   if (!expense) {
     throw new ApiError(404, "expense not found, Invalid expense Id");
+  }
+  console.log(expense.Owner);
+  console.log(req.user._id);
+  if (expense.Owner.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "You are not authorised to perform this action");
   }
 
   await Expense.findByIdAndDelete(expenseId);
@@ -188,20 +310,39 @@ const deleteExpense = asyncHandler(async (req, res) => {
 const viewExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
 
+  //! should i check if req._id is a part of group or expense ?? or anyone logged in user can fetch expense with expense Id??
+
   const expense = await Expense.findById(expenseId);
 
   if (!expense) {
     throw new ApiError(404, "Expense not found, invalid expense Id");
   }
 
+  const aggregatedExpense = await Expense.aggregate([
+    {
+      $match: { _id: expense._id },
+    },
+    ...commonExpenseAggregations(),
+  ]);
+
+  const payload = aggregatedExpense[0];
+
   return res
     .status(200)
-    .json(
-      new ApiError(200, { expense: expense }, "Expense Fetched succesfully")
-    );
+    .json(new ApiResponse(200, { payload }, "Expense Fetched succesfully"));
 });
 const viewGroupExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
+
+  const group = await ExpenseGroup.findById(groupId);
+  if (!group) {
+    throw new ApiError(404, "Group not found, Invalid group Id");
+  }
+
+  if (!group.participants.includes(req.user._id)) {
+    throw new ApiError(403, "You are not part of this group to see expenses");
+  }
+
   const groupExpenses = await Expense.find({
     groupId: groupId,
   }).sort({
@@ -209,21 +350,36 @@ const viewGroupExpense = asyncHandler(async (req, res) => {
   });
 
   if (groupExpenses.length === 0) {
-    throw new ApiError(400, "There is no expense in the group");
+    return res
+      .status(200)
+      .json(new ApiError(200, {}, "No expense in the group"));
   }
 
   var totalAmount = 0;
 
   for (let expense of groupExpenses) {
-    totalAmount += expense;
+    totalAmount += Number(expense.Amount);
   }
+
+  const agrregatedExpenses = groupExpenses.map(async (expense) => {
+    const agrregatedExpense = await Expense.aggregate([
+      {
+        $match: {
+          _id: expense._id,
+        },
+      },
+      ...commonExpenseAggregations(),
+    ]);
+    return agrregatedExpense[0];
+  });
+
+  const expenses = await Promise.all(agrregatedExpenses);
 
   res.status(200).json(
     new ApiResponse(
       200,
       {
-        expenses: groupExpenses,
-        totalAmount: totalAmount,
+        payload: { expenses, totalAmount: totalAmount },
       },
       "Group expenses fetched succesfully"
     )
@@ -236,7 +392,49 @@ const groupMonthlyExpense = asyncHandler(async (req, res) => {});
 const groupDailyExpense = asyncHandler(async (req, res) => {});
 const userMonthlyExpense = asyncHandler(async (req, res) => {});
 const userDailyExpense = asyncHandler(async (req, res) => {});
-const viewUserExpense = asyncHandler(async (req, res) => {});
+const viewUserExpense = asyncHandler(async (req, res) => {
+  const userExpenses = await Expense.find({
+    participants: req.user?._id,
+  }).sort({
+    updatedAt: -1, //to get the newest first
+  });
+
+  if (userExpenses.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "User has no expense"));
+  }
+
+  var totalAmount = 0;
+
+  for (let expense of userExpenses) {
+    totalAmount += Number(expense.expensePerMember);
+  }
+
+  const agrregatedExpenses = userExpenses.map(async (expense) => {
+    const agrregatedExpense = await Expense.aggregate([
+      {
+        $match: {
+          _id: expense._id,
+        },
+      },
+      ...commonExpenseAggregations(),
+    ]);
+    return agrregatedExpense[0];
+  });
+
+  const expenses = await Promise.all(agrregatedExpenses);
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { payload: { expenses: expenses, total: totalAmount } },
+        "User expenses fetched succesfully"
+      )
+    );
+});
 
 export {
   addExpense,

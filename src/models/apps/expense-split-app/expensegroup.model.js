@@ -31,9 +31,25 @@ const expenseGroupSchema = new mongoose.Schema(
       required: true,
     },
     groupTotal: { type: Number, default: 0 },
-    split: { type: Map, of: Number, default: {} },
+    split: {
+      type: Map,
+      of: Number,
+      default: {},
+    },
   },
   { timestamps: true }
 );
 
+// Middleware to convert split keys to ObjectId
+expenseGroupSchema.pre("save", function (next) {
+  const split = this.split;
+  const updatedSplit = new Map();
+
+  for (const key of split.keys()) {
+    updatedSplit.set(new mongoose.Types.ObjectId(key), split.get(key));
+  }
+
+  this.split = updatedSplit;
+  next();
+});
 export const ExpenseGroup = mongoose.model("ExpenseGroup", expenseGroupSchema);

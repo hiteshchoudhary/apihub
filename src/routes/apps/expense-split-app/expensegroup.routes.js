@@ -56,7 +56,7 @@ router
 
 //Returns a group balance sheet who owes whom how much
 
-// ! Not yet validated
+// !validated
 
 router
   .route("/group-settlements/:groupId")
