@@ -102,6 +102,81 @@ const commonExpenseAggregations = () => {
   ];
 };
 
+export const commonSettlementAggregations = () => {
+  return [
+    {
+      $lookup: {
+        from: "users",
+        localField: "settleTo",
+        foreignField: "_id",
+        as: "settleTo",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "settleFrom",
+        foreignField: "_id",
+        as: "settleFrom",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "expensegroups",
+        localField: "groupId",
+        foreignField: "_id",
+        as: "groupId",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              foreignField: "_id",
+              localField: "participants",
+              as: "participants",
+              pipeline: [
+                {
+                  $project: {
+                    password: 0,
+                    refreshToken: 0,
+                    forgotPasswordToken: 0,
+                    forgotPasswordExpiry: 0,
+                    emailVerificationToken: 0,
+                    emailVerificationExpiry: 0,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ];
+};
+
 const addExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   const {

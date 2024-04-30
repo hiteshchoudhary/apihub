@@ -34,7 +34,7 @@ router
 
   //Get all expenses in a group
 
-  // ! not validated
+  // !validated
 
   .get(mongoIdPathVariableValidator("groupId"), validate, viewExpenseGroup)
 
@@ -64,7 +64,7 @@ router
 
 //Makes settlement of owes in the group and creates a settlement transaction
 
-// ! Not yet validated
+// ! validated aggregation left
 
 router
   .route("/makeSettlement/:groupId")
@@ -78,15 +78,15 @@ router.route("/").get(getUserExpenseGroups);
 
 //Get all user settlements
 
-//!Not yet validated
+//! validated aggreagation
 
-router.route("/settlements").get(userSettlementRecords);
+router.route("/settlements/user").get(userSettlementRecords);
 
 //Get all group settlements
 
-//Not yet validated
+//! validated aggregation left
 
-router.route("/settlements/:groupId").get(groupSettlementRecords);
+router.route("/settlements/group/:groupId").get(groupSettlementRecords);
 
 //Responsible for adding members in group
 

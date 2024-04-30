@@ -7,6 +7,7 @@ import { ApiError } from "../../../utils/ApiError.js";
 import { Settlement } from "../../../models/apps/expense-split-app/settlement.model.js";
 import { User } from "../../../models/apps/auth/user.models.js";
 import { removeLocalFile } from "../../../utils/helpers.js";
+import mongoose from "mongoose";
 
 const commonGroupAggregation = () => {
   //This is the common aggregation for Response structure of group
@@ -73,11 +74,11 @@ const deleteCascadeExpenses = async (groupId) => {
   });
 
   await Expense.deleteMany({
-    groupId: new mongoose.Types.ObjectId(chatId),
+    groupId: new mongoose.Types.ObjectId(groupId),
   });
 
   await Settlement.deleteMany({
-    groupId: new mongoose.Types.ObjectId(chatId),
+    groupId: new mongoose.Types.ObjectId(groupId),
   });
 };
 
@@ -207,14 +208,15 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
 
   const agrregatedData = balanceData.map(async (data) => {
     let array = [];
+    console.log(data);
     for (let i = 0; i <= 1; i++) {
-      const user = await User.findById(data[0]).select(
+      const user = await User.findById(data[i]).select(
         " -password -refreshToken -forgotPasswordToken -forgotPasswordExpiry -emailVerificationToken -emailVerificationExpiry"
       );
       if (i === 0) {
-        array.push({ settleTo: user });
-      } else {
         array.push({ settleFrom: user });
+      } else {
+        array.push({ settleTo: user });
       }
     }
 
@@ -249,20 +251,25 @@ const makeSettlement = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, Invalid group Id");
   }
 
-  group.split.set(
-    settleFrom,
-    Number(group.split.get(settleFrom) || 0) + Number(Amount)
+  const updatedSplit = group.split;
+
+  updatedSplit.set(
+    String(settleFrom),
+    updatedSplit.get(settleFromId) + settleAmount
   );
-  group.split.set(
-    settleTo,
-    Number(group.split.get(settleTo) || 0) - Number(Amount)
+  updatedSplit.set(
+    String(settleTo),
+    Number(updatedSplit.get(settleToId)) - Number(settleAmount)
   );
+  console.log(updatedSplit);
+  // Save the updated split back to the group
+  group.split = updatedSplit;
 
   const settlement = await Settlement.create({
     settleTo,
     settleFrom,
     SettlementDate: settleDate || Date.now(),
-    settleAmount,
+    Amount: settleAmount,
     groupId,
   });
 
@@ -277,9 +284,8 @@ const deleteExpenseGroup = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, Invalid group id");
   }
 
-  await ExpenseGroup.findByIdAndDelete(groupId);
   await deleteCascadeExpenses(groupId);
-
+  await ExpenseGroup.findByIdAndDelete(groupId);
   return res
     .status(200)
     .json(new ApiResponse(200, {}, "Expense Group deleted succesfully"));
@@ -366,8 +372,32 @@ const addMembersInExpenseGroup = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, { payload }, "Memeber added succesfully"));
 });
 
-const groupSettlementRecords = asyncHandler(async (req, res) => {});
-const userSettlementRecords = asyncHandler(async (req, res) => {});
+const groupSettlementRecords = asyncHandler(async (req, res) => {
+  const { groupId } = req.params;
+
+  const settlements = await Settlement.find({
+    groupId: new mongoose.Types.ObjectId(groupId),
+  });
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { settlements },
+        "Group settlement records fetched succesfully"
+      )
+    );
+});
+const userSettlementRecords = asyncHandler(async (req, res) => {
+  const settlements = await Settlement.find({
+    $or: [{ settleTo: req.user._id }, { settleFrom: req.user._id }],
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { settlements }, "Settlement records"));
+});
 
 //Supporting function
 
