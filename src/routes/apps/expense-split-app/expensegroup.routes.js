@@ -46,7 +46,7 @@ router
 
   //Route to delete the whole group
 
-  // ! Not yet validated
+  // ! validated
 
   .delete(
     mongoIdPathVariableValidator("groupId"),
@@ -64,7 +64,7 @@ router
 
 //Makes settlement of owes in the group and creates a settlement transaction
 
-// ! validated aggregation left
+// ! aggregation validation left
 
 router
   .route("/makeSettlement/:groupId")
@@ -78,13 +78,13 @@ router.route("/").get(getUserExpenseGroups);
 
 //Get all user settlements
 
-//! validated aggreagation
+//! aggregation validation left
 
 router.route("/settlements/user").get(userSettlementRecords);
 
 //Get all group settlements
 
-//! validated aggregation left
+//! aggregation validation left
 
 router.route("/settlements/group/:groupId").get(groupSettlementRecords);
 

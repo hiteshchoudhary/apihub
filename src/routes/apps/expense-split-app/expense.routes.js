@@ -77,36 +77,44 @@ router.route("/user/expense").get(viewUserExpense);
 
 //Gives top 5 recent user expenses
 
+//!validation left
+
 router.route("/user/recentexpense").get(recentUserExpense);
 
 //Sorts all the expenses of user month wise and displays recent first
+
+//!validation left aggregations done will break
 
 router.route("monthlyexpense/user").get(userMonthlyExpense);
 
 //shows all user expenses category wise
 
-//!validated aggregations left
+//!aggreagtion validation left it will break
 
 router.route("/categoryexpense/user").get(userCategoryExpense);
 
 //Shows the daily expense of user of that day
 
+//!aggreagtion validation left it will break
+
 router.route("/dailyexpense/user").get(userDailyExpense);
 
 //Shows all the expense in a group month wise
+
+//!aggreagtion validation left it will break
 
 router
   .route("/monthlyexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupMonthlyExpense);
 
 //Shows all the expense in a group daily
-
+//!aggreagtion validation left it will break
 router
   .route("/dailyexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupDailyExpense);
 
 //Shows all the expense in a group category wise
-//! validated aggregation left
+//!aggreagtion validation left it will break
 router
   .route("/categoryexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense);

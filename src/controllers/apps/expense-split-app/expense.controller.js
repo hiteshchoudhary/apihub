@@ -102,81 +102,6 @@ const commonExpenseAggregations = () => {
   ];
 };
 
-export const commonSettlementAggregations = () => {
-  return [
-    {
-      $lookup: {
-        from: "users",
-        localField: "settleTo",
-        foreignField: "_id",
-        as: "settleTo",
-        pipeline: [
-          {
-            $project: {
-              password: 0,
-              refreshToken: 0,
-              forgotPasswordToken: 0,
-              forgotPasswordExpiry: 0,
-              emailVerificationToken: 0,
-              emailVerificationExpiry: 0,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "settleFrom",
-        foreignField: "_id",
-        as: "settleFrom",
-        pipeline: [
-          {
-            $project: {
-              password: 0,
-              refreshToken: 0,
-              forgotPasswordToken: 0,
-              forgotPasswordExpiry: 0,
-              emailVerificationToken: 0,
-              emailVerificationExpiry: 0,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $lookup: {
-        from: "expensegroups",
-        localField: "groupId",
-        foreignField: "_id",
-        as: "groupId",
-        pipeline: [
-          {
-            $lookup: {
-              from: "users",
-              foreignField: "_id",
-              localField: "participants",
-              as: "participants",
-              pipeline: [
-                {
-                  $project: {
-                    password: 0,
-                    refreshToken: 0,
-                    forgotPasswordToken: 0,
-                    forgotPasswordExpiry: 0,
-                    emailVerificationToken: 0,
-                    emailVerificationExpiry: 0,
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ];
-};
-
 const addExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   const {
@@ -483,7 +408,7 @@ const recentUserExpense = asyncHandler(async (req, res) => {
 const groupCategoryExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   //Some validations left
-  const categoryWiseExpense = await Expense.aggregate([
+  const categoryWiseExpenses = await Expense.aggregate([
     {
       $match: {
         groupId: new mongoose.Types.ObjectId(groupId), // Replace this ObjectId with your actual groupId
@@ -508,19 +433,35 @@ const groupCategoryExpense = asyncHandler(async (req, res) => {
       },
     },
   ]);
-  //! aggregations left
+  const aggregatedExpenses = categoryWiseExpenses.map(async (expenseCat) => {
+    const aggexp = expenseCat.expenses.map(async (expense) => {
+      const payload = await Expense.aggregate([
+        {
+          $match: { _id: expense._id },
+        },
+        ...commonExpenseAggregations(),
+      ]);
+
+      return payload[0];
+    });
+
+    const awaitedReq = await Promise.all(aggexp);
+    return { _id: expenseCat._id, expenses: awaitedReq };
+  });
+
+  const payload = await Promise.all(aggregatedExpenses);
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        { categoryWiseExpense },
+        { payload },
         "Category wise group expense fetched succesfully"
       )
     );
 });
 const userCategoryExpense = asyncHandler(async (req, res) => {
-  const categoryWiseExpense = await Expense.aggregate([
+  const categoryWiseExpenses = await Expense.aggregate([
     {
       $match: {
         participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
@@ -545,14 +486,31 @@ const userCategoryExpense = asyncHandler(async (req, res) => {
       },
     },
   ]);
-  //! Aggregations left
+
+  const aggregatedExpenses = categoryWiseExpenses.map(async (expenseCat) => {
+    const aggexp = expenseCat.expenses.map(async (expense) => {
+      const payload = await Expense.aggregate([
+        {
+          $match: { _id: expense._id },
+        },
+        ...commonExpenseAggregations(),
+      ]);
+
+      return payload[0];
+    });
+
+    const awaitedReq = await Promise.all(aggexp);
+    return { _id: expenseCat._id, expenses: awaitedReq };
+  });
+
+  const payload = await Promise.all(aggregatedExpenses);
 
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        { categoryWiseExpense },
+        { payload },
         "User category expenses fetched succesfully"
       )
     );
@@ -560,6 +518,15 @@ const userCategoryExpense = asyncHandler(async (req, res) => {
 const groupMonthlyExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   //validations left
+  const expenseGroup = await ExpenseGroup.findById(groupId);
+
+  if (!expenseGroup) {
+    throw new ApiError(404, "Group not found, invalid group Id");
+  }
+
+  if (!expenseGroup.participants.includes(req.user._id)) {
+    throw new ApiError(403, "You are not part of this group");
+  }
 
   const monthlyExpenses = await Expense.aggregate([
     {
@@ -582,17 +549,37 @@ const groupMonthlyExpense = asyncHandler(async (req, res) => {
     },
   ]);
 
-  //Null validation left
-  //! aggregations left
+  if (monthlyExpenses.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "No expenses found in this group"));
+  }
+  const aggregatedExpenses = monthlyExpenses.map(async (expenseMonthly) => {
+    const aggexp = expenseMonthly.expenses.map(async (expense) => {
+      const payload = await Expense.aggregate([
+        {
+          $match: { _id: expense._id },
+        },
+        ...commonExpenseAggregations(),
+      ]);
+
+      return payload[0];
+    });
+
+    const awaitedReq = await Promise.all(aggexp);
+    return {
+      _id: expenseMonthly._id,
+      amount: expenseMonthly.amount,
+      expenses: awaitedReq,
+    };
+  });
+
+  const payload = await Promise.all(aggregatedExpenses);
 
   return res
     .status(200)
     .json(
-      new ApiResponse(
-        200,
-        { monthlyExpenses },
-        "Monthly expenses fetched succesfully"
-      )
+      new ApiResponse(200, { payload }, "Monthly expenses fetched succesfully")
     );
 });
 const groupDailyExpense = asyncHandler(async (req, res) => {
@@ -621,16 +608,32 @@ const groupDailyExpense = asyncHandler(async (req, res) => {
   ]);
 
   //Null validation left
-  //! aggregations left
+  const aggregatedExpenses = dailyExpenses.map(async (expenseDaily) => {
+    const aggexp = expenseDaily.expenses.map(async (expense) => {
+      const payload = await Expense.aggregate([
+        {
+          $match: { _id: expense._id },
+        },
+        ...commonExpenseAggregations(),
+      ]);
+
+      return payload[0];
+    });
+
+    const awaitedReq = await Promise.all(aggexp);
+    return {
+      _id: expenseDaily._id,
+      amount: expenseDaily.amount,
+      expenses: awaitedReq,
+    };
+  });
+
+  const payload = await Promise.all(aggregatedExpenses);
 
   return res
     .status(200)
     .json(
-      new ApiResponse(
-        200,
-        { dailyExpenses },
-        "Monthly expenses fetched succesfully"
-      )
+      new ApiResponse(200, { payload }, "Monthly expenses fetched succesfully")
     );
 });
 const userMonthlyExpense = asyncHandler(async (req, res) => {
@@ -655,20 +658,40 @@ const userMonthlyExpense = asyncHandler(async (req, res) => {
     },
   ]);
 
-  //! aggregations left
+  const aggregatedExpenses = monthlyExpenses.map(async (expenseMonthly) => {
+    const aggexp = expenseMonthly.expenses.map(async (expense) => {
+      const payload = await Expense.aggregate([
+        {
+          $match: { _id: expense._id },
+        },
+        ...commonExpenseAggregations(),
+      ]);
+
+      return payload[0];
+    });
+
+    const awaitedReq = await Promise.all(aggexp);
+    return {
+      _id: expenseMonthly._id,
+      amount: expenseMonthly.amount,
+      expenses: awaitedReq,
+    };
+  });
+
+  const payload = await Promise.all(aggregatedExpenses);
 
   res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        { monthlyExpenses },
+        { payload },
         "User monthly expense fetched succesfully"
       )
     );
 });
 const userDailyExpense = asyncHandler(async (req, res) => {
-  const dailyExpense = await Expense.aggregate([
+  const dailyExpenses = await Expense.aggregate([
     {
       $match: {
         participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
@@ -689,13 +712,33 @@ const userDailyExpense = asyncHandler(async (req, res) => {
       $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 },
     },
   ]);
-  //! aggregations left
+  const aggregatedExpenses = dailyExpenses.map(async (expenseDaily) => {
+    const aggexp = expenseDaily.expenses.map(async (expense) => {
+      const payload = await Expense.aggregate([
+        {
+          $match: { _id: expense._id },
+        },
+        ...commonExpenseAggregations(),
+      ]);
+
+      return payload[0];
+    });
+
+    const awaitedReq = await Promise.all(aggexp);
+    return {
+      _id: expenseDaily._id,
+      amount: expenseDaily.amount,
+      expenses: awaitedReq,
+    };
+  });
+
+  const payload = await Promise.all(aggregatedExpenses);
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        { dailyExpense },
+        { payload },
         "User daily expense fetched succesfully"
       )
     );

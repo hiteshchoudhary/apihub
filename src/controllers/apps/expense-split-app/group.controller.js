@@ -8,7 +8,80 @@ import { Settlement } from "../../../models/apps/expense-split-app/settlement.mo
 import { User } from "../../../models/apps/auth/user.models.js";
 import { removeLocalFile } from "../../../utils/helpers.js";
 import mongoose from "mongoose";
-
+const commonSettlementAggregations = () => {
+  return [
+    {
+      $lookup: {
+        from: "users",
+        localField: "settleTo",
+        foreignField: "_id",
+        as: "settleTo",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "settleFrom",
+        foreignField: "_id",
+        as: "settleFrom",
+        pipeline: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "expensegroups",
+        localField: "groupId",
+        foreignField: "_id",
+        as: "groupId",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              foreignField: "_id",
+              localField: "participants",
+              as: "participants",
+              pipeline: [
+                {
+                  $project: {
+                    password: 0,
+                    refreshToken: 0,
+                    forgotPasswordToken: 0,
+                    forgotPasswordExpiry: 0,
+                    emailVerificationToken: 0,
+                    emailVerificationExpiry: 0,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ];
+};
 const commonGroupAggregation = () => {
   //This is the common aggregation for Response structure of group
   // ! Have to figure out the split lookup [work in progress]
@@ -203,8 +276,11 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, Invalid group ID");
   }
 
+  if (!expenseGroup.participants.includes(req.user._id)) {
+    throw new ApiError(403, "You are not participant of this group");
+  }
+
   const balanceData = groupBalanceCalculator(expenseGroup.split);
-  //! has to aggregate the group balaces for user ids
 
   const agrregatedData = balanceData.map(async (data) => {
     let array = [];
@@ -274,6 +350,15 @@ const makeSettlement = asyncHandler(async (req, res) => {
   });
 
   await group.save();
+
+  const aggregatedSettlement = await Settlement.aggregate([
+    {
+      $match: {
+        _id: settlement._id,
+      },
+    },
+    ...commonSettlementAggregations(),
+  ]);
 
   res.status(200).json(new ApiResponse(200, {}, "Settlement done succesfully"));
 });
@@ -379,12 +464,26 @@ const groupSettlementRecords = asyncHandler(async (req, res) => {
     groupId: new mongoose.Types.ObjectId(groupId),
   });
 
+  const aggregatedSettlements = settlements.map(async (settlement) => {
+    const pipelineData = await Settlement.aggregate([
+      {
+        $match: {
+          _id: settlement._id,
+        },
+      },
+      ...commonGroupAggregation(),
+    ]);
+    return pipelineData[0];
+  });
+
+  const payload = await Promise.all(aggregatedSettlements);
+
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        { settlements },
+        { payload },
         "Group settlement records fetched succesfully"
       )
     );
@@ -394,9 +493,23 @@ const userSettlementRecords = asyncHandler(async (req, res) => {
     $or: [{ settleTo: req.user._id }, { settleFrom: req.user._id }],
   });
 
+  const aggregatedSettlements = settlements.map(async (settlement) => {
+    const pipelineData = await Settlement.aggregate([
+      {
+        $match: {
+          _id: settlement._id,
+        },
+      },
+      ...commonGroupAggregation(),
+    ]);
+    return pipelineData[0];
+  });
+
+  const payload = await Promise.all(aggregatedSettlements);
+
   return res
     .status(200)
-    .json(new ApiResponse(200, { settlements }, "Settlement records"));
+    .json(new ApiResponse(200, { payload }, "Settlement records"));
 });
 
 //Supporting function
