@@ -114,6 +114,9 @@ const addExpense = asyncHandler(async (req, res) => {
     expenseMethod,
     Owner,
   } = req.body;
+
+  //To see if owner exists or not
+
   const ownerUser = await User.findOne({
     _id: new mongoose.Types.ObjectId(Owner),
   });
@@ -122,27 +125,34 @@ const addExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Owner not found");
   }
 
+  //To see if group exists or not
+
   const group = await ExpenseGroup.findById(groupId);
 
   if (!group) {
     throw new ApiError(404, "Group not found");
   }
 
+  //Owner has to be participant of the group to add expense in the group
   if (!group.participants.includes(Owner)) {
     throw new ApiError(400, "Owner must be part of the group");
   }
 
   const members = [...new Set([...participants])]; //Checking for duplicate id's and removing them if present
-  const invalidParticipants = participants.filter(
+
+  const invalidParticipants = members.filter(
     (participant) => !group.participants.includes(participant)
-  ); //Check if participant are present in the group
+  );
+
+  //Check if participant are present in the group all the particpants of expenses has to be particiapant of group
+
   if (invalidParticipants.length > 0) {
     throw new ApiError(400, "All participants must be part of the group");
   }
 
   const billFiles = [];
-  console.log(req.files);
 
+  //For photos of bills of expenses
   if (req.files && req.files.billAttachments?.length > 0) {
     req.files.billAttachments?.map((attachment) => {
       billFiles.push({
@@ -161,7 +171,7 @@ const addExpense = asyncHandler(async (req, res) => {
     expenseDate,
     expenseMethod,
     Owner: new mongoose.Types.ObjectId(ownerUser._id),
-    participants,
+    participants: members,
     expensePerMember,
     groupId: new mongoose.Types.ObjectId(groupId),
     billAttachments: billFiles,
@@ -209,6 +219,14 @@ const editExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Expense not found, Invalid expense Id");
   }
 
+  const group = await ExpenseGroup.find({
+    _id: new mongoose.Types.ObjectId(oldExpense.groupId),
+  });
+
+  if (!group) {
+    throw new ApiError(404, "Group not found,Invalid expense to be ediited");
+  }
+
   if (oldExpense.Owner.toString() !== req.user._id.toString()) {
     throw new ApiError(403, "You are not authorised to perform this action");
   }
@@ -237,14 +255,32 @@ const editExpense = asyncHandler(async (req, res) => {
     oldExpense.expenseDate = expenseDate;
   }
   if (participants) {
-    oldExpense.participants = participants;
+    const members = [...new Set([...participants])]; //Checking for duplicate id's and removing them if present
+
+    const invalidParticipants = members.filter(
+      (participant) => !group.participants.includes(participant)
+    );
+
+    if (invalidParticipants.length > 0) {
+      throw new ApiError(
+        403,
+        "Participants of expenses are not participants of group"
+      );
+    }
+
+    oldExpense.participants = members;
   }
   if (expenseMethod) {
     oldExpense.expenseMethod = expenseMethod;
   }
   if (Owner) {
+    if (!group.participants.includes(Owner)) {
+      throw new ApiError(400, "Owner must be part of the group");
+    }
     oldExpense.Owner = Owner;
   }
+
+  //Redifining the expense per memeber if it was possibly changed
 
   const expensePerMember = (
     oldExpense.Amount / oldExpense.participants.length
@@ -266,6 +302,8 @@ const editExpense = asyncHandler(async (req, res) => {
     oldExpense.participants
   );
 
+  //Common expense aggregations
+
   const aggregatedExpense = await Expense.aggregate([
     {
       $match: {
@@ -285,11 +323,13 @@ const deleteExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
 
   const expense = await Expense.findById(expenseId);
+
   if (!expense) {
     throw new ApiError(404, "expense not found, Invalid expense Id");
   }
-  console.log(expense.Owner);
-  console.log(req.user._id);
+
+  //The logged in user has to be the owner of the expense to delete it
+
   if (expense.Owner.toString() !== req.user._id.toString()) {
     throw new ApiError(403, "You are not authorised to perform this action");
   }
@@ -310,12 +350,27 @@ const deleteExpense = asyncHandler(async (req, res) => {
 const viewExpense = asyncHandler(async (req, res) => {
   const { expenseId } = req.params;
 
-  //! should i check if req._id is a part of group or expense ?? or anyone logged in user can fetch expense with expense Id??
-
   const expense = await Expense.findById(expenseId);
 
   if (!expense) {
     throw new ApiError(404, "Expense not found, invalid expense Id");
+  }
+
+  const group = await ExpenseGroup.find({
+    _id: new mongoose.Types.ObjectId(expense.groupId),
+  });
+
+  //Just a fall through case
+
+  if (!group) {
+    throw new ApiError(404, "Group to which this expense is does not exists");
+  }
+
+  if (!group.participants.includes(req.user._id)) {
+    throw new ApiError(
+      403,
+      "You are not participant of this group ,You cannot view this expense"
+    );
   }
 
   const aggregatedExpense = await Expense.aggregate([
@@ -399,15 +454,46 @@ const recentUserExpense = asyncHandler(async (req, res) => {
   if (recentExpense.length === 0) {
     return res.status(200).json(new ApiResponse(200, {}, "No recent expenses"));
   }
-  //! aggregations left
+
+  const aggregatedExpenses = recentExpense.map(async (expense) => {
+    const agrregatedExpense = await Expense.aggregate([
+      {
+        $match: {
+          _id: expense._id,
+        },
+      },
+      ...commonExpenseAggregations(),
+    ]);
+    return agrregatedExpense[0];
+  });
+
+  const payload = await Promise.all(aggregatedExpenses);
 
   return res
     .status(200)
-    .json(new ApiResponse(200, {}, "Recent Expenses fetched succesfully"));
+    .json(
+      new ApiResponse(200, { payload }, "Recent Expenses fetched succesfully")
+    );
 });
 const groupCategoryExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   //Some validations left
+
+  const group = await ExpenseGroup.find({
+    _id: new mongoose.Types.ObjectId(groupId),
+  });
+
+  if (!group) {
+    throw new ApiError(404, "Group not found invalid group id");
+  }
+
+  if (!group.participants.includes(req.user._id)) {
+    throw new ApiError(
+      403,
+      "You must be a participant of this group to perform this action"
+    );
+  }
+
   const categoryWiseExpenses = await Expense.aggregate([
     {
       $match: {
@@ -433,6 +519,13 @@ const groupCategoryExpense = asyncHandler(async (req, res) => {
       },
     },
   ]);
+
+  if (categoryWiseExpenses.length < 0) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "Group has no expenses"));
+  }
+
   const aggregatedExpenses = categoryWiseExpenses.map(async (expenseCat) => {
     const aggexp = expenseCat.expenses.map(async (expense) => {
       const payload = await Expense.aggregate([
@@ -464,7 +557,7 @@ const userCategoryExpense = asyncHandler(async (req, res) => {
   const categoryWiseExpenses = await Expense.aggregate([
     {
       $match: {
-        participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
+        participants: new mongoose.Types.ObjectId(req.user._id),
       },
     },
     {
@@ -486,6 +579,12 @@ const userCategoryExpense = asyncHandler(async (req, res) => {
       },
     },
   ]);
+
+  if (categoryWiseExpenses.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "User has no expense"));
+  }
 
   const aggregatedExpenses = categoryWiseExpenses.map(async (expenseCat) => {
     const aggexp = expenseCat.expenses.map(async (expense) => {
@@ -517,7 +616,7 @@ const userCategoryExpense = asyncHandler(async (req, res) => {
 });
 const groupMonthlyExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
-  //validations left
+
   const expenseGroup = await ExpenseGroup.findById(groupId);
 
   if (!expenseGroup) {
@@ -585,6 +684,17 @@ const groupMonthlyExpense = asyncHandler(async (req, res) => {
 const groupDailyExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
 
+  const group = await ExpenseGroup.find({
+    _id: new mongoose.Types.ObjectId(groupId),
+  });
+  if (!group) {
+    throw new ApiError(404, "Group not found invalid group Id");
+  }
+
+  if (!group.participants.includes(req.user._id)) {
+    throw new ApiError(403, "You are not part of this group");
+  }
+
   const dailyExpenses = await Expense.aggregate([
     {
       $match: {
@@ -607,7 +717,11 @@ const groupDailyExpense = asyncHandler(async (req, res) => {
     },
   ]);
 
-  //Null validation left
+  if (dailyExpenses.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "Group has no expenses"));
+  }
   const aggregatedExpenses = dailyExpenses.map(async (expenseDaily) => {
     const aggexp = expenseDaily.expenses.map(async (expense) => {
       const payload = await Expense.aggregate([
@@ -657,6 +771,12 @@ const userMonthlyExpense = asyncHandler(async (req, res) => {
       $sort: { "_id.month": 1 },
     },
   ]);
+
+  if (monthlyExpenses.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "User has no expenses"));
+  }
 
   const aggregatedExpenses = monthlyExpenses.map(async (expenseMonthly) => {
     const aggexp = expenseMonthly.expenses.map(async (expense) => {
@@ -712,6 +832,12 @@ const userDailyExpense = asyncHandler(async (req, res) => {
       $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 },
     },
   ]);
+
+  if (dailyExpenses.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "user has no expenses"));
+  }
   const aggregatedExpenses = dailyExpenses.map(async (expenseDaily) => {
     const aggexp = expenseDaily.expenses.map(async (expense) => {
       const payload = await Expense.aggregate([

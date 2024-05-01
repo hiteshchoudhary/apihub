@@ -240,8 +240,9 @@ const viewExpenseGroup = asyncHandler(async (req, res) => {
 const getUserExpenseGroups = asyncHandler(async (req, res) => {
   const userGroups = await ExpenseGroup.find({
     participants: req.user._id,
+  }).sort({
+    createdAt: -1,
   }); //Will have to sort with aggregations for newer first
-  //And also have to give every group common group aggregations
 
   if (userGroups.length < 1) {
     return res
@@ -311,7 +312,7 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
 
   //Work in progress
 
-  //This will return all the balances accumulate din a group who owes whom and how much by analyzing the group split and expenses
+  //This will return all the balances accumulated in a group who owes whom and how much by analyzing the group split and expenses
 });
 const makeSettlement = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
@@ -326,6 +327,19 @@ const makeSettlement = asyncHandler(async (req, res) => {
   if (!group) {
     throw new ApiError(404, "Group not found, Invalid group Id");
   }
+  if (!group.participants.includes(req.user._id)) {
+    throw new ApiError(403, "You are not part of this group");
+  }
+
+  if (
+    settleTo.toString() !== req.user._id.toString() &&
+    settleFrom !== req.user._id.toString()
+  ) {
+    throw new ApiError(
+      403,
+      "You can only settle with yourself or the other participant"
+    );
+  }
 
   const updatedSplit = group.split;
 
@@ -337,7 +351,7 @@ const makeSettlement = asyncHandler(async (req, res) => {
     String(settleTo),
     Number(updatedSplit.get(settleToId)) - Number(settleAmount)
   );
-  console.log(updatedSplit);
+
   // Save the updated split back to the group
   group.split = updatedSplit;
 
@@ -367,6 +381,13 @@ const deleteExpenseGroup = asyncHandler(async (req, res) => {
   const expenseGroup = await ExpenseGroup.findById(groupId);
   if (!expenseGroup) {
     throw new ApiError(404, "Group not found, Invalid group id");
+  }
+
+  if (expenseGroup.groupOwner.toString() !== req.user._id.toString()) {
+    throw new ApiError(
+      403,
+      "you are not the owner of this group to perform this action"
+    );
   }
 
   await deleteCascadeExpenses(groupId);
@@ -460,9 +481,26 @@ const addMembersInExpenseGroup = asyncHandler(async (req, res) => {
 const groupSettlementRecords = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
 
+  const group = await ExpenseGroup.find({
+    _id: new mongoose.Types.ObjectId(groupId),
+  });
+  if (!group) {
+    throw new ApiError(404, "Group not found invalid group Id");
+  }
+
+  if (!group.participants.includes(req.user._id)) {
+    throw new ApiError(403, "You are not part of this group");
+  }
+
   const settlements = await Settlement.find({
     groupId: new mongoose.Types.ObjectId(groupId),
   });
+
+  if (settlements.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "No group settlement records found"));
+  }
 
   const aggregatedSettlements = settlements.map(async (settlement) => {
     const pipelineData = await Settlement.aggregate([
@@ -494,6 +532,12 @@ const userSettlementRecords = asyncHandler(async (req, res) => {
   });
 
   const aggregatedSettlements = settlements.map(async (settlement) => {
+    if (aggregatedSettlements.length < 1) {
+      return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "No user settlement records found"));
+    }
+
     const pipelineData = await Settlement.aggregate([
       {
         $match: {
@@ -513,6 +557,8 @@ const userSettlementRecords = asyncHandler(async (req, res) => {
 });
 
 //Supporting function
+
+//Adding the split in group when creating or ediiting expense
 
 export const addSplit = async (groupId, Amount, Owner, members) => {
   const group = await ExpenseGroup.findById(groupId);
@@ -553,7 +599,7 @@ export const addSplit = async (groupId, Amount, Owner, members) => {
   await group.save();
 };
 
-//This works reverse of add split used for editting or clearing expense
+//This works reverse of add split used for editting or deleting expense
 export const clearSplit = async (groupId, Amount, Owner, participants) => {
   let group = await ExpenseGroup.findById(groupId);
 
@@ -589,7 +635,7 @@ export const clearSplit = async (groupId, Amount, Owner, participants) => {
   await group.save();
 };
 
-//Responsible for finding out group balances
+//Responsible for finding out group balances who owes whom and how much a aggregated balance of all the split in group
 const groupBalanceCalculator = (split) => {
   const splits = [];
   const transactionMap = split;
