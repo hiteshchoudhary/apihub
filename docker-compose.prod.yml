@@ -6,19 +6,26 @@ services:
     build: .
     ports:
       - 8080:8080
-    volumes:
-      - ./:/usr/src/freeapi
-      - /usr/src/freeapi/node_modules
     env_file:
       - ./.env
     depends_on:
       - mongodb
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /usr/src/freeapi
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./package.json
     networks:
       - freeapi-internal
   
   mongodb:
     image: mongo
     container_name: mongodb
+    command: ['--quiet', '--logpath', '/dev/null']
     volumes:
       - data:/data/db
     networks:
