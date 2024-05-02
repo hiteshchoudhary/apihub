@@ -181,8 +181,15 @@ const searchAvailableUsers = asyncHandler(async (req, res) => {
 const createExpenseGroup = asyncHandler(async (req, res) => {
   const { name, description, participants, groupCategory } = req.body;
 
+  // Check if user is not sending himself as a participant. This will be done manually
+  if (participants.includes(req.user._id.toString())) {
+    throw new ApiError(
+      400,
+      "Participants array should not contain the group creator"
+    );
+  }
   //Name and Participants is already checke din validator no need to check here
-  const members = [...new Set([...participants])]; //Prevents duplications
+  const members = [...new Set([...participants, req.user._id.toString()])]; //Prevents duplications
 
   let splitJson = {}; // Initializing the split of the group
   for (let user of members) {
@@ -220,6 +227,10 @@ const viewExpenseGroup = asyncHandler(async (req, res) => {
 
   if (!group) {
     throw new ApiError(404, "Group not found, Invalid group id");
+  }
+
+  if (!group.participants.includes(req.user._id.toString())) {
+    throw new ApiError(403, "You are not part of the group");
   }
 
   //Doing the common aggregations

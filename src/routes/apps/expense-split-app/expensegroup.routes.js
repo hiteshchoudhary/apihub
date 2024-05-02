@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAExpenseGroupValidator } from "../../../validators/apps/expense-split-app/expenseGroup.validator.js";
+import { createAExpenseGroupValidator } from "../../../validators/apps/expense-split-app/expensegroup.validator.js";
 import { validate } from "../../../validators/validate.js";
 import {
   editExpenseGroup,
@@ -67,7 +67,7 @@ router
 // ! aggregation validation left
 
 router
-  .route("/makeSettlement/:groupId")
+  .route("/makesettlement/:groupId")
   .post(mongoIdPathVariableValidator("groupId"), validate, makeSettlement);
 
 //Gets all the expense group that user is a part of
