@@ -192,7 +192,7 @@ app.use("/api/v1/chat-app/chats", chatRouter);
 app.use("/api/v1/chat-app/messages", messageRouter);
 
 //* expense Split-app api's
-app.use("/api/v1/expenseGroup", expenseGroupRouter);
+app.use("/api/v1/expensegroup", expenseGroupRouter);
 app.use("/api/v1/expense", expenseRouter);
 
 app.use("/api/v1/todos", todoRouter);

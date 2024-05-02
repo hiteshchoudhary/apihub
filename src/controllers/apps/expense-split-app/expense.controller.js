@@ -486,9 +486,7 @@ const groupCategoryExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
   //Some validations left
 
-  const group = await ExpenseGroup.find({
-    _id: new mongoose.Types.ObjectId(groupId),
-  });
+  const group = await ExpenseGroup.findById(groupId);
 
   if (!group) {
     throw new ApiError(404, "Group not found invalid group id");
@@ -691,9 +689,7 @@ const groupMonthlyExpense = asyncHandler(async (req, res) => {
 const groupDailyExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
 
-  const group = await ExpenseGroup.find({
-    _id: new mongoose.Types.ObjectId(groupId),
-  });
+  const group = await ExpenseGroup.findById(groupId);
   if (!group) {
     throw new ApiError(404, "Group not found invalid group Id");
   }

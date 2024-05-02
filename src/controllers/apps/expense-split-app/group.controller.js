@@ -493,9 +493,7 @@ const addMembersInExpenseGroup = asyncHandler(async (req, res) => {
 const groupSettlementRecords = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
 
-  const group = await ExpenseGroup.find({
-    _id: new mongoose.Types.ObjectId(groupId),
-  });
+  const group = await ExpenseGroup.findById(groupId);
   if (!group) {
     throw new ApiError(404, "Group not found invalid group Id");
   }
@@ -521,7 +519,7 @@ const groupSettlementRecords = asyncHandler(async (req, res) => {
           _id: settlement._id,
         },
       },
-      ...commonGroupAggregation(),
+      ...commonSettlementAggregations(),
     ]);
     return pipelineData[0];
   });
@@ -543,20 +541,20 @@ const userSettlementRecords = asyncHandler(async (req, res) => {
     $or: [{ settleTo: req.user._id }, { settleFrom: req.user._id }],
   });
 
-  const aggregatedSettlements = settlements.map(async (settlement) => {
-    if (aggregatedSettlements.length < 1) {
-      return res
-        .status(200)
-        .json(new ApiResponse(200, {}, "No user settlement records found"));
-    }
+  if (settlements.length < 1) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "No user settlement records found"));
+  }
 
+  const aggregatedSettlements = settlements.map(async (settlement) => {
     const pipelineData = await Settlement.aggregate([
       {
         $match: {
           _id: settlement._id,
         },
       },
-      ...commonGroupAggregation(),
+      ...commonSettlementAggregations(),
     ]);
     return pipelineData[0];
   });
