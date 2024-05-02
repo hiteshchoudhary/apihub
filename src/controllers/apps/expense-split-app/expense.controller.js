@@ -133,8 +133,15 @@ const addExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found");
   }
 
+  if (!group.participants.includes(req.user._id.toString())) {
+    throw new ApiError(
+      403,
+      "You have to be a part of this group to add any expense"
+    );
+  }
+
   //Owner has to be participant of the group to add expense in the group
-  if (!group.participants.includes(Owner)) {
+  if (!group.participants.includes(Owner.toString())) {
     throw new ApiError(400, "Owner must be part of the group");
   }
 
@@ -366,7 +373,7 @@ const viewExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group to which this expense is does not exists");
   }
 
-  if (!group.participants.includes(req.user._id)) {
+  if (!group.participants.includes(req.user._id.toString())) {
     throw new ApiError(
       403,
       "You are not participant of this group ,You cannot view this expense"
@@ -394,7 +401,7 @@ const viewGroupExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, Invalid group Id");
   }
 
-  if (!group.participants.includes(req.user._id)) {
+  if (!group.participants.includes(req.user._id.toString())) {
     throw new ApiError(403, "You are not part of this group to see expenses");
   }
 
@@ -404,7 +411,7 @@ const viewGroupExpense = asyncHandler(async (req, res) => {
     updatedAt: -1,
   });
 
-  if (groupExpenses.length === 0) {
+  if (groupExpenses.length < 1) {
     return res
       .status(200)
       .json(new ApiError(200, {}, "No expense in the group"));
@@ -487,7 +494,7 @@ const groupCategoryExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found invalid group id");
   }
 
-  if (!group.participants.includes(req.user._id)) {
+  if (!group.participants.includes(req.user._id.toString())) {
     throw new ApiError(
       403,
       "You must be a participant of this group to perform this action"
@@ -623,7 +630,7 @@ const groupMonthlyExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, invalid group Id");
   }
 
-  if (!expenseGroup.participants.includes(req.user._id)) {
+  if (!expenseGroup.participants.includes(req.user._id.toString())) {
     throw new ApiError(403, "You are not part of this group");
   }
 
@@ -691,7 +698,7 @@ const groupDailyExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found invalid group Id");
   }
 
-  if (!group.participants.includes(req.user._id)) {
+  if (!group.participants.includes(req.user._id.toString())) {
     throw new ApiError(403, "You are not part of this group");
   }
 
@@ -754,7 +761,7 @@ const userMonthlyExpense = asyncHandler(async (req, res) => {
   const monthlyExpenses = await Expense.aggregate([
     {
       $match: {
-        participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
+        participants: new mongoose.Types.ObjectId(req.user._id),
       },
     },
     {
@@ -814,7 +821,7 @@ const userDailyExpense = asyncHandler(async (req, res) => {
   const dailyExpenses = await Expense.aggregate([
     {
       $match: {
-        participants: new mongoose.Types.ObjectId(req.user._id), // Replace this ObjectId with your actual groupId
+        participants: new mongoose.Types.ObjectId(req.user._id),
       },
     },
     {

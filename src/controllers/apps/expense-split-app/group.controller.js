@@ -288,7 +288,7 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found, Invalid group ID");
   }
 
-  if (!expenseGroup.participants.includes(req.user._id)) {
+  if (!expenseGroup.participants.includes(req.user._id.toString())) {
     throw new ApiError(403, "You are not participant of this group");
   }
 
@@ -296,7 +296,6 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
 
   const agrregatedData = balanceData.map(async (data) => {
     let array = [];
-    console.log(data);
     for (let i = 0; i <= 1; i++) {
       const user = await User.findById(data[i]).select(
         " -password -refreshToken -forgotPasswordToken -forgotPasswordExpiry -emailVerificationToken -emailVerificationExpiry"
@@ -321,8 +320,6 @@ const groupBalaceSheet = asyncHandler(async (req, res) => {
       new ApiResponse(200, { payload }, "Group balance fetched succesfully")
     );
 
-  //Work in progress
-
   //This will return all the balances accumulated in a group who owes whom and how much by analyzing the group split and expenses
 });
 const makeSettlement = asyncHandler(async (req, res) => {
@@ -338,7 +335,7 @@ const makeSettlement = asyncHandler(async (req, res) => {
   if (!group) {
     throw new ApiError(404, "Group not found, Invalid group Id");
   }
-  if (!group.participants.includes(req.user._id)) {
+  if (!group.participants.includes(req.user._id.toString())) {
     throw new ApiError(403, "You are not part of this group");
   }
 
@@ -356,11 +353,11 @@ const makeSettlement = asyncHandler(async (req, res) => {
 
   updatedSplit.set(
     String(settleFrom),
-    updatedSplit.get(settleFromId) + settleAmount
+    updatedSplit.get(settleFrom) + settleAmount
   );
   updatedSplit.set(
     String(settleTo),
-    Number(updatedSplit.get(settleToId)) - Number(settleAmount)
+    Number(updatedSplit.get(settleTo)) - Number(settleAmount)
   );
 
   // Save the updated split back to the group
@@ -385,7 +382,11 @@ const makeSettlement = asyncHandler(async (req, res) => {
     ...commonSettlementAggregations(),
   ]);
 
-  res.status(200).json(new ApiResponse(200, {}, "Settlement done succesfully"));
+  const payload = aggregatedSettlement[0];
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, { payload }, "Settlement done succesfully"));
 });
 const deleteExpenseGroup = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
@@ -401,7 +402,7 @@ const deleteExpenseGroup = asyncHandler(async (req, res) => {
     );
   }
 
-  await deleteCascadeExpenses(groupId);
+  await deleteCascadeExpenses(groupId); //deleting expenses and settlement
   await ExpenseGroup.findByIdAndDelete(groupId);
   return res
     .status(200)
@@ -499,7 +500,7 @@ const groupSettlementRecords = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found invalid group Id");
   }
 
-  if (!group.participants.includes(req.user._id)) {
+  if (!group.participants.includes(req.user._id.toString())) {
     throw new ApiError(403, "You are not part of this group");
   }
 
