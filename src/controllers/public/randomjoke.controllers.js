@@ -16,9 +16,14 @@ const getRandomJokes = asyncHandler(async (req, res) => {
       })
     : structuredClone(randomJokesJson);
 
+  const incWhitelist = ["content", "id", "categories"];
+
   const paginatedJokes = getPaginatedPayload(randomJokesArray, page, limit);
   const updatedJokes = inc
-    ? filterObjectKeys(inc, paginatedJokes.data)
+    ? filterObjectKeys(
+        incWhitelist.filter((field) => inc.includes(field)),
+        paginatedJokes.data
+      )
     : paginatedJokes.data;
 
   return res.status(200).json(
