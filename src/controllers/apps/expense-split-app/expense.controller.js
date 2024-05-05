@@ -12,9 +12,9 @@ const commonExpenseAggregations = () => {
     {
       $lookup: {
         from: "users",
-        localField: "Owner",
+        localField: "owner",
         foreignField: "_id",
-        as: "Owner",
+        as: "owner",
         pipeline: [
           {
             $project: {
@@ -107,18 +107,18 @@ const addExpense = asyncHandler(async (req, res) => {
   const {
     name,
     description,
-    Amount,
-    Category,
+    amount,
+    category,
     expenseDate,
     participants,
     expenseMethod,
-    Owner,
+    owner,
   } = req.body;
 
   //To see if owner exists or not
 
   const ownerUser = await User.findOne({
-    _id: new mongoose.Types.ObjectId(Owner),
+    _id: new mongoose.Types.ObjectId(owner),
   });
 
   if (!ownerUser) {
@@ -141,7 +141,7 @@ const addExpense = asyncHandler(async (req, res) => {
   }
 
   //Owner has to be participant of the group to add expense in the group
-  if (!group.participants.includes(Owner.toString())) {
+  if (!group.participants.includes(owner.toString())) {
     throw new ApiError(400, "Owner must be part of the group");
   }
 
@@ -169,15 +169,15 @@ const addExpense = asyncHandler(async (req, res) => {
     });
   }
 
-  const expensePerMember = Amount / members.length;
+  const expensePerMember = amount / members.length;
   const newExpense = await Expense.create({
     name,
     description,
-    Amount,
-    Category,
+    amount,
+    category,
     expenseDate,
     expenseMethod,
-    Owner: new mongoose.Types.ObjectId(ownerUser._id),
+    owner: new mongoose.Types.ObjectId(ownerUser._id),
     participants: members,
     expensePerMember,
     groupId: new mongoose.Types.ObjectId(groupId),
@@ -190,7 +190,7 @@ const addExpense = asyncHandler(async (req, res) => {
 
   //New Expense is created we need to update the split values in the group and the group total
 
-  addSplit(groupId, Amount, Owner, members);
+  addSplit(groupId, amount, owner, members);
 
   const aggregatedExpense = await Expense.aggregate([
     {
@@ -212,12 +212,12 @@ const editExpense = asyncHandler(async (req, res) => {
   const {
     name,
     description,
-    Amount,
-    Category,
+    amount,
+    category,
     expenseDate,
     participants,
     expenseMethod,
-    Owner,
+    owner,
   } = req.body;
 
   const oldExpense = await Expense.findById(expenseId);
@@ -234,15 +234,15 @@ const editExpense = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Group not found,Invalid expense to be ediited");
   }
 
-  if (oldExpense.Owner.toString() !== req.user._id.toString()) {
+  if (oldExpense.owner.toString() !== req.user._id.toString()) {
     throw new ApiError(403, "You are not authorised to perform this action");
   }
 
   //Clearing the split in group for the old expense
   await clearSplit(
     oldExpense.groupId,
-    oldExpense.Amount,
-    oldExpense.Owner,
+    oldExpense.amount,
+    oldExpense.owner,
     oldExpense.participants
   );
 
@@ -252,11 +252,11 @@ const editExpense = asyncHandler(async (req, res) => {
   if (description) {
     oldExpense.description = description;
   }
-  if (Amount) {
-    oldExpense.Amount = Amount;
+  if (amount) {
+    oldExpense.amount = amount;
   }
-  if (Category) {
-    oldExpense.Category = Category;
+  if (category) {
+    oldExpense.category = category;
   }
   if (expenseDate) {
     oldExpense.expenseDate = expenseDate;
@@ -280,11 +280,11 @@ const editExpense = asyncHandler(async (req, res) => {
   if (expenseMethod) {
     oldExpense.expenseMethod = expenseMethod;
   }
-  if (Owner) {
-    if (!group.participants.includes(Owner)) {
+  if (owner) {
+    if (!group.participants.includes(owner)) {
       throw new ApiError(400, "Owner must be part of the group");
     }
-    oldExpense.Owner = Owner;
+    oldExpense.owner = owner;
   }
 
   //Redifining the expense per memeber if it was possibly changed
@@ -304,8 +304,8 @@ const editExpense = asyncHandler(async (req, res) => {
   //Old expense is updated with new values
   await addSplit(
     oldExpense.groupId,
-    oldExpense.Amount,
-    oldExpense.Owner,
+    oldExpense.amount,
+    oldExpense.owner,
     oldExpense.participants
   );
 
@@ -337,7 +337,7 @@ const deleteExpense = asyncHandler(async (req, res) => {
 
   //The logged in user has to be the owner of the expense to delete it
 
-  if (expense.Owner.toString() !== req.user._id.toString()) {
+  if (expense.owner.toString() !== req.user._id.toString()) {
     throw new ApiError(403, "You are not authorised to perform this action");
   }
 
@@ -345,8 +345,8 @@ const deleteExpense = asyncHandler(async (req, res) => {
 
   await clearSplit(
     expense.groupId,
-    expense.Amount,
-    expense.Owner,
+    expense.amount,
+    expense.owner,
     expense.participants
   );
 
@@ -420,7 +420,7 @@ const viewGroupExpense = asyncHandler(async (req, res) => {
   var totalAmount = 0;
 
   for (let expense of groupExpenses) {
-    totalAmount += Number(expense.Amount);
+    totalAmount += Number(expense.amount);
   }
 
   const agrregatedExpenses = groupExpenses.map(async (expense) => {
@@ -484,7 +484,6 @@ const recentUserExpense = asyncHandler(async (req, res) => {
 });
 const groupCategoryExpense = asyncHandler(async (req, res) => {
   const { groupId } = req.params;
-  //Some validations left
 
   const group = await ExpenseGroup.findById(groupId);
 
@@ -507,12 +506,12 @@ const groupCategoryExpense = asyncHandler(async (req, res) => {
     },
     {
       $group: {
-        _id: "$Category",
+        _id: "$category",
         expenses: {
           $push: "$$ROOT",
         },
         total: {
-          $sum: "$Amount",
+          $sum: "$amount",
         },
       },
     },
@@ -567,12 +566,12 @@ const userCategoryExpense = asyncHandler(async (req, res) => {
     },
     {
       $group: {
-        _id: "$Category",
+        _id: "$category",
         expenses: {
           $push: "$$ROOT",
         },
         total: {
-          $sum: "$Amount",
+          $sum: "$amount",
         },
       },
     },
@@ -644,7 +643,7 @@ const groupMonthlyExpense = asyncHandler(async (req, res) => {
           month: { $month: "$expenseDate" },
           year: { $year: "$expenseDate" },
         },
-        amount: { $sum: "$Amount" },
+        amount: { $sum: "$amount" },
         expenses: { $push: "$$ROOT" },
       },
     },
@@ -711,7 +710,7 @@ const groupDailyExpense = asyncHandler(async (req, res) => {
           month: { $month: "$expenseDate" },
           year: { $year: "$expenseDate" },
         },
-        amount: { $sum: "$Amount" },
+        amount: { $sum: "$amount" },
         expenses: { $push: "$$ROOT" },
       },
     },
@@ -766,7 +765,7 @@ const userMonthlyExpense = asyncHandler(async (req, res) => {
           month: { $month: "$expenseDate" },
           year: { $year: "$expenseDate" },
         },
-        amount: { $sum: "$Amount" },
+        amount: { $sum: "$amount" },
         expenses: { $push: "$$ROOT" },
       },
     },
@@ -827,7 +826,7 @@ const userDailyExpense = asyncHandler(async (req, res) => {
           month: { $month: "$expenseDate" },
           year: { $year: "$expenseDate" },
         },
-        amount: { $sum: "$Amount" },
+        amount: { $sum: "$amount" },
         expenses: { $push: "$$ROOT" },
       },
     },

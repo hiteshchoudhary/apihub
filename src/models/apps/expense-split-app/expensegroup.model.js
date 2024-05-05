@@ -4,7 +4,7 @@ import {
   ExpenseGroupTypes,
 } from "../../../constants.js";
 
-const expenseGroupSchema = new mongoose.Schema(
+const expenseGroupSchema = new Schema(
   {
     name: {
       type: String,
@@ -17,7 +17,6 @@ const expenseGroupSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-
     participants: [
       {
         type: Schema.Types.ObjectId,
@@ -26,7 +25,7 @@ const expenseGroupSchema = new mongoose.Schema(
     ],
     groupCategory: {
       type: String,
-      enum: AvailableExpenseGroupTypes.OTHERS,
+      enum: AvailableExpenseGroupTypes,
       default: ExpenseGroupTypes.OTHERS,
       required: true,
     },

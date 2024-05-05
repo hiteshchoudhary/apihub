@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const settlementSchema = mongoose.Schema(
+const settlementSchema = new Schema(
   {
     groupId: {
       type: Schema.Types.ObjectId,
@@ -17,11 +17,12 @@ const settlementSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
-    SettlementDate: {
-      type: String,
+    settlementDate: {
+      type: Date,
       required: true,
+      default: Date.now,
     },
-    Amount: {
+    amount: {
       type: Number,
       required: true,
     },

@@ -14,7 +14,7 @@ import {
   viewGroupExpense,
   viewUserExpense,
 } from "../../../controllers/apps/expense-split-app/expense.controller.js";
-import { addAExpenseValidator } from "../../../validators/apps/expense-split-app/expense.validator.js";
+import { addAnExpenseValidator } from "../../../validators/apps/expense-split-app/expense.validator.js";
 import { validate } from "../../../validators/validate.js";
 import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
@@ -33,7 +33,7 @@ router
   .route("/addexpense/:groupId")
   .post(
     upload.fields([{ name: "billAttachments", maxCount: 5 }]),
-    addAExpenseValidator(),
+    addAnExpenseValidator(),
     mongoIdPathVariableValidator("groupId"),
     validate,
     addExpense

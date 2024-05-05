@@ -105,7 +105,7 @@ export const ChatEventEnum = Object.freeze({
 export const AvailableChatEvents = Object.values(ChatEventEnum);
 
 /**
- * Type of expense types we can categorise it
+ * @type {{FOOD_AND_DRINK: "Food & drink",SHOPPING: "shopping",ENTERTAINMENT: "entertainment",HOME: "Home",TRANSPORTATION: "Transportation",OTHERS: "Others",  } as const}
  */
 export const ExpenseTypes = {
   FOOD_AND_DRINK: "Food & drink",
@@ -119,7 +119,7 @@ export const ExpenseTypes = {
 export const AvailableExpenseTypes = Object.values(ExpenseTypes);
 
 /**
- * Type of Expense group type we can categorize it
+ *  @type {{HOME: "Home", TRIP: "Trip",OFFICE: "Office",SPORTS: "Sports",OTHERS: "Others",} as const}
  */
 
 export const ExpenseGroupTypes = {

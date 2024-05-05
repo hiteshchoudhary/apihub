@@ -366,8 +366,8 @@ const makeSettlement = asyncHandler(async (req, res) => {
   const settlement = await Settlement.create({
     settleTo,
     settleFrom,
-    SettlementDate: settleDate || Date.now(),
-    Amount: settleAmount,
+    settlementDate: settleDate || Date.now(),
+    amount: settleAmount,
     groupId,
   });
 

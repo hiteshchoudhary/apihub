@@ -6,7 +6,7 @@ import {
   PaymentMethods,
 } from "../../../constants.js";
 
-const expenseSchema = mongoose.Schema(
+const expenseSchema = new Schema(
   {
     name: {
       type: String,
@@ -19,11 +19,11 @@ const expenseSchema = mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "ExpenseGroup",
     },
-    Amount: {
+    amount: {
       type: Number,
       required: true,
     },
-    Category: {
+    category: {
       type: String,
       enum: AvailableExpenseTypes,
       default: ExpenseTypes.OTHERS,
@@ -32,7 +32,7 @@ const expenseSchema = mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    Owner: {
+    owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },

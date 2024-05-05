@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-const addAExpenseValidator = () => {
+const addAnExpenseValidator = () => {
   return [
     body("name").trim().notEmpty().withMessage("Expense name is required"),
     body("Amount").trim().notEmpty().withMessage("Expense Amount is required"),
@@ -13,4 +13,4 @@ const addAExpenseValidator = () => {
   ];
 };
 
-export { addAExpenseValidator };
+export { addAnExpenseValidator };
