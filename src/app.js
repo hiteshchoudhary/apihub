@@ -137,6 +137,7 @@ import likeRouter from "./routes/apps/video-app/like.routes.js";
 import playlistRouter from "./routes/apps/video-app/playlist.routes.js";
 import subscriptionRouter from "./routes/apps/video-app/subscription.routes.js";
 import dashboardRouter from "./routes/apps/video-app/dashboard.routes.js";
+import videoAppProfileRouter from "./routes/apps/video-app/profile.routes.js";
 
 import chatRouter from "./routes/apps/chat-app/chat.routes.js";
 import messageRouter from "./routes/apps/chat-app/message.routes.js";
@@ -194,6 +195,7 @@ app.use("/api/v1/social-media/like", socialLikeRouter);
 app.use("/api/v1/social-media/bookmarks", socialBookmarkRouter);
 app.use("/api/v1/social-media/comments", socialCommentRouter);
 
+app.use("/api/v1/video-tube/profile", videoAppProfileRouter);
 app.use("/api/v1/video-tube/videos", videoRouter);
 app.use("/api/v1/video-tube/comments", commentRouter);
 app.use("/api/v1/video-tube/tweets", tweetRouter);

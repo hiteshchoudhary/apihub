@@ -15,9 +15,6 @@ import {
   resetForgottenPassword,
   updateUserAvatar,
   verifyEmail,
-  updateCoverImage,
-  getUserChannelProfile,
-  getWatchHistory,
 } from "../../../controllers/apps/auth/user.controllers.js";
 import {
   verifyJWT,
@@ -60,15 +57,7 @@ router.route("/logout").post(verifyJWT, logoutUser);
 router
   .route("/avatar")
   .patch(verifyJWT, upload.single("avatar"), updateUserAvatar);
-
-router
-  .route("/coverImage")
-  .patch(verifyJWT, upload.single("coverImage"), updateCoverImage);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
-router
-  .route("/channel-profile/:username")
-  .get(verifyJWT, getUserChannelProfile);
-router.route("/history").get(verifyJWT, getWatchHistory);
 router
   .route("/change-password")
   .post(

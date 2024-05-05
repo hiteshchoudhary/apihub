@@ -4,21 +4,28 @@ import {
   changeUploadVideo,
   changeVideoDetails,
   deleteVideo,
-  getUserVideoById,
+  getVideoById,
   uploadVideo,
   watchVideo,
   togglePublishStatus,
   getAllVideos,
-} from "../../../controllers/apps/video-app/video.controller.js";
+} from "../../../controllers/apps/video-app/video.controllers.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
+import {
+  changeVideoDetailsValidator,
+  getVideosValidator,
+  uploadVideoValidator,
+} from "../../../validators/apps/video-app/video.validators.js";
+import { validate } from "../../../validators/validate.js";
+import { mongoIdPathVariableValidator } from "../../../validators/common/mongodb.validators.js";
 
 const router = Router();
 
 //secured routes
 router.use(verifyJWT);
 
-router.route("/result").get(getAllVideos);
+router.route("/result").get(getVideosValidator(), validate, getAllVideos);
 router.route("/upload").post(
   upload.fields([
     {
@@ -30,22 +37,47 @@ router.route("/upload").post(
       maxCount: 1,
     },
   ]),
+  uploadVideoValidator(),
+  validate,
   uploadVideo
 );
 
 router
   .route("/:videoId")
-  .get(getUserVideoById)
-  .patch(changeVideoDetails)
-  .delete(deleteVideo);
+  .get(mongoIdPathVariableValidator("videoId"), validate, getVideoById)
+  .patch(
+    mongoIdPathVariableValidator("videoId"),
+    changeVideoDetailsValidator(),
+    validate,
+    changeVideoDetails
+  )
+  .delete(mongoIdPathVariableValidator("videoId"), validate, deleteVideo);
 
 router
   .route("/change-upload-video/:videoId")
-  .patch(upload.single("videoFile"), changeUploadVideo);
+  .patch(
+    mongoIdPathVariableValidator("videoId"),
+    validate,
+    upload.single("videoFile"),
+    changeUploadVideo
+  );
 router
   .route("/change-upload-thumbnail/:videoId")
-  .patch(upload.single("thumbnail"), changeUploadThumbnail);
-router.route("/watch/:videoId").patch(watchVideo);
-router.route("/toggle/publish/:videoId").patch(togglePublishStatus);
+  .patch(
+    mongoIdPathVariableValidator("videoId"),
+    validate,
+    upload.single("thumbnail"),
+    changeUploadThumbnail
+  );
+router
+  .route("/watch/:videoId")
+  .patch(mongoIdPathVariableValidator("videoId"), validate, watchVideo);
+router
+  .route("/toggle/publish/:videoId")
+  .patch(
+    mongoIdPathVariableValidator("videoId"),
+    validate,
+    togglePublishStatus
+  );
 
 export default router;
