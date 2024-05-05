@@ -20,19 +20,25 @@ const getRandomProducts = asyncHandler(async (req, res) => {
       })
     : structuredClone(randomProductsJson);
 
-  if (inc && inc[0]?.trim()) {
-    randomProductsArray = filterObjectKeys(inc, randomProductsArray);
-  }
+  const paginatedProducts = getPaginatedPayload(
+    randomProductsArray,
+    page,
+    limit
+  );
+  const updatedProducts = inc
+    ? filterObjectKeys(inc, paginatedProducts.data)
+    : paginatedProducts.data;
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        getPaginatedPayload(randomProductsArray, page, limit),
-        "Random products fetched successfully"
-      )
-    );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        ...paginatedProducts,
+        data: updatedProducts,
+      },
+      "Random products fetched successfully"
+    )
+  );
 });
 
 const getProductById = asyncHandler(async (req, res) => {

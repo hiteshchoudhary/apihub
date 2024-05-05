@@ -1,20 +1,24 @@
 import {
   ArrowDownTrayIcon,
+  EllipsisVerticalIcon,
   MagnifyingGlassPlusIcon,
   PaperClipIcon,
+  TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import moment from "moment";
 import { useState } from "react";
 import { ChatMessageInterface } from "../../interfaces/chat";
 import { classNames } from "../../utils";
-
 const MessageItem: React.FC<{
   isOwnMessage?: boolean;
   isGroupChatMessage?: boolean;
   message: ChatMessageInterface;
-}> = ({ message, isOwnMessage, isGroupChatMessage }) => {
+  deleteChatMessage: (message: ChatMessageInterface) => void;
+}> = ({ message, isOwnMessage, isGroupChatMessage, deleteChatMessage }) => {
   const [resizedImage, setResizedImage] = useState<string | null>(null);
+  const [openOptions, setopenOptions] = useState<boolean>(false); //To open delete menu option on hover
+
   return (
     <>
       {resizedImage ? (
@@ -39,13 +43,15 @@ const MessageItem: React.FC<{
         <img
           src={message.sender?.avatar?.url}
           className={classNames(
-            "h-8 w-8 object-cover rounded-full flex flex-shrink-0",
+            "h-7 w-7 object-cover rounded-full flex flex-shrink-0",
             isOwnMessage ? "order-2" : "order-1"
           )}
         />
+        {/* message box have to add the icon onhover here */}
         <div
+          onMouseLeave={() => setopenOptions(false)}
           className={classNames(
-            "p-4 rounded-3xl flex flex-col",
+            " p-4 rounded-3xl flex flex-col cursor-pointer group hover:bg-secondary",
             isOwnMessage
               ? "order-1 rounded-br-none bg-primary"
               : "order-2 rounded-bl-none bg-secondary"
@@ -63,52 +69,120 @@ const MessageItem: React.FC<{
               {message.sender?.username}
             </p>
           ) : null}
-
           {message?.attachments?.length > 0 ? (
-            <div
-              className={classNames(
-                "grid max-w-7xl gap-2",
-                message.attachments?.length === 1 ? " grid-cols-1" : "",
-                message.attachments?.length === 2 ? " grid-cols-2" : "",
-                message.attachments?.length >= 3 ? " grid-cols-3" : "",
-                message.content ? "mb-6" : ""
-              )}
-            >
-              {message.attachments?.map((file) => {
-                return (
+            <div>
+              {/*The option to delete message will only open in case of own messages*/}
+              {isOwnMessage ? (
+                <button
+                  className="self-center p-1 relative options-button"
+                  onClick={() => setopenOptions(!openOptions)}
+                >
+                  <EllipsisVerticalIcon className="group-hover:w-6 group-hover:opacity-100 w-0 opacity-0 transition-all ease-in-out duration-100 text-zinc-300" />
                   <div
-                    key={file._id}
-                    className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer"
+                    className={classNames(
+                      "z-30 text-left absolute botom-0 translate-y-1 text-[10px] w-auto bg-dark rounded-2xl p-2 shadow-md border-[1px] border-secondary",
+                      openOptions ? "block" : "hidden"
+                    )}
                   >
-                    <button
-                      onClick={() => setResizedImage(file.url)}
-                      className="absolute inset-0 z-20 flex justify-center items-center w-full gap-2 h-full bg-black/60 group-hover:opacity-100 opacity-0 transition-opacity ease-in-out duration-150"
+                    <p
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const ok = confirm(
+                          "Are you sure you want to delete this message"
+                        );
+                        if (ok) {
+                          deleteChatMessage(message);
+                        }
+                      }}
+                      role="button"
+                      className="border border-red-500 p-4 text-danger rounded-lg w-auto inline-flex items-center hover:bg-secondary"
                     >
-                      <MagnifyingGlassPlusIcon className="h-6 w-6 text-white" />
-                      <a
-                        href={file.url}
-                        download
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <ArrowDownTrayIcon
-                          title="download"
-                          className="hover:text-zinc-400 h-6 w-6 text-white cursor-pointer"
-                        />
-                      </a>
-                    </button>
-                    <img
-                      className="h-full w-full object-cover"
-                      src={file.url}
-                      alt="msg_img"
-                    />
+                      <TrashIcon className="h-4 w-4 mr-2" />
+                      Delete Message
+                    </p>
                   </div>
-                );
-              })}
+                </button>
+              ) : null}
+
+              <div
+                className={classNames(
+                  "grid max-w-7xl gap-2",
+                  message.attachments?.length === 1 ? " grid-cols-1" : "",
+                  message.attachments?.length === 2 ? " grid-cols-2" : "",
+                  message.attachments?.length >= 3 ? " grid-cols-3" : "",
+                  message.content ? "mb-6" : ""
+                )}
+              >
+                {message.attachments?.map((file) => {
+                  return (
+                    <div
+                      key={file._id}
+                      className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer"
+                    >
+                      <button
+                        onClick={() => setResizedImage(file.url)}
+                        className="absolute inset-0 z-20 flex justify-center items-center w-full gap-2 h-full bg-black/60 group-hover:opacity-100 opacity-0 transition-opacity ease-in-out duration-150"
+                      >
+                        <MagnifyingGlassPlusIcon className="h-6 w-6 text-white" />
+                        <a
+                          href={file.url}
+                          download
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <ArrowDownTrayIcon
+                            title="download"
+                            className="hover:text-zinc-400 h-6 w-6 text-white cursor-pointer"
+                          />
+                        </a>
+                      </button>
+                      <img
+                        className="h-full w-full object-cover"
+                        src={file.url}
+                        alt="msg_img"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ) : null}
-
           {message.content ? (
-            <p className="text-sm">{message.content}</p>
+            <div className="relative flex justify-between">
+              {/*The option to delete message will only open in case of own messages*/}
+              {isOwnMessage ? (
+                <button
+                  className="self-center relative options-button"
+                  onClick={() => setopenOptions(!openOptions)}
+                >
+                  <EllipsisVerticalIcon className="group-hover:w-4 group-hover:opacity-100 w-0 opacity-0 transition-all ease-in-out duration-100 text-zinc-300" />
+                  <div
+                    className={classNames(
+                      "delete-menu z-20 text-left -translate-x-24 -translate-y-4 absolute botom-0  text-[10px] w-auto bg-dark rounded-2xl  shadow-md border-[1px] border-secondary",
+                      openOptions ? "block" : "hidden"
+                    )}
+                  >
+                    <p
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const ok = confirm(
+                          "Are you sure you want to delete this message"
+                        );
+                        if (ok) {
+                          deleteChatMessage(message);
+                        }
+                      }}
+                      role="button"
+                      className=" p-2 text-danger rounded-lg w-auto inline-flex items-center hover:bg-secondary"
+                    >
+                      <TrashIcon className="h-4 w-auto mr-1" />
+                      Delete Message
+                    </p>
+                  </div>
+                </button>
+              ) : null}
+
+              <p className="text-sm">{message.content}</p>
+            </div>
           ) : null}
           <p
             className={classNames(
