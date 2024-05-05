@@ -188,7 +188,7 @@ const createExpenseGroup = asyncHandler(async (req, res) => {
       "Participants array should not contain the group creator"
     );
   }
-  //Name and Participants is already checke din validator no need to check here
+  //Name and Participants is already checked in validator no need to check here
   const members = [...new Set([...participants, req.user._id.toString()])]; //Prevents duplications
 
   let splitJson = {}; // Initializing the split of the group

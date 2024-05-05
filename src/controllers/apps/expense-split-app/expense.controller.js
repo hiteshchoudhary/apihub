@@ -290,7 +290,7 @@ const editExpense = asyncHandler(async (req, res) => {
   //Redifining the expense per memeber if it was possibly changed
 
   const expensePerMember = (
-    oldExpense.Amount / oldExpense.participants.length
+    oldExpense.amount / oldExpense.participants.length
   ).toFixed(2);
 
   oldExpense.expensePerMember = expensePerMember;

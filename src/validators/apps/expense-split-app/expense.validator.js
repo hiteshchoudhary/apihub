@@ -3,7 +3,7 @@ import { body } from "express-validator";
 const addAnExpenseValidator = () => {
   return [
     body("name").trim().notEmpty().withMessage("Expense name is required"),
-    body("Amount").trim().notEmpty().withMessage("Expense Amount is required"),
+    body("amount").trim().notEmpty().withMessage("Expense Amount is required"),
     body("participants")
       .isArray({
         min: 2,
