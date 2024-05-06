@@ -13,7 +13,7 @@ const NavList = ({ navList, className = "" }: NavListProps) => {
 
   return (
     <div
-      className={`flex flex-col lg:flex-row lg:justify-between lg:items-center 
+      className={`flex flex-col lg:flex-row lg:justify-between lg:items-center
         ${className} `}
         dir={isRTL ? 'rtl': 'ltr'}
     >

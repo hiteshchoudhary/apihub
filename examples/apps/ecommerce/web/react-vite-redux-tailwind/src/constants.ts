@@ -1,6 +1,8 @@
 import React from "react";
 import { AddressClass } from "./services/address/AddressTypes";
 import { DateRange } from "react-day-picker";
+import { Category } from "./services/category/CategoryTypes";
+import { COUPON_TYPES } from "./services/coupon/CouponTypes";
 
 /* DROPDOWN */
 export enum DropdownTypes {
@@ -139,7 +141,17 @@ export enum ROUTE_PATHS {
   orderDetail = "/order",
   resetForgottenPassword = "/forgot-password/:token",
   pageNotFound = "/page-not-found",
-  about = "/about"
+  about = "/about",
+  admin = "/admin",
+  adminCategories = "/admin/categories",
+  adminProducts = "/admin/products",
+  adminOrders = "/admin/orders",
+  adminCoupons = "/admin/coupons"
+}
+
+export enum USER_ROLES {
+  admin = "ADMIN",
+  user = "USER"
 }
 
 
@@ -269,4 +281,57 @@ export interface ProductFilterFields {
 export interface OrderListFilterFields {
   dateRange: DateRange,
   checkedStatus: Array<CHECKBOX_TYPE<null>>
+}
+
+export interface AddCategoryFields {
+  categoryName: string;
+}
+
+export interface EditCategoryFields {
+  category: Category;
+  newCategoryName: string;
+}
+
+export interface AddEditProductFields {
+  name: string,
+  description: string,
+  category: DropdownItem,
+  price: number,
+  stock: number,
+  mainImage: File,
+  subImage1: File,
+  subImage2: File,
+  subImage3: File,
+  subImage4: File
+}
+
+export interface AddEditProductFieldsForService {
+  name: string,
+  description: string,
+  category: DropdownItem,
+  price: number,
+  stock: number,
+  mainImage: File,
+  subImages: File[]
+}
+
+/* For api call */
+export interface EditProductFieldsForService {
+  name?: string,
+  description?: string,
+  category?: DropdownItem,
+  price?: number,
+  stock?: number,
+  mainImage?: File,
+  subImages?: File[]
+}
+
+export interface AddEditCouponFields {
+  name: string,
+  couponCode: string,
+  type: COUPON_TYPES,
+  discountValue: number,
+  minimumCartValue: number,
+  startDate: Date,
+  expiryDate: Date
 }
