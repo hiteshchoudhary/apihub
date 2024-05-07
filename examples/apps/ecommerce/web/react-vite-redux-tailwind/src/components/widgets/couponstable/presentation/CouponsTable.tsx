@@ -19,7 +19,7 @@ import DeleteCouponModalContainer from "../../../modals/deletecouponmodal/contai
 import CouponsOptionsCell from "./CouponsOptionsCell";
 
 interface CouponsTableProps {
-  coupons: CouponClass[];
+  coupons: CouponClass[] | null;
   isError: boolean;
   onCouponAddedOrUpdatedHandler(newCoupon: CouponClass): void;
   onCouponDeletedHandler(deletedCoupon: CouponClass): void;

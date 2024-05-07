@@ -22,7 +22,7 @@ import DeleteCategoryModalContainer from "../../../modals/deletecategorymodal/co
 import CategoryOptionsCell from "./CategoryOptionsCell";
 
 interface CategoriesTableProps {
-  categories: Category[];
+  categories: Category[] | null;
   isError: boolean;
   onCategoryAddedOrUpdatedHandler(newCategory: Category): void;
   onCategoryDeletedHandler(deletedCategory: Category): void;

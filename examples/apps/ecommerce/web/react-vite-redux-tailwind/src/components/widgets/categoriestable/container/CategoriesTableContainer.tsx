@@ -9,6 +9,13 @@ import {
 import { DATE_TIME_FORMATS } from "../../../../constants";
 
 const CategoriesTableContainer = () => {
+
+  /* 
+  Flag for whether categories are being fetched 
+  (To show loading spinner until the first response come) 
+  */
+  const [isFetchingCategories, setIsFetchingCategories] = useState(true);
+
   /* Key value categories object, key is id and value is the Category */
   const [categories, setCategories] = useState<{ [key: string]: Category }>({});
 
@@ -42,6 +49,7 @@ const CategoriesTableContainer = () => {
 
   /* Fetch All Categories Asynchronously */
   const fetchAllCategories = useCallback(() => {
+    setIsFetchingCategories(true);
     CategoryService.getAllCategoriesAsync((data, _, error) => {
       if (!error) {
         setCategories((prev) => {
@@ -54,7 +62,11 @@ const CategoriesTableContainer = () => {
           });
           return {...prev};
         });
+
+        setIsFetchingCategories(false);
+
       } else {
+        setIsFetchingCategories(false);
         console.error("Error -- fetchAllCategories()", error);
         setIsError(true);
       }
@@ -88,7 +100,7 @@ const CategoriesTableContainer = () => {
   return (
     <>
       <CategoriesTable
-        categories={Object.values(categories)}
+        categories={isFetchingCategories ? null : Object.values(categories)}
         isError={isError}
         onCategoryAddedOrUpdatedHandler={onCategoryAddedOrUpdatedHandler}
         onCategoryDeletedHandler={onCategoryDeletedHandler}

@@ -12,7 +12,7 @@ import { useAppSelector } from "../../store";
 import "../../styles/Grid.css";
 
 interface GridProps<RowType> {
-  rowData: RowType[];
+  rowData: RowType[] | null; 
   columnDefination: ColDef[];
   rowSelection?: "single" | "multiple" | undefined;
   onRowSelectionChanged?(selectedRows: Array<RowType>): void;
@@ -90,6 +90,18 @@ const Grid = <RowType,>(props: GridProps<RowType>) => {
       window.removeEventListener("resize", windowResizeHandler);
     };
   }, [windowResizeHandler]);
+
+  /* Show loading over lay, if null is passed */
+  useEffect(() => {
+    if(isGridReady){
+    if(rowData === null){
+      gridRef.current?.api.showLoadingOverlay();
+    }
+    else{
+      gridRef.current?.api.hideOverlay();
+    }
+  }
+  }, [rowData, isGridReady])
 
   return (
     <>

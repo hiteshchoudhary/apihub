@@ -10,6 +10,13 @@ import {
 import OrdersTable from "../presentation/OrdersTable";
 
 const OrdersTableContainer = () => {
+
+  /* 
+  Flag for whether orders are being fetched 
+  (To show loading spinner until the first response come) 
+  */
+  const [isFetchingOrders, setIsFetchingOrders] = useState(true);
+
   /* Key value orders object, key is id and value is the order */
   const [orders, setOrders] = useState<{ [key: string]: OrderClass }>({});
 
@@ -44,6 +51,7 @@ const OrdersTableContainer = () => {
   /* Fetch Orders Asynchronously */
   const fetchOrders = useCallback((status: ORDER_STATUS) => {
     setOrders({});
+    setIsFetchingOrders(true);
     OrderService.getOrdersAsync(status, (data, _, error) => {
       if (!error) {
         setOrders((prev) => {
@@ -56,8 +64,10 @@ const OrdersTableContainer = () => {
           });
           return { ...prev };
         });
+        setIsFetchingOrders(false);
       } else {
         console.error("Error -- fetchOrders() Admin", error);
+        setIsFetchingOrders(false);
         setIsError(true);
       }
     });
@@ -84,7 +94,7 @@ const OrdersTableContainer = () => {
   return (
     <>
       <OrdersTable
-        orders={Object.values(orders)}
+        orders={isFetchingOrders ? null : Object.values(orders)}
         isError={isError}
         onOrderStatusUpdatedHandler={onOrderStatusUpdatedHandler}
         fetchOrders={fetchOrders}

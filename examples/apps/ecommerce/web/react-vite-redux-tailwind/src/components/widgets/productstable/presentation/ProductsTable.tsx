@@ -19,7 +19,7 @@ import AddEditProductModalContainer from "../../../modals/addeditproductmodal/co
 import DeleteProductModalContainer from "../../../modals/deleteproductmodal/container/DeleteProductModalContainer";
 
 interface ProductsTableProps {
-  products: ProductWithCategoryName[];
+  products: ProductWithCategoryName[] | null;
   isError: boolean;
   onProductAddedOrUpdated(newProduct: Product): void;
   onProductDeletedHandler(deletedProduct: Product): void;

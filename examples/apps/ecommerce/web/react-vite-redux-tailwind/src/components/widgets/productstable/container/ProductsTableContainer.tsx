@@ -9,6 +9,14 @@ export interface ProductWithCategoryName extends Product {
   categoryName: string;
 }
 const ProductsTableContainer = () => {
+
+  
+  /* 
+  Flag for whether products are being fetched 
+  (To show loading spinner until the first response come) 
+  */
+  const [isFetchingProducts, setIsFetchingProducts] = useState(true);
+
   /* Key value products object, key is product id and value is the Product */
   const [products, setProducts] = useState<{
     [key: string]: ProductWithCategoryName;
@@ -45,6 +53,8 @@ const ProductsTableContainer = () => {
   };
 
   const fetchProducts = useCallback(async () => {
+
+    setIsFetchingProducts(true);
     /* Hiding error, Displaying loading spinner, Resetting products list state */
     setIsError(false);
 
@@ -67,7 +77,10 @@ const ProductsTableContainer = () => {
         setProducts((prev) => {
           return { ...prev, ...tempProducts };
         });
+        setIsFetchingProducts(false);
       } else {
+
+        setIsFetchingProducts(false);
         /* API Error */
         setIsError(true);
       }
@@ -105,7 +118,7 @@ const ProductsTableContainer = () => {
   return (
     <>
       <ProductsTable
-        products={Object.values(products)}
+        products={isFetchingProducts ? null : Object.values(products)}
         onProductAddedOrUpdated={onProductAddedOrUpdatedHandler}
         onProductDeletedHandler={onProductDeletedHandler}
         isError={isError}

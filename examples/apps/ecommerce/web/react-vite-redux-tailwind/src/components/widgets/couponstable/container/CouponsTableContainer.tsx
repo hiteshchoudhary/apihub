@@ -9,6 +9,13 @@ import {
 import CouponsTable from "../presentation/CouponsTable";
 
 const CouponsTableContainer = () => {
+
+  /* 
+  Flag for whether coupons are being fetched 
+  (To show loading spinner until the first response come) 
+  */
+  const [isFetchingCoupons, setIsFetchingCoupons] = useState(true);
+
   /* Key value coupons object, key is id and value is the Coupon */
   const [coupons, setCoupons] = useState<{ [key: string]: CouponClass }>({});
 
@@ -43,6 +50,7 @@ const CouponsTableContainer = () => {
 
   /* Fetch All Coupons Asynchronously */
   const fetchAllCoupons = useCallback(() => {
+    setIsFetchingCoupons(true);
     CouponService.getAllCouponsAsync((data, _, error) => {
       if (!error) {
         setCoupons((prev) => {
@@ -55,9 +63,11 @@ const CouponsTableContainer = () => {
           });
           return { ...prev };
         });
+        setIsFetchingCoupons(false);
       } else {
         console.error("Error -- fetchAllCoupons() Admin", error);
         setIsError(true);
+        setIsFetchingCoupons(false);
       }
     });
   }, []);
@@ -94,7 +104,7 @@ const CouponsTableContainer = () => {
   return (
     <>
       <CouponsTable
-        coupons={Object.values(coupons)}
+        coupons={isFetchingCoupons ? null : Object.values(coupons)}
         isError={isError}
         onCouponAddedOrUpdatedHandler={onCouponAddedOrUpdatedHandler}
         onCouponDeletedHandler={onCouponDeletedHandler}

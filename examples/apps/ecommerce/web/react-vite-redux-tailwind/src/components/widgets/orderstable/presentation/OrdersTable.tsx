@@ -19,7 +19,7 @@ import OrderLinkCell from "./OrderLinkCell";
 import OrdersOptionsCell from "./OrdersOptionsCell";
 
 interface OrdersTableProps {
-  orders: OrderClass[];
+  orders: OrderClass[] | null;
   isError: boolean;
   onOrderStatusUpdatedHandler(orderId: string, status: ORDER_STATUS): void;
   fetchOrders(status: ORDER_STATUS): void;
