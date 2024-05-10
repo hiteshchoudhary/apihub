@@ -15,7 +15,7 @@ import ChatItem from "../components/chat/ChatItem";
 import MessageItem from "../components/chat/MessageItem";
 import Typing from "../components/chat/Typing";
 import Input from "../components/Input";
-import { useAuth } from "../context/AuthContext";
+import { AuthContext, useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
 import {
   ChatListItemInterface,
@@ -41,6 +41,11 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
 // const SOCKET_ERROR_EVENT = "socketError";
 
 const ChatPage = () => {
+  //logout function
+
+  const { logout } = useAuth();
+  const handlelogout = async () => await logout();
+
   // Import the 'useAuth' and 'useSocket' hooks from their respective contexts
   const { user } = useAuth();
   const { socket } = useSocket();
@@ -426,6 +431,14 @@ const ChatPage = () => {
       <div className="w-full justify-between items-stretch h-screen flex flex-shrink-0">
         <div className="w-1/3 relative ring-white overflow-y-auto px-4">
           <div className="z-10 w-full sticky top-0 bg-dark py-4 flex justify-between items-center gap-4">
+            <button
+              type="button"
+              className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-xl text-sm px-5 py-4 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 flex-shrink-0"
+              onClick={handlelogout}
+            >
+              Log Out
+            </button>
+
             <Input
               placeholder="Search user or group..."
               value={localSearchQuery}
