@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+//To validate an expense
 
 const addAnExpenseValidator = () => {
   return [
