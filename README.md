@@ -90,10 +90,10 @@ To run the FreeAPI project, follow these steps:
 5. Run the Docker Compose command:
 
 ```bash
-docker-compose up --build --attach backend
+docker-compose up --build --watch
 
 # --build: Rebuild the image and run the containers
-# --attach: only show logs of Node app container and not mongodb
+# --watch: Auto update running Compose services as you edit and save your code
 ```
 
 6. Access the project APIs at the specified endpoints.
