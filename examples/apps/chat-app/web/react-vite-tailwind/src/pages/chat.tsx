@@ -15,7 +15,7 @@ import ChatItem from "../components/chat/ChatItem";
 import MessageItem from "../components/chat/MessageItem";
 import Typing from "../components/chat/Typing";
 import Input from "../components/Input";
-import { AuthContext, useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useSocket } from "../context/SocketContext";
 import {
   ChatListItemInterface,
