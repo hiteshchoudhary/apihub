@@ -1,4 +1,4 @@
-FROM node
+FROM node:18-alpine
 
 RUN mkdir -p /usr/src/freeapi && chown -R node:node /usr/src/freeapi
 
