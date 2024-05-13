@@ -1,5 +1,5 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import statusCodesJson from "../../json/status-codes.json" assert { type: "json" };
+import statusCodesJson from "../../json/status-codes.json" with { type: "json" };
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 
