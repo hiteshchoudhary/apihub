@@ -41,13 +41,8 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
 // const SOCKET_ERROR_EVENT = "socketError";
 
 const ChatPage = () => {
-  //logout function
-
-  const { logout } = useAuth();
-  const handlelogout = async () => await logout();
-
   // Import the 'useAuth' and 'useSocket' hooks from their respective contexts
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { socket } = useSocket();
 
   // Create a reference using 'useRef' to hold the currently selected chat.
@@ -434,7 +429,7 @@ const ChatPage = () => {
             <button
               type="button"
               className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-xl text-sm px-5 py-4 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 flex-shrink-0"
-              onClick={handlelogout}
+              onClick={logout}
             >
               Log Out
             </button>
