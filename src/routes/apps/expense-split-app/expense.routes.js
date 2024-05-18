@@ -21,13 +21,7 @@ import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 import { upload } from "../../../middlewares/multer.middlewares.js";
 const router = Router();
 
-//all routes are secured routes
-
 router.use(verifyJWT);
-
-//Creates a new expense accepts bill photos also
-
-//! Validated
 
 router
   .route("/addexpense/:groupId")
@@ -42,79 +36,35 @@ router
 router
   .route("/:expenseId")
 
-  // gets expense details
-
-  //! Validated
-
   .get(mongoIdPathVariableValidator("expenseId"), validate, viewExpense)
 
-  //edit expense details not the bills attachments
-
-  //!Validated
-
   .patch(mongoIdPathVariableValidator("expenseId"), validate, editExpense)
-
-  //Deletes expenses
-
-  //! Validated
 
   .delete(mongoIdPathVariableValidator("expenseId"), validate, deleteExpense);
 
 router
   .route("/group/:groupId")
 
-  //shows all the expense in a group
-
-  //! validated
-
   .get(mongoIdPathVariableValidator("groupId"), validate, viewGroupExpense);
-
-//View all the expense of the user
-
-//!validated
 
 router.route("/user/expense").get(viewUserExpense);
 
-//Gives top 5 recent user expenses
-
-//!validated
-
 router.route("/user/recentexpense").get(recentUserExpense);
-
-//Sorts all the expenses of user month wise and displays recent first
-
-//!validated
 
 router.route("/monthlyexpense/user").get(userMonthlyExpense);
 
-//shows all user expenses category wise
-
-//!validated
-
 router.route("/categoryexpense/user").get(userCategoryExpense);
 
-//Shows the daily expense of user of that day
-
-//!validated
-
 router.route("/dailyexpense/user").get(userDailyExpense);
-
-//Shows all the expense in a group month wise
-
-//!validated
 
 router
   .route("/monthlyexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupMonthlyExpense);
 
-//Shows all the expense in a group daily
-//!validated
 router
   .route("/dailyexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupDailyExpense);
 
-//Shows all the expense in a group category wise
-//!validated
 router
   .route("/categoryexpense/group/:groupId")
   .get(mongoIdPathVariableValidator("groupId"), validate, groupCategoryExpense);
