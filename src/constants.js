@@ -132,6 +132,10 @@ export const ExpenseGroupTypes = {
 
 export const AvailableExpenseGroupTypes = Object.values(ExpenseGroupTypes);
 
+/**
+ *  @type {{CASH: "Cash", UPI: "Upi",CARD: "Card"} as const}
+ */
+
 export const PaymentMethods = {
   CASH: "Cash",
   UPI: "Upi",
