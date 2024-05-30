@@ -18,7 +18,7 @@ import { verifyJWT } from "../../../middlewares/auth.middlewares.js";
 const router = Router();
 
 router.use(verifyJWT);
-
+router.route("/availableUsers").get(searchAvailableUsers);
 router
   .route("/creategroup")
   .post(createAExpenseGroupValidator(), validate, createExpenseGroup);
