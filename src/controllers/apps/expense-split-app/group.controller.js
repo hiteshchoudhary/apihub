@@ -200,15 +200,14 @@ const createExpenseGroup = asyncHandler(async (req, res) => {
     }
     return true;
   }
-
-  isValidUser(members).then((isValid) => {
-    if (!isValid) {
-      throw new ApiError(
-        404,
-        "Invalid participant Id,Particiapant does not exist"
-      );
-    }
-  });
+  //Checking if all the users exists or not
+  const isValid = await isValidUser(members);
+  if (!isValid) {
+    throw new ApiError(
+      400,
+      "Invalid participant Id, Participant does not exist"
+    );
+  }
 
   let splitJson = {}; // Initializing the split of the group
   for (let user of members) {
