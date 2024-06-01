@@ -10,7 +10,7 @@ class ApiRequest {
     queryParams: object = {},
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await asyncHandler<T>(
+    return asyncHandler<T>(
       (): Promise<AxiosResponse<ApiResponse<T>>> =>
         axios.get<ApiResponse<T>>(this.url, {
           params: queryParams,
@@ -23,7 +23,7 @@ class ApiRequest {
     body: object,
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await asyncHandler<T>(
+    return asyncHandler<T>(
       (): Promise<AxiosResponse<ApiResponse<T>>> =>
         axios.post<ApiResponse<T>>(this.url, body, { headers: headers })
     );
@@ -33,7 +33,7 @@ class ApiRequest {
     body: object,
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await asyncHandler(
+    return asyncHandler(
       (): Promise<AxiosResponse<ApiResponse<T>>> =>
         axios.put<ApiResponse<T>>(this.url, body, { headers: headers })
     );
@@ -42,7 +42,7 @@ class ApiRequest {
   async deleteRequest<T>(
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await asyncHandler(
+    return asyncHandler(
       (): Promise<AxiosResponse<ApiResponse<T>>> =>
         axios.delete<ApiResponse<T>>(this.url, { headers: headers })
     );
@@ -52,7 +52,7 @@ class ApiRequest {
     body: object,
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await asyncHandler(
+    return asyncHandler(
       (): Promise<AxiosResponse<ApiResponse<T>>> =>
         axios.patch<ApiResponse<T>>(this.url, body, { headers: headers })
     );
