@@ -216,7 +216,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   // Now we can remove the associated email token and expiry date as we no  longer need them
   user.emailVerificationToken = undefined;
   user.emailVerificationExpiry = undefined;
-  // Tun the email verified flag to `true`
+  // Turn the email verified flag to `true`
   user.isEmailVerified = true;
   await user.save({ validateBeforeSave: false });
 
