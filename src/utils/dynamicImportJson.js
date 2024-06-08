@@ -1,12 +1,16 @@
-// dynamic function to handle assert keyword with different versions of node
 export async function importJson(filePath) {
-  if (typeof process !== "undefined" && process.version) {
-    const [majorVersion] = process.version.replace("v", "").split(".");
-    if (+majorVersion >= 17) {
-      // Dynamic import for newer Node.js versions
-      return (await import(filePath, { assert: { type: "json" } })).default;
-    }
+  const nodeVersionString = process.env.NODE_VERSION || process.version;
+  const majorNodeVersion = +nodeVersionString.replace("v", "").split(".")[0];
+
+  if (majorNodeVersion >= 17) {
+    // Dynamic import for newer Node.js versions
+    return (await import(filePath, { assert: { type: "json" } })).default;
+  } else {
+    // For older versions, use a workaround to dynamically import JSON
+    const fs = await import("fs/promises");
+    const path = await import("path");
+    const fileUrl = new URL(path.resolve(filePath), import.meta.url);
+    const jsonString = await fs.readFile(fileUrl, "utf-8");
+    return JSON.parse(jsonString);
   }
-  // Use require for older Node.js versions
-  return require(filePath);
 }
