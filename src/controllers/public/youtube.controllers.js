@@ -1,15 +1,12 @@
 import { YouTubeFilterEnum, AvailableYouTubeFilters } from "../../constants.js";
-import channelJson from "../../json/youtube/channel.json" assert { type: "json" };
-import commentsJson from "../../json/youtube/comments.json" assert { type: "json" };
-import playlistItemsJson from "../../json/youtube/playlistitems.json" assert { type: "json" };
-import playlistsJson from "../../json/youtube/playlists.json" assert { type: "json" };
-import videosJson from "../../json/youtube/videos.json" assert { type: "json" };
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
+import { importJson } from "../../utils/dynamicImportJson.js";
 
 const getChannelDetails = asyncHandler(async (req, res) => {
+  const channelJson = await importJson("../../json/youtube/channel.json");
   const channelDetails = channelJson.channel;
   return res
     .status(200)
@@ -23,6 +20,7 @@ const getChannelDetails = asyncHandler(async (req, res) => {
 });
 
 const getPlaylists = asyncHandler(async (req, res) => {
+  const playlistsJson = await importJson("../../json/youtube/playlists.json");
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
 
@@ -40,6 +38,12 @@ const getPlaylists = asyncHandler(async (req, res) => {
 });
 
 const getPlaylistById = asyncHandler(async (req, res) => {
+  const playlistsJson = await importJson("../../json/youtube/playlists.json");
+  const playlistItemsJson = await importJson(
+    "../../json/youtube/playlistitems.json"
+  );
+  const channelJson = await importJson("../../json/youtube/channel.json");
+
   const { playlistId } = req.params;
 
   // filter out the playlist by id from json array
@@ -77,6 +81,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
 });
 
 const getVideos = asyncHandler(async (req, res) => {
+  const videosJson = await importJson("../../json/youtube/videos.json");
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
 
@@ -160,6 +165,9 @@ const getVideos = asyncHandler(async (req, res) => {
 });
 
 const getVideoById = asyncHandler(async (req, res) => {
+  const videosJson = await importJson("../../json/youtube/videos.json");
+  const channelJson = await importJson("../../json/youtube/channel.json");
+
   const { videoId } = req.params;
 
   // get filter based on id
@@ -189,6 +197,9 @@ const getVideoById = asyncHandler(async (req, res) => {
 });
 
 const getVideoComments = asyncHandler(async (req, res) => {
+  const videosJson = await importJson("../../json/youtube/videos.json");
+  const commentsJson = await importJson("../../json/youtube/comments.json");
+
   const { videoId } = req.params;
 
   const video = videosJson.channelVideos.find(
@@ -209,6 +220,8 @@ const getVideoComments = asyncHandler(async (req, res) => {
 });
 
 const getRelatedVideos = asyncHandler(async (req, res) => {
+  const videosJson = await importJson("../../json/youtube/videos.json");
+
   const { videoId } = req.params;
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);

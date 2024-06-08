@@ -1,10 +1,11 @@
-import mealsJson from "../../json/meals.json" assert { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
+import { importJson } from "../../utils/dynamicImportJson.js";
 
 const getMeals = asyncHandler(async (req, res) => {
+  const mealsJson = await importJson("../../json/meals.json");
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query

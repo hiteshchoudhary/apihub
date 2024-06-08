@@ -1,10 +1,11 @@
-import catsJson from "../../json/cats.json" assert { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
+import { importJson } from "../../utils/dynamicImportJson.js";
 
 const getCats = asyncHandler(async (req, res) => {
+  const catsJson = await importJson("../../json/cats.json");
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query

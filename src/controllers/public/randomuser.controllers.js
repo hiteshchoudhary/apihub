@@ -1,10 +1,11 @@
-import randomUsersJson from "../../json/randomuser.json" assert { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
+import { importJson } from "../../utils/dynamicImportJson.js";
 
 const getRandomUsers = asyncHandler(async (req, res) => {
+  const randomUsersJson = await importJson("../../json/randomuser.json");
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query

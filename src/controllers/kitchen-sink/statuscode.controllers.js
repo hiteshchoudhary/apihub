@@ -1,7 +1,7 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import statusCodesJson from "../../json/status-codes.json" assert { type: "json" };
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
+import { importJson } from "../../utils/dynamicImportJson.js";
 
 /**
  * @description status codes which are avoiding sending response due to their nature
@@ -9,6 +9,7 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 const CONFLICTING_STATUS_CODES = [100, 102, 103, 204, 205, 304];
 
 const getStatusCode = asyncHandler(async (req, res) => {
+  const statusCodesJson = await importJson("../../json/status-codes.json");
   const { statusCode } = req.params;
 
   /** @type {{statusCode: number, statusMessage: string, description: string, category: string}} */

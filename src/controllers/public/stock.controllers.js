@@ -1,10 +1,11 @@
-import nseStocksJson from "../../json/nse-stocks.json" assert { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
+import { importJson } from "../../utils/dynamicImportJson.js";
 
 const getStocks = asyncHandler(async (req, res) => {
+  const nseStocksJson = await importJson("../../json/nse-stocks.json");
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);
   const query = req.query.query?.toLowerCase(); // search query
