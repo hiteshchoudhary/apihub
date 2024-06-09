@@ -5,7 +5,7 @@ export async function importJson(filePath) {
   if (majorNodeVersion >= 17) {
     // Dynamic import for newer Node.js versions
     return (await import(filePath, { assert: { type: "json" } })).default;
-  } else {
+  } else if (majorNodeVersion >= 22 || majorNodeVersion < 17) {
     // For older versions, use a workaround to dynamically import JSON
     const fs = await import("fs/promises");
     const path = await import("path");
