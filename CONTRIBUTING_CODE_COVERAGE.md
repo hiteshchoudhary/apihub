@@ -103,7 +103,7 @@ Ideally, we do not encourage you to include a new package. Confine your code pra
 
 Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md) for a detailed contribution guide on submitting a PR.
 
-Thank you for your contribution to FreeAPI! Your dedication helps make our APIs more accessible and valuable to the community. If you have any questions or need assistance, feel free to reach out to our [Discord](https://discord.gg/uuGBkhX8Yp).
+Thank you for your contribution to FreeAPI! Your dedication helps make our APIs more accessible and valuable to the community. If you have any questions or need assistance, feel free to reach out to our [Discord](https://hitesh.ai/discord).
 
 Thank you for being part of the FreeAPI community and contributing to the project! We look forward to featuring your fantastic work. 🌟
 

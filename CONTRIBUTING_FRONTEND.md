@@ -132,7 +132,7 @@ Write tests for your frontend application to ensure its functionality. Include i
 
 Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING.md) for detailed contribution guide on submitting a PR.
 
-Thank you for your contribution to FreeAPI! Your dedication helps make our APIs more accessible and valuable to the community. If you have any questions or need assistance, feel free to reach out to our [Discord](https://discord.gg/uuGBkhX8Yp).
+Thank you for your contribution to FreeAPI! Your dedication helps make our APIs more accessible and valuable to the community. If you have any questions or need assistance, feel free to reach out to our [Discord](https://hitesh.ai/discord).
 
 ## 🌟 Featured Projects Opportunity on FreeAPI <a name="featured-projects"></a>
 
