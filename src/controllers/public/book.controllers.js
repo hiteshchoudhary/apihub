@@ -1,4 +1,4 @@
-import booksJson from "../../json/books.json" assert { type: "json" };
+import booksJson from "../../json/books.json" with { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
