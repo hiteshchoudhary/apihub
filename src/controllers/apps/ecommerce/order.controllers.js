@@ -120,7 +120,7 @@ const orderFulfillmentHelper = async (orderPaymentId, req) => {
  */
 const paypalApi = async (endpoint, body = {}) => {
   const accessToken = await generatePaypalAccessToken();
-  return await fetch(`${paypalBaseUrl.sandbox}/v2/checkout/orders${endpoint}`, {
+  return fetch(`${paypalBaseUrl.sandbox}/v2/checkout/orders${endpoint}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

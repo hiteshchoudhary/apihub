@@ -12,7 +12,7 @@ class CountryApiRequest {
     queryParams: object = {},
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await countryApiAsyncHandler<T>(
+    return countryApiAsyncHandler<T>(
       (): Promise<AxiosResponse<CountryApiResponse<T>>> =>
         axiosCountryApi.get<CountryApiResponse<T>>(this.url, {
           params: queryParams,
@@ -25,7 +25,7 @@ class CountryApiRequest {
     body: object,
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await countryApiAsyncHandler<T>(
+    return countryApiAsyncHandler<T>(
       (): Promise<AxiosResponse<CountryApiResponse<T>>> =>
         axiosCountryApi.post<CountryApiResponse<T>>(this.url, body, {
           headers: headers,
@@ -37,7 +37,7 @@ class CountryApiRequest {
     body: object,
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await countryApiAsyncHandler(
+    return countryApiAsyncHandler(
       (): Promise<AxiosResponse<CountryApiResponse<T>>> =>
         axiosCountryApi.put<CountryApiResponse<T>>(this.url, body, {
           headers: headers,
@@ -48,7 +48,7 @@ class CountryApiRequest {
   async deleteRequest<T>(
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await countryApiAsyncHandler(
+    return countryApiAsyncHandler(
       (): Promise<AxiosResponse<CountryApiResponse<T>>> =>
         axiosCountryApi.delete<CountryApiResponse<T>>(this.url, {
           headers: headers,
@@ -60,7 +60,7 @@ class CountryApiRequest {
     body: object,
     headers: object = {}
   ): Promise<ApiResponse<T> | ApiError> {
-    return await countryApiAsyncHandler(
+    return countryApiAsyncHandler(
       (): Promise<AxiosResponse<CountryApiResponse<T>>> =>
         axiosCountryApi.patch<CountryApiResponse<T>>(this.url, body, {
           headers: headers,
