@@ -147,6 +147,7 @@ To self-host the FreeAPI.app application, you can take advantage of a pre-built 
    - `ACCESS_TOKEN_EXPIRY`: Set to 1 day as default.
    - `REFRESH_TOKEN_SECRET`: It is advised to change the default value to your own secret value.
    - `REFRESH_TOKEN_EXPIRY`: Set to 10 days as default.
+   - `FREEAPI_HOST_URL`: Set it as generated railway url.
 
 6. Once you fill in the required environment parameters, if you choose to add others such as PayPal, Google, and Razorpay, please proceed to mention your credentials in the form.
 
