@@ -189,6 +189,7 @@ const Dropdown = forwardRef(
         {isDropdownMenuShown && (
           <div
             className={`absolute p-2 z-10 ${typeStyles.menuContainer} rounded-b-md max-h-52 overflow-auto`}
+            dir={isRTL ? 'rtl': 'ltr'}
           >
             {/* Selected Item Comes First */}
             {selectedItem && (
