@@ -103,3 +103,43 @@ export const ChatEventEnum = Object.freeze({
 });
 
 export const AvailableChatEvents = Object.values(ChatEventEnum);
+
+/**
+ * @type {{FOOD_AND_DRINK: "Food & drink",SHOPPING: "shopping",ENTERTAINMENT: "entertainment",HOME: "Home",TRANSPORTATION: "Transportation",OTHERS: "Others",  } as const}
+ */
+export const ExpenseTypes = {
+  FOOD_AND_DRINK: "Food & drink",
+  SHOPPING: "shopping",
+  ENTERTAINMENT: "entertainment",
+  HOME: "Home",
+  TRANSPORTATION: "Transportation",
+  OTHERS: "Others",
+};
+
+export const AvailableExpenseTypes = Object.values(ExpenseTypes);
+
+/**
+ *  @type {{HOME: "Home", TRIP: "Trip",OFFICE: "Office",SPORTS: "Sports",OTHERS: "Others",} as const}
+ */
+
+export const ExpenseGroupTypes = {
+  HOME: "Home",
+  TRIP: "Trip",
+  OFFICE: "Office",
+  SPORTS: "Sports",
+  OTHERS: "Others",
+};
+
+export const AvailableExpenseGroupTypes = Object.values(ExpenseGroupTypes);
+
+/**
+ *  @type {{CASH: "Cash", UPI: "Upi",CARD: "Card"} as const}
+ */
+
+export const PaymentMethods = {
+  CASH: "Cash",
+  UPI: "Upi",
+  CARD: "Card",
+};
+
+export const AvailablePaymentMethods = Object.values(PaymentMethods);
