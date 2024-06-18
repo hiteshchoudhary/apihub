@@ -12,6 +12,7 @@ import {
 import { Cart } from "../ecommerce/cart.models.js";
 import { EcomProfile } from "../ecommerce/profile.models.js";
 import { SocialProfile } from "../social-media/profile.models.js";
+import { VideoAppProfile } from "../video-app/profile.models.js";
 
 const userSchema = new Schema(
   {
@@ -90,11 +91,22 @@ userSchema.post("save", async function (user, next) {
   const ecomProfile = await EcomProfile.findOne({ owner: user._id });
   const socialProfile = await SocialProfile.findOne({ owner: user._id });
   const cart = await Cart.findOne({ owner: user._id });
+  const videoAppProfile = await VideoAppProfile.findOne({ owner: user._id });
 
   // Setup necessary ecommerce models for the user
   if (!ecomProfile) {
     await EcomProfile.create({
       owner: user._id,
+    });
+  }
+
+  // Setup necessary video app models for the user
+  if (!videoAppProfile) {
+    await VideoAppProfile.create({
+      owner: user._id,
+      username: user.username,
+      avatar: user.avatar.url,
+      watchHistory: [],
     });
   }
   if (!cart) {
