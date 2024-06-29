@@ -1,8 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { User } from "../auth/user.models.js";
-import { Address } from "./address.models.js";
-import { Product } from "./product.models.js";
-import { Coupon } from "./coupon.models.js";
+
 import {
   AvailableOrderStatuses,
   AvailablePaymentProviders,
