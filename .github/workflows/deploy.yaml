@@ -17,14 +17,17 @@ jobs:
       uses: actions/checkout@v2
     
     - name: run conatiner to scan the code review 
-      run: sonar-scanner \
-            -Dsonar.projectKey=chatapp \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=https://sonar.kubecloud.in.net \
-            -Dsonar.token=sqp_be4203a1a95d57a7eb61cc0fc4dc96a06ae4c935
+      run: |
+        sonar-scanner \
+          -Dsonar.projectKey=chatapp \
+          -Dsonar.sources=./ \
+          -Dsonar.host.url=https://sonar.kubecloud.in.net \
+          -Dsonar.login=sqp_be4203a1a95d57a7eb61cc0fc4dc96a06ae4c935
 
   build-api:
     runs-on: digitalocean
+    needs: code-scan  # This job will run only if 'code-scan' succeeds
+
     
     steps:
     - name: Checkout code
@@ -44,6 +47,8 @@ jobs:
     
   build-fronend:
     runs-on: digitalocean
+    needs: build-api  # This job will run only if 'build-api' succeeds
+
     
     steps:
     - name: Checkout code
