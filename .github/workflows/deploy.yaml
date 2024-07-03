@@ -26,7 +26,7 @@ jobs:
 
   build-api:
     runs-on: digitalocean
-    needs: code-scan  # This job will run only if 'code-scan' succeeds
+    needs: code-scan  # This job will run only if 'code-scan' succeeds 
 
     
     steps:
