@@ -1,20 +1,20 @@
 version: '3.8'
 
 services:
-  frontend-todo:
-    image: todo-frontend
-    build: ./examples/apps/todo/web/react-vite-tailwind
-    ports:
-      - "3001:3000"
-    depends_on:
-      - frontend-chatapp   
-    container_name: todo-frontend
-    networks:
-      - freeapi-internal  
+  # frontend-todo:
+  #   image: todo-frontend
+  #   build: ./frontend/todo
+  #   ports:
+  #     - "3001:3000"
+  #   depends_on:
+  #     - frontend-chatapp   
+  #   container_name: todo-frontend
+  #   networks:
+  #     - freeapi-internal  
 
   frontend-chatapp:
     image: chatapp-frontend
-    build: ./examples/apps/chat-app/web/react-vite-tailwind
+    build: ./frontend/chat-app
     ports:
       - "3000:3000"
     depends_on:
