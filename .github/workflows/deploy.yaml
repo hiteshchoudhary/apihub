@@ -18,8 +18,10 @@ jobs:
     
     - name: run conatiner to scan the code review 
       run: |
+        java -version
         export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
         export PATH=$JAVA_HOME/bin:$PATH
+        java -version
         sonar-scanner \
           -Dsonar.projectKey=chatapp \
           -Dsonar.sources=./ \
