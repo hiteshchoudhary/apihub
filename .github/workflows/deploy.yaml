@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: digitalocean
     
     steps:
     - name: Checkout code
@@ -25,4 +25,5 @@ jobs:
       run: docker push noscopev6/chatapp-b:$GITHUB_JOB
     
     # - name: Run Docker image 
+  
       # run: docker run -d -p 5000:7000 ahmadrazalab/doc:$GITHUB_JOB
