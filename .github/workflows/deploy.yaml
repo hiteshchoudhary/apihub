@@ -1,4 +1,4 @@
-name: Deploy frontend App
+name: Build ChatAPP
 
 on:
   push:
@@ -8,7 +8,22 @@ on:
       - 'v1.*'
 
 jobs:
-  deploy:
+
+  code-scan:
+    runs-on: digitalocean
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: run conatiner to scan the code review 
+      run: sonar-scanner \
+            -Dsonar.projectKey=chatapp \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonar.kubecloud.in.net \
+            -Dsonar.token=sqp_be4203a1a95d57a7eb61cc0fc4dc96a06ae4c935
+
+  build-api:
     runs-on: digitalocean
     
     steps:
@@ -27,6 +42,21 @@ jobs:
     - name: Push Docker image
       run: docker logout
     
-    # - name: Run Docker image 
-  
-      # run: docker run -d -p 5000:7000 ahmadrazalab/doc:$GITHUB_JOB
+  build-fronend:
+    runs-on: digitalocean
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build Docker image
+      run: cd ./frontend/chat-app && docker build -t noscopev6/chatapp-f:$GITHUB_SHA .
+
+    - name: Push Docker image
+      run: docker push noscopev6/chatapp-f:$GITHUB_SHA
+
+    - name: Push Docker image
+      run: docker logout
