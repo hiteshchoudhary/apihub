@@ -21,7 +21,7 @@ jobs:
         sonar-scanner \
           -Dsonar.projectKey=chatapp \
           -Dsonar.sources=./ \
-          -Dsonar.host.url=https://sonar.kubecloud.in.net \
+          -Dsonar.host.url=http://localhost:9000 \
           -Dsonar.login=sqp_be4203a1a95d57a7eb61cc0fc4dc96a06ae4c935
 
   build-api:
