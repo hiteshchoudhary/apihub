@@ -5,7 +5,8 @@ on:
     branches:
       - main
     tags:
-      - 'v1.*'
+      - '*'
+      # - 'v1.*'
 
 jobs:
   code-scan:
@@ -61,11 +62,12 @@ jobs:
 
   images-scan-trevy:
     runs-on: digitalocean
-    needs: build-frontend  # This job will run only if 'build-api' succeeds
+    needs: build-frontend
+    if: startsWith(github.event.ref, 'refs/tags/v')  # This job will run only if '-' succeeds
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    # - name: Checkout code
+    #   uses: actions/checkout@v2
     
     - name: Docker Image Scan frontend
       run: trivy image  noscopev6/chatapp-f:$GITHUB_SHA
