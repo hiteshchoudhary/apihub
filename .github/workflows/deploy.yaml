@@ -7,10 +7,7 @@ on:
     tags:
       - 'v1.*'
 
-
-
 jobs:
-
   code-scan:
     runs-on: digitalocean
     
@@ -20,18 +17,12 @@ jobs:
     
     - name: run conatiner to scan the code review 
       run: |
-        java -version
-        sonar-scanner \
-          -Dsonar.projectKey=chatapp \
-          -Dsonar.sources=./ \
-          -Dsonar.host.url=http://localhost:9000 \
-          -Dsonar.login=sqp_be4203a1a95d57a7eb61cc0fc4dc96a06ae4c935
+        docker run --rm -e SONAR_HOST_URL="https://sonar.kubecloud.in.net" -e SONAR_LOGIN="sqb_68771ad6a301d6281078273ab3ab232d5989da8e" -v "$(pwd):/usr/src"   sonarsource/sonar-scanner-cli
 
   build-api:
     runs-on: digitalocean
     needs: code-scan  # This job will run only if 'code-scan' succeeds 
 
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -48,7 +39,7 @@ jobs:
     - name: Push Docker image
       run: docker logout
     
-  build-fronend:
+  build-frontend:
     runs-on: digitalocean
     needs: build-api  # This job will run only if 'build-api' succeeds
 
