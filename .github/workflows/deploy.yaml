@@ -17,7 +17,7 @@ jobs:
     
     - name: run conatiner to scan the code review 
       run: |
-        docker run --rm -e SONAR_HOST_URL="https://sonar.kubecloud.in.net" -e SONAR_LOGIN="sqb_68771ad6a301d6281078273ab3ab232d5989da8e" -v "$(pwd):/usr/src"   sonarsource/sonar-scanner-cli
+        docker run --rm -e SONAR_HOST_URL="https://sonar.kubecloud.in.net" -e SONAR_TOKEN="sqp_0b9a335aaf831689473f5c3fd62a6cc350480ccb" -v "$(pwd):/usr/src"   sonarsource/sonar-scanner-cli
 
   build-api:
     runs-on: digitalocean
