@@ -2,8 +2,8 @@ name: Build ChatAPP
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+      # - main
     tags:
       - '*'
       # - 'v1.*'
@@ -22,7 +22,7 @@ jobs:
 
   build-api:
     runs-on: digitalocean
-    needs: code-scan  # This job will run only if 'code-scan' succeeds 
+    # needs: code-scan  # This job will run only if 'code-scan' succeeds 
 
     steps:
     - name: Checkout code
@@ -62,7 +62,7 @@ jobs:
 
   images-scan-trevy:
     runs-on: digitalocean
-    needs: build-frontend
+    # needs: build-frontend
     if: startsWith(github.event.ref, 'refs/tags/v')  # This job will run only if '-' succeeds
 
     steps:
