@@ -1,5 +1,5 @@
 # NODE alpine to decrease the size of the conatiner 
-FROM node:alpine3.18
+FROM node:20.13.1-alpine
 # FROM node
 
 RUN mkdir -p /usr/src/freeapi && chown -R node:node /usr/src/freeapi
@@ -8,9 +8,10 @@ WORKDIR /usr/src/freeapi
 
 # Copy package json and yarn lock only to optimise the image building
 COPY package.json yarn.lock ./
-COPY .env.compose ./
+COPY .env.compose .env
+# COPY .env .
 # copy prepare.js prior. It will be executed after package installation and before ROOT dir is cloned
-COPY prepare.js ./
+COPY prepare.js .
 
 USER node
 
