@@ -70,7 +70,7 @@ const ChatPage = () => {
   const [selfTyping, setSelfTyping] = useState(false); // To track if the current user is typing
 
   const [message, setMessage] = useState(""); // To store the currently typed message
-  const [messageSent, setMessageSent] = useState(false); // To show loading when sending a message
+  const [messageBeingSent, setMessageBeingSent] = useState(false); // To show loading when sending a message
   const [localSearchQuery, setLocalSearchQuery] = useState(""); // For local search functionality
 
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]); // To store files attached to messages
@@ -170,10 +170,11 @@ const ChatPage = () => {
   const sendChatMessage = async () => {
     // If no current chat ID exists or there's no socket connection, exit the function
     if (!currentChat.current?._id || !socket) return;
+    if (messageBeingSent) return;
 
     // Emit a STOP_TYPING_EVENT to inform other users/participants that typing has stopped
     socket.emit(STOP_TYPING_EVENT, currentChat.current?._id);
-    setMessageSent(true); // Set the message sent state to true
+    setMessageBeingSent(true); // Set the message sent state to true
 
     // Use the requestHandler to send the message and handle potential response or error
     await requestHandler(
@@ -196,7 +197,7 @@ const ChatPage = () => {
       // If there's an error during the message sending process, raise an alert
       alert
     );
-    setMessageSent(false); // Reset the message sent state
+    setMessageBeingSent(false); // Reset the message sent state
   };
   const deleteChatMessage = async (message: ChatMessageInterface) => {
     //ONClick delete the message and reload the chat when deleteMessage socket gives any response in chat.tsx
@@ -636,6 +637,7 @@ const ChatPage = () => {
                   placeholder="Message"
                   value={message}
                   onChange={handleOnMessageChange}
+                  disabled={messageBeingSent}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       sendChatMessage();
@@ -647,7 +649,7 @@ const ChatPage = () => {
                   disabled={!message && attachedFiles.length <= 0}
                   className="rounded-full bg-dark hover:bg-secondary disabled:opacity-50"
                 >
-                  {messageSent ? (
+                  {messageBeingSent ? (
                     <div style={{ transform: "scale(0.7)" }}>
                       <Typing />
                     </div>
