@@ -85,10 +85,10 @@ jobs:
       run: |
         pwd
         ls -la
-        sed -i '17s/.*/        image: noscopev6\/chatapp-f:$GITHUB_SHA/' ./kube-prod/f-chatapp.yaml
+        sed -i "17s/.*/        image: noscopev6\/chatapp-f:$GITHUB_SHA/" ./kube-prod/f-chatapp.yaml
         kubectl apply -f ./kube-prod/f-chatapp.yaml
 
     - name: Deploy backend
       run: |
-        sed -i '19s/.*/        image: noscopev6\/chatapp-b:$GITHUB_SHA/' ./kube-prod/b-chatapp.yaml
+        sed -i "19s/.*/        image: noscopev6\/chatapp-b:$GITHUB_SHA/"" ./kube-prod/b-chatapp.yaml
         kubectl apply -f ./kube-prod/b-chatapp.yaml
