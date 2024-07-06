@@ -11,6 +11,7 @@ on:
 jobs:
   code-scan:
     runs-on: digitalocean
+    if: startsWith(github.event.ref, 'refs/tags/v1')
     
     steps:
     - name: Checkout code
@@ -62,13 +63,10 @@ jobs:
 
   images-scan-trevy:
     runs-on: digitalocean
-    # needs: build-frontend
-    if: startsWith(github.event.ref, 'refs/tags/v')  # This job will run only if '-' succeeds
+    needs: build-frontend
+    if: startsWith(github.event.ref, 'refs/tags/v1') 
 
     steps:
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
-    
     - name: Docker Image Scan frontend
       run: trivy image  noscopev6/chatapp-f:$GITHUB_SHA
 
