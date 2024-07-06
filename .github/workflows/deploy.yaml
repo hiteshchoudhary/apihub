@@ -74,7 +74,7 @@ jobs:
 
   deploy-to-prod-doks:
     runs-on: digitalocean
-    # needs: images-scan-trevy
+    needs: build-frontend
     # if: startsWith(github.event.ref, 'refs/tags/v') 
 
     steps:
