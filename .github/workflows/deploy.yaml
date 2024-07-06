@@ -6,12 +6,12 @@ on:
       # - main
     tags:
       - '*'
-      # - 'v1.*'
+      # - 'v.*'
 
 jobs:
   code-scan:
     runs-on: digitalocean
-    if: startsWith(github.event.ref, 'refs/tags/v1')
+    if: startsWith(github.event.ref, 'refs/tags/v')
     
     steps:
     - name: Checkout code
@@ -63,7 +63,7 @@ jobs:
   images-scan-trevy:
     runs-on: digitalocean
     needs: build-frontend
-    if: startsWith(github.event.ref, 'refs/tags/v1') 
+    if: startsWith(github.event.ref, 'refs/tags/v') 
 
     steps:
     - name: Docker Image Scan frontend
