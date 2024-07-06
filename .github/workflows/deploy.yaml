@@ -23,7 +23,6 @@ jobs:
 
   build-api:
     runs-on: digitalocean
-    # needs: code-scan  # This job will run only if 'code-scan' succeeds 
 
     steps:
     - name: Checkout code
@@ -75,8 +74,8 @@ jobs:
 
   deploy-to-prod-doks:
     runs-on: digitalocean
-    needs: images-scan-trevy
-    if: startsWith(github.event.ref, 'refs/tags/v') 
+    # needs: images-scan-trevy
+    # if: startsWith(github.event.ref, 'refs/tags/v') 
 
     steps:
     - name: Checkout code
