@@ -90,5 +90,5 @@ jobs:
 
     - name: Deploy backend
       run: |
-        sed -i "19s/.*/        image: noscopev6\/chatapp-b:$GITHUB_SHA/"" ./kube-prod/b-chatapp.yaml
+        sed -i "19s/.*/        image: noscopev6\/chatapp-b:$GITHUB_SHA/" ./kube-prod/b-chatapp.yaml
         kubectl apply -f ./kube-prod/b-chatapp.yaml
