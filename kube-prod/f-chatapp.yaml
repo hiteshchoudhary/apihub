@@ -19,6 +19,6 @@ spec:
         - containerPort: 3000
         env:
         - name: VITE_SERVER_URI
-          value: "http://chatapi.kubecloud.in.net/api/v1"   # Update the Backend URL to connect to backend server 
+          value: "https://chatapi.kubecloud.in.net/api/v1"   # Update the Backend URL to connect to backend server 
         - name: VITE_SOCKET_URI
-          value: "http://chatapi.kubecloud.in.net"       # Update the Backend URL to connect to backend server 
+          value: "https://chatapi.kubecloud.in.net"       # Update the Backend URL to connect to backend server 
