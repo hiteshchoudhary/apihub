@@ -2,8 +2,8 @@ name: Build ChatAPP
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+      # - main
     tags:
       - '*'
       # - 'v1.*'
