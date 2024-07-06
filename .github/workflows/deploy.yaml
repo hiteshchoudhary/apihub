@@ -2,11 +2,11 @@ name: Build ChatAPP
 
 on:
   push:
-    # branches:
-      # - main
+    branches:
+      - main
     tags:
-      # - '*'
-      - 'v1.*'
+      - '*'
+      # - 'v1.*'
 
 jobs:
   # code-scan:
@@ -75,8 +75,8 @@ jobs:
 
   deploy-to-prod-doks:
     runs-on: digitalocean
-    needs: images-scan-trevy
-    if: startsWith(github.event.ref, 'refs/tags/v1') 
+    # needs: images-scan-trevy
+    if: startsWith(github.event.ref, 'refs/tags/v') 
 
     steps:
     - name: Checkout code
