@@ -79,6 +79,9 @@ jobs:
     if: startsWith(github.event.ref, 'refs/tags/v1') 
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
     - name: Deploy frontend
       run: |
         sed -i '17s/.*/        image: noscopev6\/chatapp-f:$GITHUB_SHA/' /home/ubuntu/chatapp-prod/f-chatapp.yaml
@@ -86,5 +89,5 @@ jobs:
 
     - name: Deploy backend
       run: |
-        sed -i '17s/.*/        image: noscopev6\/chatapp-b:$GITHUB_SHA/' /home/ubuntu/chatapp-prod/b-chatapp.yaml
+        sed -i '19s/.*/        image: noscopev6\/chatapp-b:$GITHUB_SHA/' /home/ubuntu/chatapp-prod/b-chatapp.yaml
         kubectl apply -f noscopev6/chatapp-b:$GITHUB_SHA
