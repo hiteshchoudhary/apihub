@@ -5,8 +5,8 @@ on:
     # branches:
       # - main
     tags:
-      - '*'
-      # - 'v1.*'
+      # - '*'
+      - 'v1.*'
 
 jobs:
   code-scan:
@@ -73,3 +73,18 @@ jobs:
     - name: Docker Image Scan backend
       run: trivy image  noscopev6/chatapp-b:$GITHUB_SHA
 
+  deploy-to-prod-doks:
+    runs-on: digitalocean
+    needs: images-scan-trevy
+    if: startsWith(github.event.ref, 'refs/tags/v1') 
+
+    steps:
+    - name: Deploy frontend
+      run: |
+        sed -i '17s/.*/        image: noscopev6\/chatapp-f:$GITHUB_SHA/' /home/ubuntu/chatapp-prod/f-chatapp.yaml
+        kubectl apply -f noscopev6/chatapp-f:$GITHUB_SHA
+
+    - name: Deploy backend
+      run: |
+        sed -i '17s/.*/        image: noscopev6\/chatapp-b:$GITHUB_SHA/' /home/ubuntu/chatapp-prod/b-chatapp.yaml
+        kubectl apply -f noscopev6/chatapp-b:$GITHUB_SHA
