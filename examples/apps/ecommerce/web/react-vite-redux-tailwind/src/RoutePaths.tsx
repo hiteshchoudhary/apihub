@@ -1,22 +1,24 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PageLayout from "./layouts/PageLayout";
-import HomePageContainer from "./pages/home/container/HomePageContainer";
-import ProductsPageContainer from "./pages/products/container/ProductsPageContainer";
 import { ROUTE_PATHS } from "./constants";
-import ProductDetailPageContainer from "./pages/productdetail/container/ProductDetailPageContainer";
-import LoginPageContainer from "./pages/login/container/LoginPageContainer";
-import SignupPageContainer from "./pages/signup/container/SignupPageContainer";
+import PageLayout from "./layouts/PageLayout";
+import AboutPageContainer from "./pages/about/container/AboutPageContainer";
+import AdminPageContainer from "./pages/admin/container/AdminPageContainer";
 import CartPageContainer from "./pages/cart/container/CartPageContainer";
-import ForLoggedInUsers from "./protectedroutes/ForLoggedInUsers";
 import CheckoutPageContainer from "./pages/checkout/container/CheckoutPageContainer";
-import PaymentFeedbackPageContainer from "./pages/paymentfeedback/container/PaymentFeedbackPageContainer";
+import HomePageContainer from "./pages/home/container/HomePageContainer";
+import LoginPageContainer from "./pages/login/container/LoginPageContainer";
 import ManageAccountPageContainer from "./pages/manageaccount/container/ManageAccountPageContainer";
+import OrderDetailPageContainer from "./pages/orderdetail/container/OrderDetailPageContainer";
 import OrdersPageContainer from "./pages/orders/container/OrdersPageContainer";
+import PageNotFoundPageContainer from "./pages/pagenotfound/container/PageNotFoundPageContainer";
+import PaymentFeedbackPageContainer from "./pages/paymentfeedback/container/PaymentFeedbackPageContainer";
+import ProductDetailPageContainer from "./pages/productdetail/container/ProductDetailPageContainer";
+import ProductsPageContainer from "./pages/products/container/ProductsPageContainer";
 import ProductSearchPageContainer from "./pages/productsearch/container/ProductSearchPageContainer";
 import ResetForgottenPasswordPageContainer from "./pages/resetforgottenpassword/container/ResetForgottenPasswordPageContainer";
-import PageNotFoundPageContainer from "./pages/pagenotfound/container/PageNotFoundPageContainer";
-import OrderDetailPageContainer from "./pages/orderdetail/container/OrderDetailPageContainer";
-import AboutPageContainer from "./pages/about/container/AboutPageContainer";
+import SignupPageContainer from "./pages/signup/container/SignupPageContainer";
+import ForAdminUsers from "./protectedroutes/ForAdminUsers";
+import ForLoggedInUsers from "./protectedroutes/ForLoggedInUsers";
 
 /* All Routes */
 const RoutePaths = () => {
@@ -31,6 +33,7 @@ const RoutePaths = () => {
           <Route path={ROUTE_PATHS.signup} element={<SignupPageContainer />} />
           <Route path={ROUTE_PATHS.productSearch} element={<ProductSearchPageContainer />} />
           <Route path={ROUTE_PATHS.resetForgottenPassword} element={<ResetForgottenPasswordPageContainer />} />
+          <Route path={ROUTE_PATHS.about} element={<AboutPageContainer />} />
           <Route element={<ForLoggedInUsers />}>
             <Route path={ROUTE_PATHS.cart} element={<CartPageContainer />} />
             <Route path={ROUTE_PATHS.checkout} element={<CheckoutPageContainer />} />
@@ -39,7 +42,13 @@ const RoutePaths = () => {
             <Route path={ROUTE_PATHS.orders} element={<OrdersPageContainer/>} />
             <Route path={ROUTE_PATHS.orderDetail} element={<OrderDetailPageContainer />} />
           </Route>
-          <Route path={ROUTE_PATHS.about} element={<AboutPageContainer />} />
+          <Route element={<ForAdminUsers />}>
+            <Route path={ROUTE_PATHS.adminCategories} element={<AdminPageContainer />}  />
+            <Route path={ROUTE_PATHS.adminProducts} element={<AdminPageContainer />} />
+            <Route path={ROUTE_PATHS.adminCoupons} element={<AdminPageContainer />} />
+            <Route path={ROUTE_PATHS.adminOrders} element={<AdminPageContainer />} />
+            
+          </Route>
           <Route path={ROUTE_PATHS.pageNotFound} element={<PageNotFoundPageContainer />} />
           <Route path="*" element={<PageNotFoundPageContainer />} />
         </Route>
