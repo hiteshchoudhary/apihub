@@ -76,5 +76,10 @@
     "prettier": "^3.0.0",
     "supertest": "^6.3.4",
     "supertest-session": "^5.0.1"
+  },
+  "resolutions": {
+    "ws": "^8.17.1",
+    "ejs": "^3.1.10",
+    "formidable": "^3.5.1"
   }
 }
