@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import fs from "fs";
 import { AvailableUserRoles } from "../constants.js";
+import logger from "../logger/winston.logger.js";
 import { User } from "../models/apps/auth/user.models.js";
 import { Cart } from "../models/apps/ecommerce/cart.models.js";
 import { EcomProfile } from "../models/apps/ecommerce/profile.models.js";
@@ -64,7 +65,7 @@ const seedUsers = asyncHandler(async (req, res, next) => {
     json,
     "utf8",
     (err) => {
-      console.log("Error while writing the credentials", err);
+      logger.error("Error while writing the credentials", err);
     }
   );
 

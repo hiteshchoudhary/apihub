@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { DB_NAME } from "../constants.js";
+import logger from "../logger/winston.logger.js";
 
 /** @type {typeof mongoose | undefined} */
 export let dbInstance = undefined;
@@ -10,11 +11,11 @@ const connectDB = async () => {
       `${process.env.MONGODB_URI}/${DB_NAME}`
     );
     dbInstance = connectionInstance;
-    console.log(
+    logger.info(
       `\n☘️  MongoDB Connected! Db host: ${connectionInstance.connection.host}\n`
     );
   } catch (error) {
-    console.log("MongoDB connection error: ", error);
+    logger.error("MongoDB connection error: ", error);
     process.exit(1);
   }
 };
