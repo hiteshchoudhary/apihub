@@ -98,10 +98,11 @@ const toggleTodoDoneStatus = asyncHandler(async (req, res) => {
     .status(200)
     .json(
       new ApiResponse(
-        200,
-        todo,
-        "Todo marked " + todo.isComplete ? "done" : "undone"
-      )
+    200,
+    todo,
+    `Todo marked ${todo.isComplete ? "done" : "undone"}`
+    )
+
     );
 });
 
