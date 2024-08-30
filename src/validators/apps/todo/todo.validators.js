@@ -12,16 +12,19 @@ const getAllTodosQueryValidators = () => {
   ];
 };
 
-const createTodoValidator = () => {
-  return [
-    body("title").trim().notEmpty().withMessage("Todo title is required"),
-    body("description")
-      .optional()
-      .trim()
-      .notEmpty()
-      .withMessage("Todo title is required"),
-  ];
-};
+const createTodoValidator = [
+    body('title')
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage("Todo title is required"),
+    body('description')
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage("Todo description is required"),
+];
+
 
 const updateTodoValidator = () => {
   return [
