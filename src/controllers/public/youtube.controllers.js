@@ -1,9 +1,9 @@
 import { YouTubeFilterEnum, AvailableYouTubeFilters } from "../../constants.js";
-import channelJson from "../../json/youtube/channel.json" assert { type: "json" };
-import commentsJson from "../../json/youtube/comments.json" assert { type: "json" };
-import playlistItemsJson from "../../json/youtube/playlistitems.json" assert { type: "json" };
-import playlistsJson from "../../json/youtube/playlists.json" assert { type: "json" };
-import videosJson from "../../json/youtube/videos.json" assert { type: "json" };
+import channelJson from "../../json/youtube/channel.json" with { type: "json" };
+import commentsJson from "../../json/youtube/comments.json" with { type: "json" };
+import playlistItemsJson from "../../json/youtube/playlistitems.json" with { type: "json" };
+import playlistsJson from "../../json/youtube/playlists.json" with { type: "json" };
+import videosJson from "../../json/youtube/videos.json" with { type: "json" };
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
