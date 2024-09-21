@@ -204,18 +204,32 @@ app.use("/api/v1/kitchen-sink/image", imageRouter);
 // * Seeding
 app.get(
   "/api/v1/seed/generated-credentials",
-  avoidInProduction,
+  // avoidInProduction,
   getGeneratedCredentials
 );
-app.post("/api/v1/seed/todos", avoidInProduction, seedTodos);
-app.post("/api/v1/seed/ecommerce", avoidInProduction, seedUsers, seedEcommerce);
+app.post(
+  "/api/v1/seed/todos",
+  // avoidInProduction,
+  seedTodos
+);
+app.post(
+  "/api/v1/seed/ecommerce",
+  // avoidInProduction,
+  seedUsers,
+  seedEcommerce
+);
 app.post(
   "/api/v1/seed/social-media",
-  avoidInProduction,
+  // avoidInProduction,
   seedUsers,
   seedSocialMedia
 );
-app.post("/api/v1/seed/chat-app", avoidInProduction, seedUsers, seedChatApp);
+app.post(
+  "/api/v1/seed/chat-app",
+  // avoidInProduction,
+  seedUsers,
+  seedChatApp
+);
 
 initializeSocketIO(io);
 
