@@ -121,10 +121,10 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(
       400,
       "You have previously registered using " +
-        user.loginType?.toLowerCase() +
-        ". Please use the " +
-        user.loginType?.toLowerCase() +
-        " login option to access your account."
+      user.loginType?.toLowerCase() +
+      ". Please use the " +
+      user.loginType?.toLowerCase() +
+      " login option to access your account."
     );
   }
 
@@ -294,6 +294,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken: newRefreshToken } =
       await generateAccessAndRefreshTokens(user._id);
+
+    // Update the user's refresh token in the database
+    user.refreshToken = newRefreshToken;
+    await user.save();
 
     return res
       .status(200)
