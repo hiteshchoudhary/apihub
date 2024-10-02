@@ -35,7 +35,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.19.2",
+    "express": "4.20.0",
     "express-compression": "^1.0.2",
     "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
@@ -80,6 +80,8 @@
   "resolutions": {
     "ws": "^8.17.1",
     "ejs": "^3.1.10",
-    "formidable": "^3.5.1"
+    "formidable": "^3.5.1",
+    "braces": "^3.0.3",
+    "micromatch": "^4.0.8"
   }
 }
