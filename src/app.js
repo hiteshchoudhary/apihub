@@ -47,6 +47,8 @@ app.set("io", io); // using set method to mount the `io` instance on the app to 
 // global middlewares
 app.use(
   cors({
+    preflightContinue: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     origin:
       process.env.CORS_ORIGIN === "*"
         ? "*" // This might give CORS error for some origins due to credentials set to true
