@@ -1,0 +1,64 @@
+# Node modules (both backend and frontend)
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env files
+.env
+frontend/.env
+backend/.env
+
+# Build directories
+build/
+frontend/build/
+backend/build/
+
+# Dist directories (for backend)
+dist/
+backend/dist/
+
+# Appwrite related
+/appwrite/docker-compose.yml
+/appwrite/.env
+/appwrite/appwrite.json
+/appwrite/storage/
+/appwrite/volumes/
+
+# Coverage directory
+coverage/
+frontend/coverage/
+backend/coverage/
+
+# Debug files
+*.lock
+*.pid
+*.seed
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.sublime-workspace
+*.vscode
+.idea/
+
+# Editor directories
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.vscode/
+
+# Compiled binary addons (if applicable)
+build/Release/
+
+# Appwrite-related backups
+appwrite_backups/
