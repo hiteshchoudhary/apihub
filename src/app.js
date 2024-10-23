@@ -152,6 +152,12 @@ import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
 import { seedTodos } from "./seeds/todo.seeds.js";
 import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
+import {
+  getAggregatedHistoricalExchangeRate,
+  getAllCurrencies,
+  getHistoricalExchangeRate,
+  getLiveExchangeRate,
+} from "./controllers/apps/currency-exchange/exchange.controllers.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
@@ -229,6 +235,26 @@ app.post(
   // avoidInProduction,
   seedUsers,
   seedChatApp
+);
+app.get(
+  "/api/v1/currencies",
+  // avoidInProduction
+  getAllCurrencies
+);
+app.get(
+  "/api/v1/liveExchangeRate",
+  // avoidInProduction
+  getLiveExchangeRate
+);
+app.get(
+  "/api/v1/historicalExchangeRate",
+  // avoidInProduction
+  getHistoricalExchangeRate
+);
+app.get(
+  "/api/v1/historicalAggregatedExchangeRate",
+  // avoidInProduction
+  getAggregatedHistoricalExchangeRate
 );
 
 initializeSocketIO(io);

@@ -37,7 +37,7 @@ info:
   version: 1.3.1
   contact: {}
 servers:
-  - url: https://api.freeapi.app/api/v1 # add `http://localhost:<port_from_.env>/api/v1` in case of local testing
+  - url: http://localhost:8080 # add `http://localhost:<port_from_.env>/api/v1` in case of local testing
 paths:
   /public/randomusers:
     get:
@@ -48136,6 +48136,573 @@ paths:
                     message: Database populated for chat app successfully
                     statusCode: 201
                     success: true
+  /api/v1/currencies:
+    get:
+      tags:
+        - Currencies
+      summary: Get all currencies
+      description: >-
+        The API endpoint allows you to retrieve all available currencies.
+        When accessing this endpoint, you will receive a response containing a
+        list of all available currencies.
+      operationId: getAllCurrencies
+      responses:
+        '200':
+          description: Get all Currencies
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '815'
+            Date:
+              schema:
+                type: string
+                example: Sat, 17 Jun 2023 19:19:40 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: 'AUD'
+                        symbol:
+                          type: string
+                          example: 'A$'
+                        name:
+                          type: string
+                          example: 'Australian Dollar'
+                        countryKeywords:
+                          type: array
+                          items:
+                            type: string
+                            example: ['Australian Dollar', 'AUD']
+                        supportsDecimals:
+                          type: boolean
+                          example: true
+                    example:
+                      - code: 'AUD'
+                        symbol: 'A$'
+                        name: 'Australian Dollar'
+                        countryKeywords: ['AUD', 'AU', 'Australia', 'aus']
+                        supportsDecimals: true
+                      - code: 'JPY'
+                        symbol: '¥'
+                        name: 'Japanese Yen'
+                        countryKeywords: ['JPY', 'Yen']
+                        supportsDecimals: false
+                  message:
+                    type: string
+                    example: Currencies fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get all currencies:
+                  value:
+                    data:
+                      - code: 'AUD'
+                        symbol: 'A$'
+                        name: 'Australian Dollar'
+                        countryKeywords: ['AUD', 'AU', 'Australia', 'aus']
+                        supportsDecimals: true
+                      - code: 'JPY'
+                        symbol: '¥'
+                        name: 'Japanese Yen'
+                        countryKeywords: ['JPY', 'Yen']
+                        supportsDecimals: false
+                    message: Currencies fetched successfully
+                    statusCode: 200
+                    success: true
+  /api/v1/liveExchangeRate:
+    get:
+      tags:
+        - Currencies
+      summary: Get Live Exchange Rate
+      description: >-
+        The API endpoint allows you to retrieve all exchange rates.
+      operationId: getLiveExchangeRate
+      parameters:
+        - in: query
+          name: source
+          schema:
+            type: string
+          required: true
+          example: 'USD'
+          description: The source currency code (e.g., USD, EUR)
+        - in: query
+          name: target
+          schema:
+            type: string
+          required: true
+          example: 'EUR'
+          description: The target currency code (e.g., EUR, JPY)
+      responses:
+        '200':
+          description: Get live Exchange Rate
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '815'
+            Date:
+              schema:
+                type: string
+                example: Sat, 17 Jun 2023 19:19:40 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rate:
+                          type: number
+                          format: float
+                          example: 1.1
+                        source:
+                          type: string
+                          example: 'EUR'
+                        target:
+                          type: string
+                          example: 'USD'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2024-10-22T10:22:08+0530'
+                    example:
+                      - rate: 1.1
+                        source: 'USD'
+                        target: 'EUR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                  message:
+                    type: string
+                    example: Exchange rates fetched successfully
+                  statusCode:
+                    type: integer
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get exchange rates:
+                  value:
+                    data:
+                      - rate: 1.1
+                        source: 'USD'
+                        target: 'EUR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                    message: Exchange rates fetched successfully
+                    statusCode: 200
+                    success: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid currency code
+                  statusCode:
+                    type: integer
+                    example: 400
+                  success:
+                    type: boolean
+                    example: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: An error occurred while fetching exchange rates
+                  statusCode:
+                    type: integer
+                    example: 500
+                  success:
+                    type: boolean
+                    example: false
+  /api/v1/historicalExchangeRate:
+    get:
+      tags:
+        - Currencies
+      summary: Get historical Exchange Rates
+      description: >-
+        The API endpoint allows you to retrieve historical exchange rates.
+      operationId: getHistoricalExchangeRate
+      parameters:
+        - in: query
+          name: source
+          schema:
+            type: string
+          required: true
+          example: 'USD'
+          description: The source currency code (e.g., USD, EUR)
+        - in: query
+          name: target
+          schema:
+            type: string
+          required: true
+          example: 'EUR'
+          description: The target currency code (e.g., EUR, JPY)
+        - in: query
+          name: time
+          schema:
+            type: string
+          required: true
+          example: '2024-10-09'
+          description: Historical time when the rate is needed
+      responses:
+        '200':
+          description: Get historical Exchange Rates
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '815'
+            Date:
+              schema:
+                type: string
+                example: Sat, 17 Jun 2023 19:19:40 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rate:
+                          type: number
+                          format: float
+                          example: 1.1
+                        source:
+                          type: string
+                          example: 'EUR'
+                        target:
+                          type: string
+                          example: 'USD'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2024-10-22T10:22:08+0530'
+                    example:
+                      - rate: 1.1
+                        source: 'USD'
+                        target: 'EUR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                  message:
+                    type: string
+                    example: Exchange rates fetched successfully
+                  statusCode:
+                    type: integer
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get all exchange rates:
+                  value:
+                    data:
+                      - rate: 1.1
+                        source: 'USD'
+                        target: 'EUR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                      - rate: 82.5
+                        source: 'USD'
+                        target: 'INR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                    message: Exchange rates fetched successfully
+                    statusCode: 200
+                    success: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid currency code
+                  statusCode:
+                    type: integer
+                    example: 400
+                  success:
+                    type: boolean
+                    example: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: An error occurred while fetching exchange rates
+                  statusCode:
+                    type: integer
+                    example: 500
+                  success:
+                    type: boolean
+                    example: false
+  /api/v1/historicalAggregatedExchangeRate:
+    get:
+      tags:
+        - Currencies
+      summary: Get historical aggregated Exchange Rates
+      description: >-
+        The API endpoint allows you to retrieve historical aggregated exchange rates.
+      operationId: gethistoricalAggregatedExchangeRate
+      parameters:
+        - in: query
+          name: source
+          schema:
+            type: string
+          required: true
+          example: 'USD'
+          description: The source currency code (e.g., USD, EUR)
+        - in: query
+          name: target
+          schema:
+            type: string
+          required: true
+          example: 'EUR'
+          description: The target currency code (e.g., EUR, JPY)
+        - in: query
+          name: start
+          schema:
+            type: string
+          required: true
+          example: '2024-10-07'
+          description: Historical start time when the rate is needed
+        - in: query
+          name: end
+          schema:
+            type: string
+          required: true
+          example: '2024-10-09'
+          description: Historical end time when the rate is needed
+        - in: query
+          name: aggregate
+          schema:
+            type: string
+            enum: [hour, minute, day]
+          required: true
+          example: 'hour'
+          description: The time interval for aggregating exchange rates (hour, minute, or day)
+      responses:
+        '200':
+          description: Get historical aggregated Exchange Rates
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '815'
+            Date:
+              schema:
+                type: string
+                example: Sat, 17 Jun 2023 19:19:40 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rate:
+                          type: number
+                          format: float
+                          example: 1.1
+                        source:
+                          type: string
+                          example: 'EUR'
+                        target:
+                          type: string
+                          example: 'USD'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2024-10-22T10:22:08+0530'
+                    example:
+                      - rate: 1.1
+                        source: 'USD'
+                        target: 'EUR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                  message:
+                    type: string
+                    example: Exchange rates fetched successfully
+                  statusCode:
+                    type: integer
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get all exchange rates:
+                  value:
+                    data:
+                      - rate: 1.1
+                        source: 'USD'
+                        target: 'EUR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                      - rate: 82.5
+                        source: 'USD'
+                        target: 'INR'
+                        timestamp: '2024-10-22T10:22:08+0530'
+                    message: Exchange rates fetched successfully
+                    statusCode: 200
+                    success: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid currency code
+                  statusCode:
+                    type: integer
+                    example: 400
+                  success:
+                    type: boolean
+                    example: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: An error occurred while fetching exchange rates
+                  statusCode:
+                    type: integer
+                    example: 500
+                  success:
+                    type: boolean
+                    example: false
   /reset-db:
     delete:
       tags:
@@ -48315,5 +48882,8 @@ tags:
     description: >-
       This folder contains requests that are used for seeding or populating the
       database with initial data.
+  - name: Currencies
+    description: >-
+      This folder contains requests that are used for currency exchange. Update WISE_API_KEY in .env to use these endpoints
   - name: 🚫 Danger Zone
     description: '**WARNING: Sensitive Operations ⚠️**'
