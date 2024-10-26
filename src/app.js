@@ -157,7 +157,14 @@ import {
   getAllCurrencies,
   getHistoricalExchangeRate,
   getLiveExchangeRate,
-} from "./controllers/apps/currency-exchange/exchange.controllers.js";
+} from "./controllers/apps/exchange-calculator/currency.js";
+import {
+  convertMetalRates,
+  getAllMetals,
+  getHistoricalMetalRates,
+  getLiveMetalRates,
+  getTimeframeMetalRates,
+} from "./controllers/apps/exchange-calculator/metal.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
@@ -242,19 +249,44 @@ app.get(
   getAllCurrencies
 );
 app.get(
-  "/api/v1/liveExchangeRate",
+  "/api/v1/currency/liveExchangeRate",
   // avoidInProduction
   getLiveExchangeRate
 );
 app.get(
-  "/api/v1/historicalExchangeRate",
+  "/api/v1/currency/historicalExchangeRate",
   // avoidInProduction
   getHistoricalExchangeRate
 );
 app.get(
-  "/api/v1/historicalAggregatedExchangeRate",
+  "/api/v1/currency/historicalAggregatedExchangeRate",
   // avoidInProduction
   getAggregatedHistoricalExchangeRate
+);
+app.get(
+  "/api/v1/metal/currencies",
+  // avoidInProduction
+  getAllMetals
+);
+app.get(
+  "/api/v1/metal/liveRates",
+  // avoidInProduction
+  getLiveMetalRates
+);
+app.get(
+  "/api/v1/metal/historicalRates",
+  // avoidInProduction
+  getHistoricalMetalRates
+);
+app.get(
+  "/api/v1/metal/convert",
+  // avoidInProduction
+  convertMetalRates
+);
+app.get(
+  "/api/v1/metal/timeframeRates",
+  // avoidInProduction
+  getTimeframeMetalRates
 );
 
 initializeSocketIO(io);

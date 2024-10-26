@@ -48136,27 +48136,24 @@ paths:
                     message: Database populated for chat app successfully
                     statusCode: 201
                     success: true
+
   /api/v1/currencies:
     get:
       tags:
-        - Currencies
+        - Exchange
       summary: Get all currencies
-      description: >-
-        The API endpoint allows you to retrieve all available currencies.
-        When accessing this endpoint, you will receive a response containing a
-        list of all available currencies.
+      description: Retrieve all available currencies
       operationId: getAllCurrencies
       responses:
         '200':
           $ref: '#/components/responses/CurrenciesResponse'
 
-  /api/v1/liveExchangeRate:
+  /api/v1/currency/liveExchangeRate:
     get:
       tags:
-        - Currencies
+        - Exchange
       summary: Get Live Exchange Rate
-      description: >-
-        The API endpoint allows you to retrieve all exchange rates.
+      description: Retrieve current exchange rates
       operationId: getLiveExchangeRate
       parameters:
         - $ref: '#/components/parameters/sourceCurrency'
@@ -48169,13 +48166,12 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /api/v1/historicalExchangeRate:
+  /api/v1/currency/historicalExchangeRate:
     get:
       tags:
-        - Currencies
+        - Exchange
       summary: Get historical Exchange Rates
-      description: >-
-        The API endpoint allows you to retrieve historical exchange rates.
+      description: Retrieve historical exchange rates
       operationId: getHistoricalExchangeRate
       parameters:
         - $ref: '#/components/parameters/sourceCurrency'
@@ -48189,13 +48185,12 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /api/v1/historicalAggregatedExchangeRate:
+  /api/v1/currency/historicalAggregatedExchangeRate:
     get:
       tags:
-        - Currencies
+        - Exchange
       summary: Get historical aggregated Exchange Rates
-      description: >-
-        The API endpoint allows you to retrieve historical aggregated exchange rates.
+      description: Retrieve historical aggregated exchange rates
       operationId: gethistoricalAggregatedExchangeRate
       parameters:
         - $ref: '#/components/parameters/sourceCurrency'
@@ -48210,6 +48205,112 @@ paths:
           $ref: '#/components/responses/BadRequestError'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  
+  /api/v1/metal/currencies:
+    get:
+      tags:
+        - Exchange
+      summary: Get all metal currencies
+      description: Retrieve all available metal currencies
+      operationId: getAllMetals
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalCurrenciesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/liveRates:
+    get:
+      tags:
+        - Exchange
+      summary: Get Live Metal Rates
+      description: Retrieve live metal rates
+      operationId: getLiveMetalRates
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalRatesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/historicalRates:
+    get:
+      tags:
+        - Exchange
+      summary: Get Historical Metal Rates
+      description: Retrieve historical metal rates
+      operationId: getHistoricalMetalRates
+      parameters:
+        - $ref: '#/components/parameters/date'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalRatesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/convert:
+    get:
+      tags:
+        - Exchange
+      summary: Convert Metal Rates
+      description: Convert metal rates
+      operationId: convertMetalRates
+      parameters:
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+        - $ref: '#/components/parameters/amount'
+        - $ref: '#/components/parameters/date'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalConversionSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/timeframeRates:
+    get:
+      tags:
+        - Exchange
+      summary: Get Timeframe Metal Rates
+      description: Retrieve metal rates for a specific timeframe
+      operationId: getTimeframeMetalRates
+      parameters:
+        - $ref: '#/components/parameters/currencies'
+        - $ref: '#/components/parameters/start_date'
+        - $ref: '#/components/parameters/end_date'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeframeMetalRatesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   parameters:
@@ -48220,7 +48321,7 @@ components:
         type: string
       required: true
       example: 'USD'
-      description: The source currency code (e.g., USD, EUR)
+      description: Source currency code
     targetCurrency:
       in: query
       name: target
@@ -48228,7 +48329,7 @@ components:
         type: string
       required: true
       example: 'EUR'
-      description: The target currency code (e.g., EUR, JPY)
+      description: Target currency code
     historicalTime:
       in: query
       name: time
@@ -48236,7 +48337,7 @@ components:
         type: string
       required: true
       example: '2024-10-09'
-      description: Historical time when the rate is needed
+      description: Historical time for rate
     startTime:
       in: query
       name: start
@@ -48244,7 +48345,7 @@ components:
         type: string
       required: true
       example: '2024-10-07'
-      description: Historical start time when the rate is needed
+      description: Start time for historical rate
     endTime:
       in: query
       name: end
@@ -48252,7 +48353,7 @@ components:
         type: string
       required: true
       example: '2024-10-09'
-      description: Historical end time when the rate is needed
+      description: End time for historical rate
     aggregateInterval:
       in: query
       name: aggregate
@@ -48261,54 +48362,142 @@ components:
         enum: [hour, minute, day]
       required: true
       example: 'hour'
-      description: The time interval for aggregating exchange rates (hour, minute, or day)
+      description: Aggregation interval
+    date:
+      in: query
+      name: date
+      schema:
+        type: string
+        format: date
+      required: true
+      description: Date for historical rates (YYYY-MM-DD)
+    from:
+      in: query
+      name: from
+      schema:
+        type: string
+      required: true
+      description: Source currency
+    to:
+      in: query
+      name: to
+      schema:
+        type: string
+      required: true
+      description: Destination currency
+    amount:
+      in: query
+      name: amount
+      schema:
+        type: number
+      required: true
+      description: Amount to convert
+    currencies:
+      in: query
+      name: currencies
+      schema:
+        type: string
+      required: true
+      description: List of currencies to convert
+    start_date:
+      in: query
+      name: start_date
+      schema:
+        type: string
+        format: date
+      required: true
+      description: Start date for timeframe (YYYY-MM-DD)
+    end_date:
+      in: query
+      name: end_date
+      schema:
+        type: string
+        format: date
+      required: true
+      description: End date for timeframe (YYYY-MM-DD)
 
   responses:
     CurrenciesResponse:
-      description: Get all Currencies
-      headers:
-        $ref: '#/components/headers/CommonHeaders'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CurrenciesResponseSchema'
-          examples:
-            Get all currencies:
-              $ref: '#/components/examples/CurrenciesResponseExample'
-
+      $ref: '#/components/schemas/CurrenciesResponseSchema'
     ExchangeRateResponse:
-      description: Get Exchange Rates
-      headers:
-        $ref: '#/components/headers/CommonHeaders'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ExchangeRateResponseSchema'
-          examples:
-            Get exchange rates:
-              $ref: '#/components/examples/ExchangeRateResponseExample'
-
+      $ref: '#/components/schemas/ExchangeRateResponseSchema'
     BadRequestError:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponseSchema'
-          example:
-            message: Invalid currency code
-            statusCode: 400
-            success: false
-
+      $ref: '#/components/schemas/ErrorResponseSchema'
     InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponseSchema'
-          example:
-            message: An error occurred while fetching exchange rates
-            statusCode: 500
-            success: false
+      $ref: '#/components/schemas/ErrorResponseSchema'
+
+  schemas:
+    CurrenciesResponseSchema:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+    ExchangeRateResponseSchema:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            rate:
+              type: number
+    ErrorResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        success:
+          type: boolean
+    MetalCurrenciesSchema:
+      type: object
+      properties:
+        symbols:
+          type: object
+          additionalProperties:
+            type: string
+    MetalRatesSchema:
+      type: object
+      properties:
+        base:
+          type: string
+        timestamp:
+          type: integer
+        rates:
+          type: object
+          additionalProperties:
+            type: number
+    MetalConversionSchema:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+            query:
+              type: object
+            info:
+              type: object
+            result:
+              type: number
+    TimeframeMetalRatesSchema:
+      type: object
+      properties:
+        base:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+        rates:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
 
   headers:
     CommonHeaders:
@@ -48640,8 +48829,8 @@ tags:
     description: >-
       This folder contains requests that are used for seeding or populating the
       database with initial data.
-  - name: Currencies
+  - name: Exchange
     description: >-
-      This folder contains requests that are used for currency exchange. Update WISE_API_KEY in .env to use these endpoints
+      This folder contains requests that are used for currency exchange. Update WISE_API_KEY, METAL_PRICE_API_KEY in .env to use these endpoints
   - name: 🚫 Danger Zone
     description: '**WARNING: Sensitive Operations ⚠️**'
