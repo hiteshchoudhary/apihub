@@ -48148,104 +48148,8 @@ paths:
       operationId: getAllCurrencies
       responses:
         '200':
-          description: Get all Currencies
-          headers:
-            Access-Control-Allow-Credentials:
-              schema:
-                type: string
-                example: 'true'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: '815'
-            Date:
-              schema:
-                type: string
-                example: Sat, 17 Jun 2023 19:19:40 GMT
-            ETag:
-              schema:
-                type: string
-                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        code:
-                          type: string
-                          example: 'AUD'
-                        symbol:
-                          type: string
-                          example: 'A$'
-                        name:
-                          type: string
-                          example: 'Australian Dollar'
-                        countryKeywords:
-                          type: array
-                          items:
-                            type: string
-                            example: ['Australian Dollar', 'AUD']
-                        supportsDecimals:
-                          type: boolean
-                          example: true
-                    example:
-                      - code: 'AUD'
-                        symbol: 'A$'
-                        name: 'Australian Dollar'
-                        countryKeywords: ['AUD', 'AU', 'Australia', 'aus']
-                        supportsDecimals: true
-                      - code: 'JPY'
-                        symbol: '¥'
-                        name: 'Japanese Yen'
-                        countryKeywords: ['JPY', 'Yen']
-                        supportsDecimals: false
-                  message:
-                    type: string
-                    example: Currencies fetched successfully
-                  statusCode:
-                    type: number
-                    example: 200
-                  success:
-                    type: boolean
-                    example: true
-              examples:
-                Get all currencies:
-                  value:
-                    data:
-                      - code: 'AUD'
-                        symbol: 'A$'
-                        name: 'Australian Dollar'
-                        countryKeywords: ['AUD', 'AU', 'Australia', 'aus']
-                        supportsDecimals: true
-                      - code: 'JPY'
-                        symbol: '¥'
-                        name: 'Japanese Yen'
-                        countryKeywords: ['JPY', 'Yen']
-                        supportsDecimals: false
-                    message: Currencies fetched successfully
-                    statusCode: 200
-                    success: true
+          $ref: '#/components/responses/CurrenciesResponse'
+
   /api/v1/liveExchangeRate:
     get:
       tags:
@@ -48255,137 +48159,16 @@ paths:
         The API endpoint allows you to retrieve all exchange rates.
       operationId: getLiveExchangeRate
       parameters:
-        - in: query
-          name: source
-          schema:
-            type: string
-          required: true
-          example: 'USD'
-          description: The source currency code (e.g., USD, EUR)
-        - in: query
-          name: target
-          schema:
-            type: string
-          required: true
-          example: 'EUR'
-          description: The target currency code (e.g., EUR, JPY)
+        - $ref: '#/components/parameters/sourceCurrency'
+        - $ref: '#/components/parameters/targetCurrency'
       responses:
         '200':
-          description: Get live Exchange Rate
-          headers:
-            Access-Control-Allow-Credentials:
-              schema:
-                type: string
-                example: 'true'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: '815'
-            Date:
-              schema:
-                type: string
-                example: Sat, 17 Jun 2023 19:19:40 GMT
-            ETag:
-              schema:
-                type: string
-                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        rate:
-                          type: number
-                          format: float
-                          example: 1.1
-                        source:
-                          type: string
-                          example: 'EUR'
-                        target:
-                          type: string
-                          example: 'USD'
-                        timestamp:
-                          type: string
-                          format: date-time
-                          example: '2024-10-22T10:22:08+0530'
-                    example:
-                      - rate: 1.1
-                        source: 'USD'
-                        target: 'EUR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                  message:
-                    type: string
-                    example: Exchange rates fetched successfully
-                  statusCode:
-                    type: integer
-                    example: 200
-                  success:
-                    type: boolean
-                    example: true
-              examples:
-                Get exchange rates:
-                  value:
-                    data:
-                      - rate: 1.1
-                        source: 'USD'
-                        target: 'EUR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                    message: Exchange rates fetched successfully
-                    statusCode: 200
-                    success: true
+          $ref: '#/components/responses/ExchangeRateResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid currency code
-                  statusCode:
-                    type: integer
-                    example: 400
-                  success:
-                    type: boolean
-                    example: false
+          $ref: '#/components/responses/BadRequestError'
         '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: An error occurred while fetching exchange rates
-                  statusCode:
-                    type: integer
-                    example: 500
-                  success:
-                    type: boolean
-                    example: false
+          $ref: '#/components/responses/InternalServerError'
+
   /api/v1/historicalExchangeRate:
     get:
       tags:
@@ -48395,148 +48178,17 @@ paths:
         The API endpoint allows you to retrieve historical exchange rates.
       operationId: getHistoricalExchangeRate
       parameters:
-        - in: query
-          name: source
-          schema:
-            type: string
-          required: true
-          example: 'USD'
-          description: The source currency code (e.g., USD, EUR)
-        - in: query
-          name: target
-          schema:
-            type: string
-          required: true
-          example: 'EUR'
-          description: The target currency code (e.g., EUR, JPY)
-        - in: query
-          name: time
-          schema:
-            type: string
-          required: true
-          example: '2024-10-09'
-          description: Historical time when the rate is needed
+        - $ref: '#/components/parameters/sourceCurrency'
+        - $ref: '#/components/parameters/targetCurrency'
+        - $ref: '#/components/parameters/historicalTime'
       responses:
         '200':
-          description: Get historical Exchange Rates
-          headers:
-            Access-Control-Allow-Credentials:
-              schema:
-                type: string
-                example: 'true'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: '815'
-            Date:
-              schema:
-                type: string
-                example: Sat, 17 Jun 2023 19:19:40 GMT
-            ETag:
-              schema:
-                type: string
-                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        rate:
-                          type: number
-                          format: float
-                          example: 1.1
-                        source:
-                          type: string
-                          example: 'EUR'
-                        target:
-                          type: string
-                          example: 'USD'
-                        timestamp:
-                          type: string
-                          format: date-time
-                          example: '2024-10-22T10:22:08+0530'
-                    example:
-                      - rate: 1.1
-                        source: 'USD'
-                        target: 'EUR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                  message:
-                    type: string
-                    example: Exchange rates fetched successfully
-                  statusCode:
-                    type: integer
-                    example: 200
-                  success:
-                    type: boolean
-                    example: true
-              examples:
-                Get all exchange rates:
-                  value:
-                    data:
-                      - rate: 1.1
-                        source: 'USD'
-                        target: 'EUR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                      - rate: 82.5
-                        source: 'USD'
-                        target: 'INR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                    message: Exchange rates fetched successfully
-                    statusCode: 200
-                    success: true
+          $ref: '#/components/responses/ExchangeRateResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid currency code
-                  statusCode:
-                    type: integer
-                    example: 400
-                  success:
-                    type: boolean
-                    example: false
+          $ref: '#/components/responses/BadRequestError'
         '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: An error occurred while fetching exchange rates
-                  statusCode:
-                    type: integer
-                    example: 500
-                  success:
-                    type: boolean
-                    example: false
+          $ref: '#/components/responses/InternalServerError'
+
   /api/v1/historicalAggregatedExchangeRate:
     get:
       tags:
@@ -48546,163 +48198,269 @@ paths:
         The API endpoint allows you to retrieve historical aggregated exchange rates.
       operationId: gethistoricalAggregatedExchangeRate
       parameters:
-        - in: query
-          name: source
-          schema:
-            type: string
-          required: true
-          example: 'USD'
-          description: The source currency code (e.g., USD, EUR)
-        - in: query
-          name: target
-          schema:
-            type: string
-          required: true
-          example: 'EUR'
-          description: The target currency code (e.g., EUR, JPY)
-        - in: query
-          name: start
-          schema:
-            type: string
-          required: true
-          example: '2024-10-07'
-          description: Historical start time when the rate is needed
-        - in: query
-          name: end
-          schema:
-            type: string
-          required: true
-          example: '2024-10-09'
-          description: Historical end time when the rate is needed
-        - in: query
-          name: aggregate
-          schema:
-            type: string
-            enum: [hour, minute, day]
-          required: true
-          example: 'hour'
-          description: The time interval for aggregating exchange rates (hour, minute, or day)
+        - $ref: '#/components/parameters/sourceCurrency'
+        - $ref: '#/components/parameters/targetCurrency'
+        - $ref: '#/components/parameters/startTime'
+        - $ref: '#/components/parameters/endTime'
+        - $ref: '#/components/parameters/aggregateInterval'
       responses:
         '200':
-          description: Get historical aggregated Exchange Rates
-          headers:
-            Access-Control-Allow-Credentials:
-              schema:
-                type: string
-                example: 'true'
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: '*'
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: '815'
-            Date:
-              schema:
-                type: string
-                example: Sat, 17 Jun 2023 19:19:40 GMT
-            ETag:
-              schema:
-                type: string
-                example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        rate:
-                          type: number
-                          format: float
-                          example: 1.1
-                        source:
-                          type: string
-                          example: 'EUR'
-                        target:
-                          type: string
-                          example: 'USD'
-                        timestamp:
-                          type: string
-                          format: date-time
-                          example: '2024-10-22T10:22:08+0530'
-                    example:
-                      - rate: 1.1
-                        source: 'USD'
-                        target: 'EUR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                  message:
-                    type: string
-                    example: Exchange rates fetched successfully
-                  statusCode:
-                    type: integer
-                    example: 200
-                  success:
-                    type: boolean
-                    example: true
-              examples:
-                Get all exchange rates:
-                  value:
-                    data:
-                      - rate: 1.1
-                        source: 'USD'
-                        target: 'EUR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                      - rate: 82.5
-                        source: 'USD'
-                        target: 'INR'
-                        timestamp: '2024-10-22T10:22:08+0530'
-                    message: Exchange rates fetched successfully
-                    statusCode: 200
-                    success: true
+          $ref: '#/components/responses/ExchangeRateResponse'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid currency code
-                  statusCode:
-                    type: integer
-                    example: 400
-                  success:
-                    type: boolean
-                    example: false
+          $ref: '#/components/responses/BadRequestError'
         '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: An error occurred while fetching exchange rates
-                  statusCode:
-                    type: integer
-                    example: 500
-                  success:
-                    type: boolean
-                    example: false
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    sourceCurrency:
+      in: query
+      name: source
+      schema:
+        type: string
+      required: true
+      example: 'USD'
+      description: The source currency code (e.g., USD, EUR)
+    targetCurrency:
+      in: query
+      name: target
+      schema:
+        type: string
+      required: true
+      example: 'EUR'
+      description: The target currency code (e.g., EUR, JPY)
+    historicalTime:
+      in: query
+      name: time
+      schema:
+        type: string
+      required: true
+      example: '2024-10-09'
+      description: Historical time when the rate is needed
+    startTime:
+      in: query
+      name: start
+      schema:
+        type: string
+      required: true
+      example: '2024-10-07'
+      description: Historical start time when the rate is needed
+    endTime:
+      in: query
+      name: end
+      schema:
+        type: string
+      required: true
+      example: '2024-10-09'
+      description: Historical end time when the rate is needed
+    aggregateInterval:
+      in: query
+      name: aggregate
+      schema:
+        type: string
+        enum: [hour, minute, day]
+      required: true
+      example: 'hour'
+      description: The time interval for aggregating exchange rates (hour, minute, or day)
+
+  responses:
+    CurrenciesResponse:
+      description: Get all Currencies
+      headers:
+        $ref: '#/components/headers/CommonHeaders'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CurrenciesResponseSchema'
+          examples:
+            Get all currencies:
+              $ref: '#/components/examples/CurrenciesResponseExample'
+
+    ExchangeRateResponse:
+      description: Get Exchange Rates
+      headers:
+        $ref: '#/components/headers/CommonHeaders'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExchangeRateResponseSchema'
+          examples:
+            Get exchange rates:
+              $ref: '#/components/examples/ExchangeRateResponseExample'
+
+    BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponseSchema'
+          example:
+            message: Invalid currency code
+            statusCode: 400
+            success: false
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponseSchema'
+          example:
+            message: An error occurred while fetching exchange rates
+            statusCode: 500
+            success: false
+
+  headers:
+    CommonHeaders:
+      Access-Control-Allow-Credentials:
+        schema:
+          type: string
+          example: 'true'
+      Access-Control-Allow-Origin:
+        schema:
+          type: string
+          example: '*'
+      Connection:
+        schema:
+          type: string
+          example: keep-alive
+      Content-Length:
+        schema:
+          type: string
+          example: '815'
+      Date:
+        schema:
+          type: string
+          example: Sat, 17 Jun 2023 19:19:40 GMT
+      ETag:
+        schema:
+          type: string
+          example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
+      Keep-Alive:
+        schema:
+          type: string
+          example: timeout=5
+      X-Powered-By:
+        schema:
+          type: string
+          example: Express
+
+  schemas:
+    CurrenciesResponseSchema:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencySchema'
+        message:
+          type: string
+          example: Currencies fetched successfully
+        statusCode:
+          type: number
+          example: 200
+        success:
+          type: boolean
+          example: true
+
+    CurrencySchema:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 'AUD'
+        symbol:
+          type: string
+          example: 'A$'
+        name:
+          type: string
+          example: 'Australian Dollar'
+        countryKeywords:
+          type: array
+          items:
+            type: string
+            example: ['AUD', 'AU', 'Australia', 'aus']
+        supportsDecimals:
+          type: boolean
+          example: true
+
+    ExchangeRateResponseSchema:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeRateSchema'
+        message:
+          type: string
+          example: Exchange rates fetched successfully
+        statusCode:
+          type: integer
+          example: 200
+        success:
+          type: boolean
+          example: true
+
+    ExchangeRateSchema:
+      type: object
+      properties:
+        rate:
+          type: number
+          format: float
+          example: 1.1
+        source:
+          type: string
+          example: 'USD'
+        target:
+          type: string
+          example: 'EUR'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-10-22T10:22:08+0530'
+
+    ErrorResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        success:
+          type: boolean
+
+  examples:
+    CurrenciesResponseExample:
+      value:
+        data:
+          - code: 'AUD'
+            symbol: 'A$'
+            name: 'Australian Dollar'
+            countryKeywords: ['AUD', 'AU', 'Australia', 'aus']
+            supportsDecimals: true
+          - code: 'JPY'
+            symbol: '¥'
+            name: 'Japanese Yen'
+            countryKeywords: ['JPY', 'Yen']
+            supportsDecimals: false
+        message: Currencies fetched successfully
+        statusCode: 200
+        success: true
+
+    ExchangeRateResponseExample:
+      value:
+        data:
+          - rate: 1.1
+            source: 'USD'
+            target: 'EUR'
+            timestamp: '2024-10-22T10:22:08+0530'
+          - rate: 82.5
+            source: 'USD'
+            target: 'INR'
+            timestamp: '2024-10-22T10:22:08+0530'
+        message: Exchange rates fetched successfully
+        statusCode: 200
+        success: true
   /reset-db:
     delete:
       tags:
