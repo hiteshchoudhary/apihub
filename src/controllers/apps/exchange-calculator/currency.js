@@ -1,6 +1,7 @@
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { fetchAndValidateResponseWithApiKey } from "../../../utils/helpers.js";
 
 const baseUrl = "https://api.transferwise.com/v1/";
 
@@ -8,7 +9,7 @@ const getAllCurrencies = asyncHandler(async (req, res) => {
   const apiKey = getApiKey();
 
   try {
-    const currencies = await fetchAndValidateResponse(
+    const currencies = await fetchAndValidateResponseWithApiKey(
       `${baseUrl}/currencies`,
       apiKey,
       "Failed to fetch currencies from external API"
@@ -147,7 +148,7 @@ const getAggregatedHistoricalExchangeRate = asyncHandler(async (req, res) => {
   console.log(apiUrl, "HERE IS THE URL YOURE TRYING TO HIT");
 
   try {
-    const rates = await fetchAndValidateResponse(
+    const rates = await fetchAndValidateResponseWithApiKey(
       apiUrl,
       apiKey,
       "Failed to fetch exchange rates from external API"
@@ -160,30 +161,6 @@ const getAggregatedHistoricalExchangeRate = asyncHandler(async (req, res) => {
     handleError(error, "Error fetching historical exchange rates");
   }
 });
-
-// Helper functions
-const fetchAndValidateResponse = async (url, apiKey, errorMessage) => {
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new ApiError(response.status, errorMessage);
-  }
-
-  const data = await response.json();
-
-  if (!Array.isArray(data) || data.length === 0) {
-    throw new ApiError(500, "Invalid response from API");
-  }
-
-  return data;
-};
-
-const fetchCurrencies = async (apiKey) => {};
 
 const fetchHistoricalExchangeRates = async (
   apiKey,
@@ -200,7 +177,7 @@ const fetchHistoricalExchangeRates = async (
   });
 
   const apiUrl = `${baseUrl}/rates?${queryParams}`;
-  return fetchAndValidateResponse(
+  return fetchAndValidateResponseWithApiKey(
     apiUrl,
     apiKey,
     "Failed to fetch exchange rates from external API"

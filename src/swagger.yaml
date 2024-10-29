@@ -48391,6 +48391,7 @@ components:
       schema:
         type: number
       required: true
+      example: 100
       description: Amount to convert
     currencies:
       in: query
@@ -48398,6 +48399,7 @@ components:
       schema:
         type: string
       required: true
+      example: 'USD'
       description: List of currencies to convert
     start_date:
       in: query
@@ -48434,14 +48436,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    ExchangeRateResponseSchema:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            rate:
-              type: number
     ErrorResponseSchema:
       type: object
       properties:
@@ -48498,60 +48492,6 @@ components:
             type: object
             additionalProperties:
               type: number
-
-  headers:
-    CommonHeaders:
-      Access-Control-Allow-Credentials:
-        schema:
-          type: string
-          example: 'true'
-      Access-Control-Allow-Origin:
-        schema:
-          type: string
-          example: '*'
-      Connection:
-        schema:
-          type: string
-          example: keep-alive
-      Content-Length:
-        schema:
-          type: string
-          example: '815'
-      Date:
-        schema:
-          type: string
-          example: Sat, 17 Jun 2023 19:19:40 GMT
-      ETag:
-        schema:
-          type: string
-          example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
-      Keep-Alive:
-        schema:
-          type: string
-          example: timeout=5
-      X-Powered-By:
-        schema:
-          type: string
-          example: Express
-
-  schemas:
-    CurrenciesResponseSchema:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CurrencySchema'
-        message:
-          type: string
-          example: Currencies fetched successfully
-        statusCode:
-          type: number
-          example: 200
-        success:
-          type: boolean
-          example: true
-
     CurrencySchema:
       type: object
       properties:
@@ -48608,15 +48548,40 @@ components:
           format: date-time
           example: '2024-10-22T10:22:08+0530'
 
-    ErrorResponseSchema:
-      type: object
-      properties:
-        message:
+  headers:
+    CommonHeaders:
+      Access-Control-Allow-Credentials:
+        schema:
           type: string
-        statusCode:
-          type: integer
-        success:
-          type: boolean
+          example: 'true'
+      Access-Control-Allow-Origin:
+        schema:
+          type: string
+          example: '*'
+      Connection:
+        schema:
+          type: string
+          example: keep-alive
+      Content-Length:
+        schema:
+          type: string
+          example: '815'
+      Date:
+        schema:
+          type: string
+          example: Sat, 17 Jun 2023 19:19:40 GMT
+      ETag:
+        schema:
+          type: string
+          example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
+      Keep-Alive:
+        schema:
+          type: string
+          example: timeout=5
+      X-Powered-By:
+        schema:
+          type: string
+          example: Express
 
   examples:
     CurrenciesResponseExample:

@@ -1,6 +1,7 @@
 import { ApiError } from "../../../utils/ApiError.js";
 import { ApiResponse } from "../../../utils/ApiResponse.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { fetchAndValidateResponseWithApiKey } from "../../../utils/helpers.js";
 
 const baseUrl = "https://api.metalpriceapi.com/v1/";
 
@@ -8,7 +9,7 @@ const getAllMetals = asyncHandler(async (req, res) => {
   const apiKey = getApiKey();
 
   try {
-    const metals = await fetchAndValidateResponse(
+    const metals = await fetchAndValidateResponseWithApiKey(
       `${baseUrl}symbols?api_key=${apiKey}`,
       "Failed to fetch metals from external API"
     );
@@ -28,7 +29,7 @@ const getLiveMetalRates = asyncHandler(async (req, res) => {
     const url = new URL(`${baseUrl}latest`);
     url.searchParams.append("api_key", apiKey);
 
-    const rates = await fetchAndValidateResponse(
+    const rates = await fetchAndValidateResponseWithApiKey(
       url.toString(),
       "Failed to fetch metal rates from external API"
     );
@@ -54,7 +55,7 @@ const getHistoricalMetalRates = asyncHandler(async (req, res) => {
     const url = new URL(`${baseUrl}${date}`);
     url.searchParams.append("api_key", apiKey);
 
-    const rates = await fetchAndValidateResponse(
+    const rates = await fetchAndValidateResponseWithApiKey(
       url.toString(),
       "Failed to fetch historical metal rates from external API"
     );
@@ -89,7 +90,7 @@ const convertMetalRates = asyncHandler(async (req, res) => {
     url.searchParams.append("to", to);
     url.searchParams.append("amount", amount);
 
-    const conversion = await fetchAndValidateResponse(
+    const conversion = await fetchAndValidateResponseWithApiKey(
       url.toString(),
       "Failed to convert metal rates from external API"
     );
@@ -124,7 +125,7 @@ const getTimeframeMetalRates = asyncHandler(async (req, res) => {
     url.searchParams.append("base", base);
     if (currencies) url.searchParams.append("currencies", currencies);
 
-    const rates = await fetchAndValidateResponse(
+    const rates = await fetchAndValidateResponseWithApiKey(
       url.toString(),
       "Failed to fetch timeframe metal rates from external API"
     );
@@ -142,23 +143,6 @@ const getTimeframeMetalRates = asyncHandler(async (req, res) => {
     handleError(error, "Error fetching timeframe metal rates");
   }
 });
-
-// Helper functions
-const fetchAndValidateResponse = async (url, errorMessage) => {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new ApiError(response.status, errorMessage);
-  }
-
-  const data = await response.json();
-
-  if (!data || data.success === false) {
-    throw new ApiError(500, data.error || "Invalid response from API");
-  }
-
-  return data;
-};
 
 const getApiKey = () => {
   const apiKey = process.env.METAL_PRICE_API_KEY;
