@@ -1,7 +1,7 @@
 dist/
 package-lock.json
 sonar-project.properties.test
-
+commit.sh
 # Logs
 logs
 *.log
