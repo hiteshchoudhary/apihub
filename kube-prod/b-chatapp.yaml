@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-app-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: chat-app
+        tier: backend
+    spec:
+      containers:
+      - name: chat-app-backend
+        image: noscopev6/chatapp-b:9157a30548bc4852ecabcd4a97259628d6a6af69
+        ports:
+        - containerPort: 8080
