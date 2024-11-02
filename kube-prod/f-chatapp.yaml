@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-app-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-app-frontend
+  template:
+    metadata:
+      labels:
+        app: chat-app-frontend
+    spec:
+      containers:
+      - name: chat-app-frontend
+        image: noscopev6/chatapp-b:9157a30548bc4852ecabcd4a97259628d6a6af69
+        ports:
+        - containerPort: 3000
+        env:
+        - name: VITE_SERVER_URI
+          value: "https://chatapi.kubecloud.in.net/api/v1"   # Update the Backend URL to connect to backend server 
+        - name: VITE_SOCKET_URI
+          value: "https://chatapi.kubecloud.in.net"       # Update the Backend URL to connect to backend server 
