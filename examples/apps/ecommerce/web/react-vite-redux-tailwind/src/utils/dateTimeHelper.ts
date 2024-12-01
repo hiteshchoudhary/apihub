@@ -73,3 +73,38 @@ export const checkIfDateIsInRange = (
   }
   return false;
 };
+
+
+/* Grid Date Comparator for filter */
+export const gridDateFilterComparator = (filterLocalDateAtMidnight: Date, cellValue: DATE_TIME_FORMATS.displayedDateWithTime) => {
+
+  const filterValueMoment = moment(filterLocalDateAtMidnight);
+  const cellValueMoment = moment(cellValue, DATE_TIME_FORMATS.displayedDateWithTime);
+  if(filterValueMoment.isSame(cellValueMoment, 'date')){
+    return 0;
+  }
+  else if(filterValueMoment.isAfter(cellValueMoment, 'date')){
+    return -1;
+  }
+
+  return 1;
+
+}
+/* Grid Date Comparator for sorting */
+export const gridDateSortComparator = (dateA: DATE_TIME_FORMATS.displayedDateWithTime, dateB: DATE_TIME_FORMATS.displayedDateWithTime) => {
+
+  const dateAMoment = moment(dateA, DATE_TIME_FORMATS.displayedDateWithTime);
+  const dateBMoment = moment(dateB, DATE_TIME_FORMATS.displayedDateWithTime);
+
+  if(dateAMoment.isSame(dateBMoment)){
+    return 0;
+  }
+  else if(dateAMoment.isAfter(dateBMoment)){
+    return -1;
+  }
+  return 1;
+}
+
+export const getMomentObjectFromDateObject = (date: Date) => {
+  return moment(date);
+}
