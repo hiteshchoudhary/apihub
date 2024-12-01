@@ -168,7 +168,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     req.user._id,
     {
       $set: {
-        refreshToken: '',
+        refreshToken: "",
       },
     },
     { new: true }
@@ -216,7 +216,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   // Now we can remove the associated email token and expiry date as we no  longer need them
   user.emailVerificationToken = undefined;
   user.emailVerificationExpiry = undefined;
-  // Tun the email verified flag to `true`
+  // Turn the email verified flag to `true`
   user.isEmailVerified = true;
   await user.save({ validateBeforeSave: false });
 
@@ -294,6 +294,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken: newRefreshToken } =
       await generateAccessAndRefreshTokens(user._id);
+
+    // Update the user's refresh token in the database
+    user.refreshToken = newRefreshToken;
+    await user.save();
 
     return res
       .status(200)

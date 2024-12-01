@@ -1,5 +1,6 @@
 import fs from "fs";
 import mongoose from "mongoose";
+import logger from "../logger/winston.logger.js";
 
 /**
  *
@@ -113,9 +114,9 @@ export const getLocalPath = (fileName) => {
  */
 export const removeLocalFile = (localPath) => {
   fs.unlink(localPath, (err) => {
-    if (err) console.log("Error while removing local files: ", err);
+    if (err) logger.error("Error while removing local files: ", err);
     else {
-      console.log("Removed local: ", localPath);
+      logger.info("Removed local: ", localPath);
     }
   });
 };
@@ -154,7 +155,7 @@ export const removeUnusedMulterImageFilesOnError = (req) => {
     }
   } catch (error) {
     // fail silently
-    console.log("Error while removing image files: ", error);
+    logger.error("Error while removing image files: ", error);
   }
 };
 

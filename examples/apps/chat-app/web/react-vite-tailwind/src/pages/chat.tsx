@@ -42,7 +42,7 @@ const MESSAGE_DELETE_EVENT = "messageDeleted";
 
 const ChatPage = () => {
   // Import the 'useAuth' and 'useSocket' hooks from their respective contexts
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { socket } = useSocket();
 
   // Create a reference using 'useRef' to hold the currently selected chat.
@@ -426,6 +426,14 @@ const ChatPage = () => {
       <div className="w-full justify-between items-stretch h-screen flex flex-shrink-0">
         <div className="w-1/3 relative ring-white overflow-y-auto px-4">
           <div className="z-10 w-full sticky top-0 bg-dark py-4 flex justify-between items-center gap-4">
+            <button
+              type="button"
+              className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-xl text-sm px-5 py-4 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 flex-shrink-0"
+              onClick={logout}
+            >
+              Log Out
+            </button>
+
             <Input
               placeholder="Search user or group..."
               value={localSearchQuery}

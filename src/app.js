@@ -145,6 +145,7 @@ import responseinspectionRouter from "./routes/kitchen-sink/responseinspection.r
 import statuscodeRouter from "./routes/kitchen-sink/statuscode.routes.js";
 
 // * Seeding handlers
+import logger from "./logger/winston.logger.js";
 import { avoidInProduction } from "./middlewares/auth.middlewares.js";
 import { seedChatApp } from "./seeds/chat-app.seeds.js";
 import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
@@ -203,18 +204,32 @@ app.use("/api/v1/kitchen-sink/image", imageRouter);
 // * Seeding
 app.get(
   "/api/v1/seed/generated-credentials",
-  avoidInProduction,
+  // avoidInProduction,
   getGeneratedCredentials
 );
-app.post("/api/v1/seed/todos", avoidInProduction, seedTodos);
-app.post("/api/v1/seed/ecommerce", avoidInProduction, seedUsers, seedEcommerce);
+app.post(
+  "/api/v1/seed/todos",
+  // avoidInProduction,
+  seedTodos
+);
+app.post(
+  "/api/v1/seed/ecommerce",
+  // avoidInProduction,
+  seedUsers,
+  seedEcommerce
+);
 app.post(
   "/api/v1/seed/social-media",
-  avoidInProduction,
+  // avoidInProduction,
   seedUsers,
   seedSocialMedia
 );
-app.post("/api/v1/seed/chat-app", avoidInProduction, seedUsers, seedChatApp);
+app.post(
+  "/api/v1/seed/chat-app",
+  // avoidInProduction,
+  seedUsers,
+  seedChatApp
+);
 
 initializeSocketIO(io);
 
@@ -232,7 +247,7 @@ app.delete("/api/v1/reset-db", avoidInProduction, async (req, res) => {
     fs.readdir(directory, (err, files) => {
       if (err) {
         // fail silently
-        console.log("Error while removing the images: ", err);
+        logger.error("Error while removing the images: ", err);
       } else {
         for (const file of files) {
           if (file === ".gitkeep") continue;
@@ -245,7 +260,7 @@ app.delete("/api/v1/reset-db", avoidInProduction, async (req, res) => {
     // remove the seeded users if exist
     fs.unlink("./public/temp/seed-credentials.json", (err) => {
       // fail silently
-      if (err) console.log("Seed credentials are missing.");
+      if (err) logger.error("Seed credentials are missing.");
     });
     return res
       .status(200)

@@ -32,13 +32,13 @@
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
     "bcrypt": "^5.1.0",
-    "cookie-parser": "^1.4.6",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.19.2",
+    "express": "4.21.1",
     "express-compression": "^1.0.2",
     "express-rate-limit": "^6.7.0",
-    "express-session": "^1.17.3",
+    "express-session": "^1.18.1",
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "mailgen": "^2.0.27",
@@ -53,7 +53,7 @@
     "passport-google-oauth20": "^2.0.0",
     "razorpay": "^2.8.6",
     "request-ip": "^3.3.0",
-    "socket.io": "^4.7.1",
+    "socket.io": "^4.8.0",
     "swagger-ui-express": "^4.6.3",
     "winston": "^3.11.0",
     "yaml": "^2.3.1"
@@ -76,5 +76,12 @@
     "prettier": "^3.0.0",
     "supertest": "^6.3.4",
     "supertest-session": "^5.0.1"
+  },
+  "resolutions": {
+    "ws": "^8.17.1",
+    "ejs": "^3.1.10",
+    "formidable": "^3.5.1",
+    "braces": "^3.0.3",
+    "micromatch": "^4.0.8"
   }
 }
