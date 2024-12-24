@@ -5768,6 +5768,1509 @@ paths:
                     message: Stock fetched successfully
                     statusCode: 200
                     success: true
+  /public/movies:
+      get:
+        tags:
+          - 📢 Public APIs
+
+        summary: Get movies
+        description: >-
+          This API endpoint allows you to retrieve a list of movies.
+
+          You can use query parameters to search by title or overview, filter by genres, and control pagination.
+        operationId: getMovies
+        parameters:
+          - name: page
+            in: query
+            schema:
+              type: string
+              example: '1'
+          - name: limit
+            in: query
+            schema:
+              type: string
+              example: '10'
+          - name: query
+            in: query
+            schema:
+              type: string
+              example: 'spider'
+          - name: with_genres
+            in: query
+            schema:
+              type: string
+              example: 'fantasy,drama'
+          - name: inc
+            in: query
+            schema:
+              type: string
+              example: 'title,casts'
+        responses:
+          '200':
+            description: Get movies
+            headers:
+              Access-Control-Allow-Credentials:
+                schema:
+                  type: string
+                  example: 'true'
+              Access-Control-Allow-Origin:
+                schema:
+                  type: string
+                  example: '*'
+              Connection:
+                schema:
+                  type: string
+                  example: keep-alive
+              Content-Length:
+                schema:
+                  type: string
+                  example: '54743'
+              Date:
+                schema:
+                  type: string
+                  example: Thu, 01 Jun 2023 05:47:47 GMT
+              ETag:
+                schema:
+                  type: string
+                  example: W/"6d15-0KcGCMfWHfOKgogQFckT/3DtmQw"
+              Keep-Alive:
+                schema:
+                  type: string
+                  example: timeout=5
+              X-Powered-By:
+                schema:
+                  type: string
+                  example: Express
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        currentPageItems:
+                          type: number
+                          example: 4
+                        data:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              adult:
+                                type: boolean
+                                example: false
+                              backdrop_path:
+                                type: string
+                                example: "https://image.tmdb.org/t/p/w780/417tYZ4XUyJrtyZXj7HpvWf1E8f.jpg"
+                              genre_ids:
+                                type: array
+                                items:
+                                  type: string
+                                  example: "animation"
+                                example:
+                                  - "animation"
+                                  - "science fiction"
+                                  - "family"
+                              id:
+                                type: integer
+                                example: 1
+                              original_language:
+                                type: string
+                                example: "en"
+                              original_title:
+                                type: string
+                                example: "The Wild Robot"
+                              overview:
+                                type: string
+                                example: >-
+                                  After a shipwreck, an intelligent robot called Roz is
+                                  stranded on an uninhabited island. To survive the harsh
+                                  environment, Roz bonds with the island's animals and cares
+                                  for an orphaned baby goose.
+                              popularity:
+                                type: number
+                                example: 6482.313
+                              poster_path:
+                                type: string
+                                example: "https://image.tmdb.org/t/p/w342/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg"
+                              release_date:
+                                type: string
+                                example: "2024-09-12"
+                              title:
+                                type: string
+                                example: "The Wild Robot"
+                              video:
+                                type: boolean
+                                example: false
+                              vote_average:
+                                type: number
+                                example: 8.707
+                              vote_count:
+                                type: integer
+                                example: 923
+                              status:
+                                type: string
+                                example: "Released"
+                              runtime:
+                                type: integer
+                                example: 90
+                              trailer:
+                                type: string
+                                example: "https://www.youtube.com/watch?v=1bq0qff4iF8"
+                              casts:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    adult:
+                                      type: boolean
+                                      example: false
+                                    gender:
+                                      type: integer
+                                      example: 1
+                                    cast_id:
+                                      type: integer
+                                      example: 1
+                                    known_for_department:
+                                      type: string
+                                      example: "Acting"
+                                    name:
+                                      type: string
+                                      example: "Lupita Nyong'o"
+                                    original_name:
+                                      type: string
+                                      example: "Lupita Nyong'o"
+                                    popularity:
+                                      type: number
+                                      example: 26.484
+                                    profile_path:
+                                      type: string
+                                      example: "https://image.tmdb.org/t/p/w342/y40Wu1T742kynOqtwXASc5Qgm49.jpg"
+                                    character:
+                                      type: string
+                                      example: "Roz / Rummage (voice)"
+                                    order:
+                                      type: integer
+                                      example: 0
+                          example:
+                            adult: false
+                            backdrop_path: "https://image.tmdb.org/t/p/w780/417tYZ4XUyJrtyZXj7HpvWf1E8f.jpg"
+                            genre_ids:
+                              - "animation"
+                              - "science fiction"
+                              - "family"
+                            id: 1
+                            original_language: "en"
+                            original_title: "The Wild Robot"
+                            overview: >-
+                              After a shipwreck, an intelligent robot called Roz is
+                              stranded on an uninhabited island. To survive the harsh
+                              environment, Roz bonds with the island's animals and cares
+                              for an orphaned baby goose.
+                            popularity: 6482.313
+                            poster_path: "https://image.tmdb.org/t/p/w342/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg"
+                            release_date: "2024-09-12"
+                            title: "The Wild Robot"
+                            video: false
+                            vote_average: 8.707
+                            vote_count: 923
+                            status: "Released"
+                            runtime: 90
+                            trailer: "https://www.youtube.com/watch?v=1bq0qff4iF8"
+                            casts:
+                              - adult: false
+                                gender: 1
+                                cast_id: 1
+                                known_for_department: "Acting"
+                                name: "Lupita Nyong'o"
+                                original_name: "Lupita Nyong'o"
+                                popularity: 26.484
+                                profile_path: "https://image.tmdb.org/t/p/w342/y40Wu1T742kynOqtwXASc5Qgm49.jpg"
+                                character: "Roz / Rummage (voice)"
+                                order: 0
+                        limit:
+                          type: number
+                          example: 10
+                        nextPage:
+                          type: boolean
+                          example: true
+                        page:
+                          type: number
+                          example: 1
+                        previousPage:
+                          type: boolean
+                          example: false
+                        totalItems:
+                          type: number
+                          example: 100
+                        totalPages:
+                          type: number
+                          example: 10
+                    message:
+                      type: string
+                      example: Movies fetched successfully
+                    statusCode:
+                      type: number
+                      example: 200
+                    success:
+                      type: boolean
+                      example: true
+                examples:
+                  Get Movies:
+                    value:
+                      data:
+                        currentPageItems: 4
+                        data:
+                          - adult: false
+                            backdrop_path: "https://image.tmdb.org/t/p/w780/417tYZ4XUyJrtyZXj7HpvWf1E8f.jpg"
+                            genre_ids:
+                              - "animation"
+                              - "science fiction"
+                              - "family"
+                            id: 1
+                            original_language: "en"
+                            original_title: "The Wild Robot"
+                            overview: >-
+                              After a shipwreck, an intelligent robot called Roz is stranded
+                              on an uninhabited island. To survive the harsh environment,
+                              Roz bonds with the island's animals and cares for an orphaned
+                              baby goose.
+                            popularity: 6482.313
+                            poster_path: "https://image.tmdb.org/t/p/w342/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg"
+                            release_date: "2024-09-12"
+                            title: "The Wild Robot"
+                            video: false
+                            vote_average: 8.707
+                            vote_count: 923
+                            status: "Released"
+                            runtime: 90
+                            trailer: "https://www.youtube.com/watch?v=1bq0qff4iF8"
+                            casts:
+                              adult: false
+                              gender: 1
+                              cast_id: 1
+                              known_for_department: "Acting"
+                              name: "Lupita Nyong'o"
+                              original_name: "Lupita Nyong'o"
+                              popularity: 26.484
+                              profile_path: "https://image.tmdb.org/t/p/w342/y40Wu1T742kynOqtwXASc5Qgm49.jpg"
+                              character: "Roz / Rummage (voice)"
+                              order: 0
+                        limit: 10
+                        nextPage: true
+                        page: 1
+                        previousPage: false
+                        totalItems: 100
+                        totalPages: 10
+                      message: Movies fetched successfully
+                      statusCode: 200
+                      success: true
+  /public/movies/{movieId}:
+    get:
+      tags:
+        - 📢 Public APIs
+        
+      summary: Get movie by ID
+      description: >-
+        The API endpoint retrieves a movie based on the movie ID provided as a path variable.
+
+        By accessing this endpoint and specifying a valid movie ID, you will receive a response containing the details of the corresponding movie.
+      operationId: getMovieById
+      responses:
+        '200':
+          description: Get movie by ID
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '3361'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:47:57 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"d21-VOx6nGLbPBZU6wWmXZSPV7oDdm8"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      adult:
+                        type: boolean
+                        example: false
+                      backdrop_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w780/417tYZ4XUyJrtyZXj7HpvWf1E8f.jpg"
+                      genre_ids:
+                        type: array
+                        items:
+                          type: string
+                          example: "animation"
+                        example:
+                          - "animation"
+                          - "science fiction"
+                          - "family"
+                      id:
+                      type: integer
+                      example: 1
+                      original_language:
+                        type: string
+                        example: "en"
+                      original_title:
+                        type: string
+                        example: "The Wild Robot"
+                      overview:
+                        type: string
+                        example: >-
+                          After a shipwreck, an intelligent robot called Roz is
+                          stranded on an uninhabited island. To survive the harsh
+                          environment, Roz bonds with the island's animals and cares
+                          for an orphaned baby goose.
+                      popularity:
+                        type: number
+                        example: 6482.313
+                      poster_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w342/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg"
+                      release_date:
+                        type: string
+                        example: "2024-09-12"
+                      title:
+                        type: string
+                        example: "The Wild Robot"
+                      video:
+                        type: boolean
+                        example: false
+                      vote_average:
+                        type: number
+                        example: 8.707
+                      vote_count:
+                        type: integer
+                        example: 923
+                      status:
+                        type: string
+                        example: "Released"
+                      runtime:
+                        type: integer
+                        example: 102
+                      trailer:
+                        type: string
+                        example: "https://www.youtube.com/embed/VUCNBAmse04"
+                      casts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            adult:
+                              type: boolean
+                              example: false
+                            gender:
+                              type: integer
+                              example: 1
+                            cast_id:
+                              type: integer
+                              example: 1
+                            known_for_department:
+                              type: string
+                              example: "Acting"
+                            name:
+                              type: string
+                              example: "Lupita Nyong'o"
+                            original_name:
+                              type: string
+                              example: "Lupita Nyong'o"
+                            popularity:
+                              type: number
+                              example: 26.484
+                            profile_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w342/y40Wu1T742kynOqtwXASc5Qgm49.jpg"
+                            character:
+                              type: string
+                              example: "Roz / Rummage (voice)"
+                            order:
+                              type: integer
+                              example: 0
+                  message:
+                    type: string
+                    example: Movie fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get movie by id:
+                  value:
+                    data:
+                      adult: false
+                      backdrop_path: "https://image.tmdb.org/t/p/w780/417tYZ4XUyJrtyZXj7HpvWf1E8f.jpg"
+                      genre_ids:
+                        - "animation"
+                        - "science fiction"
+                        - "family"
+                      id: 1
+                      original_language: "en"
+                      original_title: "The Wild Robot"
+                      overview: >-
+                        After a shipwreck, an intelligent robot called Roz is
+                        stranded on an uninhabited island. To survive the harsh
+                        environment, Roz bonds with the island's animals and cares
+                        for an orphaned baby goose.
+                      popularity: 6482.313
+                      poster_path: "https://image.tmdb.org/t/p/w342/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg"
+                      release_date: "2024-09-12"
+                      title: "The Wild Robot"
+                      video: false
+                      vote_average: 8.707
+                      vote_count: 923
+                      status: "Released"
+                      runtime: 102
+                      trailer: "https://www.youtube.com/embed/VUCNBAmse04"
+                      casts:
+                        - adult: false
+                          gender: 1
+                          cast_id: 1
+                          known_for_department: "Acting"
+                          name: "Lupita Nyong'o"
+                          original_name: "Lupita Nyong'o"
+                          popularity: 26.484
+                          profile_path: "https://image.tmdb.org/t/p/w342/y40Wu1T742kynOqtwXASc5Qgm49.jpg"
+                          character: "Roz / Rummage (voice)"
+                          order: 0
+    parameters:
+      - name: movieId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '1'
+  /public/movies/movie/random:
+    get:
+      tags:
+        - 📢 Public APIs
+
+      summary: Get a random movie
+      description: >-
+        The API endpoint returns a single random movie from a list of movies.
+
+        Upon accessing this endpoint, you will receive a response containing the
+        details of a randomly selected movie.
+      operationId: getARandomMovie
+      responses:
+        '200':
+          description: Get a random joke
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '278'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:46:32 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"116-g0J4ogeV3LVqn3g7rODx7tn00sM"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      adult:
+                        type: boolean
+                        example: false
+                      backdrop_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w780/417tYZ4XUyJrtyZXj7HpvWf1E8f.jpg"
+                      genre_ids:
+                        type: array
+                        items:
+                          type: string
+                          example: "animation"
+                        example:
+                          - "animation"
+                          - "science fiction"
+                          - "family"
+                      id:
+                      type: integer
+                      example: 1
+                      original_language:
+                        type: string
+                        example: "en"
+                      original_title:
+                        type: string
+                        example: "The Wild Robot"
+                      overview:
+                        type: string
+                        example: >-
+                          After a shipwreck, an intelligent robot called Roz is
+                          stranded on an uninhabited island. To survive the harsh
+                          environment, Roz bonds with the island's animals and cares
+                          for an orphaned baby goose.
+                      popularity:
+                        type: number
+                        example: 6482.313
+                      poster_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w342/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg"
+                      release_date:
+                        type: string
+                        example: "2024-09-12"
+                      title:
+                        type: string
+                        example: "The Wild Robot"
+                      video:
+                        type: boolean
+                        example: false
+                      vote_average:
+                        type: number
+                        example: 8.707
+                      vote_count:
+                        type: integer
+                        example: 923
+                      status:
+                        type: string
+                        example: "Released"
+                      runtime:
+                        type: integer
+                        example: 102
+                      trailer:
+                        type: string
+                        example: "https://www.youtube.com/embed/VUCNBAmse04"
+                      casts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            adult:
+                              type: boolean
+                              example: false
+                            gender:
+                              type: integer
+                              example: 1
+                            cast_id:
+                              type: integer
+                              example: 1
+                            known_for_department:
+                              type: string
+                              example: "Acting"
+                            name:
+                              type: string
+                              example: "Lupita Nyong'o"
+                            original_name:
+                              type: string
+                              example: "Lupita Nyong'o"
+                            popularity:
+                              type: number
+                              example: 26.484
+                            profile_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w342/y40Wu1T742kynOqtwXASc5Qgm49.jpg"
+                            character:
+                              type: string
+                              example: "Roz / Rummage (voice)"
+                            order:
+                              type: integer
+                              example: 0
+                  message:
+                    type: string
+                    example: Random movie fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get a random movie:
+                  value:
+                    data:
+                      adult: false
+                      backdrop_path: "https://image.tmdb.org/t/p/w780/417tYZ4XUyJrtyZXj7HpvWf1E8f.jpg"
+                      genre_ids:
+                        - "animation"
+                        - "science fiction"
+                        - "family"
+                      id: 1
+                      original_language: "en"
+                      original_title: "The Wild Robot"
+                      overview: >-
+                        After a shipwreck, an intelligent robot called Roz is
+                        stranded on an uninhabited island. To survive the harsh
+                        environment, Roz bonds with the island's animals and cares
+                        for an orphaned baby goose.
+                      popularity: 6482.313
+                      poster_path: "https://image.tmdb.org/t/p/w342/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg"
+                      release_date: "2024-09-12"
+                      title: "The Wild Robot"
+                      video: false
+                      vote_average: 8.707
+                      vote_count: 923
+                      status: "Released"
+                      runtime: 102
+                      trailer: "https://www.youtube.com/embed/VUCNBAmse04"
+                      casts:
+                        - adult: false
+                          gender: 1
+                          cast_id: 1
+                          known_for_department: "Acting"
+                          name: "Lupita Nyong'o"
+                          original_name: "Lupita Nyong'o"
+                          popularity: 26.484
+                          profile_path: "https://image.tmdb.org/t/p/w342/y40Wu1T742kynOqtwXASc5Qgm49.jpg"
+                          character: "Roz / Rummage (voice)"
+                          order: 0
+  /public/series:
+    get:
+      tags:
+        - 📢 Public APIs
+
+      summary: Get series
+      description: >-
+        This API endpoint allows you to retrieve a list of series.
+
+        You can use query parameters to search by title or overview, filter by genres, and control pagination.
+      operationId: getSeries
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: string
+            example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: string
+            example: '10'
+        - name: query
+          in: query
+          schema:
+            type: string
+            example: 'spider'
+        - name: with_genres
+          in: query
+          schema:
+            type: string
+            example: 'comedy,drama'
+        - name: inc
+          in: query
+          schema:
+            type: string
+            example: 'name,casts'
+      responses:
+        '200':
+          description: Get series
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '54743'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:47:47 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"6d15-0KcGCMfWHfOKgogQFckT/3DtmQw"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      currentPageItems:
+                        type: number
+                        example: 4
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            adult:
+                              type: boolean
+                              example: false
+                            backdrop_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w780/bFVx0ydejF6NE8SEAVz95ns0o6A.jpg"
+                            first_air_date:
+                              type: string
+                              example: "2011-01-09"
+                            genres:
+                              type: array
+                              items:
+                                type: string
+                                example: "comedy"
+                              example:
+                                - "comedy"
+                                - "drama"
+                            id:
+                              type: integer
+                              example: 1
+                            original_language:
+                              type: string
+                              example: "en"
+                            name:
+                              type: string
+                              example: "Shameless"
+                            number_of_episodes:
+                              type: integer
+                              example: 134
+                            number_of_seasons:
+                              type: integer
+                              example: 11
+                            original_name:
+                              type: string
+                              example: "Shameless"
+                            overview:
+                              type: string
+                              example: >-
+                                Chicagoan Frank Gallagher is the proud single dad of six smart, industrious, independent kids, who without him would be... perhaps better off. When Frank's not at the bar spending what little money they have, he's passed out on the floor. But the kids have found ways to grow up in spite of him. They may not be like any family you know, but they make no apologies for being exactly who they are.
+                            popularity:
+                              type: number
+                              example: 574.765
+                            seasons:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  air_date:
+                                    type: string
+                                    example: "2011-01-09"
+                                  episode_count:
+                                    type: integer
+                                    example: 12
+                                  id:
+                                    type: integer
+                                    example: 1
+                                  name:
+                                    type: string
+                                    example: "Season 1"
+                                  overview:
+                                    type: string
+                                    example: >-
+                                      The Gallaghers are a Chicago family trying to live the American Dream the only way they know how: one scheme at a time!
+                                  poster_path:
+                                    type: string
+                                    example: "https://image.tmdb.org/t/p/w780/3L0ewQDnvgWdfL8rYi4fdHeiell.jpg"
+                                  season_number:
+                                    type: integer
+                                    example: 1
+                            poster_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w342/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg"
+                            status:
+                              type: string
+                              example: "End"
+                            vote_average:
+                              type: number
+                              example: 8.6
+                            vote_count:
+                              type: integer
+                              example: 1234
+                            trailer:
+                              type: string
+                              example: "https://www.youtube.com/embed/9tvkYS5cA58"
+                            casts:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  adult:
+                                    type: boolean
+                                    example: false
+                                  gender:
+                                    type: integer
+                                    example: 2
+                                  cast_id:
+                                    type: integer
+                                    example: 1
+                                  known_for_department:
+                                    type: string
+                                    example: "Acting"
+                                  name:
+                                    type: string
+                                    example: "William H. Macy"
+                                  original_name:
+                                    type: string
+                                    example: "William H. Macy"
+                                  popularity:
+                                    type: number
+                                    example: 26.484
+                                  profile_path:
+                                    type: string
+                                    example: "https://image.tmdb.org/t/p/w342/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+                                  character:
+                                    type: string
+                                    example: "Frank Gallagher"
+                                  order:
+                                    type: integer
+                                    example: 0
+                        examples:
+                          - adult: false
+                            backdrop_path: "https://image.tmdb.org/t/p/w780/bFVx0ydejF6NE8SEAVz95ns0o6A.jpg"
+                            first_air_date: "2011-01-09"
+                            genres:
+                              - "comedy"
+                              - "drama"
+                            id: 1
+                            original_language: "en"
+                            name: "Shameless"
+                            number_of_episodes: 134
+                            number_of_seasons: 11
+                            original_name: "Shameless"
+                            overview: >-
+                              Chicagoan Frank Gallagher is the proud single dad of six smart, industrious, independent kids, who without him would be... perhaps better off. When Frank's not at the bar spending what little money they have, he's passed out on the floor. But the kids have found ways to grow up in spite of him. They may not be like any family you know, but they make no apologies for being exactly who they are.
+                            popularity: 574.765
+                            seasons:
+                              - air_date: "2011-01-09"
+                                episode_count: 12
+                                id: 1
+                                name: "Season 1"
+                                overview: >-
+                                  The Gallaghers are a Chicago family trying to live the American Dream the only way they know how: one scheme at a time!
+                                poster_path: "https://image.tmdb.org/t/p/w780/3L0ewQDnvgWdfL8rYi4fdHeiell.jpg"
+                                season_number: 1
+                            poster_path: "https://image.tmdb.org/t/p/w342/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg"
+                            status: "End"
+                            vote_average: 8.6
+                            vote_count: 1234
+                            trailer: "https://www.youtube.com/embed/9tvkYS5cA58"
+                            casts:
+                              adult: false
+                              gender: 2
+                              cast_id:  1
+                              known_for_department: "Acting"
+                              name: "William H. Macy"
+                              original_name: "William H. Macy"
+                              popularity: 26.484
+                              profile_path: "https://image.tmdb.org/t/p/w342/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+                              character: "Frank Gallagher"
+                              order: 0
+                        limit:
+                          type: number
+                          example: 10
+                        nextPage:
+                          type: boolean
+                          example: true
+                        page:
+                          type: number
+                          example: 1
+                        previousPage:
+                          type: boolean
+                          example: false
+                        totalItems:
+                          type: number
+                          example: 100
+                        totalPages:
+                          type: number
+                          example: 10
+                    message:
+                      type: string
+                      example: Movies fetched successfully
+                    statusCode:
+                      type: number
+                      example: 200
+                    success:
+                      type: boolean
+                      example: true
+              examples:
+                Get series:
+                  value:
+                    data:
+                      currentPageItems: 4
+                      data:
+                        - adult: false
+                          backdrop_path: "https://image.tmdb.org/t/p/w780/bFVx0ydejF6NE8SEAVz95ns0o6A.jpg"
+                          first_air_date: "2011-01-09"
+                          genres:
+                            - "comedy"
+                            - "drama"
+                          id: 1
+                          original_language: "en"
+                          name: "Shameless"
+                          number_of_episodes: 134
+                          number_of_seasons: 11
+                          original_name: "Shameless"
+                          overview: >-
+                            Chicagoan Frank Gallagher is the proud single dad of six smart, industrious, independent kids, who without him would be... perhaps better off. When Frank's not at the bar spending what little money they have, he's passed out on the floor. But the kids have found ways to grow up in spite of him. They may not be like any family you know, but they make no apologies for being exactly who they are.
+                          popularity: 574.765
+                          seasons:
+                            - air_date: "2011-01-09"
+                              episode_count: 12
+                              id: 1
+                              name: "Season 1"
+                              overview: >-
+                                The Gallaghers are a Chicago family trying to live the American Dream the only way they know how: one scheme at a time!
+                              poster_path: "https://image.tmdb.org/t/p/w780/3L0ewQDnvgWdfL8rYi4fdHeiell.jpg"
+                              season_number: 1
+                          poster_path: "https://image.tmdb.org/t/p/w342/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg"
+                          status: "End"
+                          vote_average: 8.6
+                          vote_count: 1234
+                          trailer: "https://www.youtube.com/embed/9tvkYS5cA58"
+                          casts:
+                            adult: false
+                            gender: 2
+                            cast_id: 1
+                            known_for_department: "Acting"
+                            name: "William H. Macy"
+                            original_name: "William H. Macy"
+                            popularity: 26.484
+                            profile_path: "https://image.tmdb.org/t/p/w342/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+                            character: "Frank Gallagher"
+                            order: 0
+                      limit: 10
+                      nextPage: true
+                      page: 1
+                      previousPage: false
+                      totalItems: 100
+                      totalPages: 10
+                    message: Movies fetched successfully
+                    statusCode: 200
+                    success: true
+  /public/series/{seriesId}:
+    get:
+      tags:
+        - 📢 Public APIs
+
+      summary: Get series by ID
+      description: >-
+        The API endpoint retrieves a series based on the series ID provided as a path variable.
+
+        By accessing this endpoint and specifying a valid series ID, you will receive a response containing the details of the corresponding series.
+      operationId: getSeriesById
+      responses:
+        '200':
+          description: Get series by ID
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '3361'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:47:57 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"d21-VOx6nGLbPBZU6wWmXZSPV7oDdm8"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      adult:
+                        type: boolean
+                        example: false
+                      backdrop_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w780/bFVx0ydejF6NE8SEAVz95ns0o6A.jpg"
+                      first_air_date:
+                        type: string
+                        example: "2011-01-09"
+                      genres:
+                        type: array
+                        items:
+                          type: string
+                          example: "comedy"
+                        example:
+                          - "comedy"
+                          - "drama"
+                      id:
+                      type: integer
+                      example: 1
+                      original_language:
+                        type: string
+                        example: "en"
+                      name:
+                        type: string
+                        example: "Shameless"
+                      number_of_episodes:
+                        type: integer
+                        example: 134
+                      number_of_seasons:
+                        type: integer
+                        example: 11
+                      original_name:
+                        type: string
+                        example: "Shameless"
+                      overview:
+                        type: string
+                        example: >-
+                          Chicagoan Frank Gallagher is the proud single dad of six smart, industrious, independent kids, who without him would be... perhaps better off. When Frank's not at the bar spending what little money they have, he's passed out on the floor. But the kids have found ways to grow up in spite of him. They may not be like any family you know, but they make no apologies for being exactly who they are.
+                      popularity:
+                        type: number
+                        example: 574.765
+                      seasons:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            air_date:
+                              type: string
+                              example: "2011-01-09"
+                            episode_count:
+                              type: integer
+                              example: 12
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: "Season 1"
+                            overview:
+                              type: string
+                              example: >-
+                                The Gallaghers are a Chicago family trying to live the American Dream the only way they know how: one scheme at a time!
+                            poster_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w780/3L0ewQDnvgWdfL8rYi4fdHeiell.jpg"
+                            season_number:
+                              type: integer
+                              example: 1
+                      casts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            adult:
+                              type: boolean
+                              example: false
+                            gender:
+                              type: integer
+                              example: 2
+                            cast_id:
+                              type: integer
+                              example: 1
+                            known_for_department:
+                              type: string
+                              example: "Acting"
+                            name:
+                              type: string
+                              example: "William H. Macy"
+                            original_name:
+                              type: string
+                              example: "William H. Macy"
+                            popularity:
+                              type: number
+                              example: 26.484
+                            profile_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w342/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+                            character:
+                              type: string
+                              example: "Frank Gallagher"
+                            order:
+                              type: integer
+                              example: 0
+                      poster_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w342/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg"
+                      status:
+                        type: string
+                        example: "End"
+                      vote_average:
+                        type: number
+                        example: 8.6
+                      vote_count:
+                        type: integer
+                        example: 1234
+                      trailer:
+                        type: string
+                        example: "https://www.youtube.com/embed/9tvkYS5cA58"
+                  message:
+                    type: string
+                    example: Movie fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get series by ID:
+                  value:
+                    data:
+                      adult: false
+                      backdrop_path: "https://image.tmdb.org/t/p/w780/bFVx0ydejF6NE8SEAVz95ns0o6A.jpg"
+                      first_air_date: "2011-01-09"
+                      genres:
+                        - "comedy"
+                        - "drama"
+                      id: 1
+                      original_language: "en"
+                      name: "Shameless"
+                      number_of_episodes: 134
+                      number_of_seasons: 11
+                      original_name: "Shameless"
+                      overview: >-
+                        Chicagoan Frank Gallagher is the proud single dad of six smart, industrious, independent kids, who without him would be... perhaps better off. When Frank's not at the bar spending what little money they have, he's passed out on the floor. But the kids have found ways to grow up in spite of him. They may not be like any family you know, but they make no apologies for being exactly who they are.
+                      popularity: 574.765
+                      seasons:
+                        - air_date: "2011-01-09"
+                          episode_count: 12
+                          id: 1
+                          name: "Season 1"
+                          overview: >-
+                            The Gallaghers are a Chicago family trying to live the American Dream the only way they know how: one scheme at a time!
+                          poster_path: "https://image.tmdb.org/t/p/w780/3L0ewQDnvgWdfL8rYi4fdHeiell.jpg"
+                          season_number: 1
+                      poster_path: "https://image.tmdb.org/t/p/w342/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg"
+                      status: "End"
+                      vote_average: 8.6
+                      vote_count: 1234
+                      trailer: "https://www.youtube.com/embed/9tvkYS5cA58"
+                      casts:
+                        adult: false
+                        gender: 2
+                        cast_id: 1
+                        known_for_department: "Acting"
+                        name: "William H. Macy"
+                        original_name: "William H. Macy"
+                        popularity: 26.484
+                        profile_path: "https://image.tmdb.org/t/p/w342/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+                        character: "Frank Gallagher"
+                        order: 0
+    parameters:
+      - name: seriesId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '1'
+  /public/series/series/random:
+    get:
+      tags:
+        - 📢 Public APIs
+
+      summary: Get a random series
+      description: >-
+        The API endpoint returns a single random series from a list of series.
+
+        Upon accessing this endpoint, you will receive a response containing the details of a randomly selected series.
+      operationId: getARandomSeries
+      responses:
+        '200':
+          description: Get a random series
+          headers:
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+                example: 'true'
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: '3361'
+            Date:
+              schema:
+                type: string
+                example: Thu, 01 Jun 2023 05:48:07 GMT
+            ETag:
+              schema:
+                type: string
+                example: W/"d21-VOx6nGLbPBZU6wWmXZSPV7oDdm8"
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      adult:
+                        type: boolean
+                        example: false
+                      backdrop_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w780/bFVx0ydejF6NE8SEAVz95ns0o6A.jpg"
+                      first_air_date:
+                        type: string
+                        example: "2011-01-09"
+                      genres:
+                        type: array
+                        items:
+                          type: string
+                          example: "comedy"
+                        example:
+                          - "comedy"
+                          - "drama"
+                      id:
+                      type: integer
+                      example: 1
+                      original_language:
+                        type: string
+                        example: "en"
+                      name:
+                        type: string
+                        example: "Shameless"
+                      number_of_episodes:
+                        type: integer
+                        example: 134
+                      number_of_seasons:
+                        type: integer
+                        example: 11
+                      original_name:
+                        type: string
+                        example: "Shameless"
+                      overview:
+                        type: string
+                        example: >-
+                          Chicagoan Frank Gallagher is the proud single dad of six smart, industrious, independent kids, who without him would be... perhaps better off. When Frank's not at the bar spending what little money they have, he's passed out on the floor. But the kids have found ways to grow up in spite of him. They may not be like any family you know, but they make no apologies for being exactly who they are.
+                      popularity:
+                        type: number
+                        example: 574.765
+                      seasons:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            air_date:
+                              type: string
+                              example: "2011-01-09"
+                            episode_count:
+                              type: integer
+                              example: 12
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: "Season 1"
+                            overview:
+                              type: string
+                              example: >-
+                                The Gallaghers are a Chicago family trying to live the American Dream the only way they know how: one scheme at a time!
+                            poster_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w780/3L0ewQDnvgWdfL8rYi4fdHeiell.jpg"
+                            season_number:
+                              type: integer
+                              example: 1
+                      casts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            adult:
+                              type: boolean
+                              example: false
+                            gender:
+                              type: integer
+                              example: 2
+                            cast_id:
+                              type: integer
+                              example: 1
+                            known_for_department:
+                              type: string
+                              example: "Acting"
+                            name:
+                              type: string
+                              example: "William H. Macy"
+                            original_name:
+                              type: string
+                              example: "William H. Macy"
+                            popularity:
+                              type: number
+                              example: 26.484
+                            profile_path:
+                              type: string
+                              example: "https://image.tmdb.org/t/p/w342/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+                            character:
+                              type: string
+                              example: "Frank Gallagher"
+                            order:
+                              type: integer
+                              example: 0
+                      poster_path:
+                        type: string
+                        example: "https://image.tmdb.org/t/p/w342/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg"
+                      status:
+                        type: string
+                        example: "End"
+                      vote_average:
+                        type: number
+                        example: 8.6
+                      vote_count:
+                        type: integer
+                        example: 1234
+                      trailer:
+                        type: string
+                        example: "https://www.youtube.com/embed/9tvkYS5cA58"
+                  message:
+                    type: string
+                    example: Movie fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+              examples:
+                Get a random series:
+                  value:
+                    data:
+                      adult: false
+                      backdrop_path: "https://image.tmdb.org/t/p/w780/bFVx0ydejF6NE8SEAVz95ns0o6A.jpg"
+                      first_air_date: "2011-01-09"
+                      genres:
+                        - "comedy"
+                        - "drama"
+                      id: 1
+                      original_language: "en"
+                      name: "Shameless"
+                      number_of_episodes: 134
+                      number_of_seasons: 11
+                      original_name: "Shameless"
+                      overview: >-
+                        Chicagoan Frank Gallagher is the proud single dad of six smart, industrious, independent kids, who without him would be... perhaps better off. When Frank's not at the bar spending what little money they have, he's passed out on the floor. But the kids have found ways to grow up in spite of him. They may not be like any family you know, but they make no apologies for being exactly who they are.
+                      popularity: 574.765
+                      seasons:
+                        - air_date: "2011-01-09"
+                          episode_count: 12
+                          id: 1
+                          name: "Season 1"
+                          overview: >-
+                            The Gallaghers are a Chicago family trying to live the American Dream the only way they know how: one scheme at a time!
+                          poster_path: "https://image.tmdb.org/t/p/w780/3L0ewQDnvgWdfL8rYi4fdHeiell.jpg"
+                          season_number: 1
+                      poster_path: "https://image.tmdb.org/t/p/w342/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg"
+                      status: "End"
+                      vote_average: 8.6
+                      vote_count: 1234
+                      trailer: "https://www.youtube.com/embed/9tvkYS5cA58"
+                      casts:
+                        adult: false
+                        gender: 2
+                        cast_id: 1
+                        known_for_department: "Acting"
+                        name: "William H. Macy"
+                        original_name: "William H. Macy"
+                        popularity: 26.484
+                        profile_path: "https://image.tmdb.org/t/p/w342/hdVEGSrP8qWlJnt0v5vSVcGOjy7.jpg"
+                        character: "Frank Gallagher"
+                        order: 0
+    parameters:
+      - name: seriesId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '1'
   /public/quotes:
     get:
       tags:
