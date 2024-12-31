@@ -7,6 +7,7 @@ interface RadioButtonsProps<T> {
   items: Array<RADIO_BUTTON_TYPE<T>>;
   containerClassName?: string;
   radioButtonContainerClassName?: string;
+  radioButtonClassName?: string;
   onChange(selectedItem: T): void;
   errorMessage?: string;
 }
@@ -19,6 +20,7 @@ const RadioButtons = React.forwardRef(
       items,
       containerClassName = "",
       radioButtonContainerClassName = "",
+      radioButtonClassName = "",
       onChange,
       errorMessage = "",
     } = props;
@@ -46,7 +48,7 @@ const RadioButtons = React.forwardRef(
               defaultChecked={item.isDefaultSelected}
               ref={ref}
               className={`appearance-none cursor-pointer w-4 h-4 bg-white rounded-full outline outline-2 outline-black 
-              checked:border-[3px] checked:border-white checked:bg-black
+              checked:border-[3px] checked:border-white checked:bg-black ${radioButtonClassName}
               ${isRTL ? "ml-2" : "mr-2"}`}
               onChange={() => {
                 onChange(item.data);

@@ -30,6 +30,7 @@ const LogoutModalContainer = (props: LogoutModalContainerProps) => {
       //Error
       setErrorMessage(response.errorResponse?.message || response.errorMessage)
     } else {
+      hideModal();
       dispatch(logOut());
       navigate("/");
     }

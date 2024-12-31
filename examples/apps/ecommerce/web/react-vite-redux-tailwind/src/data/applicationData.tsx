@@ -11,8 +11,10 @@ import {
   CategoryIcon,
   DropdownItem,
   NavigationOption,
+  ROUTE_PATHS,
   SelectionMenuItem,
   TabItemConfig,
+  USER_ROLES,
 } from "../constants";
 import i18n from "../i18n";
 
@@ -25,40 +27,72 @@ export const DRAWER_ITEMS: Array<NavigationOption> = [
   {
     id: 2,
     textKey: "about",
-    navigateTo: "/about",
+    navigateTo: ROUTE_PATHS.about,
   },
   {
     id: 3,
     textKey: "login",
-    navigateTo: "/login",
+    navigateTo: ROUTE_PATHS.login,
   },
 ];
 
-export const getNavigationItemList = (isLoggedIn: boolean) => {
+export const ADMIN_NAVIGATION_ITEMS: Array<NavigationOption> = [
+  {
+    id: 1,
+    textKey: "categories",
+    navigateTo: ROUTE_PATHS.adminCategories,
+  },
+  {
+    id: 2,
+    textKey: "products",
+    navigateTo: ROUTE_PATHS.adminProducts,
+  },
+  {
+    id: 3,
+    textKey: "orders",
+    navigateTo: ROUTE_PATHS.adminOrders,
+  },
+  {
+    id: 4,
+    textKey: "coupons",
+    navigateTo: ROUTE_PATHS.adminCoupons,
+  }
+];
+
+export const getNavigationItemList = (
+  isLoggedIn: boolean,
+  role: USER_ROLES
+) => {
   const tempDrawerItems = [...DRAWER_ITEMS];
   if (isLoggedIn) {
     tempDrawerItems.pop();
+    if (role === USER_ROLES.admin) {
+      tempDrawerItems.push({
+        id: 4,
+        textKey: "admin",
+        navigateTo: ROUTE_PATHS.adminCategories,
+      });
+    }
     tempDrawerItems.push({
-      id: 4,
+      id: 5,
       textKey: "myAccount",
       navigateTo: "my-account",
-      customComponent: <MyAccountOptionContainer />
+      customComponent: <MyAccountOptionContainer />,
     });
   }
   return tempDrawerItems;
 };
 
-
 export const MY_ACCOUNT_OPTIONS: Array<SelectionMenuItem> = [
   {
     id: 1,
     textKey: "manageAccount",
-    icon: <AccountIcon className="w-5 h-5"/>,
+    icon: <AccountIcon className="w-5 h-5" />,
   },
   {
     id: 2,
     textKey: "myOrders",
-    icon: <OrderIcon className="w-5 h-5" />
+    icon: <OrderIcon className="w-5 h-5" />,
   },
   {
     id: 3,
@@ -75,7 +109,12 @@ export const DEFAULT_CURRENCY = "INR";
 
 export const DEFAULT_COUNTRY = "United Arab Emirates";
 
-export const COUNTRIES_DROPDOWN_LIST: DropdownItem[] = [{id: 1, text: DEFAULT_COUNTRY}, {id: 2, text: "India"}]
+export const COUPON_CODE_MINIMUM_LENGTH = 4;
+
+export const COUNTRIES_DROPDOWN_LIST: DropdownItem[] = [
+  { id: 1, text: DEFAULT_COUNTRY },
+  { id: 2, text: "India" },
+];
 export const COMPANY_GURANTEE_LIST: COMPANY_GURANTEE[] = [
   {
     id: 1,
@@ -100,47 +139,50 @@ export const COMPANY_GURANTEE_LIST: COMPANY_GURANTEE[] = [
 export const EXPLORE_PRODUCTS_COUNT = 8;
 export const FEATURED_PRODUCTS_COUNT = 4;
 export const RELATED_PRODUCTS_COUNT = 4;
+export const MAX_SUBIMAGES_PER_PRODUCT = 4;
 
 export enum PAYMENT_TYPES {
-  PAYPAL = "PAYPAL"
+  PAYPAL = "PAYPAL",
 }
 
 export const MANAGE_ACCOUNT_TABS: Array<TabItemConfig> = [
   {
-    id: 1, 
-    tabHeadingKey: "editProfile"
+    id: 1,
+    tabHeadingKey: "editProfile",
   },
   {
-    id: 2, 
-    tabHeadingKey: "myAddresses"
-  }
-]
+    id: 2,
+    tabHeadingKey: "myAddresses",
+  },
+];
 
 export enum ORDER_STATUS {
-  PENDING= "PENDING",
-  CANCELLED= "CANCELLED",
-  DELIVERED= "DELIVERED",
+  PENDING = "PENDING",
+  CANCELLED = "CANCELLED",
+  DELIVERED = "DELIVERED",
 }
 export const ORDER_STATUS_FILTERS_CHECKBOX: Array<CHECKBOX_TYPE<null>> = [
   {
     id: ORDER_STATUS.PENDING,
-    data: null, 
+    data: null,
     isDefaultSelected: true,
     isLabelKey: true,
-    label: i18n.t("pending")
+    label: i18n.t("pending"),
   },
   {
     id: ORDER_STATUS.CANCELLED,
-    data: null, 
+    data: null,
     isDefaultSelected: true,
     label: i18n.t("cancelled"),
     isLabelKey: true,
   },
   {
     id: ORDER_STATUS.DELIVERED,
-    data: null, 
+    data: null,
     isDefaultSelected: true,
     label: i18n.t("delivered"),
     isLabelKey: true,
-  }
-]
+  },
+];
+
+

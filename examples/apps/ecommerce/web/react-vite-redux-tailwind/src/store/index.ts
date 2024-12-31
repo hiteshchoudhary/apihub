@@ -5,6 +5,7 @@ import BreakpointSlice from "./BreakpointSlice";
 import AuthSlice from "./AuthSlice";
 import ToastMessageSlice from "./ToastMessageSlice";
 import CartSlice from "./CartSlice";
+import UIinfoSlice from "./UIinfoSlice";
 
 const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
         breakpoint: BreakpointSlice.reducer,
         auth: AuthSlice.reducer,
         toastMessage: ToastMessageSlice.reducer,
-        cart: CartSlice.reducer
+        cart: CartSlice.reducer,
+        uiInfo: UIinfoSlice.reducer
     }
 })
 /* useAppSelector and useAppDispatch for typescript */
