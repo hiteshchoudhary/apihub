@@ -10,7 +10,6 @@ const runCommand = (command, args) => {
 
   const result = spawnSync(isWindows ? "cmd" : command, commandArgs, {
     stdio: "inherit",
-    shell,
   });
 
   return result.status;
