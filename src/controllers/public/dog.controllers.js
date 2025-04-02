@@ -1,8 +1,13 @@
-import dogsJson from "../../json/dogs.json" assert { type: "json" };
+import fs from "fs";
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
+
+// use fs.readFileSync to load JSON synchronously in ES module context.
+const dogsJson = JSON.parse(
+  fs.readFileSync(new URL("../../json/dogs.json", import.meta.url), "utf-8")
+);
 
 const getDogs = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);

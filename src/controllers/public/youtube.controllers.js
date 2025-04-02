@@ -1,13 +1,45 @@
+import fs from "fs";
 import { YouTubeFilterEnum, AvailableYouTubeFilters } from "../../constants.js";
-import channelJson from "../../json/youtube/channel.json" assert { type: "json" };
-import commentsJson from "../../json/youtube/comments.json" assert { type: "json" };
-import playlistItemsJson from "../../json/youtube/playlistitems.json" assert { type: "json" };
-import playlistsJson from "../../json/youtube/playlists.json" assert { type: "json" };
-import videosJson from "../../json/youtube/videos.json" assert { type: "json" };
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
+
+// use fs.readFileSync to load JSON synchronously in ES module context.
+const channelJson = JSON.parse(
+  fs.readFileSync(
+    new URL("../../json/youtube/channel.json", import.meta.url),
+    "utf-8"
+  )
+);
+
+const commentsJson = JSON.parse(
+  fs.readFileSync(
+    new URL("../../json/youtube/comments.json", import.meta.url),
+    "utf-8"
+  )
+);
+
+const playlistItemsJson = JSON.parse(
+  fs.readFileSync(
+    new URL("../../json/youtube/playlistitems.json", import.meta.url),
+    "utf-8"
+  )
+);
+
+const playlistsJson = JSON.parse(
+  fs.readFileSync(
+    new URL("../../json/youtube/playlists.json", import.meta.url),
+    "utf-8"
+  )
+);
+
+const videosJson = JSON.parse(
+  fs.readFileSync(
+    new URL("../../json/youtube/videos.json", import.meta.url),
+    "utf-8"
+  )
+);
 
 const getChannelDetails = asyncHandler(async (req, res) => {
   const channelDetails = channelJson.channel;
