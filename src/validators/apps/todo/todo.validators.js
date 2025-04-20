@@ -19,7 +19,7 @@ const createTodoValidator = () => {
       .optional()
       .trim()
       .notEmpty()
-      .withMessage("Todo title is required"),
+      .withMessage("Todo description is required"),
   ];
 };
 
@@ -34,7 +34,7 @@ const updateTodoValidator = () => {
       .optional()
       .trim()
       .notEmpty()
-      .withMessage("Todo title is required"),
+      .withMessage("Todo description is required"),
   ];
 };
 

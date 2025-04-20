@@ -11,7 +11,7 @@ const updateEcomProfileValidator = () => {
       .optional()
       .trim()
       .notEmpty()
-      .withMessage("First name is required"),
+      .withMessage("Last name is required"),
     body("phoneNumber")
       .optional()
       .trim()

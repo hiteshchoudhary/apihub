@@ -11,7 +11,7 @@ const updateSocialProfileValidator = () => {
       .optional()
       .trim()
       .notEmpty()
-      .withMessage("First name is required"),
+      .withMessage("Last name is required"),
     body("bio").optional().trim().notEmpty().withMessage("Bio is required"),
     body("dob")
       .optional()
