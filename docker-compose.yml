@@ -2,24 +2,59 @@ version: '3.8'
 
 services:
   backend:
-    image: freeapi-server
-    build: .
+    image: freeapi-server:latest
+    build:
+      context: .
+      args:
+        - NODE_ENV=development
+        - APP_DIR=/usr/src/freeapi
+    container_name: freeapi-backend
+    restart: unless-stopped
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
       - ./:/usr/src/freeapi
       - /usr/src/freeapi/node_modules
     env_file:
       - ./.env
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongodb:27017/freeapi
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - freeapi-network
+
   mongodb:
-    image: mongo
+    image: mongo:latest
     container_name: mongodb
+    restart: unless-stopped
     volumes:
-      - data:/data/db
+      - mongodb-data:/data/db
     ports:
-      - 27017:27017
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=freeapi
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/freeapi --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - freeapi-network
 
 volumes:
-  data:
+  mongodb-data:
+    name: freeapi-mongodb-data
+
+networks:
+  freeapi-network:
+    driver: bridge
