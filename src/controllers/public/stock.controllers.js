@@ -1,9 +1,15 @@
-import nseStocksJson from "../../json/nse-stocks.json" assert { type: "json" };
+import fs from "fs";
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
+const nseStocksJson = JSON.parse(
+  fs.readFileSync(
+    new URL("../../json/nse-stocks.json", import.meta.url),
+    "utf-8"
+  )
+);
 const getStocks = asyncHandler(async (req, res) => {
   const page = +(req.query.page || 1);
   const limit = +(req.query.limit || 10);

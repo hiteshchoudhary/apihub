@@ -1,7 +1,14 @@
+import fs from "fs";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import statusCodesJson from "../../json/status-codes.json" assert { type: "json" };
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
+
+const statusCodesJson = JSON.parse(
+  fs.readFileSync(
+    new URL("../../json/status-codes.json", import.meta.url),
+    "utf-8"
+  )
+);
 
 /**
  * @description status codes which are avoiding sending response due to their nature
