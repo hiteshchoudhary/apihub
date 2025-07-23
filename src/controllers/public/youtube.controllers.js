@@ -1,9 +1,11 @@
 import { YouTubeFilterEnum, AvailableYouTubeFilters } from "../../constants.js";
-import channelJson from "../../json/youtube/channel.json" assert { type: "json" };
-import commentsJson from "../../json/youtube/comments.json" assert { type: "json" };
-import playlistItemsJson from "../../json/youtube/playlistitems.json" assert { type: "json" };
-import playlistsJson from "../../json/youtube/playlists.json" assert { type: "json" };
-import videosJson from "../../json/youtube/videos.json" assert { type: "json" };
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const channelJson = require("../../json/youtube/channel.json");
+const commentsJson = require("../../json/youtube/comments.json");
+const playlistItemsJson = require("../../json/youtube/playlistitems.json");
+const playlistsJson = require("../../json/youtube/playlists.json");
+const videosJson = require("../../json/youtube/videos.json");
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";

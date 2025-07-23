@@ -1,4 +1,6 @@
-import nseStocksJson from "../../json/nse-stocks.json" assert { type: "json" };
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const nseStocksJson = require("../../json/nse-stocks.json");
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
