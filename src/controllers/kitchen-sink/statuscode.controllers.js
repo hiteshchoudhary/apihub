@@ -1,5 +1,8 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import statusCodesJson from "../../json/status-codes.json" assert { type: "json" };
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
+const statusCodesJson = require("../../json/status-codes.json");
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 
