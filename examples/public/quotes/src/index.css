@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+html, body, #root {
+  height: 100%;
+}
+
+/* Custom Utilities for Enhanced Button */
+.border-3 {
+  border-width: 3px;
+}
+
+/* Additional custom animations */
+@keyframes float-particles {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-float {
+  animation: float-particles 2s ease-in-out infinite;
+}
