@@ -105,10 +105,12 @@ const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { quantity = 1 } = req.body;
 
-  // fetch user cart
-  const cart = await Cart.findOne({
-    owner: req.user._id,
-  });
+  // fetch user cart if not exist create one
+      const cart = await Cart.findOneAndUpdate(
+      { owner: req.user._id },
+      { $setOnInsert: { owner: req.user._id, items: [] } },
+      { new: true, upsert: true }
+    );
 
   // See if product that user is adding exist in the db
   const product = await Product.findById(productId);
