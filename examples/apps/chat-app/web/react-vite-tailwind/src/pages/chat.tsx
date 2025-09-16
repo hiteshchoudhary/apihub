@@ -357,7 +357,11 @@ const ChatPage = () => {
       // Set the current chat reference to the one from local storage.
       currentChat.current = _currentChat;
       // If the socket connection exists, emit an event to join the specific chat using its ID.
-      socket?.emit(JOIN_CHAT_EVENT, _currentChat.current?._id);
+     
+      // (edit: actully not needed, already being called in getMessages, the payload for the event also is undefined, the correct payload should have been currentChat.current?.id)
+      
+      // socket?.emit(JOIN_CHAT_EVENT, _currentChat.current?._id);
+      
       // Fetch the messages for the current chat.
       getMessages();
     }
@@ -409,7 +413,9 @@ const ChatPage = () => {
     // This will not cause infinite renders because the functions in the socket are getting mounted and not executed.
     // So, even if some socket callbacks are updating the `chats` state, it's not
     // updating on each `useEffect` call but on each socket call.
-  }, [socket, chats]);
+
+    // edit: chat is actually not being used in any of the callbacks, we are using updater function which is going to use the latest value of the chat, also having the chat as a dependecy also means that we will create and remove socket subscriptions every time the chats changes e.g. on receiving or sending new messages
+  }, [socket]);
 
   return (
     <>
