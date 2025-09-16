@@ -414,7 +414,7 @@ const ChatPage = () => {
     // So, even if some socket callbacks are updating the `chats` state, it's not
     // updating on each `useEffect` call but on each socket call.
 
-    // edit: chat is actually not being used in any of the callbacks, we are using updater function which is going to use the latest value of the chat, also having the chat as a dependecy also means that we will create and remove socket subscriptions every time the chats changes e.g. on receiving or sending new messages
+    // (edit: chat is actually not being used in any of the callbacks, we are using updater function which is going to use the latest value of the chat, also having the chat as a dependecy also means that we will create and remove socket subscriptions every time the chats changes e.g. on receiving or sending new messages)
   }, [socket]);
 
   return (
