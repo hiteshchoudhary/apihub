@@ -1,4 +1,4 @@
-import mealsJson from "../../json/meals.json" assert { type: "json" };
+import mealsJson from "../../json/meals.json" with { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";

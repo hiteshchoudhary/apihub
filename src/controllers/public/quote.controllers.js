@@ -1,4 +1,4 @@
-import quotesJson from "../../json/quotes.json" assert { type: "json" };
+import quotesJson from "../../json/quotes.json" with { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
