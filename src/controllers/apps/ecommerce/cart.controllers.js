@@ -76,7 +76,6 @@ export const getCart = async (userId) => {
               $subtract: ["$cartTotal", "$coupon.discountValue"],
             },
             "$cartTotal", // if there is no coupon applied we will set cart total as out final total
-            ,
           ],
         },
       },
@@ -106,9 +105,15 @@ const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
   const { quantity = 1 } = req.body;
 
   // fetch user cart
-  const cart = await Cart.findOne({
+  let cart = await Cart.findOne({
     owner: req.user._id,
   });
+  if(!cart){
+    cart = await Cart.create({
+      owner: req.user._id,
+      items: []
+    })
+  }
 
   // See if product that user is adding exist in the db
   const product = await Product.findById(productId);
