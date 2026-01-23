@@ -10,6 +10,9 @@ COPY package.json yarn.lock ./
 # copy prepare.js prior. It will be executed after package installation and before ROOT dir is cloned
 COPY prepare.js ./
 
+
+
+
 USER node
 
 RUN yarn install --pure-lockfile
