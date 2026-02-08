@@ -45,11 +45,11 @@ const SearchInput = (props: SearchInputProps) => {
         type="text"
         placeholder={placeholder}
         dir={`${isRTL ? 'rtl' : 'ltr'}`}
-        className={`flex-1 bg-neutral-100 outline-none text-xs`}
+        className={`flex-1 bg-neutral-100 outline-none text-xs ${isRTL ? 'ml-2' : 'mr-2'}`}
         onChange={onChange}
         onBlur={onBlur}
       />
-      <button type="submit">
+      <button type="submit" className="flex-shrink-0">
         <SearchIcon className="w-6 h-6 text-black" />
       </button>
     </form>
