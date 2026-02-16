@@ -133,12 +133,10 @@ To self-host the FreeAPI.app application, you can take advantage of a pre-built 
 3. (Optional) Sign in with GitHub to deploy.
 
 4. Fill in the Repository details:
-
    - Specify the repo name (e.g., freeapi-app).
    - Checkmark for Public/Private repository.
 
 5. For Environment variables, we have provided some default values in the `ENV` to reduce the burden, but some parameters are mandatory:
-
    - `PORT`: Do not change the value, let it be set to 8080 to view the swagger docs after deployment.
    - `MONGODB_URI`: Provide the MongoDB Atlas database URL. An example is prefilled for you, edit/update it to continue.
    - `NODE_ENV`: Default set to 'development' to view the logs. You may choose to change it to 'production' (make sure to add exact same word) to hide them.
@@ -233,3 +231,5 @@ Click [here](https://github.com/hiteshchoudhary/apihub/blob/main/CONTRIBUTING_CO
 [Swagger Docs](https://api.freeapi.app): https://api.freeapi.app
 
 NOTE: Swagger docs are auto generated from the `swagger.yaml` file. While running the project locally, make sure you change the url to `http://localhost:<port_from_.env>/api/v1` in the swagger docs `servers/url` field.
+
+Everything is working just fine. it is my practice to learn how to contribute
