@@ -105,6 +105,7 @@ import bookRouter from "./routes/public/book.routes.js";
 import catRouter from "./routes/public/cat.routes.js";
 import dogRouter from "./routes/public/dog.routes.js";
 import mealRouter from "./routes/public/meal.routes.js";
+import passwordRouter from "./routes/public/password.routes.js";
 import quoteRouter from "./routes/public/quote.routes.js";
 import randomjokeRouter from "./routes/public/randomjoke.routes.js";
 import randomproductRouter from "./routes/public/randomproduct.routes.js";
@@ -168,6 +169,7 @@ app.use("/api/v1/public/dogs", dogRouter);
 app.use("/api/v1/public/cats", catRouter);
 app.use("/api/v1/public/youtube", youtubeRouter);
 app.use("/api/v1/public/stocks", stockRouter);
+app.use("/api/v1/public/password", passwordRouter);
 
 // * App apis
 app.use("/api/v1/users", userRouter);
