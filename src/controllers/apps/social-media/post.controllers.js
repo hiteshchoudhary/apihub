@@ -141,14 +141,13 @@ const createPost = asyncHandler(async (req, res) => {
   /**
    * @type {{ url: string; localPath: string; }[]}
    */
-  const images =
-    req.files.images && req.files.images?.length
-      ? req.files.images.map((image) => {
-          const imageUrl = getStaticFilePath(req, image.filename);
-          const imageLocalPath = getLocalPath(image.filename);
-          return { url: imageUrl, localPath: imageLocalPath };
-        })
-      : [];
+  const images = req.files?.images?.length
+    ? req.files.images.map((image) => {
+        const imageUrl = getStaticFilePath(req, image.filename);
+        const imageLocalPath = getLocalPath(image.filename);
+        return { url: imageUrl, localPath: imageLocalPath };
+      })
+    : [];
 
   const author = req.user._id;
 
