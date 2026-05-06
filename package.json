@@ -1,7 +1,7 @@
 {
   "name": "freeapi",
   "version": "1.3.1",
-  "description": "A API learning go",
+  "description": "An API learning go",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
