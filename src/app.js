@@ -111,6 +111,8 @@ import randomproductRouter from "./routes/public/randomproduct.routes.js";
 import randomuserRouter from "./routes/public/randomuser.routes.js";
 import stockRouter from "./routes/public/stock.routes.js";
 import youtubeRouter from "./routes/public/youtube.routes.js";
+import moviesRouter from "./routes/public/movies.routes.js";
+import seriesRouter from "./routes/public/series.routes.js";
 
 // * App routes
 import userRouter from "./routes/apps/auth/user.routes.js";
@@ -168,6 +170,8 @@ app.use("/api/v1/public/dogs", dogRouter);
 app.use("/api/v1/public/cats", catRouter);
 app.use("/api/v1/public/youtube", youtubeRouter);
 app.use("/api/v1/public/stocks", stockRouter);
+app.use("/api/v1/public/movies", moviesRouter);
+app.use("/api/v1/public/series", seriesRouter);
 
 // * App apis
 app.use("/api/v1/users", userRouter);
