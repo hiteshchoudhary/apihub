@@ -226,14 +226,23 @@ const createAGroupChat = asyncHandler(async (req, res) => {
     );
   }
 
-  const members = [...new Set([...participants, req.user._id.toString()])]; // check for duplicates
+  // Remove duplicates and combine with admin
+  const uniqueParticipants = [...new Set(participants)];
+  const members = [...uniqueParticipants, req.user._id.toString()];
 
-  if (members.length < 3) {
-    // check after removing the duplicate
-    // We want group chat to have minimum 3 members including admin
+  // Check if there were duplicate participants in the original array
+  if (participants.length !== uniqueParticipants.length) {
     throw new ApiError(
       400,
-      "Seems like you have passed duplicate participants."
+      "Duplicate participants found. Please provide unique participant IDs."
+    );
+  }
+
+  // Check if we have minimum required members (including admin)
+  if (members.length < 3) {
+    throw new ApiError(
+      400,
+      `Group chat requires minimum 3 members including yourself. You provided ${uniqueParticipants.length} participant(s), but need at least 2.`
     );
   }
 

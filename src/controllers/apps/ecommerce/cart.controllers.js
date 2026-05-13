@@ -76,7 +76,6 @@ export const getCart = async (userId) => {
               $subtract: ["$cartTotal", "$coupon.discountValue"],
             },
             "$cartTotal", // if there is no coupon applied we will set cart total as out final total
-            ,
           ],
         },
       },
@@ -105,10 +104,18 @@ const addItemOrUpdateItemQuantity = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   const { quantity = 1 } = req.body;
 
-  // fetch user cart
-  const cart = await Cart.findOne({
+  // fetch user cart or create one if it doesn't exist
+  let cart = await Cart.findOne({
     owner: req.user._id,
   });
+
+  // If cart doesn't exist, create a new one for the user
+  if (!cart) {
+    cart = await Cart.create({
+      owner: req.user._id,
+      items: [],
+    });
+  }
 
   // See if product that user is adding exist in the db
   const product = await Product.findById(productId);
@@ -173,6 +180,18 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Product does not exist");
   }
 
+  // Check if user has a cart first
+  const existingCart = await Cart.findOne({
+    owner: req.user._id,
+  });
+
+  if (!existingCart) {
+    throw new ApiError(
+      400,
+      "Cart not found. Cannot remove item from non-existent cart"
+    );
+  }
+
   const updatedCart = await Cart.findOneAndUpdate(
     {
       owner: req.user._id,
@@ -207,6 +226,15 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
 });
 
 const clearCart = asyncHandler(async (req, res) => {
+  // Check if cart exists first
+  const existingCart = await Cart.findOne({
+    owner: req.user._id,
+  });
+
+  if (!existingCart) {
+    throw new ApiError(400, "Cart not found. Cannot clear non-existent cart");
+  }
+
   await Cart.findOneAndUpdate(
     {
       owner: req.user._id,

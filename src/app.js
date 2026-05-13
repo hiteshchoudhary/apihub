@@ -23,11 +23,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const file = fs.readFileSync(path.resolve(__dirname, "./swagger.yaml"), "utf8");
+
+// Determine the server URL based on environment
+const getServerUrl = () => {
+  // If FREEAPI_HOST_URL is explicitly set, use it
+  if (process.env.FREEAPI_HOST_URL) {
+    return process.env.FREEAPI_HOST_URL;
+  }
+
+  // For local development, construct URL from PORT
+  const port = process.env.PORT || 8080;
+  return `http://localhost:${port}`;
+};
+
 const swaggerDocument = YAML.parse(
-  file?.replace(
-    "- url: ${{server}}",
-    `- url: ${process.env.FREEAPI_HOST_URL || "http://localhost:8080"}/api/v1`
-  )
+  file?.replace("${{server}}", `${getServerUrl()}/api/v1`)
 );
 
 const app = express();

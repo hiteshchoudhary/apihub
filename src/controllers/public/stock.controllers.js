@@ -1,4 +1,4 @@
-import nseStocksJson from "../../json/nse-stocks.json" assert { type: "json" };
+import nseStocksJson from "../../json/nse-stocks.json" with { type: "json" };
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
