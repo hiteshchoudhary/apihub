@@ -1,4 +1,4 @@
-# FreeAPI.app
+# [FreeAPI.app](`https://api.freeapi.app/`)
 
 ## Problem
 
