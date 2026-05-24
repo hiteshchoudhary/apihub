@@ -5768,6 +5768,218 @@ paths:
                     message: Stock fetched successfully
                     statusCode: 200
                     success: true
+  /public/news:
+    get:
+      tags:
+        - 📢 Public APIs
+        
+      summary: Get news
+      description: >-
+        The API endpoint allows you to retrieve a list of mock news articles.
+
+
+        When accessing this endpoint, you will receive a response containing a
+        collection of news articles with titles, descriptions, authors, images, and categories.
+      operationId: getNews
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: string
+            example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: string
+            example: '10'
+        - name: query
+          in: query
+          schema:
+            type: string
+            example: 'tech'
+          description: Search query to filter news by title, description, or category
+      responses:
+        '200':
+          description: Get news
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                        example: 1
+                      limit:
+                        type: number
+                        example: 10
+                      totalPages:
+                        type: number
+                        example: 10
+                      previousPage:
+                        type: boolean
+                        example: false
+                      nextPage:
+                        type: boolean
+                        example: true
+                      totalItems:
+                        type: number
+                        example: 100
+                      currentPageItems:
+                        type: number
+                        example: 10
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                              example: 1
+                            title:
+                              type: string
+                              example: "Minus vitae non cum eligendi vero voluptate."
+                            description:
+                              type: string
+                              example: "Officiis ex consequuntur ut necessitatibus maiores doloribus magni."
+                            author:
+                              type: string
+                              example: "Randal Dietrich"
+                            image:
+                              type: string
+                              example: "https://picsum.photos/seed/DVeWe0XOc/640/480"
+                            publishedAt:
+                              type: string
+                              example: "2025-12-25T18:42:26.482Z"
+                            category:
+                              type: string
+                              example: "Politics"
+                  message:
+                    type: string
+                    example: News fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+  /public/news/{newsId}:
+    get:
+      tags:
+        - 📢 Public APIs
+        
+      summary: Get news by id
+      description: >-
+        The API endpoint retrieves a news article based on the specified ID.
+
+
+        When accessing this endpoint and providing a valid news ID as a
+        parameter, you will receive a response containing the details of the
+        news article matching the provided ID.
+      operationId: getNewsById
+      responses:
+        '200':
+          description: Get news by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 1
+                      title:
+                        type: string
+                        example: "Minus vitae non cum eligendi vero voluptate."
+                      description:
+                        type: string
+                        example: "Officiis ex consequuntur ut necessitatibus maiores doloribus magni."
+                      author:
+                        type: string
+                        example: "Randal Dietrich"
+                      image:
+                        type: string
+                        example: "https://picsum.photos/seed/DVeWe0XOc/640/480"
+                      publishedAt:
+                        type: string
+                        example: "2025-12-25T18:42:26.482Z"
+                      category:
+                        type: string
+                        example: "Politics"
+                  message:
+                    type: string
+                    example: News fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+    parameters:
+      - name: newsId
+        in: path
+        required: true
+        schema:
+          type: string
+          example: '1'
+  /public/news/random:
+    get:
+      tags:
+        - 📢 Public APIs
+        
+      summary: Get a random news
+      description: >-
+        The API endpoint retrieves a single random news article. When accessing this
+        endpoint, you will receive a response containing the details of one
+        randomly selected news article. Each request returns a different random article.
+      operationId: getARandomNews
+      responses:
+        '200':
+          description: Get a random news
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 42
+                      title:
+                        type: string
+                        example: "Quos distinctio vitae asperiores odio provident pariatur eligendi consequuntur blanditiis."
+                      description:
+                        type: string
+                        example: "Eligendi rerum at non. Dicta veritatis debitis deleniti velit quis."
+                      author:
+                        type: string
+                        example: "Rosa Romaguera"
+                      image:
+                        type: string
+                        example: "https://loremflickr.com/640/480?lock=3939044318773248"
+                      publishedAt:
+                        type: string
+                        example: "2025-12-25T14:03:29.580Z"
+                      category:
+                        type: string
+                        example: "Politics"
+                  message:
+                    type: string
+                    example: News fetched successfully
+                  statusCode:
+                    type: number
+                    example: 200
+                  success:
+                    type: boolean
+                    example: true
+
   /public/quotes:
     get:
       tags:
@@ -48317,3 +48529,4 @@ tags:
       database with initial data.
   - name: 🚫 Danger Zone
     description: '**WARNING: Sensitive Operations ⚠️**'
+
