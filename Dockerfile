@@ -1,21 +1,40 @@
 FROM node:20.13.1-alpine
 
-RUN mkdir -p /usr/src/freeapi && chown -R node:node /usr/src/freeapi
+# Add build arguments for more flexibility
+ARG NODE_ENV=production
+ARG APP_DIR=/usr/src/freeapi
 
-WORKDIR /usr/src/freeapi
+# Set environment variables
+ENV NODE_ENV=${NODE_ENV} \
+    APP_DIR=${APP_DIR}
 
-# Copy package json and yarn lock only to optimise the image building
+# Create app directory and set proper ownership
+WORKDIR ${APP_DIR}
+
+# Install dependencies as root first
 COPY package.json yarn.lock ./
-
-# copy prepare.js prior. It will be executed after package installation and before ROOT dir is cloned
 COPY prepare.js ./
 
+# Install dependencies with yarn
+RUN yarn install --pure-lockfile --frozen-lockfile && \
+    # Add yarn cache cleanup to reduce image size
+    yarn cache clean && \
+    # Create and set proper permissions
+    mkdir -p node_modules && \
+    chown -R node:node .
+
+# Switch to non-root user for security
 USER node
 
-RUN yarn install --pure-lockfile
-
+# Copy application code with proper ownership
 COPY --chown=node:node . .
 
+# Healthcheck to verify the service is working correctly
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD wget -q -O- http://localhost:8080/health || exit 1
+
+# Expose application port
 EXPOSE 8080
 
-CMD [ "npm", "start" ]
+# Use a more specific command with proper environment
+CMD ["npm", "start"]
