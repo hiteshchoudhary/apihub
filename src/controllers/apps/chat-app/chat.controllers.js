@@ -228,7 +228,7 @@ const createAGroupChat = asyncHandler(async (req, res) => {
 
   const members = [...new Set([...participants, req.user._id.toString()])]; // check for duplicates
 
-  if (members.length < 3) {
+  if (members.length <= 3) {
     // check after removing the duplicate
     // We want group chat to have minimum 3 members including admin
     throw new ApiError(
