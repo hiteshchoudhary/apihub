@@ -152,6 +152,19 @@ import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
 import { seedTodos } from "./seeds/todo.seeds.js";
 import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
+import {
+  getAggregatedHistoricalExchangeRate,
+  getAllCurrencies,
+  getHistoricalExchangeRate,
+  getLiveExchangeRate,
+} from "./controllers/apps/exchange-calculator/currency.js";
+import {
+  convertMetalRates,
+  getAllMetals,
+  getHistoricalMetalRates,
+  getLiveMetalRates,
+  getTimeframeMetalRates,
+} from "./controllers/apps/exchange-calculator/metal.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
@@ -229,6 +242,51 @@ app.post(
   // avoidInProduction,
   seedUsers,
   seedChatApp
+);
+app.get(
+  "/api/v1/currencies",
+  // avoidInProduction
+  getAllCurrencies
+);
+app.get(
+  "/api/v1/currency/liveExchangeRate",
+  // avoidInProduction
+  getLiveExchangeRate
+);
+app.get(
+  "/api/v1/currency/historicalExchangeRate",
+  // avoidInProduction
+  getHistoricalExchangeRate
+);
+app.get(
+  "/api/v1/currency/historicalAggregatedExchangeRate",
+  // avoidInProduction
+  getAggregatedHistoricalExchangeRate
+);
+app.get(
+  "/api/v1/metal/currencies",
+  // avoidInProduction
+  getAllMetals
+);
+app.get(
+  "/api/v1/metal/liveRates",
+  // avoidInProduction
+  getLiveMetalRates
+);
+app.get(
+  "/api/v1/metal/historicalRates",
+  // avoidInProduction
+  getHistoricalMetalRates
+);
+app.get(
+  "/api/v1/metal/convert",
+  // avoidInProduction
+  convertMetalRates
+);
+app.get(
+  "/api/v1/metal/timeframeRates",
+  // avoidInProduction
+  getTimeframeMetalRates
 );
 
 initializeSocketIO(io);

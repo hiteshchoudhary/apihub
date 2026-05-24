@@ -1,6 +1,7 @@
 import fs from "fs";
 import mongoose from "mongoose";
 import logger from "../logger/winston.logger.js";
+import { ApiError } from "./ApiError.js";
 
 /**
  *
@@ -185,4 +186,25 @@ export const getMongoosePaginationOptions = ({
  */
 export const getRandomNumber = (max) => {
   return Math.floor(Math.random() * max);
+};
+
+export const fetchAndValidateResponseWithApiKey = async (
+  url,
+  apiKey,
+  errorMessage
+) => {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new ApiError(response.status, errorMessage);
+  }
+
+  const data = await response.json();
+
+  return data;
 };

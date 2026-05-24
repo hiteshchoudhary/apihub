@@ -37,7 +37,7 @@ info:
   version: 1.3.1
   contact: {}
 servers:
-  - url: https://api.freeapi.app/api/v1 # add `http://localhost:<port_from_.env>/api/v1` in case of local testing
+  - url: http://localhost:8080 # add `http://localhost:<port_from_.env>/api/v1` in case of local testing
 paths:
   /public/randomusers:
     get:
@@ -48136,6 +48136,485 @@ paths:
                     message: Database populated for chat app successfully
                     statusCode: 201
                     success: true
+
+  /api/v1/currencies:
+    get:
+      tags:
+        - Exchange
+      summary: Get all currencies
+      description: Retrieve all available currencies
+      operationId: getAllCurrencies
+      responses:
+        '200':
+          $ref: '#/components/responses/CurrenciesResponse'
+
+  /api/v1/currency/liveExchangeRate:
+    get:
+      tags:
+        - Exchange
+      summary: Get Live Exchange Rate
+      description: Retrieve current exchange rates
+      operationId: getLiveExchangeRate
+      parameters:
+        - $ref: '#/components/parameters/sourceCurrency'
+        - $ref: '#/components/parameters/targetCurrency'
+      responses:
+        '200':
+          $ref: '#/components/responses/ExchangeRateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/currency/historicalExchangeRate:
+    get:
+      tags:
+        - Exchange
+      summary: Get historical Exchange Rates
+      description: Retrieve historical exchange rates
+      operationId: getHistoricalExchangeRate
+      parameters:
+        - $ref: '#/components/parameters/sourceCurrency'
+        - $ref: '#/components/parameters/targetCurrency'
+        - $ref: '#/components/parameters/historicalTime'
+      responses:
+        '200':
+          $ref: '#/components/responses/ExchangeRateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/currency/historicalAggregatedExchangeRate:
+    get:
+      tags:
+        - Exchange
+      summary: Get historical aggregated Exchange Rates
+      description: Retrieve historical aggregated exchange rates
+      operationId: gethistoricalAggregatedExchangeRate
+      parameters:
+        - $ref: '#/components/parameters/sourceCurrency'
+        - $ref: '#/components/parameters/targetCurrency'
+        - $ref: '#/components/parameters/startTime'
+        - $ref: '#/components/parameters/endTime'
+        - $ref: '#/components/parameters/aggregateInterval'
+      responses:
+        '200':
+          $ref: '#/components/responses/ExchangeRateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  
+  /api/v1/metal/currencies:
+    get:
+      tags:
+        - Exchange
+      summary: Get all metal currencies
+      description: Retrieve all available metal currencies
+      operationId: getAllMetals
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalCurrenciesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/liveRates:
+    get:
+      tags:
+        - Exchange
+      summary: Get Live Metal Rates
+      description: Retrieve live metal rates
+      operationId: getLiveMetalRates
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalRatesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/historicalRates:
+    get:
+      tags:
+        - Exchange
+      summary: Get Historical Metal Rates
+      description: Retrieve historical metal rates
+      operationId: getHistoricalMetalRates
+      parameters:
+        - $ref: '#/components/parameters/date'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalRatesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/convert:
+    get:
+      tags:
+        - Exchange
+      summary: Convert Metal Rates
+      description: Convert metal rates
+      operationId: convertMetalRates
+      parameters:
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+        - $ref: '#/components/parameters/amount'
+        - $ref: '#/components/parameters/date'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetalConversionSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/metal/timeframeRates:
+    get:
+      tags:
+        - Exchange
+      summary: Get Timeframe Metal Rates
+      description: Retrieve metal rates for a specific timeframe
+      operationId: getTimeframeMetalRates
+      parameters:
+        - $ref: '#/components/parameters/currencies'
+        - $ref: '#/components/parameters/start_date'
+        - $ref: '#/components/parameters/end_date'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeframeMetalRatesSchema'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    sourceCurrency:
+      in: query
+      name: source
+      schema:
+        type: string
+      required: true
+      example: 'USD'
+      description: Source currency code
+    targetCurrency:
+      in: query
+      name: target
+      schema:
+        type: string
+      required: true
+      example: 'EUR'
+      description: Target currency code
+    historicalTime:
+      in: query
+      name: time
+      schema:
+        type: string
+      required: true
+      example: '2024-10-09'
+      description: Historical time for rate
+    startTime:
+      in: query
+      name: start
+      schema:
+        type: string
+      required: true
+      example: '2024-10-07'
+      description: Start time for historical rate
+    endTime:
+      in: query
+      name: end
+      schema:
+        type: string
+      required: true
+      example: '2024-10-09'
+      description: End time for historical rate
+    aggregateInterval:
+      in: query
+      name: aggregate
+      schema:
+        type: string
+        enum: [hour, minute, day]
+      required: true
+      example: 'hour'
+      description: Aggregation interval
+    date:
+      in: query
+      name: date
+      schema:
+        type: string
+        format: date
+      required: true
+      description: Date for historical rates (YYYY-MM-DD)
+    from:
+      in: query
+      name: from
+      schema:
+        type: string
+      required: true
+      description: Source currency
+    to:
+      in: query
+      name: to
+      schema:
+        type: string
+      required: true
+      description: Destination currency
+    amount:
+      in: query
+      name: amount
+      schema:
+        type: number
+      required: true
+      example: 100
+      description: Amount to convert
+    currencies:
+      in: query
+      name: currencies
+      schema:
+        type: string
+      required: true
+      example: 'USD'
+      description: List of currencies to convert
+    start_date:
+      in: query
+      name: start_date
+      schema:
+        type: string
+        format: date
+      required: true
+      description: Start date for timeframe (YYYY-MM-DD)
+    end_date:
+      in: query
+      name: end_date
+      schema:
+        type: string
+        format: date
+      required: true
+      description: End date for timeframe (YYYY-MM-DD)
+
+  responses:
+    CurrenciesResponse:
+      $ref: '#/components/schemas/CurrenciesResponseSchema'
+    ExchangeRateResponse:
+      $ref: '#/components/schemas/ExchangeRateResponseSchema'
+    BadRequestError:
+      $ref: '#/components/schemas/ErrorResponseSchema'
+    InternalServerError:
+      $ref: '#/components/schemas/ErrorResponseSchema'
+
+  schemas:
+    CurrenciesResponseSchema:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+    ErrorResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        success:
+          type: boolean
+    MetalCurrenciesSchema:
+      type: object
+      properties:
+        symbols:
+          type: object
+          additionalProperties:
+            type: string
+    MetalRatesSchema:
+      type: object
+      properties:
+        base:
+          type: string
+        timestamp:
+          type: integer
+        rates:
+          type: object
+          additionalProperties:
+            type: number
+    MetalConversionSchema:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+            query:
+              type: object
+            info:
+              type: object
+            result:
+              type: number
+    TimeframeMetalRatesSchema:
+      type: object
+      properties:
+        base:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+        rates:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+    CurrencySchema:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 'AUD'
+        symbol:
+          type: string
+          example: 'A$'
+        name:
+          type: string
+          example: 'Australian Dollar'
+        countryKeywords:
+          type: array
+          items:
+            type: string
+            example: ['AUD', 'AU', 'Australia', 'aus']
+        supportsDecimals:
+          type: boolean
+          example: true
+
+    ExchangeRateResponseSchema:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeRateSchema'
+        message:
+          type: string
+          example: Exchange rates fetched successfully
+        statusCode:
+          type: integer
+          example: 200
+        success:
+          type: boolean
+          example: true
+
+    ExchangeRateSchema:
+      type: object
+      properties:
+        rate:
+          type: number
+          format: float
+          example: 1.1
+        source:
+          type: string
+          example: 'USD'
+        target:
+          type: string
+          example: 'EUR'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-10-22T10:22:08+0530'
+
+  headers:
+    CommonHeaders:
+      Access-Control-Allow-Credentials:
+        schema:
+          type: string
+          example: 'true'
+      Access-Control-Allow-Origin:
+        schema:
+          type: string
+          example: '*'
+      Connection:
+        schema:
+          type: string
+          example: keep-alive
+      Content-Length:
+        schema:
+          type: string
+          example: '815'
+      Date:
+        schema:
+          type: string
+          example: Sat, 17 Jun 2023 19:19:40 GMT
+      ETag:
+        schema:
+          type: string
+          example: W/"32f-LlDKeMfFfXV5TgAkP4oFcqRrOrI"
+      Keep-Alive:
+        schema:
+          type: string
+          example: timeout=5
+      X-Powered-By:
+        schema:
+          type: string
+          example: Express
+
+  examples:
+    CurrenciesResponseExample:
+      value:
+        data:
+          - code: 'AUD'
+            symbol: 'A$'
+            name: 'Australian Dollar'
+            countryKeywords: ['AUD', 'AU', 'Australia', 'aus']
+            supportsDecimals: true
+          - code: 'JPY'
+            symbol: '¥'
+            name: 'Japanese Yen'
+            countryKeywords: ['JPY', 'Yen']
+            supportsDecimals: false
+        message: Currencies fetched successfully
+        statusCode: 200
+        success: true
+
+    ExchangeRateResponseExample:
+      value:
+        data:
+          - rate: 1.1
+            source: 'USD'
+            target: 'EUR'
+            timestamp: '2024-10-22T10:22:08+0530'
+          - rate: 82.5
+            source: 'USD'
+            target: 'INR'
+            timestamp: '2024-10-22T10:22:08+0530'
+        message: Exchange rates fetched successfully
+        statusCode: 200
+        success: true
   /reset-db:
     delete:
       tags:
@@ -48315,5 +48794,8 @@ tags:
     description: >-
       This folder contains requests that are used for seeding or populating the
       database with initial data.
+  - name: Exchange
+    description: >-
+      This folder contains requests that are used for currency exchange. Update WISE_API_KEY, METAL_PRICE_API_KEY in .env to use these endpoints
   - name: 🚫 Danger Zone
     description: '**WARNING: Sensitive Operations ⚠️**'
