@@ -1,5 +1,7 @@
 ## ecommerce frontend application
 
+Check out the application [here](https://ecommerce-client-tsy6.onrender.com/)
+
 This is an ecommerce client app which is made by consuming freeapi: https://github.com/hiteshchoudhary/apihub.
 
 ### Steps to run the code locally
@@ -28,6 +30,27 @@ This is an ecommerce client app which is made by consuming freeapi: https://gith
  * API for countries & states: https://countriesnow.space/
  * Design Inspiration: https://www.figma.com/community/file/1219312065205187851
 
+
+
+### Implemented Features
+* Allows user to register by email or Google SSO.
+* View Categories, View Products In a Category, View All Products, View Product Details, Search for a product.
+* Add Products to Cart, Update Product Quantity In Cart, Delete Product from Cart.
+* Add address, Update Address, Delete an address. 
+* View eligible coupon codes.
+* Apply Eligible Coupon Codes.
+* Pay via PayPal.
+* Update profile, Change Password.
+* View Orders.
+* As an admin
+    * View Categories, Add a category, Update a category, Delete a category.
+    * View Products, Add a product, Update a product, Delete a product.
+    * View Coupons, Add a coupon, Update a coupon, Delete a coupon.
+    * View Orders, Update Order Status
+* Supports Multilingualism, along with right to left languages.
+
+
+
 ### Dependencies
 * [React](https://github.com/facebook/react) : v18.2.0
 * [Vite](https://vitejs.dev/) : v5.0.12
@@ -48,5 +71,7 @@ This is an ecommerce client app which is made by consuming freeapi: https://gith
     * [react-i18next](https://github.com/i18next/react-i18next) : v6.20.1
 * Form Handling
     * [React Hook Form](https://github.com/react-hook-form/react-hook-form) : v7.49.2
+* Admin Module Grid
+    * [AG Grid React](https://www.ag-grid.com/react-data-grid/getting-started/): v 31.2.1
  
 

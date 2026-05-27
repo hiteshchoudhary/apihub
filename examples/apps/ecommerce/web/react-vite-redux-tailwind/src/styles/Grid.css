@@ -1,0 +1,4 @@
+/* Hiding dropdown in the column filter */
+.ag-filter .ag-picker-field {
+    display: none;
+}

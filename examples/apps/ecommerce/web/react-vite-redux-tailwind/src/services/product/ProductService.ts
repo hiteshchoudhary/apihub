@@ -1,3 +1,7 @@
+import {
+  AddEditProductFieldsForService,
+  EditProductFieldsForService,
+} from "../../constants";
 import { generateRandomNumber } from "../../utils/commonHelper";
 import ApiError from "../ApiError";
 import ApiRequest from "../ApiRequest";
@@ -115,7 +119,12 @@ class ProductService {
   }
 
   async getAllProductsAsync(
-    callback: (data: Array<Product>, isDone: boolean, error?: ApiError, categoryInfo?: {_id: string, name: string}) => void,
+    callback: (
+      data: Array<Product>,
+      isDone: boolean,
+      error?: ApiError,
+      categoryInfo?: { _id: string; name: string }
+    ) => void,
     categoryId?: string
   ) {
     /* 
@@ -146,9 +155,19 @@ class ProductService {
 
       /* If no requests are pending return else send intermediate response */
       if (!requestsPending) {
-        return callback(firstResponse.data.products, true, undefined, firstResponse.data.category);
+        return callback(
+          firstResponse.data.products,
+          true,
+          undefined,
+          firstResponse.data.category
+        );
       } else {
-        callback(firstResponse.data.products, false, undefined, firstResponse.data.category);
+        callback(
+          firstResponse.data.products,
+          false,
+          undefined,
+          firstResponse.data.category
+        );
       }
       for (let counter = page; counter <= totalPages; counter++) {
         apiRequest
@@ -164,10 +183,20 @@ class ProductService {
                 : callback([], true, new ApiError(response.message));
             } else if (!requestsPending) {
               /* All Requests are done */
-              return callback(response.data.products, true, undefined, response.data.category);
+              return callback(
+                response.data.products,
+                true,
+                undefined,
+                response.data.category
+              );
             } else {
               /* Sending the data of an in between request */
-              callback(response.data.products, false, undefined, response.data.category);
+              callback(
+                response.data.products,
+                false,
+                undefined,
+                response.data.category
+              );
             }
           });
       }
@@ -217,6 +246,127 @@ class ProductService {
     } else {
       return response;
     }
+  }
+
+  async addProduct(
+    fields: AddEditProductFieldsForService
+  ): Promise<Product | ApiError> {
+    const apiRequest = new ApiRequest(this.BASE_URL);
+
+    /* Form data as body */
+    const productFormData = new FormData();
+    productFormData.append("name", fields.name);
+    productFormData.append("description", fields.description);
+    productFormData.append("price", fields.price.toString());
+    productFormData.append("stock", fields.stock.toString());
+    productFormData.append("category", fields.category.id as string);
+    productFormData.append("mainImage", fields.mainImage);
+
+    fields.subImages.forEach((subImage) => {
+      productFormData.append("subImages", subImage);
+    });
+
+    /* API Call */
+    const response = await apiRequest.postRequest<Product>(productFormData);
+
+    if (response instanceof ApiResponse && response.success) {
+      return response.data;
+    } else if (response instanceof ApiResponse) {
+      return new ApiError(response.message);
+    }
+    return response;
+  }
+
+  /* Edit Product */
+  async editProduct(
+    fields: EditProductFieldsForService,
+    productId: string
+  ): Promise<Product | ApiError> {
+    const apiRequest = new ApiRequest(`${this.BASE_URL}/${productId}`);
+
+    /* Form data */
+    const formData = new FormData();
+
+    let key: keyof typeof fields;
+    for (key in fields) {
+      const value = fields[key];
+      if (value !== undefined) {
+        /* For string types: name, description */
+
+        if (typeof value === "string") {
+          formData.append(key, value);
+        } 
+        else if (typeof value === "number") {
+        /* Number types: price, stock */
+
+          formData.append(key, value.toString());
+        } 
+        else if (
+
+        /* Category */
+          "id" in value &&
+          "text" in value &&
+          typeof value.id === "string"
+        ) 
+        {
+          /* Dropdown Item */
+          formData.append(key, value.id);
+        } 
+        else if (value instanceof File) {
+          /* mainImage */
+          formData.append(key, value);
+        } 
+        else if (Array.isArray(value)) {
+        /* Sub Images */
+          value.forEach((subImage) => {
+            formData.append(key, subImage);
+          });
+        }
+      }
+    }
+
+    const response = await apiRequest.patchRequest<Product>(formData);
+    if (response instanceof ApiResponse && response.success) {
+      return response.data;
+    } else if (response instanceof ApiResponse) {
+      return new ApiError(response.message);
+    }
+
+    return response;
+  }
+
+  /* Remove a sub image of the product */
+  async removeSubImageOfProduct(
+    subImageId: string,
+    productId: string
+  ): Promise<Product | ApiError> {
+    const apiRequest = new ApiRequest(
+      `${this.BASE_URL}/remove/subimage/${productId}/${subImageId}`
+    );
+
+    const response = await apiRequest.patchRequest<Product>({});
+
+    if (response instanceof ApiResponse && response.success) {
+      return response.data;
+    } else if (response instanceof ApiResponse) {
+      return new ApiError(response.message);
+    }
+    return response;
+  }
+
+  async deleteProduct(productId: string): Promise<Product | ApiError> {
+    const apiRequest = new ApiRequest(`${this.BASE_URL}/${productId}`);
+
+    const response = await apiRequest.deleteRequest<{
+      deletedProduct: Product;
+    }>();
+
+    if (response instanceof ApiResponse && response.success) {
+      return response.data.deletedProduct;
+    } else if (response instanceof ApiResponse) {
+      return new ApiError(response.message);
+    }
+    return response;
   }
 }
 

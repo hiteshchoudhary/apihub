@@ -12,19 +12,28 @@ import {
   NavigationOption,
   ROUTE_PATHS,
   QUERY_PARAMS,
+  USER_ROLES,
 } from "../../../../constants";
-import { getNavigationItemList } from "../../../../data/applicationData";
+import {
+  ADMIN_NAVIGATION_ITEMS,
+  getNavigationItemList,
+} from "../../../../data/applicationData";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { getUserCartThunk, resetCartSlice } from "../../../../store/CartSlice";
 import { createSearchParams } from "react-router-dom";
 
+interface HeaderContainerProps {
+  isAdminPageLayoutShown: boolean;
+}
 const HeaderContainer = React.forwardRef(function HeaderContainer(
-  _,
+  props: HeaderContainerProps,
   ref: ForwardedRef<HTMLDivElement>
 ) {
+  const { isAdminPageLayoutShown } = props;
   const navigate = useCustomNavigate();
   const dispatch = useAppDispatch();
 
+  const userDetails = useAppSelector((state) => state.auth.userDetails);
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const userCart = useAppSelector((state) => state.cart.userCart);
 
@@ -86,8 +95,14 @@ const HeaderContainer = React.forwardRef(function HeaderContainer(
 
   /* Get Navigation Item List based on isLoggedIn flag */
   useEffect(() => {
-    setNavigationList(getNavigationItemList(isLoggedIn));
-  }, [isLoggedIn]);
+    if (isAdminPageLayoutShown) {
+      setNavigationList(ADMIN_NAVIGATION_ITEMS);
+    } else {
+      setNavigationList(
+        getNavigationItemList(isLoggedIn, userDetails?.role || USER_ROLES.user)
+      );
+    }
+  }, [isLoggedIn, userDetails?.role, isAdminPageLayoutShown]);
 
   return (
     <Header
@@ -97,6 +112,7 @@ const HeaderContainer = React.forwardRef(function HeaderContainer(
       itemsInCart={userCart ? userCart.items.length : 0}
       cartClickHandler={cartClickHandler}
       searchHandler={searchHandler}
+      isAdminPageLayoutShown={isAdminPageLayoutShown}
     />
   );
 });
