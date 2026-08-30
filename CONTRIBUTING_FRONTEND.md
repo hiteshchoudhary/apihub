@@ -216,3 +216,6 @@ Visit my app: [https://my-social-media-app.example.com](https://my-social-media-
 Thank you for being part of the FreeAPI community and contributing to the project! We look forward to featuring your fantastic work. 🌟
 
 Happy coding! 🚀
+
+
+<section> sample trying </section>
