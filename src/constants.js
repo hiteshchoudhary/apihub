@@ -103,3 +103,68 @@ export const ChatEventEnum = Object.freeze({
 });
 
 export const AvailableChatEvents = Object.values(ChatEventEnum);
+
+/**
+ * @type {{ PLANNED: "PLANNED"; IN_PROGRESS: "IN_PROGRESS"; COMPLETED: "COMPLETED"; ON_HOLD: "ON_HOLD" } as const}
+ */
+export const ProjectStatusEnum = {
+  PLANNED: "PLANNED",
+  IN_PROGRESS: "IN_PROGRESS",
+  COMPLETED: "COMPLETED",
+  ON_HOLD: "ON_HOLD",
+};
+export const AvailableProjectStatuses = Object.values(ProjectStatusEnum);
+
+/**
+ * @type {{ LOW: "LOW"; MEDIUM: "MEDIUM"; HIGH: "HIGH"; URGENT: "URGENT" } as const}
+ */
+export const ProjectPriorityEnum = {
+  LOW: "LOW",
+  MEDIUM: "MEDIUM",
+  HIGH: "HIGH",
+  URGENT: "URGENT",
+};
+export const AvailableProjectPriorities = Object.values(ProjectPriorityEnum);
+
+/**
+ * @type {{ TODO: "TODO"; IN_PROGRESS: "IN_PROGRESS"; IN_REVIEW: "IN_REVIEW"; COMPLETED: "COMPLETED" } as const}
+ */
+export const TaskStatusEnum = {
+  TODO: "TODO",
+  IN_PROGRESS: "IN_PROGRESS",
+  IN_REVIEW: "IN_REVIEW",
+  COMPLETED: "COMPLETED",
+};
+export const AvailableTaskStatuses = Object.values(TaskStatusEnum);
+
+/**
+ * @type {{ LOW: "LOW"; MEDIUM: "MEDIUM"; HIGH: "HIGH"; URGENT: "URGENT" } as const}
+ */
+export const TaskPriorityEnum = {
+  LOW: "LOW",
+  MEDIUM: "MEDIUM",
+  HIGH: "HIGH",
+  URGENT: "URGENT",
+};
+export const AvailableTaskPriorities = Object.values(TaskPriorityEnum);
+
+/**
+ * @type {{ OWNER: "OWNER"; ADMIN: "ADMIN"; MEMBER: "MEMBER" } as const}
+ */
+export const ProjectMemberRoleEnum = {
+  OWNER: "OWNER",
+  ADMIN: "ADMIN",
+  MEMBER: "MEMBER",
+};
+export const AvailableProjectMemberRoles = Object.values(ProjectMemberRoleEnum);
+
+/**
+ * @type {{ UPCOMING: "UPCOMING"; IN_PROGRESS: "IN_PROGRESS"; COMPLETED: "COMPLETED" } as const}
+ */
+export const MilestoneStatusEnum = {
+  UPCOMING: "UPCOMING",
+  IN_PROGRESS: "IN_PROGRESS",
+  COMPLETED: "COMPLETED",
+};
+export const AvailableMilestoneStatuses = Object.values(MilestoneStatusEnum);
+
