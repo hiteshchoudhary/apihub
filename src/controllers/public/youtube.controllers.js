@@ -95,8 +95,10 @@ const getVideos = asyncHandler(async (req, res) => {
         return (
           // Search videos based on title, description and tags
           video.items.snippet.title.toLowerCase().includes(query) ||
-          video.items.snippet.tags?.includes(query) ||
-          video.items.snippet.description?.includes(query)
+          video.items.snippet.tags?.some((tag) =>
+            tag.toLowerCase().includes(query)
+          ) ||
+          video.items.snippet.description?.toLowerCase().includes(query)
         );
       })
     : structuredClone(videos);
