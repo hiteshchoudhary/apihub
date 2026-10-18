@@ -11,8 +11,7 @@ import {
   AvailableWorkModes,
 } from "../constants.js";
 
-const JOBS_COUNT = 200;
-
+const JOBS_COUNT = 2500;
 /**
  * @description Seeding controller for the Jobs API.
  * NOTE: Ensure `seedUsers` middleware is called before this in the route
@@ -44,7 +43,7 @@ const seedJobs = asyncHandler(async (req, res) => {
       companyName: faker.company.name(),
       companyLogo: faker.image.urlLoremFlickr({ category: "business" }),
       location: `${faker.location.city()}, ${faker.location.stateAbbr()}`,
-      salary: `$${faker.number.int({ min: 40, max: 90 })}k - $${faker.number.int({ min: 100, max: 200 })}k`,
+      salary: `₹${faker.number.int({ min: 40, max: 90 })}k - ₹${faker.number.int({ min: 100, max: 200 })}k`,
 
       // Use the getRandomNumber helper to pick a random enum from our constants
 
