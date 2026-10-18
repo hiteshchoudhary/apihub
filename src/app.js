@@ -115,6 +115,9 @@ import youtubeRouter from "./routes/public/youtube.routes.js";
 // * App routes
 import userRouter from "./routes/apps/auth/user.routes.js";
 
+// * Jobs routes
+import jobRouter from "./routes/apps/jobs/job.routes.js";
+
 import addressRouter from "./routes/apps/ecommerce/address.routes.js";
 import cartRouter from "./routes/apps/ecommerce/cart.routes.js";
 import categoryRouter from "./routes/apps/ecommerce/category.routes.js";
@@ -152,6 +155,7 @@ import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
 import { seedTodos } from "./seeds/todo.seeds.js";
 import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
+import { seedJobs } from "./seeds/job.seeds.js";
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
@@ -171,6 +175,7 @@ app.use("/api/v1/public/stocks", stockRouter);
 
 // * App apis
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/jobs", jobRouter);
 
 app.use("/api/v1/ecommerce/categories", categoryRouter);
 app.use("/api/v1/ecommerce/addresses", addressRouter);
@@ -201,6 +206,9 @@ app.use("/api/v1/kitchen-sink/cookies", cookieRouter);
 app.use("/api/v1/kitchen-sink/redirect", redirectRouter);
 app.use("/api/v1/kitchen-sink/image", imageRouter);
 
+// * Jobs api
+app.use("/api/v1/jobs", jobRouter);
+
 // * Seeding
 app.get(
   "/api/v1/seed/generated-credentials",
@@ -229,6 +237,13 @@ app.post(
   // avoidInProduction,
   seedUsers,
   seedChatApp
+);
+
+app.post(
+  "/api/v1/seed/jobs",
+  // avoidInProduction,
+  seedUsers,
+  seedJobs
 );
 
 initializeSocketIO(io);
