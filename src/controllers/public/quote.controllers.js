@@ -14,7 +14,7 @@ const getQuotes = asyncHandler(async (req, res) => {
     ? structuredClone(quotesJson).filter((quote) => {
         return (
           quote.content.toLowerCase().includes(query) ||
-          quote.author?.includes(query)
+          quote.author?.toLowerCase().includes(query)
         );
       })
     : structuredClone(quotesJson);
