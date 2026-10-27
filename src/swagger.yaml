@@ -31800,6 +31800,181 @@ paths:
         schema:
           type: string
           example: 648e0c0722147847623e0a00
+  /sudoku:
+    get:
+      tags:
+        - Sudoku
+      summary: Generate a Sudoku puzzle
+      operationId: generateSudokuPuzzle
+      parameters:
+        - name: difficulty
+          in: query
+          schema:
+            type: string
+            enum: [EXTREMELY_EASY, EASY, MEDIUM, DIFFICULT, EVIL]
+            default: EXTREMELY_EASY
+        - name: with-solution
+          in: query
+          schema:
+            type: string
+            enum: ["true", "false"]
+            default: "false"
+      responses:
+        "200":
+          description: Sudoku puzzle generated successfully
+        "400":
+          description: Invalid query parameters
+  /sudoku/difficulties:
+    get:
+      tags:
+        - Sudoku
+      summary: Get supported Sudoku difficulties
+      operationId: getSudokuDifficulties
+      responses:
+        "200":
+          description: Sudoku difficulties fetched successfully
+  /sudoku/validate:
+    post:
+      tags:
+        - Sudoku
+      summary: Validate a Sudoku grid
+      operationId: validateSudoku
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [grid]
+              properties:
+                grid:
+                  type: array
+                  minItems: 9
+                  maxItems: 9
+                  items:
+                    type: array
+                    minItems: 9
+                    maxItems: 9
+                    items:
+                      type: integer
+                      minimum: 0
+                      maximum: 9
+      responses:
+        "200":
+          description: Grid validation result
+        "400":
+          description: Invalid grid structure
+  /sudoku/solve:
+    post:
+      tags:
+        - Sudoku
+      summary: Solve a Sudoku grid
+      operationId: solveSudoku
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [grid]
+              properties:
+                grid:
+                  type: array
+                  minItems: 9
+                  maxItems: 9
+                  items:
+                    type: array
+                    minItems: 9
+                    maxItems: 9
+                    items:
+                      type: integer
+                      minimum: 0
+                      maximum: 9
+      responses:
+        "200":
+          description: Puzzle solving result
+        "400":
+          description: Invalid grid structure
+        "422":
+          description: Grid contains conflicts
+  /sudoku/check:
+    post:
+      tags:
+        - Sudoku
+      summary: Check a Sudoku solution
+      operationId: checkSudoku
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [puzzle, solution]
+              properties:
+                puzzle:
+                  type: array
+                  minItems: 9
+                  maxItems: 9
+                  items:
+                    type: array
+                    minItems: 9
+                    maxItems: 9
+                    items:
+                      type: integer
+                      minimum: 0
+                      maximum: 9
+                solution:
+                  type: array
+                  minItems: 9
+                  maxItems: 9
+                  items:
+                    type: array
+                    minItems: 9
+                    maxItems: 9
+                    items:
+                      type: integer
+                      minimum: 0
+                      maximum: 9
+      responses:
+        "200":
+          description: Solution check result
+        "400":
+          description: Invalid grid structure
+        "422":
+          description: Solution violates Sudoku rules
+  /sudoku/unique:
+    post:
+      tags:
+        - Sudoku
+      summary: Check whether a Sudoku puzzle has a unique solution
+      operationId: checkSudokuUniqueness
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [grid]
+              properties:
+                grid:
+                  type: array
+                  minItems: 9
+                  maxItems: 9
+                  items:
+                    type: array
+                    minItems: 9
+                    maxItems: 9
+                    items:
+                      type: integer
+                      minimum: 0
+                      maximum: 9
+      responses:
+        "200":
+          description: Puzzle uniqueness result
+        "400":
+          description: Invalid grid structure
+        "422":
+          description: Grid contains conflicts
   /social-media/profile:
     get:
       tags:

@@ -143,6 +143,8 @@ import messageRouter from "./routes/apps/chat-app/message.routes.js";
 
 import todoRouter from "./routes/apps/todo/todo.routes.js";
 
+import sudokuRouter from "./routes/apps/sudoku/sudoku.routes.js";
+
 // * Kitchen sink routes
 import cookieRouter from "./routes/kitchen-sink/cookie.routes.js";
 import httpmethodRouter from "./routes/kitchen-sink/httpmethod.routes.js";
@@ -202,6 +204,8 @@ app.use("/api/v1/chat-app/chats", chatRouter);
 app.use("/api/v1/chat-app/messages", messageRouter);
 
 app.use("/api/v1/todos", todoRouter);
+
+app.use("/api/v1/sudoku", sudokuRouter);
 
 // * Kitchen sink apis
 app.use("/api/v1/kitchen-sink/http-methods", httpmethodRouter);
