@@ -143,6 +143,12 @@ import messageRouter from "./routes/apps/chat-app/message.routes.js";
 
 import todoRouter from "./routes/apps/todo/todo.routes.js";
 
+import projectRouter from "./routes/apps/project-management/project.routes.js";
+import taskRouter from "./routes/apps/project-management/task.routes.js";
+import milestoneRouter from "./routes/apps/project-management/milestone.routes.js";
+import commentRouter from "./routes/apps/project-management/comment.routes.js";
+import activityRouter from "./routes/apps/project-management/activity.routes.js";
+
 // * Kitchen sink routes
 import cookieRouter from "./routes/kitchen-sink/cookie.routes.js";
 import httpmethodRouter from "./routes/kitchen-sink/httpmethod.routes.js";
@@ -162,6 +168,7 @@ import { seedChatApp } from "./seeds/chat-app.seeds.js";
 import { seedEcommerce } from "./seeds/ecommerce.seeds.js";
 import { seedSocialMedia } from "./seeds/social-media.seeds.js";
 import { seedTodos } from "./seeds/todo.seeds.js";
+import { seedProjectManagement } from "./seeds/project-management.seeds.js";
 import { getGeneratedCredentials, seedUsers } from "./seeds/user.seeds.js";
 
 // * healthcheck
@@ -203,6 +210,12 @@ app.use("/api/v1/chat-app/messages", messageRouter);
 
 app.use("/api/v1/todos", todoRouter);
 
+app.use("/api/v1/project-management/projects", projectRouter);
+app.use("/api/v1/project-management/tasks", taskRouter);
+app.use("/api/v1/project-management/milestones", milestoneRouter);
+app.use("/api/v1/project-management/comments", commentRouter);
+app.use("/api/v1/project-management/activities", activityRouter);
+
 // * Kitchen sink apis
 app.use("/api/v1/kitchen-sink/http-methods", httpmethodRouter);
 app.use("/api/v1/kitchen-sink/status-codes", statuscodeRouter);
@@ -241,6 +254,13 @@ app.post(
   seedUsers,
   seedChatApp
 );
+app.post(
+  "/api/v1/seed/project-management",
+  // avoidInProduction,
+  seedUsers,
+  seedProjectManagement
+);
+
 
 initializeSocketIO(io);
 
