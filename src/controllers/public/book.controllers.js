@@ -13,9 +13,9 @@ const getBooks = asyncHandler(async (req, res) => {
   let booksArray = query
     ? structuredClone(booksJson).filter((book) => {
         return (
-          book.searchInfo?.textSnippet.toLowerCase().includes(query) ||
-          book.volumeInfo.title?.includes(query) ||
-          book.volumeInfo.subtitle?.includes(query)
+          book.searchInfo?.textSnippet?.toLowerCase().includes(query) ||
+          book.volumeInfo.title?.toLowerCase().includes(query) ||
+          book.volumeInfo.subtitle?.toLowerCase().includes(query)
         );
       })
     : structuredClone(booksJson);

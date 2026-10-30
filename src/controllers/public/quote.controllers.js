@@ -13,8 +13,8 @@ const getQuotes = asyncHandler(async (req, res) => {
   let quotesArray = query
     ? structuredClone(quotesJson).filter((quote) => {
         return (
-          quote.content.toLowerCase().includes(query) ||
-          quote.author?.includes(query)
+          quote.content?.toLowerCase().includes(query) ||
+          quote.author?.toLowerCase().includes(query)
         );
       })
     : structuredClone(quotesJson);

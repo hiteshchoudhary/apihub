@@ -14,7 +14,7 @@ const getStocks = asyncHandler(async (req, res) => {
     ? structuredClone(nseStocksJson).filter((stock) => {
         return (
           stock.Name?.toLowerCase()?.includes(query) ||
-          stock.Symbol?.includes(query)
+          stock.Symbol?.toLowerCase()?.includes(query)
         );
       })
     : structuredClone(nseStocksJson);

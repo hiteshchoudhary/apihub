@@ -14,7 +14,7 @@ const getMeals = asyncHandler(async (req, res) => {
     ? structuredClone(mealsJson).filter((meal) => {
         return (
           meal.strMeal?.toLowerCase().includes(query) ||
-          meal.strCategory?.includes(query)
+          meal.strCategory?.toLowerCase().includes(query)
         );
       })
     : structuredClone(mealsJson);
