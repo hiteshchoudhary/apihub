@@ -103,3 +103,30 @@ export const ChatEventEnum = Object.freeze({
 });
 
 export const AvailableChatEvents = Object.values(ChatEventEnum);
+
+export const JobWorkModeEnum = {
+  ONSITE: "ONSITE",
+  REMOTE: "REMOTE",
+  HYBRID: "HYBRID",
+};
+
+export const AvailableWorkModes = Object.values(JobWorkModeEnum);
+
+export const JobEmploymentTypeEnum = {
+  FULL_TIME: "FULL_TIME",
+  PART_TIME: "PART_TIME",
+  CONTRACT: "CONTRACT",
+  INTERNSHIP: "INTERNSHIP",
+  FREELANCE: "FREELANCE",
+};
+
+export const AvailableEmploymentTypes = Object.values(JobEmploymentTypeEnum);
+
+export const JobExperienceLevelEnum = {
+  ENTRY_LEVEL: "ENTRY_LEVEL",
+  MID_LEVEL: "MID_LEVEL",
+  SENIOR: "SENIOR",
+  EXECUTIVE: "EXECUTIVE",
+};
+
+export const AvailableExperienceLevels = Object.values(JobExperienceLevelEnum);

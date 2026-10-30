@@ -48284,6 +48284,172 @@ paths:
                     message: Health check passed
                     statusCode: 200
                     success: true
+  /jobs:
+    get:
+      summary: Get all jobs
+      description: Retrieve a paginated list of jobs.
+      operationId: getAllJobs
+      tags:
+        - 💼 Jobs
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: query
+          schema:
+            type: string
+        - in: query
+          name: workMode
+          schema:
+            type: string
+            enum: [ONSITE, REMOTE, HYBRID]
+      responses:
+        '200':
+          description: Jobs fetched successfully
+    post:
+      summary: Create a job posting
+      operationId: createJob
+      tags:
+        - 💼 Jobs
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        '201':
+          description: Job posted successfully
+
+  /jobs/random:
+    get:
+      summary: Get a random job
+      operationId: getRandomJob
+      tags:
+        - 💼 Jobs
+      responses:
+        '200':
+          description: Random job fetched successfully
+
+  /jobs/{jobId}:
+    get:
+      summary: Get job by ID
+      operationId: getJobById
+      tags:
+        - 💼 Jobs
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job fetched successfully
+    patch:
+      summary: Update job by ID
+      operationId: updateJob
+      tags:
+        - 💼 Jobs
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        '200':
+          description: Job updated successfully
+    delete:
+      summary: Delete a job by ID
+      operationId: deleteJob
+      tags:
+        - 💼 Jobs
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job deleted successfully
+
+  /seed/jobs:
+    post:
+      summary: 💉 Seed dummy jobs
+      description: Seeds dummy job postings into the database.
+      operationId: seedJobs
+      tags:
+        - 💉 Database Seeding
+      responses:
+        '200':
+          description: Jobs seeded successfully
+
+components:
+  schemas:
+    Job:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        companyName:
+          type: string
+        companyLogo:
+          type: string
+        location:
+          type: string
+        salary:
+          type: string
+        workMode:
+          type: string
+          enum: [ONSITE, REMOTE, HYBRID]
+        employmentType:
+          type: string
+          enum: [FULL_TIME, PART_TIME, CONTRACT, INTERNSHIP, FREELANCE]
+        experienceLevel:
+          type: string
+          enum: [ENTRY_LEVEL, MID_LEVEL, SENIOR, EXECUTIVE]
+        description:
+          type: string
+        requirements:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        postedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
 tags:
   - name: 📢 Public APIs
     description: >-
@@ -48311,6 +48477,9 @@ tags:
     description: >-
       This section encompasses all the APIs required for building a realtime chat
       application.
+  - name: 💼 Jobs
+    description: >-
+      This section encompasses all the APIs required for posting, managing, and browsing job listings.
   - name: 💉 Database Seeding
     description: >-
       This folder contains requests that are used for seeding or populating the
