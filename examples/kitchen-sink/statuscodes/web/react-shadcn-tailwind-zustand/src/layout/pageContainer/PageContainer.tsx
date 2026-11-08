@@ -1,4 +1,5 @@
 import { useAppStore } from "@/store/store";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import Header from "../header";
 
 interface PageContainerProps {
@@ -18,6 +19,7 @@ export default function PageContainer(props: PageContainerProps) {
         {loading > 0 ? <div>loading...</div> : children}
       </main>
       {props.footer}
+      <ScrollToTopButton />
     </div>
   );
 }
