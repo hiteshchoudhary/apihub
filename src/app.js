@@ -294,6 +294,14 @@ app.use(
       docExpansion: "none", // keep all the sections collapsed by default
     },
     customSiteTitle: "FreeAPI docs",
+    customCss: `
+      .sidebar, .sc-sidebar, aside {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+      }
+    `,
   })
 );
 
