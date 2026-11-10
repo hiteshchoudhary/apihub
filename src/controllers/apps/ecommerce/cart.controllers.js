@@ -71,12 +71,17 @@ export const getCart = async (userId) => {
         discountedTotal: {
           // Final total is the total we get once user applies any coupon
           // final total is total cart value - coupon's discount value
-          $ifNull: [
+          // The final total can never be negative, it is clamped at 0
+          $max: [
             {
-              $subtract: ["$cartTotal", "$coupon.discountValue"],
+              $ifNull: [
+                {
+                  $subtract: ["$cartTotal", "$coupon.discountValue"],
+                },
+                "$cartTotal", // if there is no coupon applied we will set cart total as out final total
+              ],
             },
-            "$cartTotal", // if there is no coupon applied we will set cart total as out final total
-            ,
+            0,
           ],
         },
       },
@@ -197,9 +202,15 @@ const removeItemFromCart = asyncHandler(async (req, res) => {
 
   let cart = await getCart(req.user._id);
 
-  // check if the cart's new total is greater than the minimum cart total requirement of the coupon
-  if (cart.coupon && cart.cartTotal < cart.coupon.minimumCartValue) {
-    // if it is less than minimum cart value remove the coupon code which is applied
+  // Remove the applied coupon if the cart is now empty or its new total is less than the coupon's minimum cart value
+  // ! `getCart` returns a default object without the `coupon` field when the cart has no items,
+  // ! so check the stored cart document (`updatedCart`) to know if a coupon is still applied
+  if (
+    updatedCart?.coupon &&
+    (!updatedCart.items.length ||
+      cart.cartTotal < cart.coupon?.minimumCartValue)
+  ) {
+    // remove the coupon code which is applied
     updatedCart.coupon = null;
     await updatedCart.save({ validateBeforeSave: false });
     // fetch the latest updated cart
